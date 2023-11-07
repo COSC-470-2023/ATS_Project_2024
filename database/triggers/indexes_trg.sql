@@ -1,6 +1,6 @@
 DELIMITER $$
-CREATE TRIGGER indices_id_gen_trg
-BEFORE INSERT ON Indices
+CREATE TRIGGER indexes_id_gen_trg
+BEFORE INSERT ON indexes
 FOR EACH ROW
 BEGIN
 	-- vars
@@ -10,10 +10,10 @@ BEGIN
     SET new_id = UUID_SHORT();
     SET valid = 1;
 	-- code
-	SELECT COUNT(*) INTO temp FROM Indices WHERE Symbol = NEW.Symbol;
+	SELECT COUNT(*) INTO temp FROM indexes WHERE Symbol = NEW.Symbol;
 	IF (temp = 0) THEN
     	WHILE (valid = 1) DO
-        	SELECT COUNT(*) INTO temp FROM Indices WHERE ID = new_id;
+        	SELECT COUNT(*) INTO temp FROM indexes WHERE id = new_id;
         	IF (temp = 1) THEN
             	SET new_id = UUID_SHORT();
    		 ELSE

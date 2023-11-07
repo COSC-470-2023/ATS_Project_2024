@@ -1,6 +1,6 @@
 DELIMITER $$
-CREATE TRIGGER commodity_list_id_gen_trg
-BEFORE INSERT ON Commodity_List
+CREATE TRIGGER commodities_id_gen_trg
+BEFORE INSERT ON commodities
 FOR EACH ROW
 BEGIN
 	-- vars
@@ -10,10 +10,10 @@ BEGIN
     SET new_id = UUID_SHORT();
     SET valid = 1;
 	-- code
-	SELECT COUNT(*) INTO temp FROM Commodity_List WHERE Symbol = NEW.Symbol;
+	SELECT COUNT(*) INTO temp FROM commodities WHERE Symbol = NEW.Symbol;
 	IF (temp = 0) THEN
     	WHILE (valid = 1) DO
-        	SELECT COUNT(*) INTO temp FROM Commodity_List WHERE ID = new_id;
+        	SELECT COUNT(*) INTO temp FROM commodities WHERE id = new_id;
         	IF (temp = 1) THEN
             	SET new_id = UUID_SHORT();
    		 ELSE
