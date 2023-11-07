@@ -1,27 +1,42 @@
-CREATE TABLE `Bonds` (
-  `Date` DATETIME,
-  `BondDuration` VARCHAR(10),
-  `Rate` DECIMAL(5,2) NOT NULL,
-  PRIMARY KEY (`Date`, `BondDuration`)
+CREATE TABLE `bonds` (
+  `bond_id` BIGINT,
+  `country` varchar(30),
+  `duration` VARCHAR(10),
+  `currency` VARCHAR(8),
+  PRIMARY KEY (`bond_id`)
 );
 
-CREATE TABLE `Commodity_List` (
-  `ID` BIGINT,
-  `Name` VARCHAR(30) NOT NULL,
-  `Symbol` VARCHAR(5) NOT NULL,
-  PRIMARY KEY (`ID`)
+CREATE TABLE `bonds_values` (
+  `bond_id` BIGINT,
+  `date` DATETIME,
+  `rate` DECIMAL(5,2) NOT NULL,
+  PRIMARY KEY (`bond_id`, `date`),
+  FOREIGN KEY (`bond_id`) REFERENCES `bonds`(`bond_id`)
 );
 
-CREATE TABLE `Commodity_Values` (
-  `CommodityID` BIGINT,
-  `Date` DATETIME,
-  `Open` DECIMAL(12,2),
-  `High` DECIMAL(12,2),
-  `Low` DECIMAL(12,2),
-  `Close` DECIMAL(12,2),
-  `Volume` DECIMAL(12,2),
-  PRIMARY KEY (`CommodityID`, `Date`),
-  FOREIGN KEY (`CommodityID`) REFERENCES `Commodity_List`(`ID`)
+CREATE TABLE `commodities` (
+  `id` BIGINT,
+  `commoditiyName` VARCHAR(30) NOT NULL,
+  `symbol` VARCHAR(10) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `commoditiy_values` (
+  `commodity_id` BIGINT,
+  `date` DATETIME,
+  `open` DECIMAL(12,2),
+  `high` DECIMAL(12,2),
+  `low` DECIMAL(12,2),
+  `close` DECIMAL(12,2),
+  `adjClose` DECIMAL(12,2),
+  `volume` DECIMAL(12,2),
+  `unadjustedVolume` DECIMAL(12,2),
+  `change` DECIMAL(12,2),
+  `changePercent` DECIMAL(12,2),
+  `vwap` DECIMAL(12,2),
+  `changeOverTime` DECIMAL(12,2),
+  PRIMARY KEY (`commodity_id`, `date`),
+  FOREIGN KEY (`commodity_id`) REFERENCES `commodities`(`ID`)
 );
 
 CREATE TABLE `Companies` (
@@ -75,21 +90,28 @@ CREATE TABLE `Company_Statements` (
   FOREIGN KEY (`CompanyID`) REFERENCES `Companies`(`ID`)
 );
 
-CREATE TABLE `Indices` (
-  `ID` BIGINT,
-  `Symbol` VARCHAR(10) NOT NULL,
-  `Name` VARCHAR(20) NOT NULL,
-  PRIMARY KEY (`ID`)
+CREATE TABLE `indexes` (
+  `id` BIGINT,
+  `indexname` VARCHAR(30) NOT NULL,
+  `symbol` VARCHAR(10) NOT NULL,
+  PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `Index_Values` (
-  `Date` DATETIME,
-  `IndexID` BIGINT,
-  `Open` DECIMAL(12,2),
-  `High` DECIMAL(12,2),
-  `Low` DECIMAL(12,2),
-  `Close` DECIMAL(12,2),
-  `Volume` DECIMAL(12,2),
-  PRIMARY KEY (`Date`, `IndexID`),
-  FOREIGN KEY (`IndexID`) REFERENCES `Indices`(`ID`)
+CREATE TABLE `index_values` (
+  `index_id` BIGINT,
+  `date` DATETIME,
+  `price` DECIMAL(12,2),
+  `extendedPrice` DECIMAL(12,2),
+  `change` DECIMAL(12,2),
+  `dayHigh` DECIMAL(12,2),
+  `dayLow` DECIMAL(12,2),
+  `previousClose` DECIMAL(12,2),
+  `volume` DECIMAL(12,2),
+  `open` DECIMAL(12,2),
+  `close` DECIMAL(12,2),
+  `yearHigh` DECIMAL(12,2),
+  `yearLow` DECIMAL(12,2),
+  `changesPercentage` DECIMAL(12,2),
+  PRIMARY KEY (`index_id`, `date`),
+  FOREIGN KEY (`index_id`) REFERENCES `indexes`(`id`)
 );
