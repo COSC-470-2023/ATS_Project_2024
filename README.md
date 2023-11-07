@@ -1,8 +1,2 @@
-# Development Branch
-This is the development branch, this is where features will be added once they have been tested. Once enough features have been added to justify a new release a pull request can be made from dev branch to release branch.
-# Dependencies
-pip
-```pip
-pip install bs4
-pip install mysql-connector-python
-```
+# Release Branch
+This is an example release branch, once enough features have been tested and added to the dev branch to justify a new release version a pull request can be made from the dev branch to the release branch. This is where all the features will be tested together to ensure they are working correctly before being pushed to main.
