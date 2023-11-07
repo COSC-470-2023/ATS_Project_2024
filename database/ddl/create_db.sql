@@ -12,7 +12,16 @@ CREATE TABLE `bonds_values` (
   `rate` DECIMAL(5,2) NOT NULL,
   PRIMARY KEY (`bond_id`, `date`),
   FOREIGN KEY (`bond_id`) REFERENCES `bonds`(`bond_id`)
+-- Bonds  tables --
+
+CREATE TABLE `Bonds` (
+  `date` DATETIME,
+  `BondDuration` VARCHAR(10),
+  `Rate` DECIMAL(5,2) NOT NULL,
+  PRIMARY KEY (`date`, `BondDuration`)
 );
+
+-- Commodities tables --
 
 CREATE TABLE `commodities` (
   `id` BIGINT,
@@ -39,56 +48,88 @@ CREATE TABLE `commoditiy_values` (
   FOREIGN KEY (`commodity_id`) REFERENCES `commodities`(`ID`)
 );
 
-CREATE TABLE `Companies` (
-  `ID` BIGINT,
-  `CompanyName` VARCHAR(30) NOT NULL,
-  `Symbol` VARCHAR(10) NOT NULL,
-  PRIMARY KEY (`ID`)
+-- Company/Stocks tables --
+
+CREATE TABLE `companies` (
+  `id` BIGINT,
+  `companyName` VARCHAR(30) NOT NULL,
+  `symbol` VARCHAR(10) NOT NULL,
+  PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `Changelogs` (
-  `CompanyID` BIGINT,
-  `Date` DATETIME,
-  `NewSymbol` VARCHAR(10),
-  `OldSymbol` VARCHAR(10) NOT NULL,
-  `SymbolChanged` BOOLEAN,
-  `NewName` VARCHAR(30),
-  `OldName` VARCHAR(30) NOT NULL,
-  `NameChanged` BOOLEAN,
-  PRIMARY KEY (`CompanyID`, `Date`),
-  FOREIGN KEY (`CompanyID`) REFERENCES `Companies`(`ID`)
+CREATE TABLE `company_changelogs` (
+  `company_id` BIGINT,
+  `date` DATETIME,
+  `companyName` VARCHAR(30) NOT NULL,
+  `newCompanyName` VARCHAR(30),
+  `nameChanged` BOOLEAN,
+  `symbol` VARCHAR(10) NOT NULL,
+  `newSymbol` VARCHAR(10),
+  `symbolChanged` BOOLEAN,
+  PRIMARY KEY (`company_id`, `date`),
+  FOREIGN KEY (`company_id`) REFERENCES `companies`(`id`)
 );
 
-CREATE TABLE `Stock_Values` (
-  `CompanyID` BIGINT,
-  `Date` DATETIME,
-  `Open` DECIMAL(12,2),
-  `High` DECIMAL(12,2),
-  `Low` DECIMAL(12,2),
-  `Close` DECIMAL(12,2),
-  `Volume` DECIMAL(12,2),
-  `Exchange` VARCHAR(20),
-  PRIMARY KEY (`CompanyID`, `Date`),
-  FOREIGN KEY (`CompanyID`) REFERENCES `Companies`(`ID`)
+CREATE TABLE `real_time_stock_values` (
+  `company_id` BIGINT,
+  `date` DATETIME,
+  `price` DECIMAL(12,2),
+  `changesPercentage` DECIMAL(12,2),
+  `change` DECIMAL(12,2),
+  `dayHigh` DECIMAL(12,2),
+  `dayLow` DECIMAL(12,2),
+  `yearHigh` DECIMAL(12,2),
+  `yearLow` DECIMAL(12,2),
+  `mktCap` DECIMAL,
+  `open` DECIMAL(12,2),
+  `prevClose` DECIMAL(12,2),
+  `volAvg` DECIMAL(12,2),
+  `eps` DECIMAL,
+  `pe` DECIMAL,
+  PRIMARY KEY (`company_id`, `date`),
+  FOREIGN KEY (`company_id`) REFERENCES `companies`(`id`)
 );
 
-CREATE TABLE `Company_Statements` (
-  `CompanyID` BIGINT,
-  `Date` DATETIME,
-  `Sector` VARCHAR(30),
-  `Industry` VARCHAR(30),
-  `FullTimeEmployees` DECIMAL,
-  `MarketCap` DECIMAL(12,2),
-  `TrailingPE` DECIMAL(12,2),
-  `ShortOfFloat` DECIMAL(4,2),
-  `TraillingAnnualDividendYield` DECIMAL(7,5),
-  `EnterpriseValue` DECIMAL(13,2),
-  `Revenue` DECIMAL(13,2),
-  `ReturnOnAssets` DECIMAL(5,2),
-  `ReturnOnEquity` DECIMAL(5,2),
-  PRIMARY KEY (`CompanyID`, `Date`),
-  FOREIGN KEY (`CompanyID`) REFERENCES `Companies`(`ID`)
+CREATE TABLE `historical_stock_values` (
+  `company_id` BIGINT,
+  `date` DATETIME,
+  `price` DECIMAL(12,2),
+  `changesPercentage` DECIMAL(12,2),
+  `change` DECIMAL(12,2),
+  `dayHigh` DECIMAL(12,2),
+  `dayLow` DECIMAL(12,2),
+  `yearHigh` DECIMAL(12,2),
+  `yearLow` DECIMAL(12,2),
+  `mktCap` DECIMAL,
+  `open` DECIMAL(12,2),
+  `prevClose` DECIMAL(12,2),
+  `volAvg` DECIMAL(12,2),
+  `eps` DECIMAL,
+  `pe` DECIMAL,
+  PRIMARY KEY (`company_id`, `date`),
+  FOREIGN KEY (`company_id`) REFERENCES `companies`(`id`)
 );
+
+CREATE TABLE `company_ctatements` (
+  `company_id` BIGINT,
+  `date` DATETIME,
+  `sector` VARCHAR(30),
+  `industry` VARCHAR(30),
+  `fullTimeEmployees` DECIMAL,
+  `marketCap` DECIMAL(12,2),
+  `trailingPE` DECIMAL(12,2),
+  `shortOfFloat` DECIMAL(4,2),
+  `traillingAnnualDividendYield` DECIMAL(7,5),
+  `enterpriseValue` DECIMAL(13,2),
+  `netIncome` DECIMAL(13,2),
+  `revenue` DECIMAL(13,2),
+  `returnOnAssets` DECIMAL(5,2),
+  `returnOnEquity` DECIMAL(5,2),
+  PRIMARY KEY (`company_id`, `date`),
+  FOREIGN KEY (`company_id`) REFERENCES `companies`(`id`)
+);
+
+-- Index tables --
 
 CREATE TABLE `indexes` (
   `id` BIGINT,
