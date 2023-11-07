@@ -1,3 +1,5 @@
+`enterpriseValue` DECIMAL(13,2),
+
 CREATE TABLE `bonds` (
   `bond_id` BIGINT,
   `country` varchar(30),
@@ -12,13 +14,6 @@ CREATE TABLE `bonds_values` (
   `rate` DECIMAL(5,2) NOT NULL,
   PRIMARY KEY (`bond_id`, `date`),
   FOREIGN KEY (`bond_id`) REFERENCES `bonds`(`bond_id`)
--- Bonds  tables --
-
-CREATE TABLE `Bonds` (
-  `date` DATETIME,
-  `BondDuration` VARCHAR(10),
-  `Rate` DECIMAL(5,2) NOT NULL,
-  PRIMARY KEY (`date`, `BondDuration`)
 );
 
 -- Commodities tables --
