@@ -1,5 +1,6 @@
 
 .idea/workspace.xml
+<<<<<<< HEAD
 .idea/vcs.xml
 .idea/SMF_Project_2023.iml
 .idea/modules.xml
@@ -7,3 +8,12 @@
 .idea/inspectionProfiles/Project_Default.xml
 .idea/inspectionProfiles/profiles_settings.xml
 .README.md
+=======
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/SMF_Project_2023.iml
+.idea/vcs.xml
+README.md
+>>>>>>> 553ae6d0a7949a6f36e6a090c87a1d5ba05c13c9
