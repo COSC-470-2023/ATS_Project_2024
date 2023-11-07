@@ -81,6 +81,7 @@ CREATE TABLE `real_time_stock_values` (
   `volAvg` DECIMAL(12,2),
   `eps` DECIMAL,
   `pe` DECIMAL,
+  `exhchange` VARCHAR(20),
   PRIMARY KEY (`company_id`, `date`),
   FOREIGN KEY (`company_id`) REFERENCES `companies`(`id`)
 );
@@ -101,6 +102,7 @@ CREATE TABLE `historical_stock_values` (
   `volAvg` DECIMAL(12,2),
   `eps` DECIMAL,
   `pe` DECIMAL,
+  `exhchange` VARCHAR(20),
   PRIMARY KEY (`company_id`, `date`),
   FOREIGN KEY (`company_id`) REFERENCES `companies`(`id`)
 );
