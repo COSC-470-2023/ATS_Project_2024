@@ -105,7 +105,7 @@ CREATE TABLE `historical_stock_values` (
   FOREIGN KEY (`company_id`) REFERENCES `companies`(`id`)
 );
 
-CREATE TABLE `company_ctatements` (
+CREATE TABLE `company_statements` (
   `company_id` BIGINT,
   `date` DATETIME,
   `sector` VARCHAR(30),
