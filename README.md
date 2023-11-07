@@ -1,1 +1,2 @@
+# Feature Branch
 This is an example feature branch. Feature branches will be used to develop new features. Once the feature has been tested, a pull request can be created to merge the feature into the development branch.
