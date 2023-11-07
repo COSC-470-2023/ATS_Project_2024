@@ -1,4 +1,4 @@
-`enterpriseValue` DECIMAL(13,2),
+-- Bonds tables --
 
 CREATE TABLE `bonds` (
   `bond_id` BIGINT,
