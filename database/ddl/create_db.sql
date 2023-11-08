@@ -1,3 +1,7 @@
+CREATE DATABASE IF NOT EXISTS ats_db;
+
+USE ats_db;
+
 -- Bonds tables --
 
 CREATE TABLE `bonds` (
