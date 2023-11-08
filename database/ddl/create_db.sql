@@ -2,7 +2,7 @@
 
 CREATE TABLE `bonds` (
   `bond_id` BIGINT,
-  `country` varchar(30),
+  `country` VARCHAR(30),
   `duration` VARCHAR(10),
   `currency` VARCHAR(8),
   PRIMARY KEY (`bond_id`)
@@ -75,12 +75,12 @@ CREATE TABLE `real_time_stock_values` (
   `dayLow` DECIMAL(12,2),
   `yearHigh` DECIMAL(12,2),
   `yearLow` DECIMAL(12,2),
-  `mktCap` DECIMAL,
+  `mktCap` BIGINT,
   `open` DECIMAL(12,2),
   `prevClose` DECIMAL(12,2),
   `volAvg` DECIMAL(12,2),
-  `eps` DECIMAL,
-  `pe` DECIMAL,
+  `eps` DECIMAL(12,2),
+  `pe` DECIMAL(12,2),
   `exhchange` VARCHAR(20),
   PRIMARY KEY (`company_id`, `date`),
   FOREIGN KEY (`company_id`) REFERENCES `companies`(`id`)
@@ -100,8 +100,8 @@ CREATE TABLE `historical_stock_values` (
   `open` DECIMAL(12,2),
   `prevClose` DECIMAL(12,2),
   `volAvg` DECIMAL(12,2),
-  `eps` DECIMAL,
-  `pe` DECIMAL,
+  `eps` DECIMAL(12,2),
+  `pe` DECIMAL(12,2),
   `exhchange` VARCHAR(20),
   PRIMARY KEY (`company_id`, `date`),
   FOREIGN KEY (`company_id`) REFERENCES `companies`(`id`)
