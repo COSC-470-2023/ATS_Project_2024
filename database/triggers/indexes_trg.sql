@@ -10,19 +10,19 @@ BEGIN
     SET new_id = UUID_SHORT();
     SET valid = 1;
 	-- code
-	SELECT COUNT(*) INTO temp FROM indexes WHERE Symbol = NEW.Symbol;
+	SELECT COUNT(*) INTO temp FROM indexes WHERE symbol = NEW.symbol;
 	IF (temp = 0) THEN
     	WHILE (valid = 1) DO
         	SELECT COUNT(*) INTO temp FROM indexes WHERE id = new_id;
         	IF (temp = 1) THEN
             	SET new_id = UUID_SHORT();
-   		 ELSE
-   		 	SET valid = 0;
+   		 	  ELSE
+   		 		  SET valid = 0;
         	END IF;
     	END WHILE;
     ELSE
     	SIGNAL SQLSTATE '45000'
-   	 SET MESSAGE_TEXT = 'A record for this index already exists.';
+   	 	SET MESSAGE_TEXT = 'A record for this index already exists.';
     END IF;
 	SET NEW.ID = new_id;
 END;

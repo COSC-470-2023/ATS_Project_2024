@@ -16,13 +16,13 @@ BEGIN
         	SELECT COUNT(*) INTO temp FROM commodities WHERE id = new_id;
         	IF (temp = 1) THEN
             	SET new_id = UUID_SHORT();
-   		 ELSE
-   		 	SET valid = 0;
+   		 	  ELSE
+   		 		  SET valid = 0;
         	END IF;
     	END WHILE;
     ELSE
     	SIGNAL SQLSTATE '45000'
-   	 SET MESSAGE_TEXT = 'A record for this stock already exists.';
+   	  SET MESSAGE_TEXT = 'A record for this commodity already exists.';
     END IF;
 	SET NEW.ID = new_id;
 END;
