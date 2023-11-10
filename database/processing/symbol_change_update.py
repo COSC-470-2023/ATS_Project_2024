@@ -1,65 +1,55 @@
-import mysql.connector
+import connect
 import json
+import traceback
 
-def read_config(filename):
+from sqlalchemy import text
+from sqlalchemy.exc import IntegrityError
+
+def load(path):
     try:
-        with open(filename, "r") as config_file:
-            config = json.load(config_file)
-        return config
+        with open(path, "r") as output_file:
+            output_data = json.load(output_file)
+        return output_data
     except FileNotFoundError:
-        print(f"Config file '{filename}' not found.")
+        print(f"Output file '{path}' not found.")
         exit(1)
     except json.JSONDecodeError:
-        print(f"Error decoding JSON in '{filename}'")
+        print(f"Error decoding JSON in '{path}'.")
         exit(1)
-
 
 # Load database credentials from the config file
-config = read_config("config.json")
-
-def read_output(filename):
-    try:
-        with open(filename, "r") as output_file:
-            config = json.load(output_file)
-        return config
-    except FileNotFoundError:
-        print(f"Output file '{filename}' not found.")
-        exit(1)
-    except json.JSONDecodeError:
-        print(f"Error decoding JSON in '{filename}'")
-        exit(1)
+config = load("config.json")
 
 
 # TODO read data collection output file when available
-symbol_change = read_output(filename)
+symbol_change = load(filename)
+
+def main():
+    try:
+        # Establish a connection to server
+        with connect.connect() as conn:
+            for symbol in symbol_change:
+                # Variable Declarations
+                date = symbol["date"]
+                name = symbol["name"]
+                old_symbol = symbol["oldSymbol"]
+                new_symbol = symbol["newSymbol"]
+
+                # Queries
+                # TODO create sql queries to update the database with symbol change information
+                company_update = f"UPDATE Companies SET companyName = %s, symbol = %s WHERE company_id IN (SELECT company_id FROM Companies WHERE symbol = %s;);"
+                data = (name, new_symbol, old_symbol)
+                try:
+                    conn.execute(company_update,data)
+                    conn.commit()
+                except IntegrityError as e:
+                    continue
+
+    except Exception as e:
+        print(e)
+        print(traceback.format_exc())
+        print("SQL connection error")
 
 
-try:
-    # Establish a connection to server
-    connection = mysql.connect.connect(**config["atsdb"])
-
-    if connection.is_connected():
-        # Print the MySQL server version
-        db_info = connection.get_server_info()
-        print(f"Connected to MySQL Server version {db_info}")
-
-        cursor = connection.cursor(buffered=True)
-
-        # Iterate over symbol_change
-        for symbol in symbol_change:
-            # Variable Declarations
-            date = symbol["date"]
-            name = symbol["name"]
-            old_symbol = symbol["oldSymbol"]
-            new_symbol = symbol["newSymbol"]
-
-            # Queries
-            # TODO create sql queries to update the database with symbol change information
-
-except mysql.connector.Error as err:
-    print(f"Error: {err}")
-finally:
-    if connection.is_connected():
-        # Close connection
-        connection.close()
-        print("Connection closed")
+if __name__ == "__main__":
+    main()
