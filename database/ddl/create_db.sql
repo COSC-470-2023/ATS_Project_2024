@@ -142,7 +142,7 @@ CREATE TABLE `historical_stock_values` (
   `close` DECIMAL(12,2),
   `adjclose` DECIMAL(12,2),
   `volume` DECIMAL(12,2),
-  `unadj_Volume` DECIMAL(12,2),
+  `unadjustedVolume` DECIMAL(12,2),
   `change` DECIMAL(12,2),
   `changePercentage` DECIMAL(4,6),
   `vwap` DECIMAL(12,2),
