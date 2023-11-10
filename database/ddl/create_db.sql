@@ -29,7 +29,27 @@ CREATE TABLE `commodities` (
   PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `commoditiy_values` (
+CREATE TABLE `realtime_commoditiy_values` (
+  `commodity_id` BIGINT,
+  `date` DATETIME,
+  `price` DECIMAL(12,2),
+  `changePercentage` DECIMAL(4,6),
+  `change` DECIMAL(12,2),
+  `dayHigh` DECIMAL(12,2),
+  `dayLow` DECIMAL(12,2),
+  `yearHigh` DECIMAL(12,2),
+  `yearLow` DECIMAL(12,2),
+  `mktCap` BIGINT,
+  `exhchange` VARCHAR(20),
+  `open` DECIMAL(12,2),
+  `prevClose` DECIMAL(12,2),
+  `volume` DECIMAL(12,2),
+  `volAvg` DECIMAL(12,2),
+  PRIMARY KEY (`commodity_id`, `date`),
+  FOREIGN KEY (`commodity_id`) REFERENCES `commodities`(`ID`)
+);
+
+CREATE TABLE `historical_commoditiy_values` (
   `commodity_id` BIGINT,
   `date` DATETIME,
   `open` DECIMAL(12,2),
@@ -38,9 +58,9 @@ CREATE TABLE `commoditiy_values` (
   `close` DECIMAL(12,2),
   `adjClose` DECIMAL(12,2),
   `volume` DECIMAL(12,2),
-  `unadjustedVolume` DECIMAL(12,2),
+  `unadj_Volume` DECIMAL(12,2),
   `change` DECIMAL(12,2),
-  `changePercent` DECIMAL(12,2),
+  `changePercentage` DECIMAL(12,2),
   `vwap` DECIMAL(12,2),
   `changeOverTime` DECIMAL(12,2),
   PRIMARY KEY (`commodity_id`, `date`),
@@ -53,6 +73,7 @@ CREATE TABLE `companies` (
   `id` BIGINT,
   `companyName` VARCHAR(30) NOT NULL,
   `symbol` VARCHAR(10) NOT NULL,
+  `listed` boolean,
   PRIMARY KEY (`id`)
 );
 
@@ -65,6 +86,25 @@ CREATE TABLE `company_changelogs` (
   `symbol` VARCHAR(10) NOT NULL,
   `newSymbol` VARCHAR(10),
   `symbolChanged` BOOLEAN,
+  PRIMARY KEY (`company_id`, `date`),
+  FOREIGN KEY (`company_id`) REFERENCES `companies`(`id`)
+);
+
+CREATE TABLE `company_statements` (
+  `company_id` BIGINT,
+  `date` DATETIME,
+  `sector` VARCHAR(30),
+  `industry` VARCHAR(30),
+  `fullTimeEmployees` DECIMAL,
+  `marketCap` DECIMAL(12,2),
+  `trailingPE` DECIMAL(12,2),
+  `shortOfFloat` DECIMAL(4,2),
+  `traillingAnnualDividendYield` DECIMAL(7,5),
+  `enterpriseValue` DECIMAL(13,2),
+  `netIncome` DECIMAL(13,2),
+  `revenue` DECIMAL(13,2),
+  `returnOnAssets` DECIMAL(5,2),
+  `returnOnEquity` DECIMAL(5,2),
   PRIMARY KEY (`company_id`, `date`),
   FOREIGN KEY (`company_id`) REFERENCES `companies`(`id`)
 );
@@ -111,25 +151,6 @@ CREATE TABLE `historical_stock_values` (
   FOREIGN KEY (`company_id`) REFERENCES `companies`(`id`)
 );
 
-CREATE TABLE `company_statements` (
-  `company_id` BIGINT,
-  `date` DATETIME,
-  `sector` VARCHAR(30),
-  `industry` VARCHAR(30),
-  `fullTimeEmployees` DECIMAL,
-  `marketCap` DECIMAL(12,2),
-  `trailingPE` DECIMAL(12,2),
-  `shortOfFloat` DECIMAL(4,2),
-  `traillingAnnualDividendYield` DECIMAL(7,5),
-  `enterpriseValue` DECIMAL(13,2),
-  `netIncome` DECIMAL(13,2),
-  `revenue` DECIMAL(13,2),
-  `returnOnAssets` DECIMAL(5,2),
-  `returnOnEquity` DECIMAL(5,2),
-  PRIMARY KEY (`company_id`, `date`),
-  FOREIGN KEY (`company_id`) REFERENCES `companies`(`id`)
-);
-
 -- Index tables --
 
 CREATE TABLE `indexes` (
@@ -139,21 +160,40 @@ CREATE TABLE `indexes` (
   PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `index_values` (
+CREATE TABLE `realtime_index_values` (
   `index_id` BIGINT,
   `date` DATETIME,
   `price` DECIMAL(12,2),
-  `extendedPrice` DECIMAL(12,2),
+  `changePercentage` DECIMAL(4,6),
   `change` DECIMAL(12,2),
   `dayHigh` DECIMAL(12,2),
   `dayLow` DECIMAL(12,2),
-  `previousClose` DECIMAL(12,2),
-  `volume` DECIMAL(12,2),
-  `open` DECIMAL(12,2),
-  `close` DECIMAL(12,2),
   `yearHigh` DECIMAL(12,2),
   `yearLow` DECIMAL(12,2),
-  `changesPercentage` DECIMAL(12,2),
+  `mktCap` BIGINT,
+  `exchange` varchar(20),
+  `open` DECIMAL(12,2),
+  `prevClose` DECIMAL(12,2),
+  `volume` DECIMAL(12,2),
+  `volAvg` DECIMAL(12,2),
+  PRIMARY KEY (`index_id`, `date`),
+  FOREIGN KEY (`index_id`) REFERENCES `indexes`(`id`)
+);
+
+CREATE TABLE `historical_index_values` (
+  `index_id` BIGINT,
+  `date` DATETIME,
+  `open` DECIMAL(12,2),
+  `high` DECIMAL(12,2),
+  `low` DECIMAL(12,2),
+  `close` DECIMAL(12,2),
+  `adjClose` DECIMAL(12,2),
+  `volume` DECIMAL(12,2),
+  `unadj_Volume` DECIMAL(12,2),
+  `change` DECIMAL(12,2),
+  `changePercentage` DECIMAL(4,6),
+  `vwap` DECIMAL(12,2),
+  `changeOverTime` DECIMAL(12,2),
   PRIMARY KEY (`index_id`, `date`),
   FOREIGN KEY (`index_id`) REFERENCES `indexes`(`id`)
 );
