@@ -73,7 +73,7 @@ CREATE TABLE `companies` (
   `id` BIGINT,
   `companyName` VARCHAR(300) NOT NULL,
   `symbol` VARCHAR(10) NOT NULL,
-  `listed` boolean,
+  `isListed` boolean,
   PRIMARY KEY (`id`)
 );
 
