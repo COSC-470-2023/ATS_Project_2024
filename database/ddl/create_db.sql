@@ -144,7 +144,7 @@ CREATE TABLE `real_time_stock_values` (
   `volAvg` DECIMAL(12,2),
   `eps` DECIMAL(12,2),
   `pe` DECIMAL(12,2),
-  `earningsAnnouncement` DATETUNE,
+  `earningsAnnouncement` DATETIME,
   `sharesOutstanding` BIGINT,
   PRIMARY KEY (`company_id`, `date`),
   FOREIGN KEY (`company_id`) REFERENCES `companies`(`id`)
