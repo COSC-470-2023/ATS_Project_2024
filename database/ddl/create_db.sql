@@ -58,7 +58,7 @@ CREATE TABLE `historical_commoditiy_values` (
   `close` DECIMAL(12,2),
   `adjClose` DECIMAL(12,2),
   `volume` DECIMAL(12,2),
-  `unadj_Volume` DECIMAL(12,2),
+  `unadjustedVolume` DECIMAL(12,2),
   `change` DECIMAL(12,2),
   `changePercentage` DECIMAL(12,2),
   `vwap` DECIMAL(12,2),
