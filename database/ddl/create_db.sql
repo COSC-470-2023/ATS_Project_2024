@@ -6,9 +6,9 @@ USE ats_db;
 
 CREATE TABLE `bonds` (
   `bond_id` BIGINT,
-  `country` VARCHAR(30),
-  `duration` VARCHAR(10),
-  `currency` VARCHAR(8),
+  `country` VARCHAR(300),
+  `duration` VARCHAR(300),
+  `currency` VARCHAR(300),
   PRIMARY KEY (`bond_id`)
 );
 
@@ -24,7 +24,7 @@ CREATE TABLE `bonds_values` (
 
 CREATE TABLE `commodities` (
   `id` BIGINT,
-  `commoditiyName` VARCHAR(30) NOT NULL,
+  `commoditiyName` VARCHAR(300) NOT NULL,
   `symbol` VARCHAR(10) NOT NULL,
   PRIMARY KEY (`id`)
 );
@@ -40,7 +40,7 @@ CREATE TABLE `realtime_commoditiy_values` (
   `yearHigh` DECIMAL(12,2),
   `yearLow` DECIMAL(12,2),
   `mktCap` BIGINT,
-  `exhchange` VARCHAR(20),
+  `exhchange` VARCHAR(300),
   `open` DECIMAL(12,2),
   `prevClose` DECIMAL(12,2),
   `volume` DECIMAL(12,2),
@@ -71,7 +71,7 @@ CREATE TABLE `historical_commoditiy_values` (
 
 CREATE TABLE `companies` (
   `id` BIGINT,
-  `companyName` VARCHAR(30) NOT NULL,
+  `companyName` VARCHAR(300) NOT NULL,
   `symbol` VARCHAR(10) NOT NULL,
   `listed` boolean,
   PRIMARY KEY (`id`)
@@ -80,8 +80,8 @@ CREATE TABLE `companies` (
 CREATE TABLE `company_changelogs` (
   `company_id` BIGINT,
   `date` DATETIME,
-  `companyName` VARCHAR(30) NOT NULL,
-  `newCompanyName` VARCHAR(30),
+  `companyName` VARCHAR(300) NOT NULL,
+  `newCompanyName` VARCHAR(300),
   `nameChanged` BOOLEAN,
   `symbol` VARCHAR(10) NOT NULL,
   `newSymbol` VARCHAR(10),
@@ -93,8 +93,8 @@ CREATE TABLE `company_changelogs` (
 CREATE TABLE `company_statements` (
   `company_id` BIGINT,
   `date` DATETIME,
-  `sector` VARCHAR(30),
-  `industry` VARCHAR(30),
+  `sector` VARCHAR(300),
+  `industry` VARCHAR(300),
   `fullTimeEmployees` DECIMAL,
   `marketCap` DECIMAL(12,2),
   `trailingPE` DECIMAL(12,2),
@@ -120,7 +120,7 @@ CREATE TABLE `real_time_stock_values` (
   `yearHigh` DECIMAL(12,2),
   `yearLow` DECIMAL(12,2),
   `mktCap` BIGINT,
-  `exhchange` VARCHAR(20),
+  `exhchange` VARCHAR(300),
   `open` DECIMAL(12,2),
   `prevClose` DECIMAL(12,2),
   `volume` DECIMAL(12,2),
@@ -155,7 +155,7 @@ CREATE TABLE `historical_stock_values` (
 
 CREATE TABLE `indexes` (
   `id` BIGINT,
-  `indexname` VARCHAR(30) NOT NULL,
+  `indexname` VARCHAR(300) NOT NULL,
   `symbol` VARCHAR(10) NOT NULL,
   PRIMARY KEY (`id`)
 );
@@ -171,7 +171,7 @@ CREATE TABLE `realtime_index_values` (
   `yearHigh` DECIMAL(12,2),
   `yearLow` DECIMAL(12,2),
   `mktCap` BIGINT,
-  `exchange` varchar(20),
+  `exchange` varchar(300),
   `open` DECIMAL(12,2),
   `prevClose` DECIMAL(12,2),
   `volume` DECIMAL(12,2),
