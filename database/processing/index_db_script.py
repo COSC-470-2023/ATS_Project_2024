@@ -29,18 +29,22 @@ def main():
                 symbol = entry['symbol']
                 name = entry['name']
                 # check if index exists in indices table
+                ##Needs to be changed
                 result = conn.execute(text(f"select ID from `Indices` where Symbol = '{symbol}'"))
                 row = result.one_or_none()
                 if row is None:
                     # execute plain sql insert statement - transaction begins
+                    ##Needs to be updated
                     conn.execute(text(f"insert into `Indices`(`ID`, `Name`, `Symbol`) values (NULL, '{name}', '{symbol}')"))
                     conn.commit()
                     # get the generated ID
+                    ##Needs to be updated
                     result = conn.execute(text(f"select ID from `Indices` where Symbol = '{symbol}'")) 
                     IndexID = result.one()[0]
                 else:
                     IndexID = row[0]
                 # process realtime data
+                ##Needs to be updated from realtime_commoditiy_values
                 date = datetime.datetime.fromtimestamp(entry['realtime_data']["timestamp"])
                 indexOpen = entry['realtime_data']['open']
                 high = entry['realtime_data']['dayHigh']
@@ -48,12 +52,14 @@ def main():
                 #close = entry['realtime_data']['close']
                 volume = entry['realtime_data']['volume']
                 try:
+                    ##Needs to be updated
                     conn.execute(text(f"insert into `Index_Values`(`IndexID`, `Date`, `Open`, `High`, `Low`, `Close`, `Volume`) values ('{IndexID}', '{date}', '{indexOpen}', '{high}', '{low}', null, '{volume}')"))
                     conn.commit()           
                 except IntegrityError as e:
                     volume = volume # do nothing  
 
                 # process historical data
+                #Needs to be updated
                 for h_entry in entry['historical_data']:
                     date = h_entry['date']
                     indexOpen = h_entry['open']
