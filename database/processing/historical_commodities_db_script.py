@@ -43,26 +43,28 @@ def main():
                     CommodityID = result.one()[0]
                 else:
                     CommodityID = row[0]
-                    
-                # putting data into variables (I really hate this)
-                date = entry['date']
-                commodityOpen = entry['open']
-                price = entry['price']
-                high = entry['high']
-                low = entry['low']
-                close = entry['close']
-                adjClose = entry['adjClose']
-                volume = entry['volume']
-                unadjustedVolume = entry['unadjustedVolume']
-                change = entry['change']
-                changePercent = entry['changePercentage']
-                vwap = entry['vwap']
-                changeOverTime = entry['changeOverTime']
-                try:
-                    conn.execute(text(f"insert into `historical_commodity_values`(`commodity_id`, `date`, `open`, `high`, `low`, `close`, `adjClose`, `volume`, `unadjustedVolume`, `change`, `changePercentage`, `vwap`, `changeOverTime`) values ('{CommodityID}', '{date}', '{commodityOpen}', '{high}', '{low}', '{close}', '{adjustedClose}', '{volume}', '{unadjustedVolume}', '{change}', '{changePercent}', '{vwap}', '{changeOverTime}')"))
-                    conn.commit()
-                except IntegrityError as e: # catch duplicate entry
-                    pass # do nothing
+                
+                # each commodity will have multiple dates with data
+                for h_entry in entry['data']:
+                    # putting data into variables (I really hate this)
+                    date = h_entry['date']
+                    commodityOpen = h_entry['open']
+                    price = h_entry['price']
+                    high = h_entry['high']
+                    low = h_entry['low']
+                    close = h_entry['close']
+                    adjClose = h_entry['adjClose']
+                    volume = h_entry['volume']
+                    unadjustedVolume = h_entry['unadjustedVolume']
+                    change = h_entry['change']
+                    changePercent = h_entry['changePercentage']
+                    vwap = h_entry['vwap']
+                    changeOverTime = h_entry['changeOverTime']
+                    try:
+                        conn.execute(text(f"insert into `historical_commodity_values`(`commodity_id`, `date`, `open`, `high`, `low`, `close`, `adjClose`, `volume`, `unadjustedVolume`, `change`, `changePercentage`, `vwap`, `changeOverTime`) values ('{CommodityID}', '{date}', '{commodityOpen}', '{high}', '{low}', '{close}', '{adjustedClose}', '{volume}', '{unadjustedVolume}', '{change}', '{changePercent}', '{vwap}', '{changeOverTime}')"))
+                        conn.commit()
+                    except IntegrityError as e: # catch duplicate entry
+                        pass # do nothing
                 
             
     except Exception as e:
