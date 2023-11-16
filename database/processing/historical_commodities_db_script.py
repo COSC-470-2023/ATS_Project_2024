@@ -23,7 +23,7 @@ def main():
     # load json 
     # idk what this will be called. update when able
     # variable setting may have to be adjusted too
-    data = load('../../data_collection/output/unified_commodities_output.json')
+    data = load('../../data_collection/output/historical_commodities_output.json')
 
     try:
         # create with context manager
@@ -45,38 +45,24 @@ def main():
                     CommodityID = row[0]
                     
                 # putting data into variables (I really hate this)
-                date = datetime.datetime.fromtimestamp(entry['realtime_data']['timestamp']) 
-                price = entry['realtime_data']['price']
-                changePercent = entry['realtime_data']['changePercentage']
-                change = entry['realtime_data']['change']
-                dayHigh = entry['realtime_data']['dayHigh']
-                dayLow = entry['realtime_data']['dayLow']
-                yearHigh = entry['realtime_data']['yearHigh']
-                yearLow = entry['realtime_data']['yearLow']
-                marketCap = entry['realtime_data']['mktCap']
-                exchange = entry['realtime_data']['exchange']
-                commodityOpen = entry['realtime_data']['open']
-                close = entry['realtime_data']['previousClose']
-                volume = entry['realtime_data']['volume']
-                volumeAverage = entry['realtime_data']['volAvg']
+                date = entry['date']
+                commodityOpen = entry['open']
+                price = entry['price']
+                high = entry['high']
+                low = entry['low']
+                close = entry['close']
+                adjClose = entry['adjClose']
+                volume = entry['volume']
+                unadjustedVolume = entry['unadjustedVolume']
+                change = entry['change']
+                changePercent = entry['changePercentage']
+                vwap = entry['vwap']
+                changeOverTime = entry['changeOverTime']
                 try:
-                    conn.execute(text(f"insert into `realtime_commodity_values`(`commodity_id`, `date`, `price`, `changePercentage`, `change`, `dayHigh`, `dayLow`, `yearHigh`, `yearLow`, `mktCap`, `exchange`, `open`, `prevClose`, `volume`, `volAvg`) values ('{CommodityID}', '{date}', '{price}', '{changePercent}', '{change}', '{dayHigh}', '{dayLow}', '{yearHigh}', '{yearLow}', '{marketCap}', '{exchange}', '{commodityOpen}', '{close}', '{volume}', '{volumeAverage}')"))
+                    conn.execute(text(f"insert into `historical_commodity_values`(`commodity_id`, `date`, `open`, `high`, `low`, `close`, `adjClose`, `volume`, `unadjustedVolume`, `change`, `changePercentage`, `vwap`, `changeOverTime`) values ('{CommodityID}', '{date}', '{commodityOpen}', '{high}', '{low}', '{close}', '{adjustedClose}', '{volume}', '{unadjustedVolume}', '{change}', '{changePercent}', '{vwap}', '{changeOverTime}')"))
                     conn.commit()
                 except IntegrityError as e: # catch duplicate entry
-                    volume = volume # do nothing
-                
-                for h_entry in entry['historical_data']:
-                    date = h_entry['date']
-                    commodityOpen = h_entry['open']
-                    high = h_entry['high']
-                    low = h_entry['low']
-                    close = h_entry['close']
-                    volume = h_entry['volume']
-                    try:
-                        conn.execute(text(f"insert into `Commodity_Values`(`CommodityID`, `Date`, `Open`, `High`, `Low`, `Close`, `Volume`) values ('{CommodityID}', '{date}', '{commodityOpen}', '{high}', '{low}', '{close}', '{volume}')"))
-                        conn.commit()
-                    except IntegrityError as e: # catch duplicate entries
-                        continue
+                    pass # do nothing
                 
             
     except Exception as e:
