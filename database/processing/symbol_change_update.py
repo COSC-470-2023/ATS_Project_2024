@@ -1,9 +1,8 @@
 import connect
 import json
 import traceback
-
 from sqlalchemy import text
-from sqlalchemy.exc import IntegrityError
+
 
 def load(path):
     try:
@@ -38,13 +37,10 @@ def main():
                 old_symbol = symbol["oldSymbol"]
                 new_symbol = symbol["newSymbol"]
 
-                #  SQL Queries
+                #  SQL query
                 company_update = text(f"UPDATE Companies SET companyName = '{name}', symbol = '{new_symbol}' WHERE company_id IN (SELECT company_id FROM Companies WHERE symbol = '{old_symbol}';);")
-                try:
-                    conn.execute(company_update)
-                    conn.commit()
-                except IntegrityError as ie:
-                    print(f"Integrity Error: '{ie}'")
+                conn.execute(company_update)
+                conn.commit()
 
     except Exception as e:
         print(e)
