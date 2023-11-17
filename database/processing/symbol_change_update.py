@@ -14,38 +14,44 @@ def load(path):
             output_data = json.load(output_file)
         return output_data
     except FileNotFoundError:
-        print(f"Output file '{path}' not found.")
+        print(f"Error: Output file '{path}' not found.")
         exit(1)
     except json.JSONDecodeError:
         print(f"Error decoding JSON in '{path}'.")
         exit(1)
 
+def update(conn, symbol):
+    try:
+        # Variable Declarations
+        date = symbol["date"]
+        name = symbol["name"]
+        old_symbol = symbol["oldSymbol"]
+        new_symbol = symbol["newSymbol"]
 
-# Load database credentials from the config file
-config = load("config.json")
-symbol_change = load("data_collection/output/dummy_output_file.json")
+        #  SQL query
+        company_update = text("UPDATE Companies SET companyName = %s, symbol = %s WHERE company_id IN (SELECT company_id FROM Companies WHERE symbol = %s)")
+        # Use a tuple to parametize variables (prevent injection)
+        data = (name, old_symbol, new_symbol)
 
-
+        conn.execute(company_update, data)
+        conn.commit()
+    except Exception as e:
+        print(f"Error in updating database: {e}")
+        print(traceback.format_exc())
 def main():
     try:
+        # Load database credentials from the config file
+        config = load("config.json")
         # Establish a connection to server
-        with connect.connect() as conn:
+        with connect.connect(**config) as conn:
+            symbol_change = load("data_collection/output/dummy_output_file.json")
+
             for symbol in symbol_change:
-                # Variable Declarations
-                date = symbol["date"]
-                name = symbol["name"]
-                old_symbol = symbol["oldSymbol"]
-                new_symbol = symbol["newSymbol"]
-
-                #  SQL query
-                company_update = text(f"UPDATE Companies SET companyName = '{name}', symbol = '{new_symbol}' WHERE company_id IN (SELECT company_id FROM Companies WHERE symbol = '{old_symbol}';);")
-                conn.execute(company_update)
-                conn.commit()
-
+                update(conn, symbol)
     except Exception as e:
         print(e)
         print(traceback.format_exc())
-        print("SQL connection error")
+        print("Database connection error")
 
 
 if __name__ == "__main__":
