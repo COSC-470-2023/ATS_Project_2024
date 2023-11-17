@@ -6,7 +6,8 @@ USE ats_db;
 
 CREATE TABLE `bonds` (
   `bond_id` BIGINT,
-  `name` VARCHAR(300),
+  `treasuryName` VARCHAR(300),
+  `duration` VARCHAR(300),
   `currency` VARCHAR(300),
   PRIMARY KEY (`bond_id`)
 );
@@ -14,7 +15,6 @@ CREATE TABLE `bonds` (
 CREATE TABLE `bonds_values` (
   `bond_id` BIGINT,
   `date` DATETIME,
-  `duration` VARCHAR(300),
   `rate` DECIMAL(5,2) NOT NULL,
   PRIMARY KEY (`bond_id`, `date`),
   FOREIGN KEY (`bond_id`) REFERENCES `bonds`(`bond_id`)
