@@ -67,16 +67,17 @@ def write_files(symbol_json):
 
 # code to only be executed if ran as script
 if __name__ == "__main__":
-    JSON_config = load_config()
-    symbol_change_output = []
-    symbol_change = []
+    symbol_query_config = load_config()
+    API_query_output = []
+    symbol_change_output_file = []
+    # TODO write changes to system config file
     
     # Iterate through each API in the list
-    for api in range(len(JSON_config)):
-        api_url = JSON_config[api]['url']
-        api_key = JSON_config[api]['api_key']
+    for api in range(len(symbol_query_config)):
+        api_url = symbol_query_config[api]['url']
+        api_key = symbol_query_config[api]['api_key']
 
-    symbol_change_output = make_queries(api_url, api_key)
+    API_query_output = make_queries(api_url, api_key)
     
-    symbol_change = get_symbol_change(symbol_change_output)
-    write_files(symbol_change)
+    symbol_change_output_file = get_symbol_change(API_query_output)
+    write_files(symbol_change_output_file)
