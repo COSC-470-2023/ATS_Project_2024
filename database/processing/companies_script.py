@@ -1,8 +1,3 @@
-"""
-- This script is used to take stock data collected from the Financial Modeling Prep API, and load it into the OLTP database.
-- Data is read from a JSON output file, validated, then inserted into the database.
-"""
-
 import connect
 import json
 import datetime
