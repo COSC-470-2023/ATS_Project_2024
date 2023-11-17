@@ -24,35 +24,35 @@ def load(path):
 
 def main():
     # load json
-    data = load('../../Data_Collection/Output/Raw_Bonds_Output.json')
+    data = load('../../Data_Collection/Output/bonds_output.json')
 
     try:
         # create with context manager
         with connect.connect() as conn:
             for entry in data:
-                currencyVal = entry['currency']
-                treasuryNameVal = entry['treasuryName']
-                
-                result = conn.execute(text(f"SELECT bond_id FROM `bonds` WHERE treasuryName = '{treasuryNameVal} AND 'currency = '{currencyVal}'"))
-                row = result.one_or_none()
-                if row is None:
-                    # execute plain sql insert statement - transaction begins
-                    conn.execute(text(f"INSERT INTO `bonds`(`bond_id`, `treasuryName`, 'currency') VALUES (NULL, '{treasuryNameVal}', '{currencyVal}')"))
-                    conn.commit()
-                    # get the generated ID
-                    result = conn.execute(text(f"SELECT bond_id FROM `bonds` WHERE treasuryName = '{treasuryNameVal} AND 'currency = '{currencyVal}'")) 
-                    bondID = result.one()[0]
-                else:
-                    bondID = row[0]                   
-                
-                for key, value in entry.items():
-                    if key == 'date':
-                        dateVal = value
-                    if key != 'date':
-                        durationValue = key
-                        rateValue = value
+                dateVal = entry['_bond_date']
+                currencyVal = entry['_bond_currency']
+                treasuryNameVal = entry['_bond_ame']
+                for row in entry:
+                    # skip the first few rows
+                    if row == "_bond_date" or "_bond_currency" or "_bond_name":
+                        continue
+                    duration = row[6:] # cut off the _bond_ stuff that exists for some reason
+                    # see if the entry already exists, and if not, make it
+                    result = conn.execute(text(f"SELECT bond_id FROM `bonds` WHERE treasuryName = '{treasuryNameVal} AND 'currency = '{currencyVal}' AND 'duration = '{duration}'"))
+                    row = result.one_or_none()
+                    if row is None:
+                        # execute plain sql insert statement - transaction begins
+                        conn.execute(text(f"INSERT INTO `bonds`(`bond_id`, `treasuryName`, 'currency', 'duration') VALUES (NULL, '{treasuryNameVal}', '{currencyVal}', '{duration}')"))
+                        conn.commit()
+                        # get the generated ID
+                        result = conn.execute(text(f"SELECT bond_id FROM `bonds` WHERE treasuryName = '{treasuryNameVal} AND 'currency = '{currencyVal}'")) 
+                        bondID = result.one()[0]
+                    else:
+                        bondID = row[0]                   
+                    rate = entry[row]
                     try:
-                        conn.execute(text(f"INSERT INTO `bond_values`('Bond_id', 'Date', `Duration`, `Rate`) VALUES ('{bondID}', '{dateVal}', '{durationValue}', '{rateValue}')"))
+                        conn.execute(text(f"insert into `bond_values`(`Date`, `bondID`, `Rate`) values ('{date}', '{bondID}', '{rate}')"))
                         conn.commit()
                     except IntegrityError as e: # catch duplicate entries
                         continue
