@@ -70,6 +70,7 @@ def main():
                     # Excute row insertion
                     execute_insert(conn,entry,index_id)
                 except IntegrityError as e:
+                    print("An error has occured, no insertion has been made: ", e)
                     continue
                 
     except Exception as e:
