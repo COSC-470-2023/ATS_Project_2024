@@ -7,3 +7,4 @@
 .idea/inspectionProfiles/Project_Default.xml
 .idea/inspectionProfiles/profiles_settings.xml
 .README.md
+database/processing/credentials.py
