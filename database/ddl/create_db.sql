@@ -24,12 +24,12 @@ CREATE TABLE `bonds_values` (
 
 CREATE TABLE `commodities` (
   `id` BIGINT,
-  `commoditiyName` VARCHAR(300) NOT NULL,
+  `commodityName` VARCHAR(300) NOT NULL,
   `symbol` VARCHAR(10) NOT NULL,
   PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `realtime_commoditiy_values` (
+CREATE TABLE `realtime_commodity_values` (
   `commodity_id` BIGINT,
   `date` DATETIME,
   `price` DECIMAL(12,2),
@@ -40,7 +40,7 @@ CREATE TABLE `realtime_commoditiy_values` (
   `yearHigh` DECIMAL(12,2),
   `yearLow` DECIMAL(12,2),
   `mktCap` BIGINT,
-  `exhchange` VARCHAR(300),
+  `exchange` VARCHAR(300),
   `open` DECIMAL(12,2),
   `prevClose` DECIMAL(12,2),
   `volume` DECIMAL(12,2),
@@ -49,7 +49,7 @@ CREATE TABLE `realtime_commoditiy_values` (
   FOREIGN KEY (`commodity_id`) REFERENCES `commodities`(`ID`)
 );
 
-CREATE TABLE `historical_commoditiy_values` (
+CREATE TABLE `historical_commodity_values` (
   `commodity_id` BIGINT,
   `date` DATETIME,
   `open` DECIMAL(12,2),
@@ -137,7 +137,7 @@ CREATE TABLE `real_time_stock_values` (
   `yearHigh` DECIMAL(12,2),
   `yearLow` DECIMAL(12,2),
   `mktCap` BIGINT,
-  `exhchange` VARCHAR(300),
+  `exchange` VARCHAR(300),
   `open` DECIMAL(12,2),
   `prevClose` DECIMAL(12,2),
   `volume` DECIMAL(12,2),
@@ -157,7 +157,7 @@ CREATE TABLE `historical_stock_values` (
   `high` DECIMAL(12,2),
   `low` DECIMAL(12,2),
   `close` DECIMAL(12,2),
-  `adjclose` DECIMAL(12,2),
+  `adjClose` DECIMAL(12,2),
   `volume` BIGINT,
   `unadjustedVolume` BIGINT,
   `change` DECIMAL(12,2),
@@ -172,7 +172,7 @@ CREATE TABLE `historical_stock_values` (
 
 CREATE TABLE `indexes` (
   `id` BIGINT,
-  `indexname` VARCHAR(300) NOT NULL,
+  `indexName` VARCHAR(300) NOT NULL,
   `symbol` VARCHAR(10) NOT NULL,
   PRIMARY KEY (`id`)
 );
