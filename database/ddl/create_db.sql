@@ -24,12 +24,12 @@ CREATE TABLE `bonds_values` (
 
 CREATE TABLE `commodities` (
   `id` BIGINT,
-  `commoditiyName` VARCHAR(30) NOT NULL,
+  `commodityName` VARCHAR(30) NOT NULL,
   `symbol` VARCHAR(10) NOT NULL,
   PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `commoditiy_values` (
+CREATE TABLE `commodity_values` (
   `commodity_id` BIGINT,
   `date` DATETIME,
   `open` DECIMAL(12,2),
@@ -85,7 +85,7 @@ CREATE TABLE `real_time_stock_values` (
   `volAvg` DECIMAL(12,2),
   `eps` DECIMAL(12,2),
   `pe` DECIMAL(12,2),
-  `exhchange` VARCHAR(20),
+  `exchange` VARCHAR(20),
   PRIMARY KEY (`company_id`, `date`),
   FOREIGN KEY (`company_id`) REFERENCES `companies`(`id`)
 );
@@ -106,7 +106,7 @@ CREATE TABLE `historical_stock_values` (
   `volAvg` DECIMAL(12,2),
   `eps` DECIMAL(12,2),
   `pe` DECIMAL(12,2),
-  `exhchange` VARCHAR(20),
+  `exchange` VARCHAR(20),
   PRIMARY KEY (`company_id`, `date`),
   FOREIGN KEY (`company_id`) REFERENCES `companies`(`id`)
 );
@@ -120,7 +120,7 @@ CREATE TABLE `company_statements` (
   `marketCap` DECIMAL(12,2),
   `trailingPE` DECIMAL(12,2),
   `shortOfFloat` DECIMAL(4,2),
-  `traillingAnnualDividendYield` DECIMAL(7,5),
+  `trailingAnnualDividendYield` DECIMAL(7,5),
   `enterpriseValue` DECIMAL(13,2),
   `netIncome` DECIMAL(13,2),
   `revenue` DECIMAL(13,2),
@@ -134,7 +134,7 @@ CREATE TABLE `company_statements` (
 
 CREATE TABLE `indexes` (
   `id` BIGINT,
-  `indexname` VARCHAR(30) NOT NULL,
+  `indexName` VARCHAR(30) NOT NULL,
   `symbol` VARCHAR(10) NOT NULL,
   PRIMARY KEY (`id`)
 );
