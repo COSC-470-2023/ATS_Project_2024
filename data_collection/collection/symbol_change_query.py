@@ -19,6 +19,7 @@ def load_config():
         return config
     except IOError:
         print(f"IOError while accessing symbol query config at path: {config_path}")
+        exit(1)
 
 
 def make_queries(parsed_api_url, parsed_api_key):
@@ -47,7 +48,7 @@ def get_symbol_change(symbol_change_data):
                 print(JSON_config[item])
         except (ValueError, TypeError) as e:
             print(f"Error processing date: {e}")
-    
+            exit(1)
     return symbol_change_list
 
 def write_files(symbol_json):
@@ -59,7 +60,6 @@ def write_files(symbol_json):
         except OSError as exc:  # Guard against race condition
             if exc.errno != errno.EEXIST:
                 raise
-
     with open("output/Symbol_Change_List.json", "w") as outfile:
         json.dump(symbol_json, outfile, indent=4)
 
