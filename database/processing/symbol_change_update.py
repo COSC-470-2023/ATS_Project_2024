@@ -8,6 +8,10 @@ from sqlalchemy.exc import IntegrityError
 def load(path):
     try:
         with open(path, "r") as output_file:
+            if output_file.read(2) == '[]':
+                output_file.seek(0)
+                print("No symbol change update required")
+                exit(0)
             output_data = json.load(output_file)
         return output_data
     except FileNotFoundError:
@@ -20,8 +24,6 @@ def load(path):
 
 # Load database credentials from the config file
 config = load("config.json")
-
-
 symbol_change = load("data_collection/output/dummy_output_file.json")
 
 
@@ -37,13 +39,12 @@ def main():
                 new_symbol = symbol["newSymbol"]
 
                 #  SQL Queries
-                company_update = f"UPDATE Companies SET companyName = %s, symbol = %s WHERE company_id IN (SELECT company_id FROM Companies WHERE symbol = %s;);"
-                data = (name, new_symbol, old_symbol)
+                company_update = text(f"UPDATE Companies SET companyName = '{name}', symbol = '{new_symbol}' WHERE company_id IN (SELECT company_id FROM Companies WHERE symbol = '{old_symbol}';);")
                 try:
-                    conn.execute(company_update,data)
+                    conn.execute(company_update)
                     conn.commit()
-                except IntegrityError as e:
-                    continue
+                except IntegrityError as ie:
+                    print(f"Integrity Error: '{ie}'")
 
     except Exception as e:
         print(e)
