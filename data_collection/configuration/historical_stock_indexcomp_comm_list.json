@@ -4,6 +4,7 @@
     "api_key": "",
     "observable_days": 200,
     "rate_limit_per_min": 300,
+    "fields":["open","high","low","close","adjClose","volume","unadjustedVolume","change","changePercent","vwap","changeOverTime"],
     "index_composites": [
       "^GSPC",
       "^IXIC",
