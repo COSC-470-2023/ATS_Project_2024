@@ -30,27 +30,29 @@ def main():
         # create with context manager
         with connect.connect() as conn:
             for entry in data:
-                date = entry['date']
+                currencyVal = entry['currency']
+                treasuryNameVal = entry['treasuryName']
                 
-                result = conn.execute(text(f"select bond_id from `bond_values` where date = '{date}'"))
+                result = conn.execute(text(f"SELECT bond_id FROM `bonds` WHERE treasuryName = '{treasuryNameVal} AND 'currency = '{currencyVal}'"))
                 row = result.one_or_none()
                 if row is None:
                     # execute plain sql insert statement - transaction begins
-                    conn.execute(text(f"insert into `bond_values`(`bond_id`, `date`) values (NULL, '{date}')"))
+                    conn.execute(text(f"INSERT INTO `bonds`(`bond_id`, `treasuryName`, 'currency') VALUES (NULL, '{treasuryNameVal}', '{currencyVal}')"))
                     conn.commit()
                     # get the generated ID
-                    result = conn.execute(text(f"select id from `bond_values` where date = '{date}'")) 
+                    result = conn.execute(text(f"SELECT bond_id FROM `bonds` WHERE treasuryName = '{treasuryNameVal} AND 'currency = '{currencyVal}'")) 
                     bondID = result.one()[0]
                 else:
                     bondID = row[0]                   
                 
-                for d_entry in entry:
-                    bondDuration = d_entry
-                    rate = entry[d_entry]
-                    currency = d_entry['currency']
-                    country = d_entry['country']
+                for key, value in entry.items():
+                    if key == 'date':
+                        dateVal = value
+                    if key != 'date':
+                        durationValue = key
+                        rateValue = value
                     try:
-                        conn.execute(text(f"insert into `Bonds`('Bond_id', 'Country', `Duration`,'Currency', `Rate`) values ('{bondID}', '{country}', {bondDuration}', '{currency}', '{rate}')"))
+                        conn.execute(text(f"INSERT INTO `bond_values`('Bond_id', 'Date', `Duration`, `Rate`) VALUES ('{bondID}', '{dateVal}', '{durationValue}', '{rateValue}')"))
                         conn.commit()
                     except IntegrityError as e: # catch duplicate entries
                         continue
