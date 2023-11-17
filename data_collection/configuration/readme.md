@@ -37,10 +37,12 @@ historical_change
 historical_changePercent
 historical_vwap
 historical_changeOverTime
-bond_country
+
+
 bond_date
 bond_rate
 bond_duration
+bond_currency
 
 company_price
 company_beta

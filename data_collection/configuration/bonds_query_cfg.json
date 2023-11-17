@@ -3,10 +3,10 @@
         "api": "https://financialmodelingprep.com/api/v4/treasury?from={START_DATE}&to={END_DATE}&apikey={API_KEY}",
         "rate_limit_per_min": 300,
         "api_key": "",
-        "fields": [
-            {"date": "bond_date"},
-
-        ],
+        "fields": {
+            "date": "bonds_date",
+            "currency": "bond_currency",
+        },
         "name": "US Treasury",
         "currency": "USD",
         "date_windows": [
