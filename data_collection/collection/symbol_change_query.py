@@ -13,7 +13,7 @@ from datetime import date
 # Loads the configuration file.
 def load_config():
     # This file pathing is currently Windows-based, will need to be updated to be more reflective of actual operating environment
-    config_path = "..\configuration\symbol_change.json"
+    config_path = "../configuration/symbol_change.json"
     try:
         config_file = open(config_path, "r")
         config = json.load(config_file)
@@ -41,12 +41,12 @@ def get_symbol_change(symbol_change_data):
     #convert date to string
     today = today_date.strftime('%Y-%m-%d')
     
-    for item in range(len(symbol_change_data)):
-        item_date = JSON_config[item]['date']
+    for item in range(len(symbol_change_output)):
+        item_date = symbol_change_output[item]['date']
         try: 
             if item_date == today:
-                symbol_change_list.append(JSON_config[item])
-                print(JSON_config[item])
+                symbol_change_list.append(symbol_change_output[item])
+                print(symbol_change_output[item])
         except (ValueError, TypeError) as e:
             print(f"Error processing date: {e}")
             exit(1)
@@ -61,8 +61,8 @@ def write_files(symbol_json):
         except OSError as exc:  # Guard against race condition
             if exc.errno != errno.EEXIST:
                 raise
-    with open("output/Symbol_Change_List.json", "w") as outfile:
-        json.dump(symbol_json, outfile, indent=4)
+    with open("../output/Symbol_Change_List.json", "w") as outfile:
+        json.dump(symbol_json, outfile, indent=2)
 
 
 # code to only be executed if ran as script
@@ -77,6 +77,6 @@ if __name__ == "__main__":
         api_key = JSON_config[api]['api_key']
 
     symbol_change_output = make_queries(api_url, api_key)
-   
-    get_symbol_change(symbol_change_output)
+    
+    symbol_change = get_symbol_change(symbol_change_output)
     write_files(symbol_change)
