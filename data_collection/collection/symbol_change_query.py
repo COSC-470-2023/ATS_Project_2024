@@ -12,7 +12,8 @@ from datetime import date
 
 # Loads the configuration file.
 def load_config():
-    config_path = "configuration\symbol_change.json"
+    # This file pathing is currently Windows-based, will need to be updated to be more reflective of actual operating environment
+    config_path = "..\configuration\symbol_change.json"
     try:
         config_file = open(config_path, "r")
         config = json.load(config_file)
