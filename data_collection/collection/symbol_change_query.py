@@ -12,9 +12,13 @@ from datetime import date
 
 # Loads the configuration file.
 def load_config():
-    config_file = open("Config/Symbol_Change.json", "r")
-    config = json.load(config_file)
-    return config
+    config_path = "configuration\symbol_change.json"
+    try:
+        config_file = open(config_path, "r")
+        config = json.load(config_file)
+        return config
+    except IOError:
+        print(f"IOError while accessing symbol query config at path: {config_path}")
 
 
 def make_queries(parsed_api_url, parsed_api_key):
@@ -35,7 +39,7 @@ def get_symbol_change(symbol_change_data):
     #convert date to string
     today = today_date.strftime('%Y-%m-%d')
     
-    for item in range(len(symbol_change_query)):
+    for item in range(len(symbol_change_data)):
         item_date = JSON_config[item]['date']
         try: 
             if item_date == today:
@@ -48,7 +52,7 @@ def get_symbol_change(symbol_change_data):
 
 def write_files(symbol_json):
 
-    output_dir = "Output/"
+    output_dir = "output/"
     if not os.path.exists(os.path.dirname(output_dir)):
         try:
             os.makedirs(os.path.dirname(output_dir))
@@ -56,7 +60,7 @@ def write_files(symbol_json):
             if exc.errno != errno.EEXIST:
                 raise
 
-    with open("Output/Symbol_Change_List.json", "w") as outfile:
+    with open("output/Symbol_Change_List.json", "w") as outfile:
         json.dump(symbol_json, outfile, indent=4)
 
 
@@ -65,6 +69,7 @@ if __name__ == "__main__":
     JSON_config = load_config()
     symbol_change_output = []
     symbol_change = []
+    
     # Iterate through each API in the list
     for api in range(len(JSON_config)):
         api_url = JSON_config[api]['url']
@@ -73,5 +78,4 @@ if __name__ == "__main__":
     symbol_change_output = make_queries(api_url, api_key)
    
     get_symbol_change(symbol_change_output)
-    
     write_files(symbol_change)
