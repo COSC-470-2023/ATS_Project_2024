@@ -19,23 +19,22 @@ def load_output_file(path):
         exit(1)
 
 def execute_insert(connection, entry, index_id):
-    # NOTE: entry keys will need to be changed to be inline with new output names
-    date = datetime.datetime.fromtimestamp(entry["timestamp"])
-    price = entry['price']
-    change_percentage = entry['changesPercentage']
-    change = entry['change']
-    day_high = entry['dayHigh']
-    day_low = entry['dayLow']
-    year_high = entry['yearHigh']
-    year_low = entry['yearLow']
-    mkt_cap = entry['marketCap']
-    exchange = entry['exchange']
-    open_price = entry['open']
-    prev_close = entry['previousClose']
-    volume = entry['volume']
-    vol_avg = entry['avgVolume']
+    date = datetime.datetime.fromtimestamp(entry["_realtime_date"])
+    price = entry['_realtime_price']
+    change_percentage = entry['_realtime_changesPercent']
+    change = entry['_realtime_change']
+    day_high = entry['_realtime_dayHigh']
+    day_low = entry['_realtime_dayLow']
+    year_high = entry['_realtime_yearHigh']
+    year_low = entry['_realtime_yearLow']
+    mkt_cap = entry['_realtime_mktCap']
+    exchange = entry['_realtime_exchange']
+    open_price = entry['_realtime_openPrice']
+    prev_close = entry['_realtime_prevClose']
+    volume = entry['_realtime_volume']
+    vol_avg = entry['_realtime_volAvg']
     # Execute row insertion
-    connection.execute(text(f"INSERT INTO `realtime_index_values` VALUES ('{index_id}', '{date}', '{price}', '{change_percentage}', '{change}', '{day_high}', '{day_low}', '{year_high}', '{year_low}', 0, '{exchange}','{open_price}', '{prev_close}', '{volume}', '{vol_avg}')"))
+    connection.execute(text(f"INSERT INTO `realtime_index_values` VALUES ('{index_id}', '{date}', '{price}', '{change_percentage}', '{change}', '{day_high}', '{day_low}', '{year_high}', '{year_low}', '{mkt_cap}, '{exchange}','{open_price}', '{prev_close}', '{volume}', '{vol_avg}')"))
     connection.commit()
 
 def get_index_id(entry, conn):

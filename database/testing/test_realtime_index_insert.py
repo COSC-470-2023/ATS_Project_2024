@@ -13,9 +13,9 @@ class TestRealtimeIndexInsert(TestCase):
     test_db_path = "./database/testing/test_realtime_index_db.sql"
     fd = open(test_db_path, 'r')
     createQuery = fd.read()
-
     cursor.executescript(createQuery)
-    #he static output to insert into the database
+
+    # loads output data from json
     def load_output_file(path):
         try:
             with open(path, "r") as output_file:
@@ -27,7 +27,8 @@ class TestRealtimeIndexInsert(TestCase):
         except json.JSONDecodeError:
             print(f"Error decoding JSON in '{path}'")
             exit(1)
-    #Loading in the static realtime index data
+            
+    # Load output data
     realtime_data = load_output_file('./test_files/static_test_files/static_index_realtime.json')
     
     def test_index_insert(self):  
@@ -38,8 +39,7 @@ class TestRealtimeIndexInsert(TestCase):
             (4, '2023-11-16 13:30:09', 2572.97, -0.0514, -1.3225, 2576.6504, 2562.126, 2650.9, 2173.61, None, 'INDEX', 2572.229, 2574.2925, 0, 0),
             (5, '2023-11-16 08:35:29', 7410.97, -1.0143, -75.9399, 7492.84, 7409.4, 8047.1, 7206.8, None, 'INDEX', 7486.91, 7486.91, 0, 701541262)
         ]
-
-        # Insert each entry into databse
+        # Insert each entry into mock databse
         index_id = 1
         for entry in self.realtime_data:
             date = datetime.datetime.fromtimestamp(entry["timestamp"])
@@ -56,9 +56,11 @@ class TestRealtimeIndexInsert(TestCase):
             prev_close = entry['previousClose']
             volume = entry['volume']
             vol_avg = entry['avgVolume']
-            # Execute row insertion
-            self.cursor.execute("INSERT INTO `test_realtime_index_values` VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(index_id,date,price,change_percentage,change,day_high,day_low,year_high,year_low,mkt_cap,exchange,open_price,prev_close,volume,vol_avg))
 
+            params = (index_id, date, price, change_percentage, change, day_high, day_low, year_high, year_low, mkt_cap, exchange, open_price, prev_close, volume, vol_avg)
+
+            # Execute row insertion
+            self.cursor.execute("INSERT INTO `test_realtime_index_values` VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", params)
             index_id += 1
 
         # Fetch all data from table
