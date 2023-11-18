@@ -1,6 +1,7 @@
 # Get data from the symbol change API list file
 # Parse the json so we know what our URL and keys are
 # Iterate through the stocks using the key and url, then move onto the next API
+# TODO Add a function to make a backup of the system configuration before writing changes
 
 import json
 import time
