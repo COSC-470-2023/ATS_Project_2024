@@ -26,6 +26,7 @@ the API's field named `timestamp` will be pulled into a field we add, using the 
 <h2>Field Mapping (WIP)</h2>
 <b>Example output:</b>
 <br>
+
 ```json
 [
   {
@@ -52,6 +53,7 @@ the API's field named `timestamp` will be pulled into a field we add, using the 
   }
 ]
 ```
+<br>
 [put Explanation of field mapping here]
 
 <h1>Common Fields</h1>
