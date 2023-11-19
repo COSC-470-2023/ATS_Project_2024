@@ -18,7 +18,7 @@ def connect():
     try:
         sql_port = 3306
         # database uri - connector://user:pass@hostname:sql_port(3306 by default)/database
-        uri = f"mysql+pymysql://{cred.db['user']}:{cred.db['pass']}@{cred.db['host']}:{sql_port}/{cred.db['database']}"
+        uri = f"mysql+pymysql://{cred.db['user']}:{cred.db['pass']}@{cred.db['host']}/{cred.db['database']}"
         # create engine
         # echo=True for sql feedback on every op
         engine = create_engine(uri, echo=True)
