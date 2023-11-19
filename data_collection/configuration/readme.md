@@ -23,7 +23,36 @@ the API's field named `timestamp` will be pulled into a field we add, using the 
 "timestamp": 1700168401 becomes "_realtime_date": "2023-11-16 13:00:01"
 ```
 
-
+<h2>Field Mapping (WIP)</h2>
+<b>Example output:</b>
+<br>
+```json
+[
+  {
+    "_realtime_date": "2023-11-17 13:00:01",
+    "_realtime_symbol": "AAPL",
+    "_realtime_name": "Apple Inc.",
+    "_realtime_price": 189.69,
+    "_realtime_changePercent": -0.0105,
+    "_realtime_change": -0.02,
+    "_realtime_dayLow": 188.575,
+    "_realtime_dayHigh": 190.38,
+    "_realtime_yearHigh": 198.23,
+    "_realtime_yearLow": 124.17,
+    "_realtime_mktCap": 2950210583439,
+    "_realtime_exchange": "NASDAQ",
+    "_realtime_volume": 46970852,
+    "_realtime_volAvg": 58857157,
+    "_realtime_open": 190.25,
+    "_realtime_prevClose": 189.71,
+    "_realtime_eps": 6.13,
+    "_realtime_pe": 30.94,
+    "_realtime_earningsAnnouncement": "2024-01-31T00:00:00.000+0000",
+    "_realtime_sharesOutstanding": 15552799744
+  }
+]
+```
+[put Explanation of field mapping here]
 
 <h1>Common Fields</h1>
 A set of common internal fields that will be used for scripting processes.
