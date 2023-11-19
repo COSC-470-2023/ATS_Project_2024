@@ -13,6 +13,7 @@ from sqlalchemy import select
 from sqlalchemy import table
 from sqlalchemy import text
 
+
 @contextmanager
 def connect():
     try:
@@ -26,9 +27,13 @@ def connect():
         connection = engine.connect()
         # generator - like a return with iteration, allows function to continue from a previous state after a return
         yield connection
+    except Exception as error:
+        print(error)
+
     finally:
         # block executed when closed by context manager, as the with statement is really just a try/finally block
         connection.close()
+
 
 """
 def main():
