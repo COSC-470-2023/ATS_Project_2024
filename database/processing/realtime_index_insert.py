@@ -46,7 +46,7 @@ def get_index_id(entry, conn):
 
     if row is None:
         # execute plain sql insert statement - transaction begins
-        conn.execute(text(f"INSERT INTO `indexes`(`indexname`, `symbol`) VALUES ('{name}', '{symbol}')"))
+        conn.execute(text(f"INSERT INTO `indexes`(`indexName`, `symbol`) VALUES ('{name}', '{symbol}')"))
         conn.commit()
         # get the generated ID
         result = conn.execute(text(f"SELECT id FROM `indexes` WHERE symbol = '{symbol}'")) 
