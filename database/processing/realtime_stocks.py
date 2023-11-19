@@ -34,22 +34,21 @@ def main():
 
                 # check if index exists in companies table
                 result = conn.execute(
-                    text(f"SELECT id FROM `companies` WHERE symbol = '{symbol}'")
+                    text(f"SELECT id FROM `indexes` WHERE symbol = '{symbol}'")
                 )
                 row = result.one_or_none()
 
                 if row is None:
-                    # execute plain sql insert statement - transaction begins
                     conn.execute(
                         text(
-                            f"INSERT INTO `companies`(`companyName`, `symbol`) VALUES ('{name}', '{symbol}')"
+                            f"INSERT INTO `indexes`(`indexname`, `symbol`) VALUES ('{name}', '{symbol}')"
                         )
                     )
                     conn.commit()
 
                     # get the generated ID
                     result = conn.execute(
-                        text(f"SELECT id FROM `companies` WHERE symbol = '{symbol}'")
+                        text(f"SELECT id FROM `indexes` WHERE symbol = '{symbol}'")
                     )
                     company_id = result.one()[0]
                 else:
@@ -76,13 +75,11 @@ def main():
                 try:
                     print(company_id)
                     # Execute row insertion
-                    print("why rollback")
                     conn.execute(
                         text(
                             f"INSERT INTO `realtime_index_values` VALUES ('{company_id}', '{date}', '{price}', '{change_percentage}', '{change}', '{day_high}', '{day_low}', '{year_high}', '{year_low}', 0, '{exchange}','{open_price}', '{prev_close}', '{volume}', '{vol_avg}')"
                         )
                     )
-                    print("why rollback")
                     # conn.commit()
                 except SQLAlchemyError as e:
                     print(f"Error: {e}")
