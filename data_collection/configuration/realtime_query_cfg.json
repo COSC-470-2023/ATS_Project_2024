@@ -1,31 +1,39 @@
 [
   {
     "url": "https://financialmodelingprep.com/api/v3/quote/{QUERY_PARAMS}?apikey={API_KEY}",
-    "api_key": "",
+    "api_key": "<PASTE KEY HERE>",
     "rate_limit_per_min": 300,
-    "fields": {
+    "api_fields": {
       "symbol": "_realtime_symbol",
-      "date": "_realtime_date",
+      "name": "_realtime_name",
       "price": "_realtime_price",
-      "changePercent": "_realtime_changesPercent",
+      "changesPercentage": "_realtime_changePercent",
       "change": "_realtime_change",
-      "dayHigh": "_realtime_dayHigh",
       "dayLow": "_realtime_dayLow",
+      "dayHigh": "_realtime_dayHigh",
       "yearHigh": "_realtime_yearHigh",
       "yearLow": "_realtime_yearLow",
       "marketCap": "_realtime_mktCap",
       "priceAvg50": null,
       "priceAvg200": null,
       "exchange": "_realtime_exchange",
+      "volume": "_realtime_volume",
+      "avgVolume": "_realtime_volAvg",
       "open": "_realtime_open",
       "previousClose": "_realtime_prevClose",
-      "volume": "_historical_volume",
-      "volAvg": "_historical_volAvg",
       "eps": "_realtime_eps",
       "pe": "_realtime_pe",
-      "earningsAnnouncement": "_realtime_changeOverTime",
+      "earningsAnnouncement": "_realtime_earningsAnnouncement",
       "sharesOutstanding": "_realtime_sharesOutstanding",
       "timestamp": null
+    },
+    "non_api_fields": {
+      "date": {
+        "src": "timestamp",
+        "mapping": "_realtime_date",
+        "input_type": "unix_time",
+        "output_type": "date_time"
+      }
     },
     "index_composites": [
       "^GSPC",

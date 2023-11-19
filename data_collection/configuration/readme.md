@@ -10,7 +10,7 @@ _realtime_name
 _realtime_symbol
 _realtime_date
 _realtime_price
-_realtime_changesPercent
+_realtime_changePercent
 _realtime_change
 _realtime_dayHigh
 _realtime_dayLow
@@ -18,10 +18,10 @@ _realtime_yearHigh
 _realtime_yearLow
 _realtime_mktCap
 _realtime_exchange
-_realtime_open
-_realtime_prevClose
 _realtime_volume
 _realtime_volAvg
+_realtime_open
+_realtime_prevClose
 _realtime_eps
 _realtime_pe
 _realtime_earningsAnnouncement
@@ -59,7 +59,6 @@ _bond_year7
 _bond_year10
 _bond_year20
 _bond_year30
-
 _company_name
 _company_symbol
 _company_date
@@ -92,4 +91,10 @@ _company_isEtf
 _company_isActivelyTrading
 _company_isAdr
 _company_isFund
+```
+<h2>List of input and output types for added field conversion</h2>
+
+```
+_unix_time
+_date_time
 ```
