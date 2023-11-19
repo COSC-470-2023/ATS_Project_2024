@@ -1,10 +1,8 @@
-import datetime
 import connect
 import json
 import traceback
 
 from sqlalchemy import text
-from sqlalchemy.exc import IntegrityError
 from sqlalchemy.exc import SQLAlchemyError
 
 
@@ -20,135 +18,79 @@ def load_output_file(path):
         print(f"Error decoding JSON in '{path}'")
         exit(1)
 
+
 def execute_insert(connection, entry, company_id):
-    date = datetime.datetime.fromtimestamp(entry["_realtime_date"])
-    price = entry['_realtime_price']
-    change_percentage = entry['_realtime_changesPercent']
-    change = entry['_realtime_change']
-    day_high = entry['_realtime_dayHigh']
-    day_low = entry['_realtime_dayLow']
-    year_high = entry['_realtime_yearHigh']
-    year_low = entry['_realtime_yearLow']
-    mkt_cap = entry['_realtime_mktCap']
-    exchange = entry['_realtime_exchange']
-    open_price = entry['_realtime_openPrice']
-    prev_close = entry['_realtime_prevClose']
-    volume = entry['_realtime_volume']
-    vol_avg = entry['_realtime_volAvg']
-    # eps
-    # pe
-    # earningsAnnouncement
-    # sharesOutstanding
+    date = entry["_realtime_date"]
+    price = entry["_realtime_price"]
+    change_percentage = entry["_realtime_changePercent"]
+    change = entry["_realtime_change"]
+    day_high = entry["_realtime_dayHigh"]
+    day_low = entry["_realtime_dayLow"]
+    year_high = entry["_realtime_yearHigh"]
+    year_low = entry["_realtime_yearLow"]
+    mkt_cap = entry["_realtime_mktCap"]
+    exchange = entry["_realtime_exchange"]
+    open_price = entry["_realtime_open"]
+    prev_close = entry["_realtime_prevClose"]
+    volume = entry["_realtime_volume"]
+    vol_avg = entry["_realtime_volAvg"]
+    eps = entry["_realtime_eps"]
+    pe = entry["_realtime_pe"]
+    earnings_announcement = entry["_realtime_earningsAnnouncement"]
+    shares_outstanding = entry["_realtime_sharesOutstanding"]
     # Execute row insertion
-    connection.execute(text(f"INSERT INTO `real_time_stock_values` VALUES ('{company_id}', '{date}', '{price}', '{change_percentage}', '{change}', '{day_high}', '{day_low}', '{year_high}', '{year_low}', '{mkt_cap}, '{exchange}','{open_price}', '{prev_close}', '{volume}', '{vol_avg}')"))
+    connection.execute(
+        text(
+            f"INSERT INTO `real_time_stock_values` VALUES ('{company_id}', '{date}', '{price}', '{change_percentage}', '{change}', '{day_high}', '{day_low}', '{year_high}', '{year_low}', '{mkt_cap}, '{exchange}', '{open_price}', '{prev_close}', '{volume}', '{vol_avg}', '{eps}', '{pe}', '{earnings_announcement}', '{shares_outstanding}')"
+        )
+    )
     connection.commit()
 
+
 def get_company_id(entry, conn):
-    symbol = entry['symbol']
-    name = entry['name']
+    symbol = entry["_realtime_symbol"]
+    name = entry["_realtime_name"]
     # check if index exists in indexes table
     result = conn.execute(text(f"SELECT id FROM `companies` WHERE symbol = '{symbol}'"))
     row = result.one_or_none()
 
     if row is None:
         # execute plain sql insert statement - transaction begins
-        conn.execute(text(f"INSERT INTO `companies`(`companyName`, `symbol`) VALUES ('{name}', '{symbol}')"))
-        conn.commit()
+        conn.execute(
+            text(
+                f"INSERT INTO `companies`(`companyName`, `symbol`) VALUES ('{name}', '{symbol}')"
+            )
+        )
+        #conn.commit()
         # get the generated ID
-        result = conn.execute(text(f"SELECT id FROM `companies` WHERE symbol = '{symbol}'")) 
+        result = conn.execute(
+            text(f"SELECT id FROM `companies` WHERE symbol = '{symbol}'")
+        )
         company_id = result.one()[0]
     else:
-        company_id = row[0] 
+        company_id = row[0]
     return company_id
+
 
 def main():
     # Load json data
-    realtime_data = load_output_file('./test_files/static_test_files/static_index_realtime.json')
+    realtime_data = load_output_file("SMF_Project_2023\database\processing\stocks_test.json")
 
     try:
         # create with context manager
         with connect.connect() as conn:
             for entry in realtime_data:
-                index_id = get_company_id(entry, conn)
-                try:    
+                company_id = get_company_id(entry, conn)
+                try:
                     # process realtime data
-                    execute_insert(conn, entry, index_id)
-                except IntegrityError as e:
+                    execute_insert(conn, entry, company_id)
+                except SQLAlchemyError as e:
+                    print(f"Error: {e}")
                     continue
 
     except Exception as e:
-        print(e)
         print(traceback.format_exc())
-        print("SQL connection error")
-
-def main():
-    # Load json data
-    realtime_data = load_output_file("./data_collection/output/raw_index_output.json")
-
-    try:
-        # create with context manager
-        with connect.connect() as conn:
-            for entry in realtime_data:
-                symbol = entry["symbol"]
-                name = entry["name"]
-
-                # check if index exists in companies table
-                result = conn.execute(
-                    text(f"SELECT id FROM `indexes` WHERE symbol = '{symbol}'")
-                )
-                row = result.one_or_none()
-
-                if row is None:
-                    conn.execute(
-                        text(
-                            f"INSERT INTO `indexes`(`indexname`, `symbol`) VALUES ('{name}', '{symbol}')"
-                        )
-                    )
-                    conn.commit()
-
-                    # get the generated ID
-                    result = conn.execute(
-                        text(f"SELECT id FROM `indexes` WHERE symbol = '{symbol}'")
-                    )
-                    company_id = result.one()[0]
-                else:
-                    company_id = row[0]
-
-                # process realtime data
-
-                # NOTE: entry keys will need to be changed to be inline with new output names
-                date = datetime.datetime.fromtimestamp(entry["timestamp"])
-                price = entry["price"]
-                change_percentage = entry["changesPercentage"]
-                change = entry["change"]
-                day_high = entry["dayHigh"]
-                day_low = entry["dayLow"]
-                year_high = entry["yearHigh"]
-                year_low = entry["yearLow"]
-                mkt_cap = entry["marketCap"]
-                exchange = entry["exchange"]
-                open_price = entry["open"]
-                prev_close = entry["previousClose"]
-                volume = entry["volume"]
-                vol_avg = entry["avgVolume"]
-
-                try:
-                    print(company_id)
-                    # Execute row insertion
-                    conn.execute(
-                        text(
-                            f"INSERT INTO `realtime_index_values` VALUES ('{company_id}', '{date}', '{price}', '{change_percentage}', '{change}', '{day_high}', '{day_low}', '{year_high}', '{year_low}', 0, '{exchange}','{open_price}', '{prev_close}', '{volume}', '{vol_avg}')"
-                        )
-                    )
-                    # conn.commit()
-                except SQLAlchemyError as e:
-                    print(f"Error: {e}")
-
-    except Exception as e:
-        print(e)
-        print(traceback.format_exc())
-        print("SQL connection error")
-
+        print(f"SQL connection error: {e}")
 
 # protected entrypoint
 if __name__ == "__main__":
