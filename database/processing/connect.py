@@ -5,7 +5,7 @@ could also be a class, but we'll leave it as a function unless there needs to be
 """
 
 from contextlib import contextmanager
-import credentials as cred
+from database.processing import credentials as cred
 
 from sqlalchemy import column
 from sqlalchemy import create_engine

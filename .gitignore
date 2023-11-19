@@ -1,4 +1,5 @@
-.database/processing/config.json
+.database\processing\config.json
+.database\processing\credentials.py
 .idea/workspace.xml
 .idea/vcs.xml
 .idea/SMF_Project_2023.iml
