@@ -35,7 +35,7 @@ def main():
 
                 if row is None:
                     # execute plain sql insert statement - transaction begins
-                    conn.execute(text(f"INSERT INTO `indexes`(`indexname`, `symbol`) VALUES ('{name}', '{symbol}')"))
+                    conn.execute(text(f"INSERT INTO `companies`(`companyName`, `symbol`) VALUES ('{name}', '{symbol}')"))
                     conn.commit()
 
                     # get the generated ID
@@ -63,8 +63,9 @@ def main():
                 vol_avg = entry['averageVolume']
 
                 try:
+                    print(company_id)
                     # Execute row insertion
-                    conn.execute(text(f"INSERT INTO `realtime_index_values` VALUES ('{index_id}', '{date}', '{price}', '{change_percentage}', '{change}', '{day_high}', '{day_low}', '{year_high}', '{year_low}', 0, '{exchange}','{open_price}', '{prev_close}', '{volume}', '{vol_avg}')"))
+                    conn.execute(text(f"INSERT INTO `realtime_index_values` VALUES ('{company_id}', '{date}', '{price}', '{change_percentage}', '{change}', '{day_high}', '{day_low}', '{year_high}', '{year_low}', 0, '{exchange}','{open_price}', '{prev_close}', '{volume}', '{vol_avg}')"))
                     conn.commit()           
                 except IntegrityError as e:
                     continue
