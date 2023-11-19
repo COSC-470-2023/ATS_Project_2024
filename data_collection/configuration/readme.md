@@ -1,8 +1,34 @@
+<h1>Configuration Explained (WIP)</h1>
+<h2>non_api_fields</h2>
+
+```json
+"non_api_fields": {
+  "date": {
+    "src": "timestamp",
+    "mapping": "_realtime_date",
+    "input_type": "unix_time",
+    "output_type": "date_time"
+  }
+}
+```
+The purpose of the `non_api_fields` is to list source of data, mapping for the internal fields (see below) and finally the types if conversion is necessary.
+<br><br>
+If `src` is set to null, it should tell the query script that we are to provide data directly rather than pull from another field.
+<br><br>
+<b>Example</b>:
+<br>
+the API's field named `timestamp` will be pulled into a field we add, using the common field `_realtime_date`, and also be converted from a unix epoch timestamp to the date time format.
+<br>
+```
+"timestamp": 1700168401 becomes "_realtime_date": "2023-11-16 13:00:01"
+```
+
+
+
 <h1>Common Fields</h1>
 A set of common internal fields that will be used for scripting processes.
 <br>
 API's and data sources can vary in field names, and the common internal names will be used to map source data fields to recognized fields for the system.
-<br>
 <h2>List of fields</h2>
 
 ```
