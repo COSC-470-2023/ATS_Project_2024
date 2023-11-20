@@ -9,7 +9,6 @@ import errno
 import requests
 from datetime import datetime
 
-
 # Loads the configuration file.
 def load_config():
     config_path = "../configuration/realtime_query_cfg.json"
@@ -24,10 +23,8 @@ def load_config():
         print(f"JSON decoding encountered an error while decoding {config_path}:\n{e}")
         exit(-1002)  # Exit program with code -1002 (Invalid config structure)
 
-
 def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api_fields, non_api_fields):
     output = []
-
     # Iterate through each stocks and make a API call
     # TODO make it query with 5 items at a time ("APPL, TSLA, %5EGSPC")
     for query_itr in range(len(query_list)):
@@ -58,18 +55,9 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
                     except KeyError:
                         continue  # TODO make log files entry
             try:
-                remapped_entry = entry.copy()  # Cant iterate over a dict that is changing in size.
-                # Iterate over the fields and then rename them, by reinserting and deleting the old.
-                for field in api_fields:
-                    if api_fields[field] is not None:
-                        remapped_entry[api_fields[field]] = remapped_entry[field]
-                        del remapped_entry[field]  # API field has a mapping value, rename it.
-                    else:
-                        del remapped_entry[field]  # API field mapping was set to null, dump it as cfg doesnt care to keep.
-                data[0] = remapped_entry
+                data[0] = remap_api_fields(entry, api_fields)
             except AttributeError:
-                continue  # The copy failed of the dict because it was probably an error message.
-
+                continue # The copy failed of the dict because it was probably an error message.
         output += data
         # Rate limit the query speed based on the rate limit
         # From inside the JSON. Check that the key wasnt valued at null, signifying no rate limit.
@@ -77,6 +65,20 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
             time.sleep(60 / api_rate_limit)
 
     return output
+
+def remap_api_fields(entry, api_fields):
+    try:
+        remapped_entry = entry.copy()  # Cant iterate over a dict that is changing in size.
+        # Iterate over the fields and then rename them, by reinserting and deleting the old.
+        for field in api_fields:
+            if api_fields[field] is not None:
+                remapped_entry[api_fields[field]] = remapped_entry[field]
+                del remapped_entry[field]  # API field has a mapping value, rename it.
+            else:
+                del remapped_entry[field]  # API field mapping was set to null, dump it as cfg doesnt care to keep.
+    except AttributeError:
+        raise AttributeError # The copy failed of the dict because it was probably an error message.
+    return remapped_entry
 
 
 def write_files(stock_json, index_json, commodity_json):
@@ -96,7 +98,6 @@ def write_files(stock_json, index_json, commodity_json):
 
     with open("../output/commodity_output.json", "w") as outfile:
         json.dump(commodity_json, outfile, indent=2)
-
 
 def main():
     json_config = load_config()
@@ -120,7 +121,6 @@ def main():
         commodity_output = make_queries(api_url, api_key, commodity_list, api_rate_limit, api_fields, non_api_fields)
 
     write_files(stock_output, index_output, commodity_output)
-
 
 # code to only be executed if ran as script
 if __name__ == "__main__":
