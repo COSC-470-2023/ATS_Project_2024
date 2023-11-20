@@ -22,18 +22,18 @@ def load(path):
 def execute_insert(connection, entry, commodity_id):
     for obj in range(len(entry["historical"])):
         # Declare and initialize variables
-        date = entry['historical'][obj]["date"]
-        commodityOpen = entry['historical'][obj]["open"]
-        high = entry['historical'][obj]["high"]
-        low = entry['historical'][obj]["low"]
-        close = entry['historical'][obj]["close"]
-        adjClose = entry['historical'][obj]["adjClose"]
-        volume = entry['historical'][obj]["volume"]
-        unadjustedVolume = entry['historical'][obj]["unadjustedVolume"]
-        change = entry['historical'][obj]["change"]
-        changePercent = entry['historical'][obj]["changePercent"]
-        vwap = entry['historical'][obj]["vwap"]
-        changeOverTime = entry['historical'][obj]["changeOverTime"]
+        date = entry['historical'][obj]["_historical_date"]
+        commodityOpen = entry['historical'][obj]["_historical_open"]
+        high = entry['historical'][obj]["_historical_high"]
+        low = entry['historical'][obj]["_historical_low"]
+        close = entry['historical'][obj]["_historical_close"]
+        adjClose = entry['historical'][obj]["_historical_adjClose"]
+        volume = entry['historical'][obj]["_historical_volume"]
+        unadjustedVolume = entry['historical'][obj]["_historical_unadjustedVolume"]
+        change = entry['historical'][obj]["_historical_change"]
+        changePercent = entry['historical'][obj]["_historical_changePercent"]
+        vwap = entry['historical'][obj]["_historical_vwap"]
+        changeOverTime = entry['historical'][obj]["_historical_changeOverTime"]
         
 
         # Execute row insertion
@@ -45,8 +45,8 @@ def execute_insert(connection, entry, commodity_id):
         
 def get_commodity_id(entry, connection):
     #Declare and initialize variables
-    symbol = entry["symbol"]
-    name = entry["name"]
+    symbol = entry["_historical_symbol"]
+    name = entry["_historical_name"]
     selectQuery = f"select id from `commodities` where symbol = '{symbol}'"
     # check if index exists in indexes table
     result = connection.execute(text(selectQuery))
@@ -72,7 +72,7 @@ def main():
     # load json 
     # idk what this will be called. update when able
     # variable setting may have to be adjusted too
-    data = load('../../data_collection/output/historical_commodities_output.json')
+    data = load('../../data_collection/output/commodity_output.json')
 
     try:
         # create with context manager, implicit commit on close
