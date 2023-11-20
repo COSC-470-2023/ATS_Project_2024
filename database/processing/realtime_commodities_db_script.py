@@ -21,20 +21,20 @@ def load(path):
         
 def execute_insert(connection, entry, commodity_id):
     # Declare and initialize variables
-    date = datetime.datetime.fromtimestamp(entry['timestamp']) 
-    price = entry['price']
-    changePercent = entry['changesPercentage']
-    change = entry['change']
-    dayHigh = entry['dayHigh']
-    dayLow = entry['dayLow']
-    yearHigh = entry['yearHigh']
-    yearLow = entry['yearLow']
-    marketCap = entry['marketCap']
-    exchange = entry['exchange']
-    commodityOpen = entry['open']
-    close = entry['previousClose']
-    volume = entry['volume']
-    volumeAverage = entry['avgVolume']
+    date = entry['_realtime_date'] 
+    price = entry['_realtime_price']
+    changePercent = entry['_realtime_changePercent']
+    change = entry['_realtime_change']
+    dayHigh = entry['_realtime_dayHigh']
+    dayLow = entry['_realtime_dayLow']
+    yearHigh = entry['_realtime_yearHigh']
+    yearLow = entry['_realtime_yearLow']
+    marketCap = entry['_realtime_mktCap']
+    exchange = entry['_realtime_exchange']
+    commodityOpen = entry['_realtime_open']
+    close = entry['_realtime_prevClose']
+    volume = entry['_realtime_volume']
+    volumeAverage = entry['_realtime_volAvg']
     
     # Execute row insertion
     connection.execute(
@@ -46,8 +46,8 @@ def execute_insert(connection, entry, commodity_id):
 
 def get_commodity_id(entry, connection):
     #Declare and initalize variables
-    symbol = entry['symbol']
-    name = entry['name']
+    symbol = entry['_realtime_symbol']
+    name = entry['_realtime_name']
     selectQuery = f"select id from `commodities` where symbol = '{symbol}'"
     
     # Check if commodity exists in commodities table
@@ -75,7 +75,7 @@ def main():
     # load json 
     # File name may need changes depending on query outputs
     # variable setting may have to be adjusted too
-    data = load('../../data_collection/output/realtime_commodities_output.json')
+    data = load('../../data_collection/output/commodities_output.json')
 
     try:
         # create with context manager, implicit commit on close
