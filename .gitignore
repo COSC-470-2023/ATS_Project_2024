@@ -10,3 +10,4 @@
 .idea/shelf
 .README.md
 
+database/processing/credentials.py
