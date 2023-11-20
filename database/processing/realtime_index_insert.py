@@ -5,6 +5,7 @@ import traceback
 
 from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import SQLAlchemyError
 
 def load_output_file(path):
     try:
@@ -67,7 +68,9 @@ def main():
                 try:    
                     # process realtime data
                     execute_insert(conn, entry, index_id)
-                except IntegrityError as e:
+                except SQLAlchemyError as e:
+                    # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
+                    print(f"Error: {e}")
                     continue
 
     except Exception as e:
