@@ -59,7 +59,7 @@ def execute_insert(connection, entry, company_id):
 def get_company_id(entry, conn):
     symbol = entry["_realtime_symbol"]
     name = entry["_realtime_name"]
-    # check if index exists in indexes table
+    # check if company exists in companies table
     result = conn.execute(text(f"SELECT id FROM `companies` WHERE symbol = '{symbol}'"))
     row = result.one_or_none()
 
@@ -104,7 +104,6 @@ def main():
     except Exception as e:
         print(traceback.format_exc())
         print(f"SQL connection error: {e}")
-
 
 # protected entrypoint
 if __name__ == "__main__":

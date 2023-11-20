@@ -21,39 +21,38 @@ def load_output_file(path):
 
 
 def execute_insert(connection, entry, company_id):
-    # would be nice to sync the order of fields in the database to the order of keys in the output data
-    # so we could use list comprehension instead. would be easier to manipulate the data and easier to pass parameters
-    # for bound/prepared statements. also easier to maintain, key name changes shouldn't matter
-    date = entry["_realtime_date"]
-    price = entry["_realtime_price"]
-    change_percentage = entry["_realtime_changePercent"]
-    change = entry["_realtime_change"]
-    day_high = entry["_realtime_dayHigh"]
-    day_low = entry["_realtime_dayLow"]
-    year_high = entry["_realtime_yearHigh"]
-    year_low = entry["_realtime_yearLow"]
-    mkt_cap = entry["_realtime_mktCap"]
-    exchange = entry["_realtime_exchange"]
-    open_price = entry["_realtime_open"]
-    prev_close = entry["_realtime_prevClose"]
-    volume = entry["_realtime_volume"]
-    vol_avg = entry["_realtime_volAvg"]
-    eps = entry["_realtime_eps"]
-    pe = entry["_realtime_pe"]
-    # ISO-8601 date, converting here for now but should probably be done during collection, or change the db field from datetime to iso
-    # converting to datetime object (output data has an invalid iso-8601 format, so this is more complicated than it should be)
-    earnings_announcement = datetime.datetime.strptime(
-        entry["_realtime_earningsAnnouncement"], "%Y-%m-%dT%H:%M:%S.%f%z"
-    )
-    # formatting to fit into mysql datetime type
-    earnings_announcement = earnings_announcement.strftime("%Y-%m-%d %H:%M:%S")
-    shares_outstanding = entry["_realtime_sharesOutstanding"]
-    # Execute row insertion
-    connection.execute(
-        text(
-            f"INSERT INTO `real_time_stock_values` VALUES ('{company_id}', '{date}', '{price}', '{change_percentage}', '{change}', '{day_high}', '{day_low}', '{year_high}', '{year_low}', '{mkt_cap}', '{exchange}', '{open_price}', '{prev_close}', '{volume}', '{vol_avg}', '{eps}', '{pe}', '{earnings_announcement}', '{shares_outstanding}')"
+    for obj in range(len(entry["historical"])):
+        # TODO; find test output data for historical, match up fields and update variables and insert query
+        date = entry['historical'][obj]["_realtime_date"]
+        price = entry['historical'][obj]["_realtime_price"]
+        change_percentage = entry['historical'][obj]["_realtime_changePercent"]
+        change = entry['historical'][obj]["_realtime_change"]
+        day_high = entry['historical'][obj]["_realtime_dayHigh"]
+        day_low = entry['historical'][obj]["_realtime_dayLow"]
+        year_high = entry['historical'][obj]["_realtime_yearHigh"]
+        year_low = entry['historical'][obj]["_realtime_yearLow"]
+        mkt_cap = entry['historical'][obj]["_realtime_mktCap"]
+        exchange = entry['historical'][obj]["_realtime_exchange"]
+        open_price = entry['historical'][obj]["_realtime_open"]
+        prev_close = entry['historical'][obj]["_realtime_prevClose"]
+        volume = entry['historical'][obj]["_realtime_volume"]
+        vol_avg = entry['historical'][obj]["_realtime_volAvg"]
+        eps = entry['historical'][obj]["_realtime_eps"]
+        pe = entry['historical'][obj]["_realtime_pe"]
+        # ISO-8601 date, converting here for now but should probably be done during collection, or change the db field from datetime to iso
+        # converting to datetime object (output data has an invalid iso-8601 format, so this is more complicated than it should be)
+        earnings_announcement = datetime.datetime.strptime(
+            entry["_realtime_earningsAnnouncement"], "%Y-%m-%dT%H:%M:%S.%f%z"
         )
-    )
+        # formatting to fit into mysql datetime type
+        earnings_announcement = earnings_announcement.strftime("%Y-%m-%d %H:%M:%S")
+        shares_outstanding = entry["_realtime_sharesOutstanding"]
+        # Execute row insertion
+        connection.execute(
+            text(
+                f"INSERT INTO `real_time_stock_values` VALUES ('{company_id}', '{date}', '{price}', '{change_percentage}', '{change}', '{day_high}', '{day_low}', '{year_high}', '{year_low}', '{mkt_cap}', '{exchange}', '{open_price}', '{prev_close}', '{volume}', '{vol_avg}', '{eps}', '{pe}', '{earnings_announcement}', '{shares_outstanding}')"
+            )
+        )
 
 
 def get_company_id(entry, conn):
