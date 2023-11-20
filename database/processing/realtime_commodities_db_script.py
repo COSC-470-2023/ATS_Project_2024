@@ -19,11 +19,11 @@ def load(path):
         print(f"Error decoding JSON in '{path}'")
         exit(1)
 
-def main():
+def insert(jsonFile):
     # load json 
     # idk what this will be called. update when able
     # variable setting may have to be adjusted too
-    data = load('../../data_collection/output/realtime_commodities_output.json')
+    data = load(jsonFile)
 
     try:
         # create with context manager
@@ -47,20 +47,24 @@ def main():
                 # putting data into variables (I really hate this)
                 date = datetime.datetime.fromtimestamp(entry['timestamp']) 
                 price = entry['price']
-                changePercent = entry['changePercentage']
+                changePercent = entry['changesPercentage']
                 change = entry['change']
                 dayHigh = entry['dayHigh']
                 dayLow = entry['dayLow']
                 yearHigh = entry['yearHigh']
                 yearLow = entry['yearLow']
-                marketCap = entry['mktCap']
+                marketCap = entry['marketCap']
+                if marketCap is None:
+                    marketCap = "NULL"
+                else:
+                    marketCap = "'" + marketCap + "'"
                 exchange = entry['exchange']
                 commodityOpen = entry['open']
                 close = entry['previousClose']
                 volume = entry['volume']
-                volumeAverage = entry['volAvg']
+                volumeAverage = entry['avgVolume']
                 try:
-                    conn.execute(text(f"insert into `realtime_commodity_values`(`commodity_id`, `date`, `price`, `changePercentage`, `change`, `dayHigh`, `dayLow`, `yearHigh`, `yearLow`, `mktCap`, `exchange`, `open`, `prevClose`, `volume`, `volAvg`) values ('{CommodityID}', '{date}', '{price}', '{changePercent}', '{change}', '{dayHigh}', '{dayLow}', '{yearHigh}', '{yearLow}', '{marketCap}', '{exchange}', '{commodityOpen}', '{close}', '{volume}', '{volumeAverage}')"))
+                    conn.execute(text(f"insert into `realtime_commodity_values`(`commodity_id`, `date`, `price`, `changePercentage`, `change`, `dayHigh`, `dayLow`, `yearHigh`, `yearLow`, `mktCap`, `exchange`, `open`, `prevClose`, `volume`, `volAvg`) values ('{CommodityID}', '{date}', '{price}', '{changePercent}', '{change}', '{dayHigh}', '{dayLow}', '{yearHigh}', '{yearLow}', {marketCap}, '{exchange}', '{commodityOpen}', '{close}', '{volume}', '{volumeAverage}')"))
                     conn.commit()
                 except IntegrityError as e: # catch duplicate entry
                     pass
@@ -72,4 +76,6 @@ def main():
         print("SQL connection error")
 
 if __name__ == "__main__":
-    main()
+    jsonFile = '../../data_collection/output/realtime_commodities_output.json'
+    insert(jsonFile)
+

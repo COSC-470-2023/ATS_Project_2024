@@ -19,24 +19,24 @@ def load(path):
         print(f"Error decoding JSON in '{path}'")
         exit(1)
 
-def main():
+def insert(jsonFile):
     # load json 
     # idk what this will be called. update when able
     # variable setting may have to be adjusted too
-    data = load('../../data_collection/output/historical_commodities_output.json')
+    data = load(jsonFile)
 
     try:
         # create with context manager
         with connect.connect() as conn:
-            for entry in data:
+            for entry in data['historicalStockList']:
                 symbol = entry['symbol']
-                name = entry['name']
+                # name = entry['name'] ( me no exist :) )
                 # establish if it exists already
                 result = conn.execute(text(f"select id from `commodities` where symbol = '{symbol}'"))
                 row = result.one_or_none()
                 if row is None:
                     # execute plain sql insert statement - transaction begins
-                    conn.execute(text(f"insert into `commodities`(`id`, `commodityName`, `symbol`) values (NULL, '{name}', '{symbol}')"))
+                    conn.execute(text(f"insert into `commodities`(`id`, `commodityName`, `symbol`) values (NULL, NULL, '{symbol}')"))
                     conn.commit()
                     # get the generated ID
                     result = conn.execute(text(f"select id from `commodities` where symbol = '{symbol}'")) 
@@ -45,7 +45,7 @@ def main():
                     CommodityID = row[0]
                 
                 # each commodity will have multiple dates with data
-                for h_entry in entry['data']:
+                for h_entry in entry['historical']:
                     # putting data into variables (I really hate this)
                     date = h_entry['date']
                     commodityOpen = h_entry['open']
@@ -73,4 +73,5 @@ def main():
         print("SQL connection error")
 
 if __name__ == "__main__":
-    main()
+    jsonFile = '../../data_collection/output/historical_commodities_output.json'
+    insert(jsonFile)

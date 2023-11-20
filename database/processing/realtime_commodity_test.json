@@ -1,0 +1,26 @@
+[
+    {
+      "symbol": "HGUSD",
+      "name": "Copper",
+      "price": 3.694,
+      "changesPercentage": -0.22957,
+      "change": -0.0085,
+      "dayLow": 3.6835,
+      "dayHigh": 3.7425,
+      "yearHigh": 4.3145,
+      "yearLow": 3.53,
+      "marketCap": null,
+      "priceAvg50": 3.65107,
+      "priceAvg200": 3.83056,
+      "exchange": "COMMODITY",
+      "volume": 13394,
+      "avgVolume": 1171,
+      "open": 3.6955,
+      "previousClose": 3.7025,
+      "eps": null,
+      "pe": null,
+      "earningsAnnouncement": null,
+      "sharesOutstanding": null,
+      "timestamp": 1700179607
+    }
+  ]
