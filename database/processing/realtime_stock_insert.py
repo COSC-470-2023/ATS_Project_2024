@@ -20,6 +20,8 @@ def load_output_file(path):
 
 
 def execute_insert(connection, entry, company_id):
+    row = [[x for x in entry.values()]]
+    print(row)
     date = entry["_realtime_date"]
     price = entry["_realtime_price"]
     change_percentage = entry["_realtime_changePercent"]
@@ -41,7 +43,7 @@ def execute_insert(connection, entry, company_id):
     # Execute row insertion
     connection.execute(
         text(
-            f"INSERT INTO `real_time_stock_values` VALUES ('{company_id}', '{date}', '{price}', '{change_percentage}', '{change}', '{day_high}', '{day_low}', '{year_high}', '{year_low}', '{mkt_cap}, '{exchange}', '{open_price}', '{prev_close}', '{volume}', '{vol_avg}', '{eps}', '{pe}', '{earnings_announcement}', '{shares_outstanding}')"
+            f"INSERT INTO `real_time_stock_values` VALUES ('{company_id}', '{date}', '{price}', '{change_percentage}', '{change}', '{day_high}', '{day_low}', '{year_high}', '{year_low}', '{mkt_cap}', '{exchange}', '{open_price}', '{prev_close}', '{volume}', '{vol_avg}', '{eps}', '{pe}', '{earnings_announcement}', '{shares_outstanding}')"
         )
     )
     connection.commit()
