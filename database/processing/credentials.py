@@ -7,8 +7,8 @@ shell = {
 }
 
 db = {
-    "user": "root",
-    "pass": "Gr8ynger",
-    "host": "localhost",
-    "database": "ats_db",
+    "user": "username",
+    "pass": "password",
+    "host": "hostname",
+    "database": "dbname",
 }
