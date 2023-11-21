@@ -45,7 +45,7 @@ def main():
     try:
         # Establish a connection to server
         with connect.connect() as conn:
-            symbol_change = load_output_file(r"C:\Users\Jacob\PycharmProjects\SMF_Project_2023\data_collection\output\dummy_output_file.json")
+            symbol_change = load_output_file(r".\SMF_Project_2023\data_collection\output\dummy_output_file.json")
             for symbol in symbol_change:
                 update_symbol(conn, symbol)
     except Exception as e:
