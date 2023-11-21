@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import connect
 import json
 import traceback
@@ -32,7 +31,7 @@ def main():
             for entry in data:
                 dateVal = entry['_bond_date']
                 currencyVal = entry['_bond_currency']
-                treasuryNameVal = entry['_bond_ame']
+                treasuryNameVal = entry['_bond_name']
                 for row in entry:
                     # skip the first few rows
                     if row == "_bond_date" or "_bond_currency" or "_bond_name":
@@ -52,7 +51,7 @@ def main():
                         bondID = row[0]                   
                     rate = entry[row]
                     try:
-                        conn.execute(text(f"insert into `bond_values`(`Date`, `bondID`, `Rate`) values ('{date}', '{bondID}', '{rate}')"))
+                        conn.execute(text(f"insert into `bond_values`(`Date`, `bondID`, `Rate`) values ('{dateVal}', '{bondID}', '{rate}')"))
                         conn.commit()
                     except IntegrityError as e: # catch duplicate entries
                         continue
