@@ -10,8 +10,8 @@ import requests
 
 
 # Loads the configuration file.
-def load_config():
-    config_path = "configuration/stock_indexcomp_comm_list.json"
+def load_config(): # Configuration path needs to be a parameter in order to be tested
+    config_path = "data_collection\configuration\stock_index_comp_comm_list.json" # The slash should be change according to the operating system '\' for Windows '/' for Linux
     try:
         config_file = open(config_path, "r")
         config = json.load(config_file)
@@ -41,9 +41,10 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit):
     return output
 
 
-def write_files(stock_json, index_json, commodity_json):
-
-    output_dir = "output/"
+def write_files(stock_json, index_json, commodity_json): # , output_dir = "data_collection\output"
+    # The output directory needs to be a parameter, the test will generate files and may overwrite the exsisting files.
+    # The slash should be change according to the operating system '\' for Windows '/' for Linux
+    output_dir = "data_collection\output"     
     if not os.path.exists(os.path.dirname(output_dir)):
         try:
             os.makedirs(os.path.dirname(output_dir))
@@ -51,13 +52,14 @@ def write_files(stock_json, index_json, commodity_json):
             if exc.errno != errno.EEXIST:
                 raise
 
-    with open("output/raw_stocks_output.json", "w") as outfile:
+    with open(output_dir + "\\raw_stocks_output.json", "w") as outfile:
+        
         json.dump(stock_json, outfile, indent=2)
 
-    with open("output/raw_index_output.json", "w") as outfile:
+    with open(output_dir + "\\raw_index_output.json", "w") as outfile:
         json.dump(index_json, outfile, indent=2)
 
-    with open("output/raw_commodity_output.json", "w") as outfile:
+    with open(output_dir + "\\raw_commodity_output.json", "w") as outfile:
         json.dump(commodity_json, outfile, indent=2)
 
 
@@ -71,7 +73,9 @@ if __name__ == "__main__":
     # Iterate through each API in the list
     for api in range(len(JSON_config)):
         api_url = JSON_config[api]['url']
+        print("api_url: " + api_url)
         api_key = JSON_config[api]['api_key']
+        print("apikey: " + api_key)
         api_rate_limit = JSON_config[api]['rate_limit_per_min']
         stock_list = JSON_config[api]['stocks']
         index_list = JSON_config[api]['index_composites']
