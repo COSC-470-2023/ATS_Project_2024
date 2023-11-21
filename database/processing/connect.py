@@ -33,26 +33,3 @@ def connect():
     finally:
         # block executed when closed by context manager, as the with statement is really just a try/finally block
         connection.close()
-
-
-"""
-def main():
-    try:
-        # create with context manager
-        with connect() as conn:
-            # execute plain sql insert statement - transaction begins
-            conn.execute(text("insert into `Bonds` values (DATE(), 1.0, 2.0)"))
-            # end transaction
-            conn.commit()
-            # execute select statement, fetch cursorresult object
-            result = conn.execute(text("select * from `Bonds`"))
-            for row in result:
-                print(row.Rate)
-    except Exception as e:
-        print(e)
-        print("SQL connection error")
-
-# protected entrypoint
-if __name__ == "__main__":
-    main()
-"""
