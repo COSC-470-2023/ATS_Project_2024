@@ -1,13 +1,8 @@
-.database/processing/config.json
-.database/processing/credentials.py
-.idea/workspace.xml
-.idea/vcs.xml
-.idea/SMF_Project_2023.iml
-.idea/modules.xml
-.idea/misc.xml
-.idea/inspectionProfiles/Project_Default.xml
-.idea/inspectionProfiles/profiles_settings.xml
-.idea/shelf
-.README.md
+# Project Files
+.idea*
 
+# Output Files
+data_collection/output
+
+# Credential File
 database/processing/credentials.py
