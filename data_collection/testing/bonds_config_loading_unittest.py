@@ -17,7 +17,7 @@ class ConfigLoadTestCase(unittest.TestCase):
         self.assertEqual(expected_url, retrieved_url, "Retrieved API URL does not match what was expected.")
 
     def test_api_key(self):
-        expected_key = "cae0e091a31773bcf0ffdd4bf97a9e61"
+        expected_key = "PASTE KEY HERE"
         retrieved_key = self.json_config[0]['api_key']  # Get the API field from the loaded JSON
         self.assertEqual(expected_key, retrieved_key, "Retrieved API key does not match what was expected.")
 
