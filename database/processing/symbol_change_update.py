@@ -31,8 +31,6 @@ def update_symbol(conn, symbol):
 
         #  SQL query
         company_update = text(f"UPDATE Companies SET companyName = '{name}', symbol = '{new_symbol}' WHERE symbol = '{old_symbol}'")
-        # Use a tuple to parameterize variables (prevent injection)
-        # data = (name, old_symbol, new_symbol)
 
         conn.execute(company_update)
         conn.commit()
