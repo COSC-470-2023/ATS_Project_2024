@@ -7,8 +7,8 @@ shell = {
 }
 
 db = {
-    "user": "db server username",
-    "pass": "db server password",
-    "host": "db server hostname",
-    "database": "desired db within db server",
+    "user": "username",
+    "pass": "password",
+    "host": "hostname",
+    "database": "db_name",
 }
