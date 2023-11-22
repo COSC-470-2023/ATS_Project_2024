@@ -27,7 +27,7 @@ def execute_insert(connection, entry, index_id):
         high = entry['historical'][obj]['_historical_high']
         low = entry['historical'][obj]['_historical__historical_low']
         close = entry['historical'][obj]['_historical_close']
-        adj_close = entry['historical'][obj]['a_historical_djClose']
+        adj_close = entry['historical'][obj]['a_historical_adjClose']
         volume = entry['historical'][obj]['_historical_volume']
         unadjusted_volume = entry['historical'][obj]['_historical_unadjustedVolume']
         change = entry['historical'][obj]['_historical_change']
