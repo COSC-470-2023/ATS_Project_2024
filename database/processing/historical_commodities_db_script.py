@@ -72,7 +72,7 @@ def main():
     # load json 
     # idk what this will be called. update when able
     # variable setting may have to be adjusted too
-    data = load('../../data_collection/output/commodity_output.json')
+    data = load('./data_collection/output/commodity_output.json')
 
     try:
         # create with context manager, implicit commit on close
