@@ -17,7 +17,7 @@ def connect():
         uri = f"mysql+pymysql://{cred.db['user']}:{cred.db['pass']}@{cred.db['host']}:{sql_port}/{cred.db['database']}"
         # create engine
         # echo=True for sql feedback on every op
-        engine = create_engine(uri, echo=True)
+        engine = create_engine(uri)
         # connect, no need to close manually
         connection = engine.connect()
         # generator - like a return with iteration, allows function to continue from a previous state after a return
