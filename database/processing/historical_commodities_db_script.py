@@ -1,13 +1,11 @@
 import connect
 import json
 import traceback
-import datetime
-
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
 
-def load(path):
+def load_output_file(path):
     try:
         with open(path, "r") as output_file:
             output_data = json.load(output_file)

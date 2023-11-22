@@ -58,7 +58,7 @@ def get_index_id(entry, conn):
 
 def main():
     # Load json data
-    historical_data = load_output_file('./test_files/static_test_files/static_index_historical.json')
+    historical_data = load_output_file('./SMF_Project_2023/data_collection/output/index_output.json')
 
     try:
         # create with context manager
