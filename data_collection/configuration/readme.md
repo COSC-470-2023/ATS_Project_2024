@@ -116,6 +116,7 @@ _bond_year7
 _bond_year10
 _bond_year20
 _bond_year30
+
 _company_name
 _company_symbol
 _company_date
@@ -148,6 +149,12 @@ _company_isEtf
 _company_isActivelyTrading
 _company_isAdr
 _company_isFund
+
+_change_newSymbol
+_change_oldSymbol
+_change_newName
+_change_oldName
+_change_date
 ```
 <h2>List of input and output types for added field conversion</h2>
 
