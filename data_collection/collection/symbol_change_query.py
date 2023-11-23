@@ -53,8 +53,8 @@ def make_queries(parsed_api_url, parsed_api_key):
     return output
 
 # Trim the raw output to remove changes that are not from the current date
-def get_symbol_change(raw_API_output):
-    symbol_change_list = []
+def trim_query_output(raw_API_output):
+    modified_API_output = []
     today_date = date.today()
     #Convert date to string format
     today = today_date.strftime('%Y-%m-%d')
@@ -62,23 +62,23 @@ def get_symbol_change(raw_API_output):
         item_date = raw_API_output[item]['date']
         try: 
             if item_date == today:
-                symbol_change_list.append(raw_API_output[item])
+                modified_API_output.append(raw_API_output[item])
                 # Log the symbol as changed for use later
                 global symbol_changed 
                 symbol_changed = True
                 global symbol_changelog
-                symbol_changelog |= {symbol_change_list[item]['oldSymbol']:symbol_change_list[item]['newSymbol']}
+                symbol_changelog |= {modified_API_output[item]['oldSymbol']:modified_API_output[item]['newSymbol']}
                 # print(raw_API_output[item])
         # TODO Implement system logging when defined to log/flag a failure in this component
         except (ValueError, TypeError) as e:
             print(f"Error processing date: {e}")
             exit(1)
-    return symbol_change_list
+    return modified_API_output
 
-# Modify the structure of the symbol change list to include oldName as a field
-# TODO Pull oldName from system_config, rename output keys to be reflective of unified output names when finished
+# Modify the structure of the symbol change list to include oldName as a field and maps field names to expected output names
+# TODO Pull oldName from system_config
 # NOTE Consider how multiple API sources are handled in this process
-def modify_symbols_list(symbol_change_list, system_config):
+def modify_output_list(symbol_change_list, system_config):
     modified_symbols_list = []
     for entry in symbol_change_list:
         date = entry['date']
@@ -87,10 +87,10 @@ def modify_symbols_list(symbol_change_list, system_config):
         newSymbol = entry['newSymbol']
         # Currently only works with one API in the configuration list
         oldName = ""
-        modified_symbols_list.append({"date": date, "newName": newName, "oldName": oldName, "newSymbol": newSymbol, "oldSymbol": oldSymbol})
+        modified_symbols_list.append({"_change_date": date, "_change_newName": newName, "_change_oldName": oldName, "_change_newSymbol": newSymbol, "_change_oldSymbol": oldSymbol})
     return modified_symbols_list
 
-def write_output_file(symbol_json):
+def write_output_file(symbol_change_json):
     # TODO Define explicit file paths instead of relative file paths
     output_dir = "../output/"
     if not os.path.exists(os.path.dirname(output_dir)):
@@ -100,12 +100,12 @@ def write_output_file(symbol_json):
             if exc.errno != errno.EEXIST:
                 raise
     with open("../output/Symbol_Change_List.json", "w") as outfile:
-        json.dump(symbol_json, outfile, indent=2)
+        json.dump(symbol_change_json, outfile, indent=2)
 
 # Modifies the symbols that have been changed in the system configuration file and returns the modified list to be written
 # NOTE Currently assumes only one API configuration exists in the system
-def modify_system_config(system_config):
-    modified_system_config = system_config
+def modify_system_config(system_config_json):
+    modified_system_config = system_config_json
     # For each dictionary in list
     for entry in modified_system_config:
         # For each key in dictionary
@@ -118,20 +118,16 @@ def modify_system_config(system_config):
             elif key == 'stocks':
                 for stock in value:
                     if stock['symbol'] in symbol_changelog:
-                        print(stock['symbol'])
                         stock['symbol'] = symbol_changelog[stock['symbol']]
-                        print(stock['symbol'])
             elif key == 'commodities':
                 for commodity in value:
                     if commodity['symbol'] in symbol_changelog:
-                        print(commodity['symbol'])
                         commodity['symbol'] = symbol_changelog[commodity['symbol']]
-                        print(commodity['symbol'])
             else:
                 continue
     return modified_system_config
 
-def write_system_config_changes(modified_config):
+def write_system_config_changes(modified_system_config):
     # TODO Define explicit file paths instead of relative file paths
     output_dir = "../configuration/"
     if not os.path.exists(os.path.dirname(output_dir)):
@@ -141,10 +137,10 @@ def write_system_config_changes(modified_config):
             if exc.errno != errno.EEXIST:
                 raise
     with open("../configuration/stock_index_comp_comm_list.json", "w") as outfile:
-        json.dump(modified_config, outfile, indent=2)
+        json.dump(modified_system_config, outfile, indent=2)
 
-# Code to be executed when ran as script
-if __name__ == "__main__":
+
+def main():
     symbol_query_config = load_query_config()
     raw_API_query_output = []
     symbol_change_output = []
@@ -154,20 +150,23 @@ if __name__ == "__main__":
         api_key = symbol_query_config[api]['api_key']
         # Run queries for each API and append to raw output
         raw_API_query_output += make_queries(api_url, api_key)
-    symbol_change_list= get_symbol_change(raw_API_query_output)
+    modified_API_output = trim_query_output(raw_API_query_output)
     # If symbols for current day have changed, perform the expected component tasks
     # If no symbols have changed, proceed to final activities
     if symbol_changed:
         print('Symbols changed. Performing system change tasks.')
         system_config = load_system_config()
-        # TODO Conform modified output to system fields, when defined
         # Write modified output to symbol_change file
-        symbol_change_output = modify_symbols_list(symbol_change_list, system_config)
+        symbol_change_output = modify_output_list(modified_API_output, system_config)
         # Modify changed symbols in system config file
-        modified_sys_config = modify_system_config(system_config)
+        modified_system_config = modify_system_config(system_config)
         # Write changes to system config file
-        write_system_config_changes(modified_sys_config)
+        write_system_config_changes(modified_system_config)
     # Write empty list, or changedlist to output file, exit with success code
     print('Task complete.')
     write_output_file(symbol_change_output)
     exit(0)
+
+# Code to be executed when ran as script
+if __name__ == "__main__":
+    main()
