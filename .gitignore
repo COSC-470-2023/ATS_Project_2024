@@ -1,9 +1,7 @@
+# Project Files
+.idea*
 
-.idea/workspace.xml
-.idea/vcs.xml
-.idea/SMF_Project_2023.iml
-.idea/modules.xml
-.idea/misc.xml
-.idea/inspectionProfiles/Project_Default.xml
-.idea/inspectionProfiles/profiles_settings.xml
-.README.md
+# Output Files
+data_collection/output
+
+/data_collection/configuration/Napkin notes/

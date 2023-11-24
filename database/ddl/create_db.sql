@@ -6,7 +6,7 @@ USE ats_db;
 
 CREATE TABLE `bonds` (
   `bond_id` BIGINT,
-  `country` VARCHAR(300),
+  `treasuryName` VARCHAR(300),
   `duration` VARCHAR(300),
   `currency` VARCHAR(300),
   PRIMARY KEY (`bond_id`)
@@ -24,32 +24,32 @@ CREATE TABLE `bonds_values` (
 
 CREATE TABLE `commodities` (
   `id` BIGINT,
-  `commoditiyName` VARCHAR(300) NOT NULL,
+  `commodityName` VARCHAR(300) NOT NULL,
   `symbol` VARCHAR(10) NOT NULL,
   PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `realtime_commoditiy_values` (
+CREATE TABLE `realtime_commodity_values` (
   `commodity_id` BIGINT,
   `date` DATETIME,
   `price` DECIMAL(12,2),
-  `changePercentage` DECIMAL(6,6),
+  `changePercentage` DECIMAL(12,4),
   `change` DECIMAL(12,2),
   `dayHigh` DECIMAL(12,2),
   `dayLow` DECIMAL(12,2),
   `yearHigh` DECIMAL(12,2),
   `yearLow` DECIMAL(12,2),
   `mktCap` BIGINT,
-  `exhchange` VARCHAR(300),
+  `exchange` VARCHAR(300),
   `open` DECIMAL(12,2),
   `prevClose` DECIMAL(12,2),
-  `volume` DECIMAL(12,2),
-  `volAvg` DECIMAL(12,2),
+  `volume` BIGINT,
+  `volAvg` BIGINT,
   PRIMARY KEY (`commodity_id`, `date`),
   FOREIGN KEY (`commodity_id`) REFERENCES `commodities`(`ID`)
 );
 
-CREATE TABLE `historical_commoditiy_values` (
+CREATE TABLE `historical_commodity_values` (
   `commodity_id` BIGINT,
   `date` DATETIME,
   `open` DECIMAL(12,2),
@@ -57,10 +57,10 @@ CREATE TABLE `historical_commoditiy_values` (
   `low` DECIMAL(12,2),
   `close` DECIMAL(12,2),
   `adjClose` DECIMAL(12,2),
-  `volume` DECIMAL(12,2),
+  `volume` BIGINT,
   `unadjustedVolume` DECIMAL(12,2),
   `change` DECIMAL(12,2),
-  `changePercentage` DECIMAL(6,6),
+  `changePercentage` DECIMAL(12,4),
   `vwap` DECIMAL(12,2),
   `changeOverTime` DECIMAL(12,2),
   PRIMARY KEY (`commodity_id`, `date`),
@@ -95,7 +95,7 @@ CREATE TABLE `company_statements` (
   `date` DATETIME,
   `price` DECIMAL(12,2),
   `beta` DECIMAL(12,2),
-  `volAvg` DECIMAL(12,2),
+  `volAvg` BIGINT,
   `mktCap` BIGINT,
   `lastDiv` DECIMAL(12,2),
   `changes` DECIMAL(12,2),
@@ -126,22 +126,22 @@ CREATE TABLE `company_statements` (
   FOREIGN KEY (`company_id`) REFERENCES `companies`(`id`)
 );
 
-CREATE TABLE `real_time_stock_values` (
+CREATE TABLE `realtime_stock_values` (
   `company_id` BIGINT,
   `date` DATETIME,
   `price` DECIMAL(12,2),
-  `changePercentage` DECIMAL(6,6),
+  `changePercentage` DECIMAL(12,4),
   `change` DECIMAL(12,2),
   `dayHigh` DECIMAL(12,2),
   `dayLow` DECIMAL(12,2),
   `yearHigh` DECIMAL(12,2),
   `yearLow` DECIMAL(12,2),
   `mktCap` BIGINT,
-  `exhchange` VARCHAR(300),
+  `exchange` VARCHAR(300),
   `open` DECIMAL(12,2),
   `prevClose` DECIMAL(12,2),
-  `volume` DECIMAL(12,2),
-  `volAvg` DECIMAL(12,2),
+  `volume` BIGINT,
+  `volAvg` BIGINT,
   `eps` DECIMAL(12,2),
   `pe` DECIMAL(12,2),
   `earningsAnnouncement` DATETIME,
@@ -157,11 +157,11 @@ CREATE TABLE `historical_stock_values` (
   `high` DECIMAL(12,2),
   `low` DECIMAL(12,2),
   `close` DECIMAL(12,2),
-  `adjclose` DECIMAL(12,2),
+  `adjClose` DECIMAL(12,2),
   `volume` BIGINT,
   `unadjustedVolume` BIGINT,
   `change` DECIMAL(12,2),
-  `changePercentage` DECIMAL(6,6),
+  `changePercentage` DECIMAL(12,4),
   `vwap` DECIMAL(12,2),
   `changeOverTime` DECIMAL(12,2),
   PRIMARY KEY (`company_id`, `date`),
@@ -172,7 +172,7 @@ CREATE TABLE `historical_stock_values` (
 
 CREATE TABLE `indexes` (
   `id` BIGINT,
-  `indexname` VARCHAR(300) NOT NULL,
+  `indexName` VARCHAR(300) NOT NULL,
   `symbol` VARCHAR(10) NOT NULL,
   PRIMARY KEY (`id`)
 );
@@ -181,7 +181,7 @@ CREATE TABLE `realtime_index_values` (
   `index_id` BIGINT,
   `date` DATETIME,
   `price` DECIMAL(12,2),
-  `changePercentage` DECIMAL(6,6),
+  `changePercentage` DECIMAL(12,4),
   `change` DECIMAL(12,2),
   `dayHigh` DECIMAL(12,2),
   `dayLow` DECIMAL(12,2),
@@ -191,8 +191,8 @@ CREATE TABLE `realtime_index_values` (
   `exchange` varchar(300),
   `open` DECIMAL(12,2),
   `prevClose` DECIMAL(12,2),
-  `volume` DECIMAL(12,2),
-  `volAvg` DECIMAL(12,2),
+  `volume` BIGINT,
+  `volAvg` BIGINT,
   PRIMARY KEY (`index_id`, `date`),
   FOREIGN KEY (`index_id`) REFERENCES `indexes`(`id`)
 );
@@ -205,10 +205,10 @@ CREATE TABLE `historical_index_values` (
   `low` DECIMAL(12,2),
   `close` DECIMAL(12,2),
   `adjClose` DECIMAL(12,2),
-  `volume` DECIMAL(12,2),
+  `volume` BIGINT,
   `unadjustedVolume` DECIMAL(12,2),
   `change` DECIMAL(12,2),
-  `changePercentage` DECIMAL(6,6),
+  `changePercentage` DECIMAL(12,4),
   `vwap` DECIMAL(12,2),
   `changeOverTime` DECIMAL(12,2),
   PRIMARY KEY (`index_id`, `date`),
