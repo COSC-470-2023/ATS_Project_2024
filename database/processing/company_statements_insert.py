@@ -94,7 +94,7 @@ def get_company_id(entry, conn):
 
 def main():
     # Load json data
-    realtime_data = load_output_file("database/processing/company_test.json")
+    realtime_data = load_output_file("database/processing/test_data/company_test.json")
 
     try:
         # create with context manager, implicit commit on close
