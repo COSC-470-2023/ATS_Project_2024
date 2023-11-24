@@ -1,7 +1,7 @@
 [
   {
     "url": "https://financialmodelingprep.com/api/v3/quote/{QUERY_PARAMS}?apikey={API_KEY}",
-    "api_key": "<PASTE KEY HERE>",
+    "api_key": "PASTE KEY HERE",
     "rate_limit_per_min": 300,
     "api_fields": {
       "symbol": "_realtime_symbol",
@@ -31,8 +31,8 @@
       "date": {
         "src": "timestamp",
         "mapping": "_realtime_date",
-        "input_type": "unix_time",
-        "output_type": "date_time"
+        "input_type": "_unix_time",
+        "output_type": "_date_time"
       }
     },
       "index_composites": [
