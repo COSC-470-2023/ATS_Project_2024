@@ -1,0 +1,14 @@
+[
+  {
+    "date": "2023-11-17",
+    "name": "Apple",
+    "oldSymbol": "AAPL",
+    "newSymbol": "OOPL"
+  },
+  {
+    "date": "2023-11-17",
+    "name": "Sundial",
+    "oldSymbol": "SUN",
+    "newSymbol": "SNDL"
+  }
+]
