@@ -17,7 +17,7 @@ BEGIN
         	IF (temp = 1) THEN
             	SET new_id = UUID_SHORT();
    			  ELSE
-   		 		  SET valid = 0;
+   		 		SET valid = 0;
         	END IF;
     	END WHILE;
     ELSE

@@ -10,5 +10,5 @@ db = {
     "user": "username",
     "pass": "password",
     "host": "hostname",
-    "database": "dbname",
+    "database": "db_name",
 }

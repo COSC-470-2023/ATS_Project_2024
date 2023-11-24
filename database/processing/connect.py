@@ -5,13 +5,8 @@ could also be a class, but we'll leave it as a function unless there needs to be
 """
 
 from contextlib import contextmanager
-from database.processing import credentials as cred
-
-from sqlalchemy import column
+import credentials as cred
 from sqlalchemy import create_engine
-from sqlalchemy import select
-from sqlalchemy import table
-from sqlalchemy import text
 
 
 @contextmanager
