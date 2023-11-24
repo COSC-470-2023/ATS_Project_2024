@@ -61,11 +61,9 @@ def execute_insert(connection, entry, company_id):
     # Execute row insertion
     connection.execute(
         text(
-            f"INSERT INTO `company_statements` VALUES ('{company_id}', '{date}', '{price}', '{beta}', '{volAvg}', '{mktCap}', '{latsDiv}', \
-                                                       '{changes}', '{currency}', '{cik}', '{isin}', '{cusip}', '{exchangeFullName}', '{exchange}', \
-                                                       '{industry}', '{ceo}', '{sector}', '{country}', '{fullTimeEmployees}','{phone}','{address}','{city}', \
-                                                       '{state}','{zip}','{dcfDiff}','{dcf}','{ipoDate}','{isEtf}','{isActivelyTrading}','{isAdr}','{isFund}')")
+            f"INSERT INTO `company_statements` VALUES ('{company_id}', '{date}', '{price}', '{beta}', '{volAvg}', '{mktCap}', '{latsDiv}', '{changes}', '{currency}', '{cik}', '{isin}', '{cusip}', '{exchangeFullName}', '{exchange}', '{industry}', '{ceo}', '{sector}', '{country}', '{fullTimeEmployees}','{phone}','{address}','{city}', '{state}','{zip}','{dcfDiff}','{dcf}','{ipoDate}','{isEtf}','{isActivelyTrading}','{isAdr}','{isFund}')")
     )
+    connection.commit()
 
 
 def get_company_id(entry, conn):
