@@ -31,18 +31,14 @@ def get_bond_id(entry, entry_row, connection):
     
     if entry_row not in ["_bond_date", "_bond_currency", "_bond_name"]:
             duration = entry_row[6:]
-            result = connection.execute(
-                text(
-                    f"SELECT bond_id FROM `bonds` WHERE treasuryName = '{treasuryNameVal}' AND currency = '{currencyVal}' AND duration = '{duration}'"
-                    )
-                )
+            result = connection.execute(text(f"SELECT bond_id FROM `bonds` WHERE treasuryName = '{treasuryNameVal}' AND currency = '{currencyVal}' AND duration = '{duration}'"))
             sql_row = result.one_or_none()
             if sql_row is None:
                 # execute plain sql insert statement - transaction begins
                 connection.execute(text(f"INSERT INTO `bonds`(`bond_id`, `treasuryName`, 'currency', 'duration') VALUES (NULL, '{treasuryNameVal}', '{currencyVal}', '{duration}')"))
                 connection.commit()
                 # get the generated ID
-                result = connection.execute(text(f"SELECT bond_id FROM `bonds` WHERE treasuryName = '{treasuryNameVal} AND 'currency = '{currencyVal}'")) 
+                result = connection.execute(text(f"SELECT bond_id FROM `bonds` WHERE treasuryName = '{treasuryNameVal} AND 'currency = '{currencyVal}' AND duration = '{duration}'")) 
                 bond_id = result.one()[0]
             else:
                 bond_id = sql_row[0]
