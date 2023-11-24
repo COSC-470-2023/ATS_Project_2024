@@ -3,13 +3,10 @@ import json
 import traceback
 
 from sqlalchemy import text
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import SQLAlchemyError
 
-#changes that will need to be made, Bonds table has now been split into 2 tables. New values in each table https://drive.google.com/drive/u/0/folders/144umsHenP5lvvVF1C70aVtW5BvJn6VTI
-#table 1: Bonds(bond_id BIGINT, country VARCHAR2(30), duration VARCHAR2(10), currency VARCHAR2(8))
-#table 2: Bond_values(bond_ID BIGINT, date DATETIME, rate DECIMAL)
 
-def load(path):
+def load_output_file(path):
     try:
         with open(path, "r") as output_file:
             output_data = json.load(output_file)
@@ -20,42 +17,62 @@ def load(path):
     except json.JSONDecodeError:
         print(f"Error decoding JSON in '{path}'")
         exit(1)
+        
+def execute_insert(entry, entry_row, connection, bond_id):
+    #declare and initialize variables, rate is handled a little differently since it's from the same spot as the duration
+    dateVal = entry['_bond_date']
+    rate = entry[entry_row]
+    #execute insert into bond_values
+    connection.execute(text(f"insert into `bond_values`(`Date`, `bondID`, `Rate`) values ('{dateVal}', '{bond_id}', '{rate}')"))
+
+def get_bond_id(entry, entry_row, connection):
+    currencyVal = entry['_bond_currency']
+    treasuryNameVal = entry['_bond_name']
+    
+    if entry_row not in ["_bond_date", "_bond_currency", "_bond_name"]:
+            duration = entry_row[6:]
+            result = connection.execute(
+                text(
+                    f"SELECT bond_id FROM `bonds` WHERE treasuryName = '{treasuryNameVal}' AND currency = '{currencyVal}' AND duration = '{duration}'"
+                    )
+                )
+            sql_row = result.one_or_none()
+            if sql_row is None:
+                # execute plain sql insert statement - transaction begins
+                connection.execute(text(f"INSERT INTO `bonds`(`bond_id`, `treasuryName`, 'currency', 'duration') VALUES (NULL, '{treasuryNameVal}', '{currencyVal}', '{duration}')"))
+                connection.commit()
+                # get the generated ID
+                result = connection.execute(text(f"SELECT bond_id FROM `bonds` WHERE treasuryName = '{treasuryNameVal} AND 'currency = '{currencyVal}'")) 
+                bond_id = result.one()[0]
+            else:
+                bond_id = sql_row[0]
+                
+            return bond_id
+    else:
+        #returns false if the entry_row is either date, currency or name
+        return False
+
 
 def main():
     # load json
-    data = load('../../Data_Collection/Output/bonds_output.json')
+    data = load_output_file('../../Data_Collection/Output/bonds_output.json')
 
     try:
         # create with context manager
         with connect.connect() as conn:
             for entry in data:
-                dateVal = entry['_bond_date']
-                currencyVal = entry['_bond_currency']
-                treasuryNameVal = entry['_bond_name']
-                for row in entry:
-                    # skip the first few rows
-                    if row == "_bond_date" or "_bond_currency" or "_bond_name":
-                        continue
-                    duration = row[6:] # cut off the _bond_ stuff that exists for some reason
-                    # see if the entry already exists, and if not, make it
-                    result = conn.execute(text(f"SELECT bond_id FROM `bonds` WHERE treasuryName = '{treasuryNameVal} AND 'currency = '{currencyVal}' AND 'duration = '{duration}'"))
-                    row = result.one_or_none()
-                    if row is None:
-                        # execute plain sql insert statement - transaction begins
-                        conn.execute(text(f"INSERT INTO `bonds`(`bond_id`, `treasuryName`, 'currency', 'duration') VALUES (NULL, '{treasuryNameVal}', '{currencyVal}', '{duration}')"))
-                        conn.commit()
-                        # get the generated ID
-                        result = conn.execute(text(f"SELECT bond_id FROM `bonds` WHERE treasuryName = '{treasuryNameVal} AND 'currency = '{currencyVal}'")) 
-                        bondID = result.one()[0]
-                    else:
-                        bondID = row[0]                   
-                    rate = entry[row]
-                    try:
-                        conn.execute(text(f"insert into `bond_values`(`Date`, `bondID`, `Rate`) values ('{dateVal}', '{bondID}', '{rate}')"))
-                        conn.commit()
-                    except IntegrityError as e: # catch duplicate entries
-                        continue
-                
+               for entry_row in entry:
+                   bond_id = get_bond_id(entry, entry_row, conn)
+                   # If the returned bond_id is False then the insertion is skipped
+                   if(bond_id == False):
+                       continue
+                   try:
+                       # process bond data
+                       execute_insert(entry, entry_row, conn, bond_id)
+                   except SQLAlchemyError as e:
+                       # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
+                       print(f"Error: {e}")
+                       continue
             
     except Exception as e:
         print(e)
