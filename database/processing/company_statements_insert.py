@@ -53,6 +53,7 @@ def execute_insert(connection, entry, company_id):
     dcfDiff = entry["_company_dcfDiff"]
     dcf = entry["_company_dcf"]
     ipoDate = entry["_company_ipoDate"]
+    # convert bool to int for insertion
     isEtf = 1 if entry["_company_isEtf"] else 0
     isActivelyTrading = 1 if entry["_company_isActivelyTrading"] else 0
     isAdr = 1 if entry["_company_isAdr"] else 0
