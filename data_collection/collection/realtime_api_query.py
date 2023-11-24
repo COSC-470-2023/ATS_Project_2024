@@ -49,8 +49,8 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
                         output_type = non_api_fields[non_api_field]['output_type']
                         # Handler for "unix_time" conversion to date time
                         # TODO add more cases later, for the first API this is all we need.
-                        if input_type == "unix_time":
-                            if output_type == "date_time":
+                        if input_type == "_unix_time":
+                            if output_type == "_date_time":
                                 try:
                                     entry[map_to] = str(datetime.fromtimestamp(entry[src]))
                                 except TypeError:
