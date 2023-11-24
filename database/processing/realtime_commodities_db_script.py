@@ -1,13 +1,11 @@
 import connect
 import json
 import traceback
-import datetime
-
 from sqlalchemy import text
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import SQLAlchemyError
 
 
-def load(path):
+def load_output_file(path):
     try:
         with open(path, "r") as output_file:
             output_data = json.load(output_file)
@@ -18,64 +16,81 @@ def load(path):
     except json.JSONDecodeError:
         print(f"Error decoding JSON in '{path}'")
         exit(1)
+        
+def execute_insert(connection, entry, commodity_id):
+    # Declare and initialize variables
+    date = entry['_realtime_date'] 
+    price = entry['_realtime_price']
+    changePercent = entry['_realtime_changePercent']
+    change = entry['_realtime_change']
+    dayHigh = entry['_realtime_dayHigh']
+    dayLow = entry['_realtime_dayLow']
+    yearHigh = entry['_realtime_yearHigh']
+    yearLow = entry['_realtime_yearLow']
+    marketCap = entry['_realtime_mktCap']
+    exchange = entry['_realtime_exchange']
+    commodityOpen = entry['_realtime_open']
+    close = entry['_realtime_prevClose']
+    volume = entry['_realtime_volume']
+    volumeAverage = entry['_realtime_volAvg']
+    
+    # Execute row insertion
+    connection.execute(
+        text(
+            f"insert into `realtime_commodity_values` values ('{commodity_id}', '{date}', '{price}', '{changePercent}', '{change}', '{dayHigh}', '{dayLow}', '{yearHigh}', '{yearLow}', '{marketCap}', '{exchange}', '{commodityOpen}', '{close}', '{volume}', '{volumeAverage}')"
+            )
+        )
 
-def insert(jsonFile):
+
+def get_commodity_id(entry, connection):
+    #Declare and initalize variables
+    symbol = entry['_realtime_symbol']
+    name = entry['_realtime_name']
+    selectQuery = f"select id from `commodities` where symbol = '{symbol}'"
+    
+    # Check if commodity exists in commodities table
+    result = connection.execute(text(selectQuery))
+    row = result.one_or_none()
+
+    if row is None:
+        # if commodity doesn't exist, create new row in commodites table - trigger generates new ID
+        connection.execute(
+            text(
+                f"INSERT INTO `commodities`(`id`, `commodityName`, `symbol`) values (NULL, '{name}', '{symbol}')"
+            )
+        )
+
+        # get the generated ID
+        result = connection.execute(text(selectQuery))
+        company_id = result.one()[0]
+    else:
+        # if the company exists, fetch the existing ID
+        company_id = row[0]
+        
+    return company_id
+
+def main():
     # load json 
-    # idk what this will be called. update when able
+    # File name may need changes depending on query outputs
     # variable setting may have to be adjusted too
-    data = load(jsonFile)
+    data = load('../../data_collection/output/commodity_output.json')
 
     try:
-        # create with context manager
+        # create with context manager, implicit commit on close
         with connect.connect() as conn:
             for entry in data:
-                symbol = entry['symbol']
-                name = entry['name']
-                # establish if it exists already
-                result = conn.execute(text(f"select id from `commodities` where symbol = '{symbol}'"))
-                row = result.one_or_none()
-                if row is None:
-                    # execute plain sql insert statement - transaction begins
-                    conn.execute(text(f"insert into `commodities`(`id`, `commodityName`, `symbol`) values (NULL, '{name}', '{symbol}')"))
-                    conn.commit()
-                    # get the generated ID
-                    result = conn.execute(text(f"select id from `commodities` where symbol = '{symbol}'")) 
-                    CommodityID = result.one()[0]
-                else:
-                    CommodityID = row[0]
-                    
-                # putting data into variables (I really hate this)
-                date = datetime.datetime.fromtimestamp(entry['timestamp']) 
-                price = entry['price']
-                changePercent = entry['changesPercentage']
-                change = entry['change']
-                dayHigh = entry['dayHigh']
-                dayLow = entry['dayLow']
-                yearHigh = entry['yearHigh']
-                yearLow = entry['yearLow']
-                marketCap = entry['marketCap']
-                if marketCap is None:
-                    marketCap = "NULL"
-                else:
-                    marketCap = "'" + marketCap + "'"
-                exchange = entry['exchange']
-                commodityOpen = entry['open']
-                close = entry['previousClose']
-                volume = entry['volume']
-                volumeAverage = entry['avgVolume']
+                commodity_id = get_commodity_id(entry, conn)
                 try:
-                    conn.execute(text(f"insert into `realtime_commodity_values`(`commodity_id`, `date`, `price`, `changePercentage`, `change`, `dayHigh`, `dayLow`, `yearHigh`, `yearLow`, `mktCap`, `exchange`, `open`, `prevClose`, `volume`, `volAvg`) values ('{CommodityID}', '{date}', '{price}', '{changePercent}', '{change}', '{dayHigh}', '{dayLow}', '{yearHigh}', '{yearLow}', {marketCap}, '{exchange}', '{commodityOpen}', '{close}', '{volume}', '{volumeAverage}')"))
-                    conn.commit()
-                except IntegrityError as e: # catch duplicate entry
-                    pass
-                
-            
+                    # process realtime data
+                    execute_insert(conn, entry, commodity_id)
+                except SQLAlchemyError as e:
+                    # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
+                    print(f"Error: {e}")
+                    continue
+
     except Exception as e:
-        print(e)
         print(traceback.format_exc())
-        print("SQL connection error")
+        print(f"SQL connection error: {e}")
 
 if __name__ == "__main__":
-    jsonFile = '../../data_collection/output/realtime_commodities_output.json'
-    insert(jsonFile)
-
+    main()
