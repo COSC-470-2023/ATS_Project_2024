@@ -21,46 +21,53 @@ def load_output_file(path):
         
 def execute_insert(connection, entry, index_id):
     # NOTE: entry keys will need to be changed to be inline with new output names
-    for obj in range(len(entry['historical'])):
-        date = entry['historical'][obj]['_historical_date']
-        index_open = entry['historical'][obj]['_historical_open']
-        high = entry['historical'][obj]['_historical_high']
-        low = entry['historical'][obj]['_historical__historical_low']
-        close = entry['historical'][obj]['_historical_close']
-        adj_close = entry['historical'][obj]['a_historical_adjClose']
-        volume = entry['historical'][obj]['_historical_volume']
-        unadjusted_volume = entry['historical'][obj]['_historical_unadjustedVolume']
-        change = entry['historical'][obj]['_historical_change']
-        change_percentage = entry['historical'][obj]['_historical_changePercent']
-        vwap = entry['historical'][obj]['_historical_vwap']
-        change_over_time = entry['historical'][obj]['_historical_changeOverTime']
+        date = entry['_historical_date']
+        index_open = entry['_historical_open']
+        high = entry['_historical_high']
+        low = entry['_historical_low']
+        close = entry['_historical_close']
+        adj_close = entry['_historical_adjClose']
+        volume = entry['_historical_volume']
+        unadjusted_volume = entry['_historical_unadjustedVolume']
+        change = entry['_historical_change']
+        change_percentage = entry['_historical_changePercent']
+        vwap = entry['_historical_vwap']
+        change_over_time = entry['_historical_changeOverTime']
         # Excute row insertion
-        connection.execute(text(f"INSERT INTO `historical_index_values` VALUES ('{index_id}', '{date}', '{index_open}', '{high}', '{low}', '{close}','{adj_close}', '{volume}', '{unadjusted_volume}', '{change}', '{change_percentage}', '{vwap}', '{change_over_time}')"))
+        connection.execute(
+            text(
+                f"INSERT INTO `historical_index_values` VALUES ('{index_id}', '{date}', '{index_open}', '{high}', '{low}', '{close}','{adj_close}', '{volume}', '{unadjusted_volume}', '{change}', '{change_percentage}', '{vwap}', '{change_over_time}')"
+            )
+        )
         connection.commit()
 
 # Used to get id associated with an index        
-def get_index_id(entry, conn):
+def get_index_id(entry, connection):
     symbol = entry['_historical_symbol']
     name = entry['_historical_name']
+    id_query = f"SELECT id FROM `indexes` WHERE symbol = '{symbol}'"
     # check if index exists in indexes table
-    result = conn.execute(text(f"SELECT id FROM `indexes` WHERE symbol = '{symbol}'"))
+    result = connection.execute(text(id_query))
     row = result.one_or_none()
     if row is None:
         # execute plain sql insert statement - trigger will fire
-        conn.execute(text(f"INSERT INTO `indexes`(`indexname`, `symbol`) VALUES ('{name}', '{symbol}')"))
-        conn.commit()
+        connection.execute(
+            text(
+                f"INSERT INTO `indexes`(`indexname`, `symbol`) VALUES ('{name}', '{symbol}')"
+            )
+        )
+        connection.commit()
         # get id generated from trigger
-        result = conn.execute(text(f"SELECT id FROM `indexes` WHERE symbol = '{symbol}'")) 
+        result = connection.execute(text(id_query)) 
         index_id = result.one()[0]    
     else:
         index_id = row[0]
     return index_id
 
 def main():
-    # Load json data
-    historical_data = load_output_file('./SMF_Project_2023/data_collection/output/index_output.json')
-
     try:
+        # Load json data
+        historical_data = load_output_file('./data_collection/output/index_output.json')
         # create with context manager
         with connect.connect() as conn:
             for entry in historical_data:
@@ -73,9 +80,8 @@ def main():
                     continue
                 
     except Exception as e:
-        print(e)
         print(traceback.format_exc())
-        print("SQL connection error")
+        print(f"SQL connection error: {e}")
 
 # protected entrypoint
 if __name__ == "__main__":

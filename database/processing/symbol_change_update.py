@@ -1,8 +1,7 @@
 import json
 import traceback
 from sqlalchemy import text
-
-from database.processing import connect
+import connect
 
 
 def load_output_file(path):
@@ -21,10 +20,9 @@ def load_output_file(path):
         exit(1)
 
 
-def update_symbol(conn, symbol):
+def update_symbol(connection, symbol):
     try:
         # Variable Declarations
-        date = symbol["date"]
         name = symbol["name"]
         old_symbol = symbol["oldSymbol"]
         new_symbol = symbol["newSymbol"]
@@ -32,18 +30,17 @@ def update_symbol(conn, symbol):
         #  SQL query
         company_update = text(f"UPDATE Companies SET companyName = '{name}', symbol = '{new_symbol}' WHERE symbol = '{old_symbol}'")
 
-        conn.execute(company_update)
-        conn.commit()
+        connection.execute(company_update)
+        connection.commit()
     except Exception as e:
         print(f"Error in updating database: {e}")
         print(traceback.format_exc())
-
 
 def main():
     try:
         # Establish a connection to server
         with connect.connect() as conn:
-            symbol_change = load_output_file(r".\SMF_Project_2023\data_collection\output\dummy_output_file.json")
+            symbol_change = load_output_file('./SMF_Project_2023/data_collection/output/dummy_output_file.json')
             for symbol in symbol_change:
                 update_symbol(conn, symbol)
     except Exception as e:
@@ -51,7 +48,5 @@ def main():
         print(traceback.format_exc())
         print("Database connection error")
 
-
 if __name__ == "__main__":
     main()
-
