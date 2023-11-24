@@ -35,7 +35,7 @@
         "output_type": "date_time"
       }
     },
-      "index_composites": [
+    "index_composites": [
       { "symbol": "^GSPC", "name": "S&P 500"},
       { "symbol": "^IXIC", "name": "NASDAQ Composite"},
       { "symbol": "^DJI", "name": "Dow Jones Industrial Average"},

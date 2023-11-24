@@ -3,56 +3,81 @@
 # Iterate through the stocks using the key and url, then move onto the next API
 # TODO make the directories for file read and out absolute ie not relative locations to the script
 import json
-import time
 import os
 import errno
 import requests
+from datetime import datetime
+from datetime import timedelta
 
 
 # Loads the configuration file.
 def load_config():
-    config_path = "configuration/bonds_list.json"
-    try:
-        config_file = open(config_path, "r")
-        config = json.load(config_file)
-        return config
-    except IOError:
-        print(f"IOError while accessing bonds query config file at path: {config_path}")
+    config_path = "../configuration/bonds_query_cfg.json"
+    with open(config_path, 'r') as file:
+        try:
+            config = json.load(file)
+            return config
+        except IOError:
+            print(f"IOError while accessing bonds query config file at path: {config_path}")
+            exit(-1001)  # Exit program with code -1001 (Invalid config path)
+        except json.JSONDecodeError as e:
+            print(f"JSON decoding encountered an error while decoding {config_path}:\n{e}")
+            exit(-1002)  # Exit program with code -1002 (Invalid config structure)
 
 
-def make_queries():
-    bonds_output = []
+def make_queries(api_url, api_key, api_fields, non_api_fields):
+    bonds_config = load_config() # init as dict
+    bonds_dict = {}
 
     # Iterate through each API in the list
-    for api in range(len(JSON_config)):
+    for api_config in bonds_config:
         # Get the parameters for the query, including the list of start end dates
-        api_url = JSON_config[api]['api']
-        api_key = JSON_config[api]['api_key']
-        api_datewindows = JSON_config[api]['date_windows']
-        api_rate_limit = JSON_config[api]['rate_limit_per_min']
+        api_url = api_config['url']
+        api_key = api_config['api_key']
 
-        # Iterate through each start-end date pair and make a API call
-        for date in range(len(api_datewindows)):
-            start_date = api_datewindows[date][0]
-            end_date = api_datewindows[date][1]
-            # Replace the URL parameters with our current API configs
-            query = api_url.replace("{START_DATE}", start_date).replace("{END_DATE}", end_date).replace("{API_KEY}",
-                                                                                                        api_key)
-            response = requests.get(query)
-            # convert the response to json and append to list
-            data = response.json()
-            bonds_output += data
+        # Iterate through each start-end date pair and make an API call
+        # date range yesterday - today
+        today = datetime.today()
+        yesterday = today - timedelta(days=1)
 
-            # Rate limit the query speed based on the rate limit
-            # From inside the JSON. Check that the key wasnt valued at null, signifying no rate limit.
-            if api_rate_limit is not None:
-                time.sleep(60/api_rate_limit)
+        start_date = yesterday.strftime('%Y-%m-%d')
+        end_date = today.strftime('%Y-%m-%d')
+        # Replace the URL parameters with our current API configs
+        query = api_url.replace("{START_DATE}", start_date).replace("{END_DATE}", end_date).replace("{API_KEY}", api_key)
 
-    return bonds_output
+        response = requests.get(query)
+        # convert the response to json
+        bonds_data = json.loads(response.text)
+        print(bonds_data)
+        config_fields_dict = bonds_config[0].get('api_fields')
+        print(config_fields_dict)
+
+        name = bonds_config[0].get('name')
+        print(name)
+        # convert bonds list to dictionary
+        bonds_dict = dict(zip(config_fields_dict.values(), list(bonds_data[0].values())))
+        print("bonds dictionary: ", bonds_dict)
+        #bonds_dict.update(name)
+
+    return bonds_dict
 
 
-def write_file(output):
-    output_dir = "output/"
+def reformat(config, data):
+    new_key_list = []
+
+    for entry in data:
+        formatted_data = {
+            "_bond_name": config['name'],
+        }
+        for api_field, non_api_field in config['api_fields'].items():
+            formatted_data[api_field] = entry.get(non_api_field, None)
+
+        new_key_list.append(formatted_data)
+
+    return new_key_list
+
+def write_file(bond_output):
+    output_dir = "../output/"
     if not os.path.exists(os.path.dirname(output_dir)):
         try:
             os.makedirs(os.path.dirname(output_dir))
@@ -60,12 +85,25 @@ def write_file(output):
             if exc.errno != errno.EEXIST:
                 raise
 
-    with open("output/raw_bonds_output.json", "w") as outfile:
-        json.dump(output, outfile, indent=2)
+    with open("../output/bonds_output.json", "w") as outfile:
+        json.dump(bond_output, outfile, indent=2)
 
+
+def main():
+    bond_config = load_config()
+    output = []
+
+    for entry in range(len(bond_config)):
+        # Load variables from the configuration
+        url = bond_config[entry]['url']
+        key = bond_config[entry]['api_key']
+        api_fields = bond_config[entry]['api_fields']
+        non_api_fields = bond_config[entry]['non_api_fields']
+
+    # call make queries
+    output = make_queries(url, key, api_fields, non_api_fields)
+    write_file(output)
 
 # code to only be executed if ran as script
 if __name__ == "__main__":
-    JSON_config = load_config()
-    output = make_queries()
-    write_file(output)
+    main()
