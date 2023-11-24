@@ -53,10 +53,10 @@ def execute_insert(connection, entry, company_id):
     dcfDiff = entry["_company_dcfDiff"]
     dcf = entry["_company_dcf"]
     ipoDate = entry["_company_ipoDate"]
-    isEtf = entry["_company_isEtf"]
-    isActivelyTrading = entry["_company_isActivelyTrading"]
-    isAdr = entry["_company_isAdr"]
-    isFund = entry["_company_isFund"]
+    isEtf = 1 if entry["_company_isEtf"] else 0
+    isActivelyTrading = 1 if entry["_company_isActivelyTrading"] else 0
+    isAdr = 1 if entry["_company_isAdr"] else 0
+    isFund = 1 if entry["_company_isFund"] else 0
 
     # Execute row insertion
     connection.execute(
