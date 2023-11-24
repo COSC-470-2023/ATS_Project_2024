@@ -16,6 +16,7 @@ symbol_changelog = {}
 # Global flag for symbol changes
 symbol_changed = False
 
+
 # Loads the system configuration file specifying all symbols the system is tracking
 def load_system_config():
     # TODO Define explicit file paths instead of relative file paths
@@ -27,9 +28,11 @@ def load_system_config():
     # TODO Implement system logging when defined to log/flag a failure in this component
     except IOError:
         print(f"IOError while accessing configuration file at path: {config_path}")
-        exit(1)   
+        exit(1)
 
-# Loads the system query configuration file
+    # Loads the system query configuration file
+
+
 def load_query_config():
     # TODO Define explicit file paths instead of relative file paths
     query_config_path = "../configuration/symbol_change.json"
@@ -42,6 +45,7 @@ def load_query_config():
         print(f"IOError while accessing configuration file at path: {query_config_path}")
         exit(1)
 
+
 # Using provided API URL and Key, queries and appends results to an unmodified raw output
 def make_queries(parsed_api_url, parsed_api_key):
     output = []
@@ -52,28 +56,30 @@ def make_queries(parsed_api_url, parsed_api_key):
     output += data
     return output
 
+
 # Trim the raw output to remove changes that are not from the current date
 def trim_query_output(raw_API_output):
     modified_API_output = []
     today_date = date.today()
-    #Convert date to string format
+    # Convert date to string format
     today = today_date.strftime('%Y-%m-%d')
     for item in range(len(raw_API_output)):
         item_date = raw_API_output[item]['date']
-        try: 
+        try:
             if item_date == today:
                 modified_API_output.append(raw_API_output[item])
                 # Log the symbol as changed for use later
-                global symbol_changed 
+                global symbol_changed
                 symbol_changed = True
                 global symbol_changelog
-                symbol_changelog |= {modified_API_output[item]['oldSymbol']:modified_API_output[item]['newSymbol']}
+                symbol_changelog |= {modified_API_output[item]['oldSymbol']: modified_API_output[item]['newSymbol']}
                 # print(raw_API_output[item])
         # TODO Implement system logging when defined to log/flag a failure in this component
         except (ValueError, TypeError) as e:
             print(f"Error processing date: {e}")
             exit(1)
     return modified_API_output
+
 
 # Modify the structure of the symbol change list to include oldName as a field and maps field names to expected output names
 # TODO Pull oldName from system_config
@@ -87,8 +93,10 @@ def modify_output_list(symbol_change_list, system_config):
         newSymbol = entry['newSymbol']
         # Currently only works with one API in the configuration list
         oldName = ""
-        modified_symbols_list.append({"_change_date": date, "_change_newName": newName, "_change_oldName": oldName, "_change_newSymbol": newSymbol, "_change_oldSymbol": oldSymbol})
+        modified_symbols_list.append({"_change_date": date, "_change_newName": newName, "_change_oldName": oldName,
+                                      "_change_newSymbol": newSymbol, "_change_oldSymbol": oldSymbol})
     return modified_symbols_list
+
 
 def write_output_file(symbol_change_json):
     # TODO Define explicit file paths instead of relative file paths
@@ -101,6 +109,7 @@ def write_output_file(symbol_change_json):
                 raise
     with open("../output/Symbol_Change_List.json", "w") as outfile:
         json.dump(symbol_change_json, outfile, indent=2)
+
 
 # Modifies the symbols that have been changed in the system configuration file and returns the modified list to be written
 # NOTE Currently assumes only one API configuration exists in the system
@@ -126,6 +135,7 @@ def modify_system_config(system_config_json):
             else:
                 continue
     return modified_system_config
+
 
 def write_system_config_changes(modified_system_config):
     # TODO Define explicit file paths instead of relative file paths
@@ -166,6 +176,7 @@ def main():
     print('Task complete.')
     write_output_file(symbol_change_output)
     exit(0)
+
 
 # Code to be executed when ran as script
 if __name__ == "__main__":
