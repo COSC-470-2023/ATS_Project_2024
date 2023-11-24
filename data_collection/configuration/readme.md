@@ -65,7 +65,7 @@ API's and data sources can vary in field names, and the common internal names wi
 ```
 _realtime_name
 _realtime_symbol
-_realtime_date
+_realtime_date *
 _realtime_price
 _realtime_changePercent
 _realtime_change
@@ -99,11 +99,8 @@ _historical_changePercent
 _historical_vwap
 _historical_changeOverTime
 
-_bond_name
+_bond_name *
 _bond_date
-_bond_rate
-_bond_duration
-_bond_currency
 _bond_month1
 _bond_month2
 _bond_month3
@@ -153,7 +150,7 @@ _company_isFund
 _change_newSymbol
 _change_oldSymbol
 _change_newName
-_change_oldName
+_change_oldName *
 _change_date
 ```
 <h2>List of input and output types for added field conversion</h2>

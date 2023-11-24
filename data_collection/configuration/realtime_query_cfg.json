@@ -31,8 +31,8 @@
       "date": {
         "src": "timestamp",
         "mapping": "_realtime_date",
-        "input_type": "unix_time",
-        "output_type": "date_time"
+        "input_type": "_unix_time",
+        "output_type": "_date_time"
       }
     },
       "index_composites": [
