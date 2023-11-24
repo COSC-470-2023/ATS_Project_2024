@@ -29,6 +29,7 @@ def make_queries(api_url, api_key, api_fields, non_api_fields):
     bonds_config = load_config() # init as dict
     bonds_dict = {}
 
+    # TODO MAKE TRY EXCEPT BLOCK
     # Iterate through each API in the list
     for api_config in bonds_config:
         # Get the parameters for the query, including the list of start end dates
@@ -39,42 +40,29 @@ def make_queries(api_url, api_key, api_fields, non_api_fields):
         # date range yesterday - today
         today = datetime.today()
         yesterday = today - timedelta(days=1)
-
         start_date = yesterday.strftime('%Y-%m-%d')
         end_date = today.strftime('%Y-%m-%d')
+
         # Replace the URL parameters with our current API configs
         query = api_url.replace("{START_DATE}", start_date).replace("{END_DATE}", end_date).replace("{API_KEY}", api_key)
-
         response = requests.get(query)
+
         # convert the response to json
         bonds_data = json.loads(response.text)
-        print(bonds_data)
+        # read in common list of keys
         config_fields_dict = bonds_config[0].get('api_fields')
-        print(config_fields_dict)
-
+        # create new key value pair '_bond_name: name'
+        map_to = bonds_config[0].get('non_api_fields').get('name').get('mapping')
         name = bonds_config[0].get('name')
-        print(name)
-        # convert bonds list to dictionary
+        new_kv_pair = {map_to : name}
+
+        # format output
         bonds_dict = dict(zip(config_fields_dict.values(), list(bonds_data[0].values())))
-        print("bonds dictionary: ", bonds_dict)
-        #bonds_dict.update(name)
+        # add new key value pair
+        bond_dict = [{**new_kv_pair, **bonds_dict}]
 
-    return bonds_dict
+    return bond_dict
 
-
-def reformat(config, data):
-    new_key_list = []
-
-    for entry in data:
-        formatted_data = {
-            "_bond_name": config['name'],
-        }
-        for api_field, non_api_field in config['api_fields'].items():
-            formatted_data[api_field] = entry.get(non_api_field, None)
-
-        new_key_list.append(formatted_data)
-
-    return new_key_list
 
 def write_file(bond_output):
     output_dir = "../output/"
@@ -92,7 +80,7 @@ def write_file(bond_output):
 def main():
     bond_config = load_config()
     output = []
-
+    # TODO make try except
     for entry in range(len(bond_config)):
         # Load variables from the configuration
         url = bond_config[entry]['url']
