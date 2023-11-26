@@ -6,7 +6,7 @@ import json
 import os
 import errno
 import requests
-from datetime import datetime
+from datetime import datetime, date
 from datetime import timedelta
 
 
@@ -37,14 +37,13 @@ def make_queries(api_url, api_key, api_fields, non_api_fields):
         api_key = api_config['api_key']
 
         # Iterate through each start-end date pair and make an API call
-        # date range yesterday - today
-        today = datetime.today()
-        yesterday = today - timedelta(days=1)
-        start_date = yesterday.strftime('%Y-%m-%d')
-        end_date = today.strftime('%Y-%m-%d')
+        # date range 5 days ago - today (mon-sat)
+        end_date = date.today()
+        start_date = end_date - timedelta(days=7)
+        print("start: ", start_date, " end: ", end_date)
 
         # Replace the URL parameters with our current API configs
-        query = api_url.replace("{START_DATE}", start_date).replace("{END_DATE}", end_date).replace("{API_KEY}", api_key)
+        query = api_url.replace("{START_DATE}", str(start_date)).replace("{END_DATE}", str(end_date)).replace("{API_KEY}", api_key)
         response = requests.get(query)
 
         # convert the response to json
@@ -56,12 +55,14 @@ def make_queries(api_url, api_key, api_fields, non_api_fields):
         name = bonds_config[0].get('name')
         new_kv_pair = {map_to : name}
 
-        # format output
-        bonds_dict = dict(zip(config_fields_dict.values(), list(bonds_data[0].values())))
-        # add new key value pair
-        bond_dict = [{**new_kv_pair, **bonds_dict}]
+        for i in range(len(bonds_data)):
+            # format output
+            bonds_dict = dict(zip(config_fields_dict.values(), list(bonds_data[i].values())))
+            # add new key value pair
+            bonds_dict = {**new_kv_pair, **bonds_dict}
+            bonds_data[i] = bonds_dict
 
-    return bond_dict
+    return bonds_data
 
 
 def write_file(bond_output):
@@ -87,9 +88,8 @@ def main():
         key = bond_config[entry]['api_key']
         api_fields = bond_config[entry]['api_fields']
         non_api_fields = bond_config[entry]['non_api_fields']
-
-    # call make queries
-    output = make_queries(url, key, api_fields, non_api_fields)
+        # call make queries
+        output = make_queries(url, key, api_fields, non_api_fields)
     write_file(output)
 
 # code to only be executed if ran as script
