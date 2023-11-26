@@ -61,32 +61,21 @@ class CommodityTest(unittest.TestCase):
             self.assertLessEqual(code, 0)"""
             
     def test_realtime(self):
-        # if code is 1, the test failed
-        code = 0
-        try:
-            data = rt.load_output_file("realtime_commodity_test.json")
-            with connect.connect() as conn:
-                for entry in data: # should just be one entry, but have to go a layer down anyway
-                    print("hello")
-                    commodity_id = rt.get_commodity_id(entry, conn)
-                    rt.execute_insert(conn, entry, commodity_id)
-                    result = conn.execute(text(f"select id from `commodities` where symbol = 'HGUSD'"))
-                    row = result.one_or_none()
-                    self.assertIsNotNone(row)
-                    retrieved_commodity_id = row[0] # attempting to throw an exception
-                    self.assertEqual(retrieved_commodity_id, commodity_id, msg="ID doesn't match. get_commodity_id is retrieving the wrong ID.")
-                    result = conn.execute(text(f"select volume from `realtime_commodity_values` where commodity_id = '{commodity_id}'"))
-                    row = result.one_or_none()
-                    self.assertIsNotNone(row)
-                    volume = row[0] # attempting to throw an exception
-                    self.assertEqual(volume, 13394, msg="Volume doesn't match 13394. Either the test JSON was altered, or the insertion script is inserting the wrong value.")
-        except Exception as e:
-            # hitting an exception means either lines after 'row =' got a none
-            print(e)
-            print(traceback.format_exc())
-            code = 1
-        finally:
-            self.assertEqual(code, 0, msg="An exception occured, likely from not actually inserting anything. Check the insertion code and the printed exception here.")
+        data = rt.load_output_file("realtime_commodity_test.json")
+        with connect.connect() as conn:
+            for entry in data: # should just be one entry, but have to go a layer down anyway
+                commodity_id = rt.get_commodity_id(entry, conn)
+                rt.execute_insert(conn, entry, commodity_id)
+                result = conn.execute(text(f"select id from `commodities` where symbol = 'HGUSD'"))
+                row = result.one_or_none()
+                self.assertIsNotNone(row, msg="The insertion script did not insert into commodities as expected, as the expected row was not found in the database.")
+                retrieved_commodity_id = row[0]
+                self.assertEqual(retrieved_commodity_id, commodity_id, msg="ID doesn't match. get_commodity_id is retrieving the wrong ID.")
+                result = conn.execute(text(f"select volume from `realtime_commodity_values` where commodity_id = '{commodity_id}'"))
+                row = result.one_or_none()
+                self.assertIsNotNone(row, msg="The insertion script did not insert into realtime_commodity_values as expected, as the expected row was not found in the database.")
+                volume = row[0]
+                self.assertEqual(volume, 13394, msg="Volume doesn't match 13394. Either the test JSON was altered, or the insertion script is inserting the wrong value.")
 
     
 if __name__ == '__main__':
