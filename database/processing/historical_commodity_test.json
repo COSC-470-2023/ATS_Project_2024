@@ -1,22 +1,22 @@
 {
     "historicalStockList": [
       {
-        "symbol": "HGUSD",
+        "_historical_symbol": "HGUSD",
         "historical": [
           {
-            "date": "2023-11-16",
-            "open": 3.714,
-            "high": 3.7425,
-            "low": 3.6835,
-            "close": 3.695,
-            "adjClose": 3.695,
-            "volume": 89522,
-            "unadjustedVolume": 89522,
-            "change": -0.019,
-            "changePercent": -0.51158,
-            "vwap": 3.71,
-            "label": "November 16, 23",
-            "changeOverTime": -0.0051158
+            "_historical_date": "2023-11-16",
+            "_historical_open": 3.714,
+            "_historical_high": 3.7425,
+            "_historical_low": 3.6835,
+            "_historical_close": 3.695,
+            "_historical_adjClose": 3.695,
+            "_historical_volume": 89522,
+            "_historical_unadjustedVolume": 89522,
+            "_historical_change": -0.019,
+            "_historical_changePercent": -0.51158,
+            "_historical_vwap": 3.71,
+            "_historical_label": "November 16, 23",
+            "_historical_changeOverTime": -0.0051158
           }
 		 ]
 	  }

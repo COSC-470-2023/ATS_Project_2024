@@ -62,12 +62,12 @@ def get_commodity_id(entry, connection):
 
         # get the generated ID
         result = connection.execute(text(selectQuery))
-        company_id = result.one()[0]
+        commodity_id = result.one()[0]
     else:
         # if the company exists, fetch the existing ID
-        company_id = row[0]
+        commodity_id = row[0]
         
-    return company_id
+    return commodity_id
 
 def main():
     # load json 

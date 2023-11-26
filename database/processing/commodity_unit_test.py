@@ -64,17 +64,19 @@ class CommodityTest(unittest.TestCase):
         # if code is 1, the test failed
         code = 0
         try:
-            rt.insert("realtime_commodity_test.json")
+            data = rt.load_output_file("realtime_commodity_test.json")
             with connect.connect() as conn:
-                result = conn.execute(text(f"select id from `commodities` where symbol = 'HGUSD'"))
-                row = result.one_or_none()
-                CommodityID = row[0] # attempting to throw an exception
-                result = conn.execute(text(f"select volume from `realtime_commodity_values` where commodity_id = '{CommodityID}'"))
-                row = result.one_or_none()
-                volume = row[0] # attempting to throw an exception
-                if volume != 13394:
-                    # the data inserted was incorrect, or the data retrieved was incorrect
-                    code = 1
+                for entry in data: #should just be one
+                    commodity_id = rt.get_commodity_id(entry, conn)
+                    result = conn.execute(text(f"select id from `commodities` where symbol = 'HGUSD'"))
+                    row = result.one_or_none()
+                    CommodityID = row[0] # attempting to throw an exception
+                    result = conn.execute(text(f"select volume from `realtime_commodity_values` where commodity_id = '{CommodityID}'"))
+                    row = result.one_or_none()
+                    volume = row[0] # attempting to throw an exception
+                    if volume != 13394:
+                        # the data inserted was incorrect, or the data retrieved was incorrect
+                        code = 1
         except Exception as e:
             # hitting an exception means either lines after 'row =' got a none
             print(e)
