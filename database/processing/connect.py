@@ -24,6 +24,7 @@ def connect():
         yield connection
     except Exception as error:
         print(error)
+        raise(error) # the blanket exception catching here results in code saying it ran correctly when it didn't without this line
 
     finally:
         # block executed when closed by context manager, as the with statement is really just a try/finally block

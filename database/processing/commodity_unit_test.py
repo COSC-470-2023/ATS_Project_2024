@@ -26,39 +26,24 @@ from sqlalchemy.exc import (
 
 
 class CommodityTest(unittest.TestCase):
-    
-    """def test_realtime(self):
-        code = 0;
-        try:
-            rt.
-            engine = create_engine(uri)
-            with self.assertRaises(IntegrityError):
-                with engine.connect() as conn:
-                    conn.execute(text("insert into `Bonds` values (null, null, null)"))
-                    conn.commit()
-        except:
-            code = 1;
-        finally:
-            self.assertLessEqual(code, 0)"""
-                
-    # currently out of commission as historical doesn't work regardless    
-    """def test_historical(self):
-        code = 0
-        try:
-            ht.insert("historical_commodity_test.json")
-            with connect.connect() as conn:
+                    
+    def test_historical(self):
+        data = ht.load_output_file("historical_commodity_test.json")
+        with connect.connect() as conn:
+            for entry in data["historicalStockList"]: # should just be one entry, but have to go a layer down anyway
+                print(entry)
+                commodity_id = ht.get_commodity_id(entry, conn)
+                ht.execute_insert(conn, entry, commodity_id)
                 result = conn.execute(text(f"select id from `commodities` where symbol = 'HGUSD'"))
                 row = result.one_or_none()
-                CommodityID = row[0] # attempting to throw an exception
-                result = conn.execute(text(f"select id from `historical_commodities_values` where date = '2023-11-16'"))
+                self.assertIsNotNone(row, msg="The insertion script did not insert into commodities as expected, as the expected row was not found in the database.")
+                retrieved_commodity_id = row[0]
+                self.assertEqual(retrieved_commodity_id, commodity_id, msg="ID doesn't match. get_commodity_id is retrieving the wrong ID.")
+                result = conn.execute(text(f"select volume from `historical_commodity_values` where commodity_id = '{commodity_id}'"))
                 row = result.one_or_none()
-                CommodityID2 = row[0] # attempting to throw an exception
-                if CommodityID != CommodityID2:
-                    code = 1
-        except:
-            code = 1
-        finally:
-            self.assertLessEqual(code, 0)"""
+                self.assertIsNotNone(row, msg="The insertion script did not insert into historical_commodity_values as expected, as the expected row was not found in the database.")
+                volume = row[0]
+                self.assertEqual(volume, 89522, msg="Volume doesn't match the expected value. Either the test JSON was altered, or the insertion script is inserting the wrong value.")
             
     def test_realtime(self):
         data = rt.load_output_file("realtime_commodity_test.json")
@@ -75,7 +60,7 @@ class CommodityTest(unittest.TestCase):
                 row = result.one_or_none()
                 self.assertIsNotNone(row, msg="The insertion script did not insert into realtime_commodity_values as expected, as the expected row was not found in the database.")
                 volume = row[0]
-                self.assertEqual(volume, 13394, msg="Volume doesn't match 13394. Either the test JSON was altered, or the insertion script is inserting the wrong value.")
+                self.assertEqual(volume, 13394, msg="Volume doesn't match the expected value. Either the test JSON was altered, or the insertion script is inserting the wrong value.")
 
     
 if __name__ == '__main__':

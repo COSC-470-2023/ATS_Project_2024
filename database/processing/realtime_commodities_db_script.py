@@ -79,7 +79,7 @@ def main():
     # load json 
     # File name may need changes depending on query outputs
     # variable setting may have to be adjusted too
-    data = load('../../data_collection/output/commodity_output.json')
+    data = load_output_file('../../data_collection/output/commodity_output.json')
 
     try:
         # create with context manager, implicit commit on close
