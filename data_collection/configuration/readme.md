@@ -84,7 +84,7 @@ _realtime_pe
 _realtime_earningsAnnouncement
 _realtime_sharesOutstanding
 
-_historical_name
+_historical_name *
 _historical_symbol
 _historical_date
 _historical_open
@@ -97,7 +97,6 @@ _historical_unadjustedVolume
 _historical_change
 _historical_changePercent
 _historical_vwap
-_historical_label
 _historical_changeOverTime
 
 _bond_name *
@@ -154,9 +153,19 @@ _change_newName
 _change_oldName *
 _change_date
 ```
+`*: fields manually added`<br>
+`**: N/A`
+
 <h2>List of input and output types for added field conversion</h2>
 
 ```
 _unix_time
 _date_time
+_config_name *
+_string
+
+_today **
+_week_before **
 ```
+`*: types that are config sources`<br>
+`**: types that denote date durations for bonds`
