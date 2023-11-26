@@ -3,6 +3,8 @@
     "api": "https://financialmodelingprep.com/api/v4/treasury?from={START_DATE}&to={END_DATE}&apikey={API_KEY}",
     "rate_limit_per_min": 300,
     "api_key": "KEY",
+    "name": "US Treasury",
+    "currency": "USD",
     "fields": {
       "date": "_bond_date",
       "month1": "_bond_month1",
@@ -18,8 +20,20 @@
       "year20": "_bond_year20",
       "year30": "_bond_year30"
     },
-    "name": "US Treasury",
-    "currency": "USD",
+    "non_api_fields": {
+      "name": {
+        "src": null,
+        "mapping": "_bond_name",
+        "input_type": null,
+        "output_type": null
+      },
+       "currency": {
+        "src": null,
+        "mapping": "_bond_currency",
+        "input_type": null,
+        "output_type": null
+      }
+    },
     "date_windows": [
       [
         "2023-03-30",
