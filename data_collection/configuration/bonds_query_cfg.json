@@ -26,6 +26,9 @@
         "input_type": null,
         "output_type": null
       }
-  }
+  },
+    "date_windows": {
+      "days_queried": "7"
+    }
   }
 ]

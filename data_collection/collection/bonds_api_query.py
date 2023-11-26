@@ -26,21 +26,27 @@ def load_config():
 
 
 def make_queries(api_url, api_key, api_fields, non_api_fields):
-    bonds_config = load_config() # init as dict
+    bonds_config = load_config()  # init as dict
     bonds_dict = {}
 
     # TODO MAKE TRY EXCEPT BLOCK
     # Iterate through each API in the list
     for api_config in bonds_config:
-        # Get the parameters for the query, including the list of start end dates
+        # Get the parameters for the query, including the day range to be queried
         api_url = api_config['url']
         api_key = api_config['api_key']
+        # pull date window - defaulted to 7 (hard requirement). Can be configured between 2-90
+        days_queried = int(api_config['date_windows']['days_queried'])
+        if days_queried < 2 or days_queried > 90:
+            print("Days queried cannot be less than 2 or greater than 90.")
+            exit(-1003)  # Exit with code -1003 (Invalid input)
 
-        # Iterate through each start-end date pair and make an API call
-        # date range 5 days ago - today (mon-sat)
+        # make an API call for the last week of bonds data
+        # date range days_queried (configuration) - today
         end_date = date.today()
-        start_date = end_date - timedelta(days=7)
+        start_date = end_date - timedelta(days=days_queried)
         print("start: ", start_date, " end: ", end_date)
+        # add to date windows
 
         # Replace the URL parameters with our current API configs
         query = api_url.replace("{START_DATE}", str(start_date)).replace("{END_DATE}", str(end_date)).replace("{API_KEY}", api_key)
@@ -65,6 +71,7 @@ def make_queries(api_url, api_key, api_fields, non_api_fields):
     return bonds_data
 
 
+#def make_historical_query(url, key):
 def write_file(bond_output):
     output_dir = "../output/"
     if not os.path.exists(os.path.dirname(output_dir)):
