@@ -66,24 +66,27 @@ class CommodityTest(unittest.TestCase):
         try:
             data = rt.load_output_file("realtime_commodity_test.json")
             with connect.connect() as conn:
-                for entry in data: #should just be one
+                for entry in data: # should just be one entry, but have to go a layer down anyway
+                    print("hello")
                     commodity_id = rt.get_commodity_id(entry, conn)
+                    rt.execute_insert(conn, entry, commodity_id)
                     result = conn.execute(text(f"select id from `commodities` where symbol = 'HGUSD'"))
                     row = result.one_or_none()
-                    CommodityID = row[0] # attempting to throw an exception
-                    result = conn.execute(text(f"select volume from `realtime_commodity_values` where commodity_id = '{CommodityID}'"))
+                    self.assertIsNotNone(row)
+                    retrieved_commodity_id = row[0] # attempting to throw an exception
+                    self.assertEqual(retrieved_commodity_id, commodity_id, msg="ID doesn't match. get_commodity_id is retrieving the wrong ID.")
+                    result = conn.execute(text(f"select volume from `realtime_commodity_values` where commodity_id = '{commodity_id}'"))
                     row = result.one_or_none()
+                    self.assertIsNotNone(row)
                     volume = row[0] # attempting to throw an exception
-                    if volume != 13394:
-                        # the data inserted was incorrect, or the data retrieved was incorrect
-                        code = 1
+                    self.assertEqual(volume, 13394, msg="Volume doesn't match 13394. Either the test JSON was altered, or the insertion script is inserting the wrong value.")
         except Exception as e:
             # hitting an exception means either lines after 'row =' got a none
             print(e)
             print(traceback.format_exc())
             code = 1
         finally:
-            self.assertLessEqual(code, 0)
+            self.assertEqual(code, 0, msg="An exception occured, likely from not actually inserting anything. Check the insertion code and the printed exception here.")
 
     
 if __name__ == '__main__':
