@@ -70,12 +70,12 @@ def main():
     # load json 
     # idk what this will be called. update when able
     # variable setting may have to be adjusted too
-    data = load('./data_collection/output/commodity_output.json')
+    data = load_output_file('../../data_collection/output/commodity_output.json')
 
     try:
         # create with context manager, implicit commit on close
         with connect.connect() as conn:
-            for entry in data:
+            for entry in data["historicalStockList"]: # this extra layer seems superfluous compared to realtime
                 commodity_id = get_commodity_id(entry, conn)
                 try:
                     # process historical data
@@ -84,6 +84,9 @@ def main():
                     # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
                     print(f"Error: {e}")
                     continue
+                    
+            # Commit changes to database (otherwise it rolls back)
+            conn.commit()   
 
     except Exception as e:
         print(traceback.format_exc())
