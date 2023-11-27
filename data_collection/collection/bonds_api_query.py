@@ -1,7 +1,6 @@
 # Get data from the bonds API list file
 # Parse the json so we know what our URL and keys are
-# Iterate through the stocks using the key and url, then move onto the next API
-# TODO make the directories for file read and out absolute ie not relative locations to the script
+# Gather data from the date window specified (1-90 days, 7 default)
 import json
 import os
 import errno
@@ -25,6 +24,23 @@ def load_config():
             exit(-1002)  # Exit program with code -1002 (Invalid config structure)
 
 
+def make_historical_query(days_queried):
+    bonds_config = load_config()
+    total_days = days_queried
+    date_windows = []
+    num_chunks = total_days//90  # give the number of 90 day chunks plus the remainder
+    rem = total_days%90  # TODO find the sttart date of the final 'date window', subtract rem from that for the start date of the final 'partial window (remaining days)'
+    print(num_chunks)
+    for chunk in range(num_chunks):
+        start = date.today() - (timedelta(days=90) * (chunk+1))
+        print("start: ", start)
+        end = start + timedelta(days=90)
+        print("end: ", end)
+        window = {"start": start, "end": end}
+        date_windows.append(window)
+
+    return date_windows
+
 def make_queries(api_url, api_key, api_fields, non_api_fields):
     bonds_config = load_config()  # init as dict
     bonds_dict = {}
@@ -36,17 +52,22 @@ def make_queries(api_url, api_key, api_fields, non_api_fields):
         api_url = api_config['url']
         api_key = api_config['api_key']
         # pull date window - defaulted to 7 (hard requirement). Can be configured between 2-90
-        days_queried = int(api_config['date_windows']['days_queried'])
-        if days_queried < 2 or days_queried > 90:
-            print("Days queried cannot be less than 2 or greater than 90.")
+        days_queried = int(api_config['days_queried'])
+        if days_queried < 1:
+            print("Days queried cannot be less than 1.")
             exit(-1003)  # Exit with code -1003 (Invalid input)
-
-        # make an API call for the last week of bonds data
-        # date range days_queried (configuration) - today
-        end_date = date.today()
-        start_date = end_date - timedelta(days=days_queried)
-        print("start: ", start_date, " end: ", end_date)
-        # add to date windows
+        if days_queried > 90:
+            date_window = make_historical_query(days_queried)
+            for i in range(len(date_window)):
+                start_date = date_window[i]
+                end_date = date_window[i]
+        else:
+            # make an API call for the last week of bonds data
+            # date range days_queried (configuration) - today
+            end_date = date.today()
+            start_date = end_date - timedelta(days=days_queried)
+            print("start: ", start_date, " end: ", end_date)
+            # add to date windows
 
         # Replace the URL parameters with our current API configs
         query = api_url.replace("{START_DATE}", str(start_date)).replace("{END_DATE}", str(end_date)).replace("{API_KEY}", api_key)
@@ -61,6 +82,7 @@ def make_queries(api_url, api_key, api_fields, non_api_fields):
         name = bonds_config[0].get('name')
         new_kv_pair = {map_to : name}
 
+        # add new key value to start of output file
         for i in range(len(bonds_data)):
             # format output
             bonds_dict = dict(zip(config_fields_dict.values(), list(bonds_data[i].values())))
@@ -71,7 +93,6 @@ def make_queries(api_url, api_key, api_fields, non_api_fields):
     return bonds_data
 
 
-#def make_historical_query(url, key):
 def write_file(bond_output):
     output_dir = "../output/"
     if not os.path.exists(os.path.dirname(output_dir)):
