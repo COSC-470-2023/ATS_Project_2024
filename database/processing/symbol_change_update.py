@@ -3,6 +3,8 @@ import traceback
 from sqlalchemy import text
 import connect
 
+# Globals
+OUTPUT_FILE_PATH = "./data_collection/output/symbol_change_list.json"
 
 def load_output_file(path):
     try:
@@ -40,9 +42,10 @@ def main():
     try:
         # Establish a connection to server
         with connect.connect() as conn:
-            symbol_change = load_output_file('./SMF_Project_2023/data_collection/output/dummy_output_file.json')
+            symbol_change = load_output_file(OUTPUT_FILE_PATH)
             for symbol in symbol_change:
                 update_symbol(conn, symbol)
+            conn.commit()
     except Exception as e:
         print(e)
         print(traceback.format_exc())

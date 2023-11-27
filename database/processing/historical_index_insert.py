@@ -1,11 +1,11 @@
-# THINGS TO UPDATE
-    # for loop in execute_insert() will need to be changed to properly iterate over new historical output (once we know what that look like)
-
 import connect
 import json
 import traceback
 from sqlalchemy import text
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import SQLAlchemyError
+
+# Globals
+OUTPUT_FILE_PATH = "./test_files/static_test_files/static_index_historical.json"
 
 def load_output_file(path):
     try:
@@ -20,7 +20,6 @@ def load_output_file(path):
         exit(1)
         
 def execute_insert(connection, entry, index_id):
-    # NOTE: entry keys will need to be changed to be inline with new output names
         date = entry['_historical_date']
         index_open = entry['_historical_open']
         high = entry['_historical_high']
@@ -39,7 +38,6 @@ def execute_insert(connection, entry, index_id):
                 f"INSERT INTO `historical_index_values` VALUES ('{index_id}', '{date}', '{index_open}', '{high}', '{low}', '{close}','{adj_close}', '{volume}', '{unadjusted_volume}', '{change}', '{change_percentage}', '{vwap}', '{change_over_time}')"
             )
         )
-        connection.commit()
 
 # Used to get id associated with an index        
 def get_index_id(entry, connection):
@@ -67,7 +65,7 @@ def get_index_id(entry, connection):
 def main():
     try:
         # Load json data
-        historical_data = load_output_file('./data_collection/output/index_output.json')
+        historical_data = load_output_file(OUTPUT_FILE_PATH)
         # create with context manager
         with connect.connect() as conn:
             for entry in historical_data:
@@ -75,9 +73,12 @@ def main():
                 try:
                     # Excute row insertion
                     execute_insert(conn,entry,index_id)
-                except IntegrityError as e:
-                    print("An error has occured, no insertion has been made: ", e)
+                except SQLAlchemyError as e:
+                    # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
+                    print(f"Error: {e}")
                     continue
+            # Commit changes to database (otherwise it rolls back)
+            conn.commit()  
                 
     except Exception as e:
         print(traceback.format_exc())

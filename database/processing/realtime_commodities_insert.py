@@ -5,6 +5,9 @@ from sqlalchemy import sql
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
+# Globals
+OUTPUT_FILE_PATH = "./test_files/static_test_files/static_commodities_realtime.json"
+
 def load_output_file(path):
     try:
         with open(path, "r") as output_file:
@@ -21,33 +24,30 @@ def execute_insert(connection, entry, commodity_id):
     # Declare and initialize variables
     date = entry['_realtime_date'] 
     price = entry['_realtime_price']
-    change_percent = entry['_realtime_changePercent']
+    change_percentage = entry['_realtime_changePercent']
     change = entry['_realtime_change']
-    dayHigh = entry['_realtime_dayHigh']
-    dayLow = entry['_realtime_dayLow']
-    yearHigh = entry['_realtime_yearHigh']
-    yearLow = entry['_realtime_yearLow']
-    marketCap = entry['_realtime_mktCap']
-    if marketCap is None:
-        marketCap = "NULL"
+    day_low = entry['_realtime_dayLow']
+    day_high = entry['_realtime_dayHigh']
+    year_high = entry['_realtime_yearHigh']
+    year_low = entry['_realtime_yearLow']
+    market_cap = entry['_realtime_mktCap']
+    if market_cap is None:
+        market_cap = "NULL"
     else:
-        marketCap = "'" + marketCap + "'"
+        market_cap = "'" + market_cap + "'"
     exchange = entry['_realtime_exchange']
-    commodity_open = entry['_realtime_open']
-    close = entry['_realtime_prevClose']
     volume = entry['_realtime_volume']
     volume_avg = entry['_realtime_volAvg']
+    open = entry['_realtime_open']
+    prev_close = entry['_realtime_prevClose']
     
-    # Execute row insertion
+      # Execute row insertion
     connection.execute(
         text(
-            f"insert into `realtime_commodity_values` values ('{commodity_id}', '{date}', '{price}', '{change_percent}', '{change}', '{dayHigh}', '{dayLow}', '{yearHigh}', '{yearLow}', {marketCap}, '{exchange}', '{commodity_open}', '{close}', '{volume}', '{volume_avg}')"
+            f"INSERT INTO `realtime_commodity_values` VALUES ('{commodity_id}', '{date}', '{price}', '{change_percentage}', '{change}', '{day_low}', '{day_high}', '{year_high}', '{year_low}', {market_cap}, '{exchange}', '{volume}', '{volume_avg}', '{open}', '{prev_close}')"
         )
     )
-    connection.commit()
     
-
-
 def get_commodity_id(entry, connection):
     #Declare and initalize variables
     symbol = entry['_realtime_symbol']
@@ -73,15 +73,11 @@ def get_commodity_id(entry, connection):
     else:
         # if the company exists, fetch the existing ID
         commodity_id = row[0]
-         
-    
     return commodity_id
 
 def main():
-    # load json 
-    # File name may need changes depending on query outputs
-    # variable setting may have to be adjusted too
-    realtime_data = load_output_file('../../data_collection/output/commodity_output.json')
+    # load ouput
+    realtime_data = load_output_file(OUTPUT_FILE_PATH)
 
     try:
         # create with context manager, implicit commit on close
