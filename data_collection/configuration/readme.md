@@ -97,6 +97,7 @@ _historical_unadjustedVolume
 _historical_change
 _historical_changePercent
 _historical_vwap
+_historical_label
 _historical_changeOverTime
 
 _bond_name *

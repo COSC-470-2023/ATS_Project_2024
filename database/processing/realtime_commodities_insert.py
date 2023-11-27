@@ -23,24 +23,29 @@ def execute_insert(connection, entry, commodity_id):
     price = entry['_realtime_price']
     change_percent = entry['_realtime_changePercent']
     change = entry['_realtime_change']
-    day_high = entry['_realtime_dayHigh']
-    day_low = entry['_realtime_dayLow']
-    year_high = entry['_realtime_yearHigh']
-    year_low = entry['_realtime_yearLow']
-    mkt_cap = entry['_realtime_mktCap']
-    mkt_cap = mkt_cap if mkt_cap != None else sql.null() # mkt_cap is usually null. Need to convert 'None' to 'NULL' for mysql
+    dayHigh = entry['_realtime_dayHigh']
+    dayLow = entry['_realtime_dayLow']
+    yearHigh = entry['_realtime_yearHigh']
+    yearLow = entry['_realtime_yearLow']
+    marketCap = entry['_realtime_mktCap']
+    if marketCap is None:
+        marketCap = "NULL"
+    else:
+        marketCap = "'" + marketCap + "'"
     exchange = entry['_realtime_exchange']
     commodity_open = entry['_realtime_open']
     close = entry['_realtime_prevClose']
     volume = entry['_realtime_volume']
-    vol_avg = entry['_realtime_volAvg']
+    volume_avg = entry['_realtime_volAvg']
     
     # Execute row insertion
     connection.execute(
         text(
-            f"INSERT INTO `realtime_commodity_values` VALUES ('{commodity_id}', '{date}', '{price}', '{change_percent}', '{change}', '{day_high}', '{day_low}', '{year_high}', '{year_low}', {mkt_cap}', '{exchange}', '{commodity_open}', '{close}', '{volume}', '{vol_avg}')"
+            f"insert into `realtime_commodity_values` values ('{commodity_id}', '{date}', '{price}', '{change_percent}', '{change}', '{dayHigh}', '{dayLow}', '{yearHigh}', '{yearLow}', {marketCap}, '{exchange}', '{commodity_open}', '{close}', '{volume}', '{volume_avg}')"
         )
     )
+    connection.commit()
+    
 
 
 def get_commodity_id(entry, connection):
@@ -60,15 +65,17 @@ def get_commodity_id(entry, connection):
                 f"INSERT INTO `commodities`(`commodityName`, `symbol`) VALUES ('{name}', '{symbol}')"
             )
         )
+        
 
         # get the generated ID
         result = connection.execute(text(id_query))
-        company_id = result.one()[0]
+        commodity_id = result.one()[0]
     else:
         # if the company exists, fetch the existing ID
-        company_id = row[0]
-        
-    return company_id
+        commodity_id = row[0]
+         
+    
+    return commodity_id
 
 def main():
     # load json 
@@ -88,10 +95,15 @@ def main():
                     # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
                     print(f"Error: {e}")
                     continue
+                    
+            # Commit changes to database (otherwise it rolls back)
+            conn.commit()       
+            
 
     except Exception as e:
         print(traceback.format_exc())
         print(f"SQL connection error: {e}")
+        
 
 # protected entrypoint
 if __name__ == "__main__":

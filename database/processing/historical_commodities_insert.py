@@ -85,6 +85,9 @@ def main():
                     # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
                     print(f"Error: {e}")
                     continue
+                    
+            # Commit changes to database (otherwise it rolls back)
+            conn.commit()   
 
     except Exception as e:
         print(traceback.format_exc())
