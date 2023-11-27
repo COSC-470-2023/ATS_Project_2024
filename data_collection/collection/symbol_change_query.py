@@ -3,47 +3,15 @@
 # Iterate through the stocks using the key and url, then move onto the next API
 # TODO Add a function to make a backup of the system configuration before writing changes
 
-import json
-import time
-import os
-import errno
 import requests
 from datetime import date
+from JsonModifier import JsonModifier
 
 # Variable to track symbols that are changed for global usage
 # A dict of OLD_SYMBOL:NEW_SYMBOL key, value pairs
 symbol_changelog = {}
 # Global flag for symbol changes
 symbol_changed = False
-
-
-# Loads the system configuration file specifying all symbols the system is tracking
-def load_system_config():
-    # TODO Define explicit file paths instead of relative file paths
-    config_path = "../configuration/stock_index_comp_comm_list.json"
-    try:
-        config_file = open(config_path, "r")
-        config = json.load(config_file)
-        return config
-    # TODO Implement system logging when defined to log/flag a failure in this component
-    except IOError:
-        print(f"IOError while accessing configuration file at path: {config_path}")
-        exit(1)
-
-    # Loads the system query configuration file
-
-
-def load_query_config():
-    # TODO Define explicit file paths instead of relative file paths
-    query_config_path = "../configuration/symbol_change.json"
-    try:
-        query_config_file = open(query_config_path, "r")
-        query_config = json.load(query_config_file)
-        return query_config
-    # TODO Implement system logging when defined to log/flag a failure in this component
-    except IOError:
-        print(f"IOError while accessing configuration file at path: {query_config_path}")
-        exit(1)
 
 
 # Using provided API URL and Key, queries and appends results to an unmodified raw output
@@ -98,19 +66,6 @@ def modify_output_list(symbol_change_list, system_config):
     return modified_symbols_list
 
 
-def write_output_file(symbol_change_json):
-    # TODO Define explicit file paths instead of relative file paths
-    output_dir = "../output/"
-    if not os.path.exists(os.path.dirname(output_dir)):
-        try:
-            os.makedirs(os.path.dirname(output_dir))
-        except OSError as exc:  # Guard against race condition
-            if exc.errno != errno.EEXIST:
-                raise
-    with open("../output/Symbol_Change_List.json", "w") as outfile:
-        json.dump(symbol_change_json, outfile, indent=2)
-
-
 # Modifies the symbols that have been changed in the system configuration file and returns the modified list to be written
 # NOTE Currently assumes only one API configuration exists in the system
 def modify_system_config(system_config_json):
@@ -137,21 +92,8 @@ def modify_system_config(system_config_json):
     return modified_system_config
 
 
-def write_system_config_changes(modified_system_config):
-    # TODO Define explicit file paths instead of relative file paths
-    output_dir = "../configuration/"
-    if not os.path.exists(os.path.dirname(output_dir)):
-        try:
-            os.makedirs(os.path.dirname(output_dir))
-        except OSError as exc:  # Guard against race condition
-            if exc.errno != errno.EEXIST:
-                raise
-    with open("../configuration/stock_index_comp_comm_list.json", "w") as outfile:
-        json.dump(modified_system_config, outfile, indent=2)
-
-
 def main():
-    symbol_query_config = load_query_config()
+    symbol_query_config = JsonModifier.load_config("../configuration/symbol_change_query_cfg.json")
     raw_API_query_output = []
     symbol_change_output = []
     # Iterate through each API in the list
@@ -165,16 +107,17 @@ def main():
     # If no symbols have changed, proceed to final activities
     if symbol_changed:
         print('Symbols changed. Performing system change tasks.')
-        system_config = load_system_config()
+        system_config = JsonModifier.load_config("../configuration/realtime_query_cfg.json")
         # Write modified output to symbol_change file
         symbol_change_output = modify_output_list(modified_API_output, system_config)
         # Modify changed symbols in system config file
         modified_system_config = modify_system_config(system_config)
         # Write changes to system config file
-        write_system_config_changes(modified_system_config)
+        JsonModifier.write_files(modified_system_config, "../configuration/", "realtime_query_cfg.json")
     # Write empty list, or changedlist to output file, exit with success code
     print('Task complete.')
-    write_output_file(symbol_change_output)
+    # write_output_file(symbol_change_output)
+    JsonModifier.write_files(symbol_change_output, "../output/", "symbol_change_list.json")
     exit(0)
 
 

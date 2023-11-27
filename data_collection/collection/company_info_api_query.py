@@ -97,6 +97,7 @@ def main():
     json_config = load_config()
     company_output = []
 
+    print(type(json_config))
     # Iterate through each API in the list
     for api in range(len(json_config)):
         api_url = json_config[api]['url']
@@ -104,6 +105,7 @@ def main():
         api_rate_limit = json_config[api]['rate_limit_per_min']
         api_fields = json_config[api]['api_fields']
         non_api_fields = json_config[api]['non_api_fields']
+
 
         # Get a list of the company symbols we need to query
         company_list = json_config[api]['companies']
