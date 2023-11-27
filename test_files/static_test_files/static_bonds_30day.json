@@ -1,7 +1,6 @@
 [
     {
       "_bond_name": "US Treasury",
-      "_bond_currency": "USD",
       "_bond_date": "2023-11-16",
       "_bond_month1": 5.53,
       "_bond_month2": 5.55,
@@ -18,7 +17,6 @@
     },
     {
       "_bond_name": "US Treasury",
-      "_bond_currency": "USD",
       "_bond_date": "2023-11-15",
       "_bond_month1": 5.52,
       "_bond_month2": 5.54,
@@ -35,7 +33,6 @@
     },
     {
       "_bond_name": "US Treasury",
-      "_bond_currency": "USD",
       "_bond_date": "2023-11-14",
       "_bond_month1": 5.52,
       "_bond_month2": 5.55,
@@ -51,8 +48,7 @@
       "_bond_year30": 4.61
     },
     {
-      "_bond_name": "US Treasury",
-      "_bond_currency": "USD",      
+      "_bond_name": "US Treasury",      
       "_bond_date": "2023-11-13",
       "_bond_month1": 5.53,
       "_bond_month2": 5.55,
@@ -68,8 +64,7 @@
       "_bond_year30": 4.75
     },
     {
-      "_bond_name": "US Treasury",
-      "_bond_currency": "USD",      
+      "_bond_name": "US Treasury",      
       "_bond_date": "2023-11-10",
       "_bond_month1": 5.53,
       "_bond_month2": 5.55,
@@ -86,7 +81,6 @@
     },
     {
       "_bond_name": "US Treasury",
-      "_bond_currency": "USD",
       "_bond_date": "2023-11-09",
       "_bond_month1": 5.53,
       "_bond_month2": 5.56,
@@ -103,7 +97,6 @@
     },
     {
       "_bond_name": "US Treasury",
-      "_bond_currency": "USD",
       "_bond_date": "2023-11-08",
       "_bond_month1": 5.52,
       "_bond_month2": 5.54,
@@ -120,7 +113,6 @@
     },
     {
       "_bond_name": "US Treasury",
-      "_bond_currency": "USD",
       "_bond_date": "2023-11-07",
       "_bond_month1": 5.53,
       "_bond_month2": 5.56,
@@ -137,7 +129,6 @@
     },
     {
       "_bond_name": "US Treasury",
-      "_bond_currency": "USD",
       "_bond_date": "2023-11-06",
       "_bond_month1": 5.53,
       "_bond_month2": 5.56,
@@ -154,7 +145,6 @@
     },
     {
       "_bond_name": "US Treasury",
-      "_bond_currency": "USD",
       "_bond_date": "2023-11-03",
       "_bond_month1": 5.53,
       "_bond_month2": 5.56,
@@ -171,7 +161,6 @@
     },
     {
       "_bond_name": "US Treasury",
-      "_bond_currency": "USD",
       "_bond_date": "2023-11-02",
       "_bond_month1": 5.52,
       "_bond_month2": 5.56,
@@ -188,7 +177,6 @@
     },
     {
       "_bond_name": "US Treasury",
-      "_bond_currency": "USD",
       "_bond_date": "2023-11-01",
       "_bond_month1": 5.56,
       "_bond_month2": 5.55,
@@ -205,7 +193,6 @@
     },
     {
       "_bond_name": "US Treasury",
-      "_bond_currency": "USD",
       "_bond_date": "2023-10-31",
       "_bond_month1": 5.56,
       "_bond_month2": 5.57,
@@ -222,7 +209,6 @@
     },
     {
       "_bond_name": "US Treasury",
-      "_bond_currency": "USD",
       "_bond_date": "2023-10-30",
       "_bond_month1": 5.56,
       "_bond_month2": 5.57,
@@ -239,7 +225,6 @@
     },
     {
       "_bond_name": "US Treasury",
-      "_bond_currency": "USD",
       "_bond_date": "2023-10-27",
       "_bond_month1": 5.57,
       "_bond_month2": 5.57,
@@ -256,7 +241,6 @@
     },
     {
       "_bond_name": "US Treasury",
-      "_bond_currency": "USD",
       "_bond_date": "2023-10-26",
       "_bond_month1": 5.57,
       "_bond_month2": 5.57,
@@ -273,7 +257,6 @@
     },
     {
       "_bond_name": "US Treasury",
-      "_bond_currency": "USD",
       "_bond_date": "2023-10-25",
       "_bond_month1": 5.56,
       "_bond_month2": 5.57,
@@ -290,7 +273,6 @@
     },
     {
       "_bond_name": "US Treasury",
-      "_bond_currency": "USD",
       "_bond_date": "2023-10-24",
       "_bond_month1": 5.57,
       "_bond_month2": 5.57,
@@ -307,7 +289,6 @@
     },
     {
       "_bond_name": "US Treasury",
-      "_bond_currency": "USD",
       "_bond_date": "2023-10-23",
       "_bond_month1": 5.57,
       "_bond_month2": 5.57,
@@ -324,7 +305,6 @@
     },
     {
       "_bond_name": "US Treasury",
-      "_bond_currency": "USD",
       "_bond_date": "2023-10-20",
       "_bond_month1": 5.56,
       "_bond_month2": 5.56,
@@ -341,7 +321,6 @@
     },
     {
       "_bond_name": "US Treasury",
-      "_bond_currency": "USD",
       "_bond_date": "2023-10-19",
       "_bond_month1": 5.58,
       "_bond_month2": 5.57,
@@ -358,7 +337,6 @@
     },
     {
       "_bond_name": "US Treasury",
-      "_bond_currency": "USD",
       "_bond_date": "2023-10-18",
       "_bond_month1": 5.57,
       "_bond_month2": 5.56,
@@ -375,7 +353,6 @@
     },
     {
       "_bond_name": "US Treasury",
-      "_bond_currency": "USD",
       "_bond_date": "2023-10-17",
       "_bond_month1": 5.58,
       "_bond_month2": 5.58,
@@ -392,7 +369,6 @@
     },
     {
       "_bond_name": "US Treasury",
-      "_bond_currency": "USD",
       "_bond_date": "2023-10-16",
       "_bond_month1": 5.57,
       "_bond_month2": 5.58,
