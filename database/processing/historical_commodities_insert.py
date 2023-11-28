@@ -5,7 +5,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
 # Globals
-OUTPUT_FILE_PATH = "./test_files/static_test_files/static_commodities_historical.json"
+OUTPUT_FILE_PATH = "./data_collection/output/historical_commodity_output.json"
 
 def load_output_file(path):
     try:

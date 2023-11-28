@@ -13,14 +13,13 @@
 #     echo "Failure: $?"
 # fi
 
-if python ./data_collection/collection/realtime_api_query.py >> ./logs/schedule_log.txt 2>&1; then
+if python ./data_collection/collection/realtime_api_query.py >> ./logs/realtime_schedule_log.txt 2>&1; then
     # Stocks
-    python ./database/processing/realtime_stock_insert.py
+    # python database/processing/realtime_stock_insert.py
     # Indexes
-    python database/processing/realtime_index_insert.py >> ./logs/schedule_log.txt 2>&1
-
+    python database/processing/realtime_index_insert.py >> ./logs/realtime_schedule_log.txt 2>&1
     # Commodities
-    python database/processing/realtime_commodities_insert.py >> ./logs/schedule_log.txt 2>&1
+    python database/processing/realtime_commodities_insert.py >> ./logs/realtime_schedule_log.txt 2>&1
 # else
 #     >> log.txt
 #     echo "Failure" >> log.txt 
