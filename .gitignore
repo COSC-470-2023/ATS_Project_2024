@@ -4,4 +4,15 @@
 # Output Files
 data_collection/output
 
-/data_collection/configuration/Napkin notes/
+# Credential File
+database/processing/credentials.py
+
+# pycache
+*.pyc
+__pycache__/
+
+# Environments
+.env
+.venv
+env/
+venv/

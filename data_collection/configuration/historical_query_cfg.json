@@ -1,14 +1,13 @@
 [
   {
-    "url": "https://financialmodelingprep.com/api/v3/historical-price-full/{QUERY_PARAMS},?from={FROM_DATE}&to={TODAY_DATE}&apikey={API_KEY}",
-    "api_key": "",
-    "observable_days": 200,
+    "url": "https://financialmodelingprep.com/api/v3/historical-price-full/{QUERY_PARAMS}?from={START_DATE}&to={END_DATE}&apikey={API_KEY}",
+    "api_key": "<PASTE KEY HERE>",
     "rate_limit_per_min": 300,
-    "fields": {
+    "api_fields": {
       "symbol": "_historical_symbol",
       "date": "_historical_date",
-      "open": "_historical_name",
-      "high": "_historical_symbol",
+      "open": "_historical_open",
+      "high": "_historical_high",
       "low": "_historical_low",
       "close": "_historical_close",
       "adjClose": "_historical_adjClose",
@@ -20,35 +19,43 @@
       "changeOverTime": "_historical_changeOverTime",
       "label": null
     },
+    "non_api_fields": {
+      "name": {
+        "src": "_config_name",
+        "mapping": "_historical_name",
+        "input_type": "_string",
+        "output_type": "_string"
+      }
+    },
     "index_composites": [
-      { "symbol": "^GSPC", "name": "S&P 500"},
-      { "symbol": "^IXIC", "name": "NASDAQ Composite"},
-      { "symbol": "^DJI", "name": "Dow Jones Industrial Average"},
-      { "symbol": "^RUA", "name": "Russell 3000"},
-      { "symbol": "^FTSE", "name": "FTSE 100"}
+      { "symbol": "^GSPC", "name": "S&P 500", "start_date": "2023-20-11", "end_date": "2023-27-11"},
+      { "symbol": "^IXIC", "name": "NASDAQ Composite", "start_date": "2023-20-11", "end_date": "2023-27-11"},
+      { "symbol": "^DJI", "name": "Dow Jones Industrial Average", "start_date": "2023-20-11", "end_date": "2023-27-11"},
+      { "symbol": "^RUA", "name": "Russell 3000", "start_date": "2023-20-11", "end_date": "2023-27-11"},
+      { "symbol": "^FTSE", "name": "FTSE 100", "start_date": "2023-20-11", "end_date": "2023-27-11"}
     ],
     "stocks": [
-      { "symbol": "AAPL", "name": "Apple Inc."},
-      { "symbol": "NDAQ", "name": "Nasdaq, Inc."},
-      { "symbol": "META", "name": "Meta Platforms, Inc."},
-      { "symbol": "GOOG", "name": "Alphabet Inc."},
-      { "symbol": "MSFT", "name": "Microsoft Corporation"},
-      { "symbol": "NVDA", "name": "NVIDIA Corporation"},
-      { "symbol": "WBA", "name": "Walgreens Boots Alliance, Inc."},
-      { "symbol": "TSLA", "name": "Tesla, Inc."},
-      { "symbol": "AMZN", "name": "Amazon.com, Inc."},
-      { "symbol": "WMT", "name": "Walmart Inc."},
-      { "symbol": "ADBE", "name": "Adobe Inc."},
-      { "symbol": "JNJ", "name": "Johnson & Johnson"},
-      { "symbol": "V", "name": "Visa Inc."},
-      { "symbol": "CVX", "name": "Chevron Corporation"}
+      { "symbol": "AAPL", "name": "Apple Inc.", "start_date": "2023-20-11", "end_date": "2023-27-11"},
+      { "symbol": "NDAQ", "name": "Nasdaq, Inc.", "start_date": "2023-20-11", "end_date": "2023-27-11"},
+      { "symbol": "META", "name": "Meta Platforms, Inc.", "start_date": "2023-20-11", "end_date": "2023-27-11"},
+      { "symbol": "GOOG", "name": "Alphabet Inc.", "start_date": "2023-20-11", "end_date": "2023-27-11"},
+      { "symbol": "MSFT", "name": "Microsoft Corporation", "start_date": "2023-20-11", "end_date": "2023-27-11"},
+      { "symbol": "NVDA", "name": "NVIDIA Corporation", "start_date": "2023-20-11", "end_date": "2023-27-11"},
+      { "symbol": "WBA", "name": "Walgreens Boots Alliance, Inc.", "start_date": "2023-20-11", "end_date": "2023-27-11"},
+      { "symbol": "TSLA", "name": "Tesla, Inc.", "start_date": "2023-20-11", "end_date": "2023-27-11"},
+      { "symbol": "AMZN", "name": "Amazon.com, Inc.", "start_date": "2023-20-11", "end_date": "2023-27-11"},
+      { "symbol": "WMT", "name": "Walmart Inc.", "start_date": "2023-20-11", "end_date": "2023-27-11"},
+      { "symbol": "ADBE", "name": "Adobe Inc.", "start_date": "2023-20-11", "end_date": "2023-27-11"},
+      { "symbol": "JNJ", "name": "Johnson & Johnson", "start_date": "2023-20-11", "end_date": "2023-27-11"},
+      { "symbol": "V", "name": "Visa Inc.", "start_date": "2023-20-11", "end_date": "2023-27-11"},
+      { "symbol": "CVX", "name": "Chevron Corporation", "start_date": "2023-20-11", "end_date": "2023-27-11"}
     ],
     "commodities": [
-      { "symbol": "HGUSD", "name": "Copper"},
-      { "symbol": "CLUSD", "name": "Crude Oil"},
-      { "symbol": "GCUSD", "name": "Gold Futures"},
-      { "symbol": "SIUSD", "name": "Silver Futures"},
-      { "symbol": "NGUSD", "name": "Natural Gas"}
+      { "symbol": "HGUSD", "name": "Copper", "start_date": "2023-20-11", "end_date": "2023-27-11"},
+      { "symbol": "CLUSD", "name": "Crude Oil", "start_date": "2023-20-11", "end_date": "2023-27-11"},
+      { "symbol": "GCUSD", "name": "Gold Futures", "start_date": "2023-20-11", "end_date": "2023-27-11"},
+      { "symbol": "SIUSD", "name": "Silver Futures", "start_date": "2023-20-11", "end_date": "2023-27-11"},
+      { "symbol": "NGUSD", "name": "Natural Gas", "start_date": "2023-20-11", "end_date": "2023-27-11"}
     ]
   }
 ]
