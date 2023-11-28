@@ -1,10 +1,12 @@
 import connect
 import json
 import traceback
-
+from sqlalchemy import sql
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
+# Globals
+OUTPUT_FILE_PATH = "./data_collection/output/bonds_output.json"
 
 def load_output_file(path):
     try:
@@ -18,62 +20,84 @@ def load_output_file(path):
         print(f"Error decoding JSON in '{path}'")
         exit(1)
         
-def execute_insert(entry, entry_row, connection, bond_id):
-    #declare and initialize variables, rate is handled a little differently since it's from the same spot as the duration
-    dateVal = entry['_bond_date']
-    rate = entry[entry_row]
-    #execute insert into bond_values
-    connection.execute(text(f"insert into `bond_values`(`Date`, `bondID`, `Rate`) values ('{dateVal}', '{bond_id}', '{rate}')"))
-
-def get_bond_id(entry, entry_row, connection):
-    currencyVal = entry['_bond_currency']
-    treasuryNameVal = entry['_bond_name']
+def execute_insert(connection, entry, bond_id):
+    # Declare and initialize variables
+    date = entry['_bond_date'] 
+    month1 = entry['_bond_month1']
+    month2 = entry['_bond_month2']
+    month3 = entry['_bond_month3']
+    month6 = entry['_bond_month6']
+    year1 = entry['_bond_year1']
+    year2 = entry['_bond_year2']
+    year3 = entry['_bond_year3']
+    year5 = entry['_bond_year5']
+    year7 = entry['_bond_year7']
+    year10 = entry['_bond_year10']
+    year20 = entry['_bond_year20']
+    year30 = entry['_bond_year30']
     
-    if entry_row not in ["_bond_date", "_bond_currency", "_bond_name"]:
-            duration = entry_row[6:]
-            result = connection.execute(text(f"SELECT bond_id FROM `bonds` WHERE treasuryName = '{treasuryNameVal}' AND currency = '{currencyVal}' AND duration = '{duration}'"))
-            sql_row = result.one_or_none()
-            if sql_row is None:
-                # execute plain sql insert statement - transaction begins
-                connection.execute(text(f"INSERT INTO `bonds`(`bond_id`, `treasuryName`, 'currency', 'duration') VALUES (NULL, '{treasuryNameVal}', '{currencyVal}', '{duration}')"))
-                connection.commit()
-                # get the generated ID
-                result = connection.execute(text(f"SELECT bond_id FROM `bonds` WHERE treasuryName = '{treasuryNameVal} AND 'currency = '{currencyVal}' AND duration = '{duration}'")) 
-                bond_id = result.one()[0]
-            else:
-                bond_id = sql_row[0]
-                
-            return bond_id
-    else:
-        #returns false if the entry_row is either date, currency or name
-        return False
+      # Execute row insertion
+    connection.execute(
+        text(
+            f"INSERT INTO `bond_values` VALUES ('{bond_id}', '{date}', '{month1}', '{month2}', '{month3}', '{month6}', '{year1}', '{year2}', '{year3}', {year5}, '{year7}', '{year10}', '{year20}', '{year30}')"
+        )
+    )
+    
+def get_bond_id(entry, connection):
+    #Declare and initalize variables
+    name = entry['_bond_name']
+    id_query = f"SELECT bond_id FROM `bonds` WHERE treasuryName = '{name}'"
+    
+    # Check if bond exists in bonds table
+    result = connection.execute(text(id_query))
+    row = result.one_or_none()
 
+    if row is None:
+        # if bond doesn't exist, create new row in bonds table - trigger generates new ID
+        connection.execute(
+            text(
+                f"INSERT INTO `bonds`(`treasuryName`) VALUES ('{name}')"
+            )
+        )
+        
+
+        # get the generated ID
+        result = connection.execute(text(id_query))
+        bond_id = result.one()[0]
+    else:
+        # if the bond exists, fetch the existing ID
+        bond_id = row[0]
+    return bond_id
 
 def main():
-    # load json
-    data = load_output_file('../../Data_Collection/Output/bonds_output.json')
+    # load ouput
+    bonds_data = load_output_file(OUTPUT_FILE_PATH)
 
     try:
-        # create with context manager
+        # create with context manager, implicit commit on close
         with connect.connect() as conn:
-            for entry in data:
-               for entry_row in entry:
-                   bond_id = get_bond_id(entry, entry_row, conn)
-                   # If the returned bond_id is False then the insertion is skipped
-                   if(bond_id == False):
-                       continue
-                   try:
-                       # process bond data
-                       execute_insert(entry, entry_row, conn, bond_id)
-                   except SQLAlchemyError as e:
-                       # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
-                       print(f"Error: {e}")
-                       continue
+            for entry in bonds_data:
+                if bool(entry):
+                    bond_id = get_bond_id(entry, conn)
+                    try:
+                        # process bond data
+                        execute_insert(conn, entry, bond_id)
+                    except SQLAlchemyError as e:
+                        # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
+                        print(f"Error: {e}")
+                        continue
+                else:
+                    continue
+                    
+            # Commit changes to database (otherwise it rolls back)
+            conn.commit()       
             
-    except Exception as e:
-        print(e)
-        print(traceback.format_exc())
-        print("SQL connection error")
 
+    except Exception as e:
+        print(traceback.format_exc())
+        print(f"SQL connection error: {e}")
+        
+
+# protected entrypoint
 if __name__ == "__main__":
     main()
