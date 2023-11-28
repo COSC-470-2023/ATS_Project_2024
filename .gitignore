@@ -1,5 +1,6 @@
 # Project Files
 .idea*
+*.pyc
 
 # Output Files
 data_collection/output
