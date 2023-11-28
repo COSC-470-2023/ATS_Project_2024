@@ -64,7 +64,6 @@ def execute_insert(connection, entry, company_id):
         text(
             f"INSERT INTO `company_statements` VALUES ('{company_id}', '{date}', '{price}', '{beta}', '{volAvg}', '{mktCap}', '{latsDiv}', '{changes}', '{currency}', '{cik}', '{isin}', '{cusip}', '{exchangeFullName}', '{exchange}', '{industry}', '{ceo}', '{sector}', '{country}', '{fullTimeEmployees}','{phone}','{address}','{city}', '{state}','{zip}','{dcfDiff}','{dcf}','{ipoDate}','{isEtf}','{isActivelyTrading}','{isAdr}','{isFund}')")
     )
-    connection.commit()
 
 
 def get_company_id(entry, conn):
@@ -100,15 +99,16 @@ def main():
     try:
         # create with context manager, implicit commit on close
         with connect.connect() as conn:
-            for entry in realtime_data:
-                company_id = get_company_id(entry, conn)
-                try:
-                    # process realtime data
-                    execute_insert(conn, entry, company_id)
-                except SQLAlchemyError as e:
-                    # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
-                    print(f"Error: {e}")
-                    continue
+            with conn.begin():
+                for entry in realtime_data:
+                    company_id = get_company_id(entry, conn)
+                    try:
+                        # process realtime data
+                        execute_insert(conn, entry, company_id)
+                    except SQLAlchemyError as e:
+                        # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
+                        print(f"Error: {e}")
+                        continue
 
     except Exception as e:
         print(traceback.format_exc())

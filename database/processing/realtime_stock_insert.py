@@ -32,36 +32,47 @@ remove eps/pe/earningsAnnouncement/sharesOutstanding from index and commodities
 """
 
 def execute_insert(connection, entry, company_id):
-    date = entry["_realtime_date"]
-    price = entry["_realtime_price"]
-    change_percentage = entry["_realtime_changePercent"]
-    change = entry["_realtime_change"]
-    day_high = entry["_realtime_dayHigh"]
-    day_low = entry["_realtime_dayLow"]
-    year_high = entry["_realtime_yearHigh"]
-    year_low = entry["_realtime_yearLow"]
-    mkt_cap = entry["_realtime_mktCap"]
-    exchange = entry["_realtime_exchange"]
-    open_price = entry["_realtime_open"]
-    prev_close = entry["_realtime_prevClose"]
-    volume = entry["_realtime_volume"]
-    vol_avg = entry["_realtime_volAvg"]
-    eps = entry["_realtime_eps"]
-    pe = entry["_realtime_pe"]
-    # ISO-8601 date, converting here for now but should probably be done during collection, or change the db field from datetime to iso
-    # converting to datetime object (output data has an invalid iso-8601 format, so this is more complicated than it should be)
-    earnings_announcement = datetime.datetime.strptime(
-        entry["_realtime_earningsAnnouncement"], "%Y-%m-%dT%H:%M:%S.%f%z"
+    # keys expected to be committed
+    keys = [
+        "_realtime_date", 
+        "_realtime_price", 
+        "_realtime_changePercent",
+        "_realtime_change", 
+        "_realtime_dayHigh", 
+        "_realtime_dayLow",
+        "_realtime_yearHigh", 
+        "_realtime_yearLow", 
+        "_realtime_mktCap",
+        "_realtime_exchange", 
+        "_realtime_open", 
+        "_realtime_prevClose",
+        "_realtime_volume", 
+        "_realtime_volAvg", 
+        "_realtime_eps",
+        "_realtime_pe", 
+        "_realtime_earningsAnnouncement", 
+        "_realtime_sharesOutstanding",
+    ]
+
+    # check if earningsAnnouncement is not None, if it's not None convert to a datetime object and format for mysql datetime
+    # if it is None, assign None to earnings_announcement
+    earnings_announcement = (
+        datetime.datetime.strptime(entry["_realtime_earningsAnnouncement"], "%Y-%m-%dT%H:%M:%S.%f%z").strftime("%Y-%m-%d %H:%M:%S") if entry["_realtime_earningsAnnouncement"] is not None else None
     )
-    # formatting to fit into mysql datetime type
-    earnings_announcement = earnings_announcement.strftime("%Y-%m-%d %H:%M:%S")
-    shares_outstanding = entry["_realtime_sharesOutstanding"]
-    # Execute row insertion
-    connection.execute(
-        text(
-            f"INSERT INTO `real_time_stock_values` VALUES ('{company_id}', '{date}', '{price}', '{change_percentage}', '{change}', '{day_high}', '{day_low}', '{year_high}', '{year_low}', '{mkt_cap}', '{exchange}', '{open_price}', '{prev_close}', '{volume}', '{vol_avg}', '{eps}', '{pe}', '{earnings_announcement}', '{shares_outstanding}')"
-        )
-    )
+
+    row = {key: entry.get(key, None) for key in keys}
+
+    # append generated id and modify earnings announcement
+    row["company_id"] = company_id
+    row["_realtime_earningsAnnouncement"] = earnings_announcement
+
+    print(row)
+
+    # parameterized query
+    query = text("INSERT INTO `realtime_stock_values` VALUES (:company_id, :_realtime_date, :_realtime_price, :_realtime_change_percentage, :_realtime_change, :_realtime_day_high, :_realtime_day_low, :_realtime_year_high, :_realtime_year_low, :_realtime_mkt_cap, :_realtime_exchange, :_realtime_open_price, :_realtime_prev_close, :_realtime_volume, :_realtime_vol_avg, :_realtime_eps, :_realtime_pe, :_realtime_earningsAnnouncement, :_realtime_shares_outstanding)")
+
+    # execute row insertion, ** operator unpacks dict into the bind parameters
+    connection.execute(query, **row)
 
 
 def get_company_id(entry, conn):
@@ -93,21 +104,23 @@ def get_company_id(entry, conn):
 def main():
     # Load json data
     realtime_data = load_output_file(
-        "SMF_Project_2023/database/processing/test_data/stocks_test.json"
+        "database/processing/test_data/stocks_test.json"
     )
 
     try:
-        # create with context manager, implicit commit on close
+        # create connection with context manager, connection closed on exit
         with connect.connect() as conn:
-            for entry in realtime_data:
-                company_id = get_company_id(entry, conn)
-                try:
-                    # process realtime data
-                    execute_insert(conn, entry, company_id)
-                except SQLAlchemyError as e:
-                    # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
-                    print(f"Error: {e}")
-                    continue
+            # begin transaction with context manager, implicit commit on exit or rollback on exception
+            with conn.begin():
+                for entry in realtime_data:
+                    company_id = get_company_id(entry, conn)
+                    try:
+                        # process realtime data
+                        execute_insert(conn, entry, company_id)
+                    except SQLAlchemyError as e:
+                        # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
+                        print(f"Error: {e}")
+                        continue
 
     except Exception as e:
         print(traceback.format_exc())
