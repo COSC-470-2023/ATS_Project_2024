@@ -1,9 +1,12 @@
 import connect
 import json
 import traceback
+from sqlalchemy import sql
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
+# Globals
+OUTPUT_FILE_PATH = "./test_files/static_test_files/static_commodities_realtime.json"
 
 def load_output_file(path):
     try:
@@ -21,70 +24,65 @@ def execute_insert(connection, entry, commodity_id):
     # Declare and initialize variables
     date = entry['_realtime_date'] 
     price = entry['_realtime_price']
-    changePercent = entry['_realtime_changePercent']
+    change_percentage = entry['_realtime_changePercent']
     change = entry['_realtime_change']
-    dayHigh = entry['_realtime_dayHigh']
-    dayLow = entry['_realtime_dayLow']
-    yearHigh = entry['_realtime_yearHigh']
-    yearLow = entry['_realtime_yearLow']
-    marketCap = entry['_realtime_mktCap']
-    if marketCap is None:
-        marketCap = "NULL"
+    day_low = entry['_realtime_dayLow']
+    day_high = entry['_realtime_dayHigh']
+    year_high = entry['_realtime_yearHigh']
+    year_low = entry['_realtime_yearLow']
+    market_cap = entry['_realtime_mktCap']
+    if market_cap is None:
+        market_cap = "NULL"
     else:
-        marketCap = "'" + marketCap + "'"
+        market_cap = "'" + market_cap + "'"
     exchange = entry['_realtime_exchange']
-    commodityOpen = entry['_realtime_open']
-    close = entry['_realtime_prevClose']
     volume = entry['_realtime_volume']
-    volumeAverage = entry['_realtime_volAvg']
+    volume_avg = entry['_realtime_volAvg']
+    open = entry['_realtime_open']
+    prev_close = entry['_realtime_prevClose']
     
-    # Execute row insertion
+      # Execute row insertion
     connection.execute(
         text(
-            f"insert into `realtime_commodity_values` values ('{commodity_id}', '{date}', '{price}', '{changePercent}', '{change}', '{dayHigh}', '{dayLow}', '{yearHigh}', '{yearLow}', {marketCap}, '{exchange}', '{commodityOpen}', '{close}', '{volume}', '{volumeAverage}')"
-            )
+            f"INSERT INTO `realtime_commodity_values` VALUES ('{commodity_id}', '{date}', '{price}', '{change_percentage}', '{change}', '{day_low}', '{day_high}', '{year_high}', '{year_low}', {market_cap}, '{exchange}', '{volume}', '{volume_avg}', '{open}', '{prev_close}')"
         )
-
-
+    )
+    
 def get_commodity_id(entry, connection):
     #Declare and initalize variables
     symbol = entry['_realtime_symbol']
     name = entry['_realtime_name']
-    selectQuery = f"select id from `commodities` where symbol = '{symbol}'"
+    id_query = f"SELECT id FROM `commodities` WHERE symbol = '{symbol}'"
     
     # Check if commodity exists in commodities table
-    result = connection.execute(text(selectQuery))
+    result = connection.execute(text(id_query))
     row = result.one_or_none()
 
     if row is None:
         # if commodity doesn't exist, create new row in commodites table - trigger generates new ID
         connection.execute(
             text(
-                f"INSERT INTO `commodities`(`id`, `commodityName`, `symbol`) values (NULL, '{name}', '{symbol}')"
+                f"INSERT INTO `commodities`(`commodityName`, `symbol`) VALUES ('{name}', '{symbol}')"
             )
         )
         
 
         # get the generated ID
-        result = connection.execute(text(selectQuery))
+        result = connection.execute(text(id_query))
         commodity_id = result.one()[0]
     else:
         # if the company exists, fetch the existing ID
         commodity_id = row[0]
-         
-    
     return commodity_id
 
 def main():
-    # load json 
-    # File name may need changes depending on query outputs
-    # variable setting may have to be adjusted too
-    data = load_output_file('../../data_collection/output/commodity_output.json')
+    # load ouput
+    realtime_data = load_output_file(OUTPUT_FILE_PATH)
 
     try:
         # create with context manager, implicit commit on close
         with connect.connect() as conn:
-            for entry in data:
+            for entry in realtime_data:
                 commodity_id = get_commodity_id(entry, conn)
                 try:
                     # process realtime data
@@ -103,5 +101,6 @@ def main():
         print(f"SQL connection error: {e}")
         
 
+# protected entrypoint
 if __name__ == "__main__":
     main()
