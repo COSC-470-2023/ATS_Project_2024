@@ -8,4 +8,11 @@ data_collection/output
 database/processing/credentials.py
 
 # pycache
-database/processing/__pycache__
+*.pyc
+__pycache__/
+
+# Environments
+.env
+.venv
+env/
+venv/
