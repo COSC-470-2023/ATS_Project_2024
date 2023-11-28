@@ -118,22 +118,22 @@ def main():
         # Write modified output to symbol_change file
         symbol_change_output = modify_output_list(modified_API_output)
         # Variables for use with the system config tasks
-        system_config_path_list = ["../configuration/realtime_query_cfg.json", 
+        SYSTEM_CONFIG_PATH_LIST = ["../configuration/realtime_query_cfg.json", 
                                    "../configuration/company_info_query_cfg.json",
                                    "../configuration/historical_query_cfg.json"]
-        config_path = "../configuration/"
-        config_backup_path = "../configuration/backup/"
-        for system_config_path in system_config_path_list:
+        CONFIG_PATH = "../configuration/"
+        CONFIG_BACKUP_PATH = "../configuration/backup/"
+        for system_config_path in SYSTEM_CONFIG_PATH_LIST:
             system_config = JsonModifier.load_config(system_config_path)
             # Pull config file name from path
             system_config_name = system_config_path.split("/")[-1]
             # Write a backup config file to the backup directory
             system_config_name_backup = system_config_name + "_" + str(date.today()) + "~"
-            JsonModifier.write_files(system_config, config_backup_path, system_config_name_backup)
+            JsonModifier.write_files(system_config, CONFIG_BACKUP_PATH, system_config_name_backup)
             # Modify changed symbols in system config file
             modified_system_config = modify_system_config(system_config)
             # Write changes to system config file
-            JsonModifier.write_files(modified_system_config, config_path, system_config_name)
+            JsonModifier.write_files(modified_system_config, CONFIG_PATH, system_config_name)
     # Write empty list, or changedlist to output file, exit with success code 
     JsonModifier.write_files(symbol_change_output, "../output/", "symbol_change_list.json")
     print(f'Task complete. Symbols changed for ' + str(date.today()) + ': ' + str(symbol_changed))
