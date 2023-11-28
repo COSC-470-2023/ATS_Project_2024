@@ -63,22 +63,17 @@ def execute_insert(connection, entry, company_id):
     connection.execute(statement=query, parameters=row)
 
 def get_company_id(entry, conn):
-    symbol = entry["_realtime_symbol"]
-    name = entry["_realtime_name"]
+    params = {"symbol": entry["_realtime_symbol"], "name": entry["_realtime_name"]}
     # Check if company exists in companies table
-    result = conn.execute(text("SELECT id FROM `companies` WHERE symbol = :symbol"), symbol=symbol)
+    result = conn.execute(text("SELECT id FROM `companies` WHERE symbol = :symbol"), parameters=params)
     row = result.one_or_none()
 
     if row is None:
         # if company doesn't exist, create new row in companies table - trigger generates new ID
-        conn.execute(
-            text("INSERT INTO `companies` (`companyName`, `symbol`) VALUES (:name, :symbol)"),
-            name=name,
-            symbol=symbol
-        )
+        conn.execute(text("INSERT INTO `companies` (`companyName`, `symbol`) VALUES (:name, :symbol)"), parameters=params)
 
         # get the generated ID
-        result = conn.execute(text("SELECT id FROM `companies` WHERE symbol = :symbol"), symbol=symbol)
+        result = conn.execute(text("SELECT id FROM `companies` WHERE symbol = :symbol"), parameters=params)
         company_id = result.one()[0]
     else:
         # if the company exists, fetch the existing ID

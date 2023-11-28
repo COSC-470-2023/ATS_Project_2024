@@ -1,6 +1,5 @@
 # dakota/noah
 
-import datetime
 import connect
 import json
 import traceback
@@ -23,10 +22,7 @@ def load_output_file(path):
 
 
 def execute_insert(connection, entry, company_id):
-    # would be nice to sync the order of fields in the database to the order of keys in the output data
-    # so we could use list comprehension instead. would be easier to manipulate the data and easier to pass parameters
-    # for bound/prepared statements. also easier to maintain, key name changes shouldn't matter
-
+    # list of expected keys
     keys = [
         "_company_date",
         "_company_price",
@@ -60,13 +56,19 @@ def execute_insert(connection, entry, company_id):
         "_company_isFund",
     ]
 
+    # change keys that don't exist in the output to None for insertion
     row = {key: entry.get(key, None) for key in keys}
 
-    # convert bool to int for insertion, modify in row
-    row["_company_isEtf"] = 1 if entry["_company_isEtf"] else 0
-    row["_company_isActivelyTrading"] = 1 if entry["_company_isActivelyTrading"] else 0
-    row["_company_isAdr"] = 1 if entry["_company_isAdr"] else 0
-    row["_company_isFund"] = 1 if entry["_company_isFund"] else 0
+    # if the key exists and value wasn't changed to None
+    if row["_company_isEtf"] is not None:
+        # convert bool to int for insertion, modify in row
+        row["_company_isEtf"] = 1 if row["_company_isEtf"] else 0
+    if row["_company_isActivelyTrading"] is not None:
+        row["_company_isActivelyTrading"] = 1 if row["_company_isActivelyTrading"] else 0
+    if row["_company_isAdr"] is not None:
+        row["_company_isAdr"] = 1 if row["_company_isAdr"] else 0
+    if row["_company_isFund"] is not None:
+        row["_company_isFund"] = 1 if row["_company_isFund"] else 0
 
     # append generated id
     row["company_id"] = company_id
@@ -79,24 +81,18 @@ def execute_insert(connection, entry, company_id):
 
 
 def get_company_id(entry, conn):
-    name = entry["_company_name"]
-    symbol = entry["_company_symbol"]
+    # parameters for queries
+    params = {"symbol": entry["_company_symbol"], "name": entry["_company_name"]}
     # check if company exists in companies table
-    result = conn.execute(text(f"SELECT id FROM `companies` WHERE symbol = '{symbol}'"))
+    result = conn.execute(text("SELECT id FROM `companies` WHERE symbol = :symbol"), parameters=params)
     row = result.one_or_none()
 
     if row is None:
         # if company doesn't exist, create new row in companies table - trigger generates new ID
-        conn.execute(
-            text(
-                f"INSERT INTO `companies`(`companyName`, `symbol`) VALUES ('{name}', '{symbol}')"
-            )
-        )
+        conn.execute(text("INSERT INTO `companies` (`companyName`, `symbol`) VALUES (:name, :symbol)"), parameters=params)
 
         # get the generated ID
-        result = conn.execute(
-            text(f"SELECT id FROM `companies` WHERE symbol = '{symbol}'")
-        )
+        result = conn.execute(text("SELECT id FROM `companies` WHERE symbol = :symbol"), parameters=params)
         company_id = result.one()[0]
     else:
         # if the company exists, fetch the existing ID
@@ -106,16 +102,16 @@ def get_company_id(entry, conn):
 
 def main():
     # Load json data
-    realtime_data = load_output_file("database/processing/test_data/company_test.json")
+    company_data = load_output_file("database/processing/test_data/company_test.json")
 
     try:
         # create with context manager, implicit commit on close
         with connect.connect() as conn:
             with conn.begin():
-                for entry in realtime_data:
+                for entry in company_data:
                     company_id = get_company_id(entry, conn)
                     try:
-                        # process realtime data
+                        # process company data
                         execute_insert(conn, entry, company_id)
                     except SQLAlchemyError as e:
                         # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
@@ -124,7 +120,7 @@ def main():
 
     except Exception as e:
         print(traceback.format_exc())
-        print(f"SQL connection error: {e}")
+        print(f"Error: {e}")
 
 # protected entrypoint
 if __name__ == "__main__":
