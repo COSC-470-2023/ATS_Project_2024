@@ -22,10 +22,16 @@ def load_output_file(path):
         exit(1)
 
 
+"""
+TODO;
+change connection.commit() to with connection.begin() for implicit commits
+convert to parameterized queries to handle None values
+check for missing keys in the output data and assign them None values
+update other scripts with same changes
+remove eps/pe/earningsAnnouncement/sharesOutstanding from index and commodities
+"""
+
 def execute_insert(connection, entry, company_id):
-    # would be nice to sync the order of fields in the database to the order of keys in the output data
-    # so we could use list comprehension instead. would be easier to manipulate the data and easier to pass parameters
-    # for bound/prepared statements. also easier to maintain, key name changes shouldn't matter
     date = entry["_realtime_date"]
     price = entry["_realtime_price"]
     change_percentage = entry["_realtime_changePercent"]
