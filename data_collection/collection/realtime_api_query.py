@@ -1,4 +1,7 @@
-# Get data from company info API list file
+# Get data from the bonds API list file
+# Parse the json so we know what our URL and keys are
+# Iterate through the stocks using the key and url, then move onto the next API
+# TODO make the directories for file read and out absolute ie not relative locations to the script
 
 import time
 import requests
@@ -6,21 +9,24 @@ from datetime import datetime
 from JsonModifier import JsonModifier
 
 # Globals
-COMPANY_INFO_CFG_PATH = "../configuration/company_info_query_cfg.json"
+REALTIME_CFG_PATH = "../configuration/realtime_query_cfg.json"
 OUTPUT_FOLDER = "../output/"
-OUTPUT_FILENAME = "company_info_output.json"
+OUTPUT_FILENAME_STOCKS = "realtime_stocks_output.json"
+OUTPUT_FILENAME_INDEX = "realtime_index_output.json"
+OUTPUT_FILENAME_COMMODITIES = "realtime_commodity_output.json"
 
 
 def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api_fields, non_api_fields):
     output = []
-    # Iterate through each stock and make an API call
+
+    # Iterate through each stocks and make a API call
+    # TODO make it query with 5 items at a time ("APPL, TSLA, %5EGSPC")
     for query_itr in range(len(query_list)):
         query_item = query_list[query_itr]
-
         # Replace the URL parameters with our current API configs
         query = parsed_api_url.replace("{QUERY_PARAMS}", query_item['symbol']).replace("{API_KEY}", parsed_api_key)
         response = requests.get(query)
-        # Convert the response to json and append to list
+        # convert the response to json and append to list
         data = response.json()
         remapped_entry = {}
 
@@ -36,10 +42,10 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
                         output_type = non_api_fields[non_api_field]['output_type']
                         # Handler for "unix_time" conversion to date time
                         # TODO add more cases later, for the first API this is all we need.
-                        if input_type is None:
+                        if input_type == "_unix_time":
                             if output_type == "_date_time":
                                 try:
-                                    entry[map_to] = str(datetime.now())
+                                    entry[map_to] = str(datetime.fromtimestamp(entry[src]))
                                 except TypeError:
                                     continue
                     except KeyError:
@@ -52,15 +58,16 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
                         remapped_entry[api_fields[field]] = remapped_entry[field]
                         del remapped_entry[field]  # API field has a mapping value, rename it.
                     else:
-                        del remapped_entry[field]  # API field mapping was set to null,
-                        # dump it as cfg doesnt care to keep.
-
+                        del remapped_entry[
+                            field]  # API field mapping was set to null, dump it as cfg doesnt care to keep.
             except AttributeError:
                 continue  # The copy failed of the dict because it was probably an error message.
 
         output.append({})
         output[-1] = remapped_entry
 
+        # Rate limit the query speed based on the rate limit
+        # From inside the JSON. Check that the key wasnt valued at null, signifying no rate limit.
         if api_rate_limit is not None:
             time.sleep(60 / api_rate_limit)
 
@@ -68,8 +75,10 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
 
 
 def main():
-    json_config = JsonModifier.load_config(COMPANY_INFO_CFG_PATH)
-    company_output = []
+    json_config = JsonModifier.load_config(REALTIME_CFG_PATH)
+    stock_output = []
+    index_output = []
+    commodity_output = []
 
     # Iterate through each API in the list
     for api in range(len(json_config)):
@@ -78,13 +87,19 @@ def main():
         api_rate_limit = json_config[api]['rate_limit_per_min']
         api_fields = json_config[api]['api_fields']
         non_api_fields = json_config[api]['non_api_fields']
+        stock_list = json_config[api]['stocks']
+        index_list = json_config[api]['index_composites']
+        commodity_list = json_config[api]['commodities']
 
-        company_list = json_config[api]['companies']
+        stock_output = make_queries(api_url, api_key, stock_list, api_rate_limit, api_fields, non_api_fields)
+        index_output = make_queries(api_url, api_key, index_list, api_rate_limit, api_fields, non_api_fields)
+        commodity_output = make_queries(api_url, api_key, commodity_list, api_rate_limit, api_fields, non_api_fields)
 
-        company_output = make_queries(api_url, api_key, company_list, api_rate_limit, api_fields, non_api_fields)
+    JsonModifier.write_files(stock_output, OUTPUT_FOLDER, OUTPUT_FILENAME_STOCKS)
+    JsonModifier.write_files(index_output, OUTPUT_FOLDER, OUTPUT_FILENAME_INDEX)
+    JsonModifier.write_files(commodity_output, OUTPUT_FOLDER, OUTPUT_FILENAME_COMMODITIES)
 
-    JsonModifier.write_files(company_output, OUTPUT_FOLDER, OUTPUT_FILENAME)
 
-
+# code to only be executed if ran as script
 if __name__ == "__main__":
     main()
