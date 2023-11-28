@@ -6,7 +6,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
 # Globals
-OUTPUT_FILE_PATH = "./test_files/static_test_files/static_index_realtime.json"
+OUTPUT_FILE_PATH = "./data_collection/output/realtime_index_output.json"
 
 def load_output_file(path):
     try:
@@ -77,13 +77,16 @@ def main():
             # Load output
             realtime_data = load_output_file(OUTPUT_FILE_PATH)
             for entry in realtime_data:
-                index_id = get_index_id(entry, conn)
-                try:    
-                    # process realtime data
-                    execute_insert(conn, entry, index_id)
-                except SQLAlchemyError as e:
-                    # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
-                    print(f"Error: {e}")
+                if bool(entry):
+                    index_id = get_index_id(entry, conn)
+                    try:    
+                        # process realtime data
+                        execute_insert(conn, entry, index_id)
+                    except SQLAlchemyError as e:
+                        # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
+                        print(f"Error: {e}")
+                        continue
+                else:
                     continue
             conn.commit()
             
