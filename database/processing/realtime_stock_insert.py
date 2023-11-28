@@ -108,7 +108,7 @@ def main():
 
     except Exception as e:
         print(traceback.format_exc())
-        print(f"SQL connection error: {e}")
+        print(f"Error: {e}")
 
 # protected entrypoint
 if __name__ == "__main__":
