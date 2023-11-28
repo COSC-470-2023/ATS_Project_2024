@@ -2,7 +2,7 @@
   {
     "api": "https://financialmodelingprep.com/api/v4/treasury?from={START_DATE}&to={END_DATE}&apikey={API_KEY}",
     "rate_limit_per_min": 300,
-    "api_key": "KEY",
+    "api_key": "<PASTE KEY HERE>",
     "name": "US Treasury",
     "currency": "USD",
     "fields": {

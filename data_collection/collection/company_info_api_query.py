@@ -1,39 +1,28 @@
 # Get data from company info API list file
-import json
+
 import time
-import os
-import errno
 import requests
 from datetime import datetime
+from JsonModifier import JsonModifier
+
+# Globals
+COMPANY_INFO_CFG_PATH = "../configuration/company_info_query_cfg.json"
+OUTPUT_FOLDER = "../output/"
+OUTPUT_FILENAME = "company_info_output.json"
 
 
-# Load config file
-def load_config():
-    config_path = "../configuration/company_info_query_cfg.json"
-    try:
-        config_file = open(config_path, "r")
-        config = json.load(config_file)
-        return config
-    except IOError:
-        print(f"IOError while accessing stock/index/commodity query config at path: {config_path}")
-        exit(-1001)  # Exit program with code -1001 (Invalid config path)
-    except json.JSONDecodeError as e:
-        print(f"JSON decoding encountered an error while decoding {config_path}:\n{e}")
-        exit(-1002)  # Exit program with code -1002 (Invalid config structure)
-
-
-# Create API queries
 def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api_fields, non_api_fields):
     output = []
     # Iterate through each stock and make an API call
     for query_itr in range(len(query_list)):
-        query = query_list[query_itr]['symbol']
+        query_item = query_list[query_itr]
 
         # Replace the URL parameters with our current API configs
-        query = parsed_api_url.replace("{QUERY_PARAMS}", query).replace("{API_KEY}", parsed_api_key)
+        query = parsed_api_url.replace("{QUERY_PARAMS}", query_item['symbol']).replace("{API_KEY}", parsed_api_key)
         response = requests.get(query)
         # Convert the response to json and append to list
         data = response.json()
+        remapped_entry = {}
 
         for entry in data:
             if non_api_fields != {}:  # There is a manually added field in the cfg.
@@ -47,10 +36,8 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
                         output_type = non_api_fields[non_api_field]['output_type']
                         # Handler for "unix_time" conversion to date time
                         # TODO add more cases later, for the first API this is all we need.
-                        # print(f"src: {src}, map_to: {map_to}, input_type: {input_type}, output_type: {output_type}")
                         if input_type is None:
                             if output_type == "_date_time":
-                                # print(True)
                                 try:
                                     entry[map_to] = str(datetime.now())
                                 except TypeError:
@@ -65,36 +52,23 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
                         remapped_entry[api_fields[field]] = remapped_entry[field]
                         del remapped_entry[field]  # API field has a mapping value, rename it.
                     else:
-                        del remapped_entry[field]  # API field mapping was set to null, dump it as cfg doesnt care to keep.
-                data[0] = remapped_entry
+                        del remapped_entry[field]  # API field mapping was set to null,
+                        # dump it as cfg doesnt care to keep.
+
             except AttributeError:
                 continue  # The copy failed of the dict because it was probably an error message.
 
-        output += data
+        output.append({})
+        output[-1] = remapped_entry
 
         if api_rate_limit is not None:
             time.sleep(60 / api_rate_limit)
 
-    print(output)
     return output
 
 
-# Write output file
-def write_files(company_json):
-    output_dir = "../output/"
-    if not os.path.exists(os.path.dirname(output_dir)):
-        try:
-            os.makedirs(os.path.dirname(output_dir))
-        except OSError as exc:  # Guard against race condition
-            if exc.errno != errno.EEXIST:
-                raise
-
-    with open("../output/company_info_output.json", "w") as outfile:
-        json.dump(company_json, outfile, indent=2)
-
-
 def main():
-    json_config = load_config()
+    json_config = JsonModifier.load_config(COMPANY_INFO_CFG_PATH)
     company_output = []
 
     # Iterate through each API in the list
@@ -105,14 +79,12 @@ def main():
         api_fields = json_config[api]['api_fields']
         non_api_fields = json_config[api]['non_api_fields']
 
-        # Get a list of the company symbols we need to query
         company_list = json_config[api]['companies']
 
         company_output = make_queries(api_url, api_key, company_list, api_rate_limit, api_fields, non_api_fields)
 
-    write_files(company_output)
+    JsonModifier.write_files(company_output, OUTPUT_FOLDER, OUTPUT_FILENAME)
 
 
-# Code to only be executed if ran as script
 if __name__ == "__main__":
     main()
