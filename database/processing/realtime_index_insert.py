@@ -1,9 +1,12 @@
 import connect
 import json
 import traceback
-import sqlalchemy
+from sqlalchemy import sql
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
+
+# Globals
+OUTPUT_FILE_PATH = "./test_files/static_test_files/static_index_realtime.json"
 
 def load_output_file(path):
     try:
@@ -18,38 +21,49 @@ def load_output_file(path):
         exit(1)
 
 def execute_insert(connection, entry, index_id):
+    # Declare and initialize variables
     date = entry["_realtime_date"]
     price = entry['_realtime_price']
     change_percentage = entry['_realtime_changePercent']
     change = entry['_realtime_change']
-    day_high = entry['_realtime_dayHigh']
     day_low = entry['_realtime_dayLow']
+    day_high = entry['_realtime_dayHigh']
     year_high = entry['_realtime_yearHigh']
     year_low = entry['_realtime_yearLow']
     mkt_cap =  entry['_realtime_mktCap']
-    mkt_cap = mkt_cap if mkt_cap != None else sqlalchemy.sql.null() # mkt_cap is usually null. Need to convert 'None' to 'NULL' for mysql
+    mkt_cap = mkt_cap if mkt_cap != None else sql.null() # mkt_cap is usually null. Need to convert 'None' to 'NULL' for mysql
     exchange = entry['_realtime_exchange']
-    open_price = entry['_realtime_open']
-    prev_close = entry['_realtime_prevClose']
     volume = entry['_realtime_volume']
     vol_avg = entry['_realtime_volAvg']
+    open = entry['_realtime_open']
+    prev_close = entry['_realtime_prevClose']
+    
     # Execute row insertion
-    connection.execute(text(f"INSERT INTO `realtime_index_values` VALUES ('{index_id}', '{date}', '{price}', '{change_percentage}', '{change}', '{day_high}', '{day_low}', '{year_high}', '{year_low}', {mkt_cap}, '{exchange}','{open_price}', '{prev_close}', '{volume}', '{vol_avg}')"))
-    connection.commit()
+    connection.execute(
+        text(
+            f"INSERT INTO `realtime_index_values` VALUES ('{index_id}', '{date}', '{price}', '{change_percentage}', '{change}', '{day_low}', '{day_high}', '{year_high}', '{year_low}', {mkt_cap}, '{exchange}', '{volume}', '{vol_avg}', '{open}', '{prev_close}')"
+        )
+    )
 
-def get_index_id(entry, conn):
+
+def get_index_id(entry, connection):
     symbol = entry['_realtime_symbol']
     name = entry['_realtime_name']
+    id_query = f"SELECT id FROM `indexes` WHERE symbol = '{symbol}'"
     # check if index exists in indexes table
-    result = conn.execute(text(f"SELECT id FROM `indexes` WHERE symbol = '{symbol}'"))
+    result = connection.execute(text(id_query))
     row = result.one_or_none()
 
     if row is None:
         # if index doesn't exist, create new row in indexes table - trigger generates new ID
-        conn.execute(text(f"INSERT INTO `indexes`(`indexName`, `symbol`) VALUES ('{name}', '{symbol}')"))
-        conn.commit()
+        connection.execute(
+            text(
+                f"INSERT INTO `indexes`(`indexName`, `symbol`) VALUES ('{name}', '{symbol}')"
+            )
+        )
+        connection.commit()
         # get the generated ID
-        result = conn.execute(text(f"SELECT id FROM `indexes` WHERE symbol = '{symbol}'")) 
+        result = connection.execute(text(id_query)) 
         index_id = result.one()[0]
     else:
         # if the index exists, fetch the existing ID
@@ -57,12 +71,11 @@ def get_index_id(entry, conn):
     return index_id
 
 def main():
-    # Load json data
-    realtime_data = load_output_file('./SMF_Project_2023/data_collection/output/index_output.json')
-
     try:
         # create with context manager
         with connect.connect() as conn:
+            # Load output
+            realtime_data = load_output_file(OUTPUT_FILE_PATH)
             for entry in realtime_data:
                 index_id = get_index_id(entry, conn)
                 try:    
@@ -72,11 +85,12 @@ def main():
                     # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
                     print(f"Error: {e}")
                     continue
+            conn.commit()
+            
 
     except Exception as e:
-        print(e)
         print(traceback.format_exc())
-        print("SQL connection error")
+        print(f"SQL connection error: {e}")
 
 # protected entrypoint
 if __name__ == "__main__":
