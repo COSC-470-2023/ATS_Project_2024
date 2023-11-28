@@ -21,16 +21,6 @@ def load_output_file(path):
         print(f"Error decoding JSON in '{path}'")
         exit(1)
 
-
-"""
-TODO;
-change connection.commit() to with connection.begin() for implicit commits
-convert to parameterized queries to handle None values
-check for missing keys in the output data and assign them None values
-update other scripts with same changes
-remove eps/pe/earningsAnnouncement/sharesOutstanding from index and commodities
-"""
-
 def execute_insert(connection, entry, company_id):
     # keys expected to be committed
     keys = [
@@ -69,28 +59,26 @@ def execute_insert(connection, entry, company_id):
 
     # parameterized query
     query = text("INSERT INTO `realtime_stock_values` VALUES (:company_id, :_realtime_date, :_realtime_price, :_realtime_changePercent, :_realtime_change, :_realtime_dayLow, :_realtime_dayHigh, :_realtime_yearHigh, :_realtime_yearLow, :_realtime_mktCap, :_realtime_exchange, :_realtime_volume, :_realtime_volAvg, :_realtime_open, :_realtime_prevClose, :_realtime_eps, :_realtime_pe, :_realtime_earningsAnnouncement, :_realtime_sharesOutstanding)")
-    # execute row insertion, ** operator unpacks dict into the bind parameters
+    # execute row insertion, it would only work by explicitly naming the function args for unknown reasons
     connection.execute(statement=query, parameters=row)
 
 def get_company_id(entry, conn):
     symbol = entry["_realtime_symbol"]
     name = entry["_realtime_name"]
-    # check if company exists in companies table
-    result = conn.execute(text(f"SELECT id FROM `companies` WHERE symbol = '{symbol}'"))
+    # Check if company exists in companies table
+    result = conn.execute(text("SELECT id FROM `companies` WHERE symbol = :symbol"), symbol=symbol)
     row = result.one_or_none()
 
     if row is None:
         # if company doesn't exist, create new row in companies table - trigger generates new ID
         conn.execute(
-            text(
-                f"INSERT INTO `companies`(`companyName`, `symbol`) VALUES ('{name}', '{symbol}')"
-            )
+            text("INSERT INTO `companies` (`companyName`, `symbol`) VALUES (:name, :symbol)"),
+            name=name,
+            symbol=symbol
         )
 
         # get the generated ID
-        result = conn.execute(
-            text(f"SELECT id FROM `companies` WHERE symbol = '{symbol}'")
-        )
+        result = conn.execute(text("SELECT id FROM `companies` WHERE symbol = :symbol"), symbol=symbol)
         company_id = result.one()[0]
     else:
         # if the company exists, fetch the existing ID

@@ -27,43 +27,55 @@ def execute_insert(connection, entry, company_id):
     # so we could use list comprehension instead. would be easier to manipulate the data and easier to pass parameters
     # for bound/prepared statements. also easier to maintain, key name changes shouldn't matter
 
-    date = entry["_company_date"]
-    price = entry["_company_price"]
-    beta = entry["_company_beta"]
-    volAvg = entry["_company_volAvg"]
-    mktCap = entry["_company_mktCap"]
-    latsDiv = entry["_company_lastDiv"]
-    changes = entry["_company_changes"]
-    currency = entry["_company_currency"]
-    cik = entry["_company_cik"]
-    isin = entry["_company_isin"]
-    cusip = entry["_company_cusip"]
-    exchangeFullName = entry["_company_exchangeFullName"]
-    exchange = entry["_company_exchange"]
-    industry = entry["_company_industry"]
-    ceo = entry["_company_ceo"]
-    sector = entry["_company_sector"]
-    country = entry["_company_country"]
-    fullTimeEmployees = entry["_company_fullTimeEmployees"]
-    phone = entry["_company_phone"]
-    address = entry["_company_address"]
-    city = entry["_company_city"]
-    state = entry["_company_state"]
-    zip = entry["_company_zip"]
-    dcfDiff = entry["_company_dcfDiff"]
-    dcf = entry["_company_dcf"]
-    ipoDate = entry["_company_ipoDate"]
-    # convert bool to int for insertion
-    isEtf = 1 if entry["_company_isEtf"] else 0
-    isActivelyTrading = 1 if entry["_company_isActivelyTrading"] else 0
-    isAdr = 1 if entry["_company_isAdr"] else 0
-    isFund = 1 if entry["_company_isFund"] else 0
+    keys = [
+        "_company_date",
+        "_company_price",
+        "_company_beta",
+        "_company_volAvg",
+        "_company_mktCap",
+        "_company_lastDiv",
+        "_company_changes",
+        "_company_currency",
+        "_company_cik",
+        "_company_isin",
+        "_company_cusip",
+        "_company_exchangeFullName",
+        "_company_exchange",
+        "_company_industry",
+        "_company_ceo",
+        "_company_sector",
+        "_company_country",
+        "_company_fullTimeEmployees",
+        "_company_phone",
+        "_company_address",
+        "_company_city",
+        "_company_state",
+        "_company_zip",
+        "_company_dcfDiff",
+        "_company_dcf",
+        "_company_ipoDate",
+        "_company_isEtf",
+        "_company_isActivelyTrading",
+        "_company_isAdr",
+        "_company_isFund",
+    ]
 
-    # Execute row insertion
-    connection.execute(
-        text(
-            f"INSERT INTO `company_statements` VALUES ('{company_id}', '{date}', '{price}', '{beta}', '{volAvg}', '{mktCap}', '{latsDiv}', '{changes}', '{currency}', '{cik}', '{isin}', '{cusip}', '{exchangeFullName}', '{exchange}', '{industry}', '{ceo}', '{sector}', '{country}', '{fullTimeEmployees}','{phone}','{address}','{city}', '{state}','{zip}','{dcfDiff}','{dcf}','{ipoDate}','{isEtf}','{isActivelyTrading}','{isAdr}','{isFund}')")
-    )
+    row = {key: entry.get(key, None) for key in keys}
+
+    # convert bool to int for insertion, modify in row
+    row["_company_isEtf"] = 1 if entry["_company_isEtf"] else 0
+    row["_company_isActivelyTrading"] = 1 if entry["_company_isActivelyTrading"] else 0
+    row["_company_isAdr"] = 1 if entry["_company_isAdr"] else 0
+    row["_company_isFund"] = 1 if entry["_company_isFund"] else 0
+
+    # append generated id
+    row["company_id"] = company_id
+
+    # parameterized query
+    query = text("INSERT INTO `company_statements` VALUES (:company_id, :_company_date, :_company_price, :_company_beta, :_company_volAvg, :_company_mktCap, :_company_lastDiv, :_company_changes, :_company_currency, :_company_cik, :_company_isin, :_company_cusip, :_company_exchangeFullName, :_company_exchange, :_company_industry, :_company_ceo, :_company_sector, :_company_country, :_company_fullTimeEmployees, :_company_phone, :_company_address, :_company_city, :_company_state, :_company_zip, :_company_dcfDiff, :_company_dcf, :_company_ipoDate, :_company_isEtf, :_company_isActivelyTrading, :_company_isAdr, :_company_isFund)")
+
+    # execute insertion
+    connection.execute(statement=query, parameters=row)
 
 
 def get_company_id(entry, conn):
