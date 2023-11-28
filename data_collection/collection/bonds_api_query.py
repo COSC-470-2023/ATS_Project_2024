@@ -1,7 +1,3 @@
-# Get data from the bonds API list file Parse the json, so we know what our URL and keys are Gather data from the
-#  date window specified (1-90 days, 7 default)
-# TODO add a method that recognizes if the config file start and end
-#  dates have been manually changed, if so run the manual dates
 import json
 import os
 import errno
@@ -28,76 +24,48 @@ def load_config():
 def create_date_window(days_queried):
     total_days = int(days_queried)
     date_windows = []
-    num_chunks = total_days // 90  # Give the number of 90 day chunks plus the remainder
-    rem = total_days % 90  # TODO find the start date of the final 'date window', subtract rem from that for the start date of the final 'partial window (remaining days)'
-    print(num_chunks)
+    num_chunks = total_days // 90  # Give the number of 90-day chunks plus the remainder
+    rem = total_days % 90  # Calculate the remaining days that weren't in the 90-day chunks
+    end = date.today()
+    # For each 90-day chunk run the query
     for chunk in range(num_chunks):
-        start = date.today() - (timedelta(days=90) * (chunk+1))
-        print("start: ", start - timedelta(days=1))
-        end = start + timedelta(days=90)
-        print("end: ", end)
+        start = end - timedelta(days=90)
         window = {start: end}
-        print(date_windows)
         date_windows.append(window)
-    #for day in range(rem):
-        # TODO create functionality for handling remainder
-    print(date_windows)
+        end = start
+    # Handle remainder (days_queried not divisible by 90)
+    if rem > 0:
+        start = end - timedelta(days=rem)
+        window = {start: end}
+        date_windows.append(window)
     return date_windows
 
 
-# TODO write method for manual queries when start and end date have been manually changed in config
-# def manual_query():
-
-
-def make_queries(api_url, api_key, api_fields, non_api_fields):
-    bonds_config = load_config()  # init as dict
-    bonds_dict = {}
-
+def make_queries(api_url, api_key, api_fields, non_api_fields, days_queried):
+    bonds_data = []
+    windows = create_date_window(days_queried)
     # TODO MAKE TRY EXCEPT BLOCK
-    # Iterate through each API in the list
-    for api_config in bonds_config:
-        # Get the parameters for the query, including the day range to be queried
-        api_url = api_config['url']
-        api_key = api_config['api_key']
-
-        # Pull date window - defaulted to 7 (hard requirement). Can be configured between 2-90
-        days_queried = int(api_config['days_queried'])
-        if days_queried < 1:
-            print("Days queried cannot be less than 1.")
-            exit(-1003)  # Exit with code -1003 (Invalid input)
-        if days_queried > 90:
-            date_window = create_date_window(days_queried)
-            for i in range(len(date_window)):
-                start_date = date_window[i]
-                end_date = date_window[i]
-        else:
-            # Make an API call for the last week of bonds data
-            # Date range days_queried (configuration) - today
-            end_date = date.today()
-            start_date = end_date - timedelta(days=days_queried)
-            print("start: ", start_date, " end: ", end_date)
-            # Add to date windows
-
+    # For each date_window, execute query
+    for date_window in windows:
+        # Retrieve key value pair from date_window
+        start_date_key = list(date_window.keys())
+        end_date_value = list(date_window.values())
+        start_date = start_date_key[0]
+        end_date = end_date_value[0]
         # Replace the URL parameters with our current API configs
         query = api_url.replace("{START_DATE}", str(start_date)).replace("{END_DATE}", str(end_date)).replace("{API_KEY}", api_key)
         response = requests.get(query)
-
         # Convert the response to json
-        bonds_data = json.loads(response.text)
-        # Read in common list of keys
-        config_fields_dict = bonds_config[0].get('api_fields')
-        # Create new key value pair '_bond_name: name'
-        map_to = bonds_config[0].get('non_api_fields').get('name').get('mapping')
-        name = bonds_config[0].get('name')
-        new_kv_pair = {map_to: name}
-
-        # Add new key value to start of output file
-        for i in range(len(bonds_data)):
+        bonds_output = json.loads(response.text)
+        for data in bonds_output:
+            # Get name and mapping from config
+            map_to = non_api_fields['name']['mapping']
+            name = non_api_fields['name']['src']
+            bonds_dict = {map_to: name}
             # Format output
-            bonds_dict = dict(zip(config_fields_dict.values(), list(bonds_data[i].values())))
-            # Add new key value pair
-            bonds_dict = {**new_kv_pair, **bonds_dict}
-            bonds_data[i] = bonds_dict
+            bonds_dict.update(zip(api_fields.values(), list(data.values())))
+            # Add non_api_fields field to output
+            bonds_data.append(bonds_dict)
     return bonds_data
 
 
@@ -124,7 +92,8 @@ def main():
         key = bond_config[entry]['api_key']
         api_fields = bond_config[entry]['api_fields']
         non_api_fields = bond_config[entry]['non_api_fields']
-        output = make_queries(url, key, api_fields, non_api_fields)
+        days_queried = bond_config[entry]['days_queried']
+        output = make_queries(url, key, api_fields, non_api_fields, days_queried)
     write_file(output)
 
 

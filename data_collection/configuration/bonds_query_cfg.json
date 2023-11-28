@@ -2,8 +2,8 @@
   {
     "url": "https://financialmodelingprep.com/api/v4/treasury?from={START_DATE}&to={END_DATE}&apikey={API_KEY}",
     "rate_limit_per_min": 300,
-    "api_key": "KEY",
-    "name": "US Treasury",
+    "api_key": "cae0e091a31773bcf0ffdd4bf97a9e61",
+    "days_queried": 100,
     "api_fields": {
       "date": "_bond_date",
       "month1": "_bond_month1",
@@ -21,14 +21,11 @@
     },
     "non_api_fields": {
       "name": {
-        "src": null,
+        "src": "US Treasury",
         "mapping": "_bond_name",
         "input_type": null,
         "output_type": null
       }
-  },
-    "days_queried": "31",
-    "start": "YYYY-MM-DD",
-    "end": "YYYY-MM-DD"
+    }
   }
 ]
