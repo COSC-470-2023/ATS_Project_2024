@@ -1,9 +1,11 @@
 # Project Files
 .idea*
-*.pyc
 
 # Output Files
 data_collection/output
 
 # Credential File
 database/processing/credentials.py
+
+# pycache
+database/processing/__pycache__
