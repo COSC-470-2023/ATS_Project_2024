@@ -1,58 +1,76 @@
-# Get data from the bonds API list file
-# Parse the json so we know what our URL and keys are
-# Iterate through the stocks using the key and url, then move onto the next API
-# TODO make the directories for file read and out absolute ie not relative locations to the script
 import json
-import time
 import os
 import errno
 import requests
+from datetime import date
+from datetime import timedelta
 
 
 # Loads the configuration file.
 def load_config():
-    config_path = "configuration/bonds_list.json"
-    try:
-        config_file = open(config_path, "r")
-        config = json.load(config_file)
-        return config
-    except IOError:
-        print(f"IOError while accessing bonds query config file at path: {config_path}")
+    config_path = "../configuration/bonds_query_cfg.json"
+    with open(config_path, 'r') as file:
+        try:
+            config = json.load(file)
+            return config
+        except IOError:
+            print(f"IOError while accessing bonds query config file at path: {config_path}")
+            exit(-1001)  # Exit program with code -1001 (Invalid config path)
+        except json.JSONDecodeError as e:
+            print(f"JSON decoding encountered an error while decoding {config_path}:\n{e}")
+            exit(-1002)  # Exit program with code -1002 (Invalid config structure)
 
 
-def make_queries():
-    bonds_output = []
-
-    # Iterate through each API in the list
-    for api in range(len(JSON_config)):
-        # Get the parameters for the query, including the list of start end dates
-        api_url = JSON_config[api]['api']
-        api_key = JSON_config[api]['api_key']
-        api_datewindows = JSON_config[api]['date_windows']
-        api_rate_limit = JSON_config[api]['rate_limit_per_min']
-
-        # Iterate through each start-end date pair and make a API call
-        for date in range(len(api_datewindows)):
-            start_date = api_datewindows[date][0]
-            end_date = api_datewindows[date][1]
-            # Replace the URL parameters with our current API configs
-            query = api_url.replace("{START_DATE}", start_date).replace("{END_DATE}", end_date).replace("{API_KEY}",
-                                                                                                        api_key)
-            response = requests.get(query)
-            # convert the response to json and append to list
-            data = response.json()
-            bonds_output += data
-
-            # Rate limit the query speed based on the rate limit
-            # From inside the JSON. Check that the key wasnt valued at null, signifying no rate limit.
-            if api_rate_limit is not None:
-                time.sleep(60/api_rate_limit)
-
-    return bonds_output
+def create_date_window(days_queried):
+    total_days = int(days_queried)
+    date_windows = []
+    num_chunks = total_days // 90  # Give the number of 90-day chunks plus the remainder
+    rem = total_days % 90  # Calculate the remaining days that weren't in the 90-day chunks
+    end = date.today()
+    # For each 90-day chunk run the query
+    for chunk in range(num_chunks):
+        start = end - timedelta(days=90)
+        window = {start: end}
+        date_windows.append(window)
+        end = start
+    # Handle remainder (days_queried not divisible by 90)
+    if rem > 0:
+        start = end - timedelta(days=rem)
+        window = {start: end}
+        date_windows.append(window)
+    return date_windows
 
 
-def write_file(output):
-    output_dir = "output/"
+def make_queries(api_url, api_key, api_fields, non_api_fields, days_queried):
+    bonds_data = []
+    windows = create_date_window(days_queried)
+    # TODO MAKE TRY EXCEPT BLOCK
+    # For each date_window, execute query
+    for date_window in windows:
+        # Retrieve key value pair from date_window
+        start_date_key = list(date_window.keys())
+        end_date_value = list(date_window.values())
+        start_date = start_date_key[0]
+        end_date = end_date_value[0]
+        # Replace the URL parameters with our current API configs
+        query = api_url.replace("{START_DATE}", str(start_date)).replace("{END_DATE}", str(end_date)).replace("{API_KEY}", api_key)
+        response = requests.get(query)
+        # Convert the response to json
+        bonds_output = json.loads(response.text)
+        for data in bonds_output:
+            # Get name and mapping from config
+            map_to = non_api_fields['name']['mapping']
+            name = non_api_fields['name']['src']
+            bonds_dict = {map_to: name}
+            # Format output
+            bonds_dict.update(zip(api_fields.values(), list(data.values())))
+            # Add non_api_fields field to output
+            bonds_data.append(bonds_dict)
+    return bonds_data
+
+
+def write_file(bond_output):
+    output_dir = "../output/"
     if not os.path.exists(os.path.dirname(output_dir)):
         try:
             os.makedirs(os.path.dirname(output_dir))
@@ -60,12 +78,25 @@ def write_file(output):
             if exc.errno != errno.EEXIST:
                 raise
 
-    with open("output/raw_bonds_output.json", "w") as outfile:
-        json.dump(output, outfile, indent=2)
+    with open("../output/bonds_output.json", "w") as outfile:
+        json.dump(bond_output, outfile, indent=2)
 
 
-# code to only be executed if ran as script
-if __name__ == "__main__":
-    JSON_config = load_config()
-    output = make_queries()
+def main():
+    bond_config = load_config()
+    output = []
+    # TODO make try except
+    for entry in range(len(bond_config)):
+        # Load variables from the configuration
+        url = bond_config[entry]['url']
+        key = bond_config[entry]['api_key']
+        api_fields = bond_config[entry]['api_fields']
+        non_api_fields = bond_config[entry]['non_api_fields']
+        days_queried = bond_config[entry]['days_queried']
+        output = make_queries(url, key, api_fields, non_api_fields, days_queried)
     write_file(output)
+
+
+# Code to only be executed if ran as script
+if __name__ == "__main__":
+    main()
