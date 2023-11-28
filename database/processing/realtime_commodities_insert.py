@@ -6,7 +6,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
 # Globals
-OUTPUT_FILE_PATH = "./test_files/static_test_files/static_commodities_realtime.json"
+OUTPUT_FILE_PATH = "./data_collection/output/realtime_commodity_output.json"
 
 def load_output_file(path):
     try:
@@ -83,13 +83,16 @@ def main():
         # create with context manager, implicit commit on close
         with connect.connect() as conn:
             for entry in realtime_data:
-                commodity_id = get_commodity_id(entry, conn)
-                try:
-                    # process realtime data
-                    execute_insert(conn, entry, commodity_id)
-                except SQLAlchemyError as e:
-                    # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
-                    print(f"Error: {e}")
+                if bool(entry):
+                    commodity_id = get_commodity_id(entry, conn)
+                    try:
+                        # process realtime data
+                        execute_insert(conn, entry, commodity_id)
+                    except SQLAlchemyError as e:
+                        # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
+                        print(f"Error: {e}")
+                        continue
+                else:
                     continue
                     
             # Commit changes to database (otherwise it rolls back)
