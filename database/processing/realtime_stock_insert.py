@@ -44,14 +44,14 @@ def execute_insert(connection, entry, company_id):
         "_realtime_sharesOutstanding",
     ]
 
+    # get key value, assign value to key. if key doesn't exist, assign value of None
+    row = {key: entry.get(key, None) for key in keys}
+
     # check if earningsAnnouncement is not None, if it's not None convert to a datetime object and format for mysql datetime
     # if it is None, assign None to earnings_announcement
     earnings_announcement = (
-        datetime.datetime.strptime(entry["_realtime_earningsAnnouncement"], "%Y-%m-%dT%H:%M:%S.%f%z").strftime("%Y-%m-%d %H:%M:%S") if entry["_realtime_earningsAnnouncement"] is not None else None
+        datetime.datetime.strptime(row["_realtime_earningsAnnouncement"], "%Y-%m-%dT%H:%M:%S.%f%z").strftime("%Y-%m-%d %H:%M:%S") if row["_realtime_earningsAnnouncement"] is not None else None
     )
-
-    # get key value, assign value to key. if key doesn't exist, assign value of None
-    row = {key: entry.get(key, None) for key in keys}
 
     # append generated id and modify earnings announcement
     row["company_id"] = company_id
@@ -64,7 +64,7 @@ def execute_insert(connection, entry, company_id):
 
 def get_company_id(entry, conn):
     params = {"symbol": entry["_realtime_symbol"], "name": entry["_realtime_name"]}
-    # Check if company exists in companies table
+    # check if company exists in companies table
     result = conn.execute(text("SELECT id FROM `companies` WHERE symbol = :symbol"), parameters=params)
     row = result.one_or_none()
 
