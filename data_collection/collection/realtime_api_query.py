@@ -74,39 +74,6 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
     return output
 
 
-# def write_files(stock_json, index_json, commodity_json):
-#     output_dir = "../output/"
-#     if not os.path.exists(os.path.dirname(output_dir)):
-#         try:
-#             os.makedirs(os.path.dirname(output_dir))
-#         except OSError as exc:  # Guard against race condition
-#             if exc.errno != errno.EEXIST:
-#                 raise
-#
-#     with open("../output/stocks_output.json", "w") as outfile:
-#         json.dump(stock_json, outfile, indent=2)
-#
-#     with open("../output/index_output.json", "w") as outfile:
-#         json.dump(index_json, outfile, indent=2)
-#
-#     with open("../output/commodity_output.json", "w") as outfile:
-#         json.dump(commodity_json, outfile, indent=2)
-
-# Loads the configuration file.
-# def load_config():
-#     config_path = "../configuration/realtime_query_cfg.json"
-#     try:
-#         config_file = open(config_path, "r")
-#         config = json.load(config_file)
-#         return config
-#     except IOError:
-#         print(f"IOError while accessing stock/index/commodity query config at path: {config_path}")
-#         exit(-1001)  # Exit program with code -1001 (Invalid config path)
-#     except json.JSONDecodeError as e:
-#         print(f"JSON decoding encountered an error while decoding {config_path}:\n{e}")
-#         exit(-1002)  # Exit program with code -1002 (Invalid config structure)
-
-
 def main():
     json_config = JsonModifier.load_config(REALTIME_CFG_PATH)
     stock_output = []
