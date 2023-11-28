@@ -93,13 +93,17 @@ def main():
             # begin transaction with context manager, implicit commit on exit or rollback on exception
             with conn.begin():
                 for entry in realtime_data:
-                    company_id = get_company_id(entry, conn)
-                    try:
-                        # process realtime data
-                        execute_insert(conn, entry, company_id)
-                    except SQLAlchemyError as e:
-                        # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
-                        print(f"Error: {e}")
+                    if isinstance(entry, dict):
+                        company_id = get_company_id(entry, conn)
+                        try:
+                            # process realtime data
+                            execute_insert(conn, entry, company_id)
+                        except SQLAlchemyError as e:
+                            # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
+                            print(f"Error: {e}")
+                            continue
+                    else:
+                        # entry is not a dictionary, skip it
                         continue
 
     except Exception as e:
