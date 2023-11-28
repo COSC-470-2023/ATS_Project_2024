@@ -60,20 +60,17 @@ def execute_insert(connection, entry, company_id):
         datetime.datetime.strptime(entry["_realtime_earningsAnnouncement"], "%Y-%m-%dT%H:%M:%S.%f%z").strftime("%Y-%m-%d %H:%M:%S") if entry["_realtime_earningsAnnouncement"] is not None else None
     )
 
+    # get key value, assign value to key. if key doesn't exist, assign value of None
     row = {key: entry.get(key, None) for key in keys}
 
     # append generated id and modify earnings announcement
     row["company_id"] = company_id
     row["_realtime_earningsAnnouncement"] = earnings_announcement
 
-    print(row)
-
     # parameterized query
-    query = text("INSERT INTO `realtime_stock_values` VALUES (:company_id, :_realtime_date, :_realtime_price, :_realtime_change_percentage, :_realtime_change, :_realtime_day_high, :_realtime_day_low, :_realtime_year_high, :_realtime_year_low, :_realtime_mkt_cap, :_realtime_exchange, :_realtime_open_price, :_realtime_prev_close, :_realtime_volume, :_realtime_vol_avg, :_realtime_eps, :_realtime_pe, :_realtime_earningsAnnouncement, :_realtime_shares_outstanding)")
-
+    query = text("INSERT INTO `realtime_stock_values` VALUES (:company_id, :_realtime_date, :_realtime_price, :_realtime_changePercent, :_realtime_change, :_realtime_dayLow, :_realtime_dayHigh, :_realtime_yearHigh, :_realtime_yearLow, :_realtime_mktCap, :_realtime_exchange, :_realtime_volume, :_realtime_volAvg, :_realtime_open, :_realtime_prevClose, :_realtime_eps, :_realtime_pe, :_realtime_earningsAnnouncement, :_realtime_sharesOutstanding)")
     # execute row insertion, ** operator unpacks dict into the bind parameters
-    connection.execute(query, **row)
-
+    connection.execute(statement=query, parameters=row)
 
 def get_company_id(entry, conn):
     symbol = entry["_realtime_symbol"]
