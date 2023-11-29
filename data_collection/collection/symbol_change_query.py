@@ -6,9 +6,7 @@
 
 import requests
 from datetime import date
-from JsonModifier import JsonModifier
-
-#GLOBALS
+from JsonHandler import JsonHandler
 # Variable to track symbols that are changed for global usage
 # A dict of OLD_SYMBOL:NEW_SYMBOL key, value pairs
 symbol_changelog = {}

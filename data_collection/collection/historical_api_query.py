@@ -7,7 +7,7 @@ import datetime
 import json
 import time
 import requests
-from JsonModifier import JsonModifier
+from JsonHandler import JsonHandler
 
 # Globals
 HISTORICAL_CFG_PATH = "../configuration/historical_query_cfg.json"
@@ -19,14 +19,6 @@ OUTPUT_FILENAME_COMMODITIES = "historical_commodity_output.json"
 
 def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api_fields, non_api_fields):
     output = []
-    # # Get today's date and format yyyy-mm-dd so it matches query params
-    # today = datetime.date.today()
-    # today_formatted = today.strftime("%Y-%m-%d")
-    #
-    # # Get the date from observable_days key and format to match query params
-    # days_prior = datetime.timedelta(days=observable_days)
-    # date_prior = today - days_prior
-    # date_prior_formatted = date_prior.strftime("%Y-%m-%d")
 
     # Iterate through each stocks and make a API call
     # TODO make it query with 5 items at a time ("APPL, TSLA, %5EGSPC")
@@ -46,7 +38,9 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
         entries = data['historical']
         remapped_entry = {}
 
+        # print(f"Data Output:\n{json.dumps(data, indent=2)}\n")
         for entry in entries:
+
             if non_api_fields != {}:  # There is a manually added field in the cfg.
                 for non_api_field in non_api_fields:
                     # Compare the manually added field to where it should get its data from
@@ -90,8 +84,8 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
                 print(f"Attribute Error on {entry}:\n{e}")
                 pass  # The copy failed of the dict because it was probably an error message.
 
-        output.append({})
-        output[-1] = remapped_entry
+            output.append({})
+            output[-1] = remapped_entry
 
         # Rate limit the query speed based on the rate limit
         # From inside the JSON. Check that the key wasnt valued at null, signifying no rate limit.
@@ -102,7 +96,7 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
 
 
 def main():
-    json_config = JsonModifier.load_config(HISTORICAL_CFG_PATH)
+    json_config = JsonHandler.load_config(HISTORICAL_CFG_PATH)
     stock_output = []
     index_output = []
     commodity_output = []
@@ -119,13 +113,13 @@ def main():
         index_list = json_config[api]['index_composites']
         commodity_list = json_config[api]['commodities']
 
-        stock_output = make_queries(api_url, api_key, stock_list, api_rate_limit, api_fields, non_api_fields)
-        index_output = make_queries(api_url, api_key, index_list, api_rate_limit, api_fields, non_api_fields)
-        commodity_output = make_queries(api_url, api_key, commodity_list, api_rate_limit, api_fields, non_api_fields)
+        stock_output += make_queries(api_url, api_key, stock_list, api_rate_limit, api_fields, non_api_fields)
+        index_output += make_queries(api_url, api_key, index_list, api_rate_limit, api_fields, non_api_fields)
+        commodity_output += make_queries(api_url, api_key, commodity_list, api_rate_limit, api_fields, non_api_fields)
 
-    JsonModifier.write_files(stock_output, OUTPUT_FOLDER, OUTPUT_FILENAME_STOCKS)
-    JsonModifier.write_files(index_output, OUTPUT_FOLDER, OUTPUT_FILENAME_INDEX)
-    JsonModifier.write_files(commodity_output, OUTPUT_FOLDER, OUTPUT_FILENAME_COMMODITIES)
+    JsonHandler.write_files(stock_output, OUTPUT_FOLDER, OUTPUT_FILENAME_STOCKS)
+    JsonHandler.write_files(index_output, OUTPUT_FOLDER, OUTPUT_FILENAME_INDEX)
+    JsonHandler.write_files(commodity_output, OUTPUT_FOLDER, OUTPUT_FILENAME_COMMODITIES)
 
 
 if __name__ == "__main__":
