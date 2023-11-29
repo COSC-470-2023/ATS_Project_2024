@@ -39,7 +39,7 @@ def execute_insert(connection, entry, bond_id):
       # Execute row insertion
     connection.execute(
         text(
-            f"INSERT INTO `bond_values` VALUES ('{bond_id}', '{date}', '{month1}', '{month2}', '{month3}', '{month6}', '{year1}', '{year2}', '{year3}', {year5}, '{year7}', '{year10}', '{year20}', '{year30}')"
+            f"INSERT INTO `bonds_values` VALUES ('{bond_id}', '{date}', '{month1}', '{month2}', '{month3}', '{month6}', '{year1}', '{year2}', '{year3}', {year5}, '{year7}', '{year10}', '{year20}', '{year30}')"
         )
     )
     
