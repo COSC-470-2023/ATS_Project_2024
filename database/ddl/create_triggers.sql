@@ -119,7 +119,7 @@ BEGIN
     SET new_id = UUID_SHORT();
     SET valid = 1;
 	-- code
-	SELECT COUNT(*) INTO temp FROM bonds WHERE treasuryName = NEW.treasuryName AND duration = NEW.duration;
+	SELECT COUNT(*) INTO temp FROM bonds WHERE treasuryName = NEW.treasuryName;
 	IF (temp = 0) THEN
     	WHILE (valid = 1) DO
         	SELECT COUNT(*) INTO temp FROM bonds WHERE bond_id = new_id;
@@ -131,7 +131,7 @@ BEGIN
     	END WHILE;
     ELSE
     	SIGNAL SQLSTATE '45000'
-   	  SET MESSAGE_TEXT = 'A record for this commodity already exists.';
+   	  SET MESSAGE_TEXT = 'A record for this treasury already exists.';
     END IF;
 	SET NEW.bond_id = new_id;
 END;
