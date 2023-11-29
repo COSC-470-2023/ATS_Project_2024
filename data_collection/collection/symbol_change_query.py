@@ -8,11 +8,18 @@ import requests
 from datetime import date
 from JsonModifier import JsonModifier
 
+#GLOBALS
 # Variable to track symbols that are changed for global usage
 # A dict of OLD_SYMBOL:NEW_SYMBOL key, value pairs
 symbol_changelog = {}
 # Global flag for symbol changes
 symbol_changed = False
+# Variables for use with the system config tasks
+SYSTEM_CONFIG_PATH_LIST = ["../configuration/realtime_query_cfg.json", 
+                            "../configuration/company_info_query_cfg.json",
+                            "../configuration/historical_query_cfg.json"]
+CONFIG_PATH = "../configuration/"
+CONFIG_BACKUP_PATH = "../configuration/backup/"
 
 
 # Using provided API URL and Key, queries and appends results to an unmodified raw output
@@ -49,19 +56,36 @@ def trim_query_output(raw_API_output):
             exit(1)
     return modified_API_output
 
+# Function to pull old name from system config files
+def pull_old_name(system_config_json, old_symbol):
+    # Iterate over each config entry in the system config
+    for config_entry in system_config_json:
+        # Iterate over the keys in the config
+        for key in ['index_composites', 'stocks', 'commodities', 'companies']:
+            # If the current key is present in the config entry, check if the old_symbol matches the symbol in the index
+            if key in config_entry:
+                for index in config_entry[key]:
+                    if old_symbol == index['symbol']:
+                        # Return the name if a match is found
+                        return index['name']
+    # Return an empty string if no match is found
+    return ""
 
 # Modify the structure of the symbol change list to include oldName as a field and maps field names to expected output names
 # TODO Pull oldName from system_config
 # NOTE Consider how multiple API sources are handled in this process
-def modify_output_list(symbol_change_list):
+def modify_output_list(symbol_change_list, system_config_json):
     modified_symbols_list = []
+    oldName = ""
+    
     for entry in symbol_change_list:
         date = entry['date']
         newName = entry['name']
         oldSymbol = entry['oldSymbol']
         newSymbol = entry['newSymbol']
+        
         # Currently only works with one API in the configuration list
-        oldName = ""
+        oldName = pull_old_name(system_config_json, oldSymbol)
         modified_symbols_list.append({"_change_date": date, "_change_newName": newName, "_change_oldName": oldName,
                                       "_change_newSymbol": newSymbol, "_change_oldSymbol": oldSymbol})
     return modified_symbols_list
@@ -76,25 +100,32 @@ def modify_system_config(system_config_json):
         # For each key in dictionary
         for key, value in entry.items():
             # If the key matches the specified condition, enter and assess if the symbol value is in the changelog
-            # TODO Find a way to refactor this
-            if key == 'index_composites':
+            if key in ['index_composites', 'stocks', 'commodities', 'companies']:
                 for index in value:
-                    if index['symbol'] in symbol_changelog:
-                        index['symbol'] = symbol_changelog[index['symbol']]
-            elif key == 'stocks':
-                for stock in value:
-                    if stock['symbol'] in symbol_changelog:
-                        stock['symbol'] = symbol_changelog[stock['symbol']]
-            elif key == 'commodities':
-                for commodity in value:
-                    if commodity['symbol'] in symbol_changelog:
-                        commodity['symbol'] = symbol_changelog[commodity['symbol']]
-            elif key == 'companies':
-                for company in value:
-                    if company['symbol'] in symbol_changelog:
-                        company['symbol'] = symbol_changelog[company['symbol']]               
-            else:
-                continue
+                    symbol = index['symbol']
+                    if symbol in symbol_changelog:
+                        index['symbol'] = symbol_changelog[symbol]
+
+#            # TODO Find a way to refactor this            
+#            if key == 'index_composites':
+#                for index in value:
+#                    if index['symbol'] in symbol_changelog:
+#                        index['symbol'] = symbol_changelog[index['symbol']]
+#            elif key == 'stocks':
+#                for stock in value:
+#                    if stock['symbol'] in symbol_changelog:
+#                        stock['symbol'] = symbol_changelog[stock['symbol']]
+#            elif key == 'commodities':
+#                for commodity in value:
+#                    if commodity['symbol'] in symbol_changelog:
+#                        commodity['symbol'] = symbol_changelog[commodity['symbol']]
+#            elif key == 'companies':
+#                for company in value:
+#                    if company['symbol'] in symbol_changelog:
+#                        company['symbol'] = symbol_changelog[company['symbol']]               
+#            else:
+#                continue
+    
     return modified_system_config
 
 
@@ -115,14 +146,12 @@ def main():
     # If no symbols have changed, proceed to final activities
     if symbol_changed:
         print('Symbols changed. Performing system change tasks.')
+        
         # Write modified output to symbol_change file
-        symbol_change_output = modify_output_list(modified_API_output)
-        # Variables for use with the system config tasks
-        SYSTEM_CONFIG_PATH_LIST = ["../configuration/realtime_query_cfg.json", 
-                                   "../configuration/company_info_query_cfg.json",
-                                   "../configuration/historical_query_cfg.json"]
-        CONFIG_PATH = "../configuration/"
-        CONFIG_BACKUP_PATH = "../configuration/backup/"
+        for path in SYSTEM_CONFIG_PATH_LIST:
+            system_config = JsonModifier.load_config(path)
+            symbol_change_output = modify_output_list(modified_API_output, system_config)
+
         for system_config_path in SYSTEM_CONFIG_PATH_LIST:
             system_config = JsonModifier.load_config(system_config_path)
             # Pull config file name from path
