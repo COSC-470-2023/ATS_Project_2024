@@ -3,8 +3,8 @@ from datetime import date, timedelta
 from JsonHandler import JsonHandler
 
 # Globals
-BONDS_CFG_PATH = "../configuration/bonds_query_cfg.json"
-OUTPUT_FOLDER = "../output/"
+BONDS_CFG_PATH = "./data_collection/configuration/bonds_query_cfg.json"
+OUTPUT_FOLDER = "./data_collection/output/"
 OUTPUT_FILENAME_BONDS = "bonds_output.json"
 
 

@@ -5,7 +5,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
 # Globals
-OUTPUT_FILE_PATH = "./data_collection/output/historical_index_output.json"
+OUTPUT_FILE_PATH = "./data_collection/output/historical_stocks_output.json"
 
 def load_output_file(path):
     try:
@@ -19,7 +19,7 @@ def load_output_file(path):
         print(f"Error decoding JSON in '{path}'")
         exit(1)
         
-def execute_insert(connection, entry, index_id):
+def execute_insert(connection, entry, company_id):
         date = entry['_historical_date']
         open = entry['_historical_open']
         high = entry['_historical_high']
@@ -35,15 +35,15 @@ def execute_insert(connection, entry, index_id):
         # Excute row insertion
         connection.execute(
             text(
-                f"INSERT INTO `historical_index_values` VALUES ('{index_id}', '{date}', '{open}', '{high}', '{low}', '{close}','{adj_close}', '{volume}', '{unadjusted_volume}', '{change}', '{change_percentage}', '{vwap}', '{change_over_time}')"
+                f"INSERT INTO `historical_stock_values` VALUES ('{company_id}', '{date}', '{open}', '{high}', '{low}', '{close}','{adj_close}', '{volume}', '{unadjusted_volume}', '{change}', '{change_percentage}', '{vwap}', '{change_over_time}')"
             )
         )
 
-# Used to get id associated with an index        
-def get_index_id(entry, connection):
+# Used to get id associated with a company/stock       
+def get_company_id(entry, connection):
     symbol = entry['_historical_symbol']
     name = entry['_historical_name']
-    id_query = f"SELECT id FROM `indexes` WHERE symbol = '{symbol}'"
+    id_query = f"SELECT id FROM `companies` WHERE symbol = '{symbol}'"
     # check if index exists in indexes table
     result = connection.execute(text(id_query))
     row = result.one_or_none()
@@ -51,7 +51,7 @@ def get_index_id(entry, connection):
         # execute plain sql insert statement - trigger will fire
         connection.execute(
             text(
-                f"INSERT INTO `indexes`(`indexName`, `symbol`) VALUES ('{name}', '{symbol}')"
+                f"INSERT INTO `companies`(`companyName`, `symbol`) VALUES ('{name}', '{symbol}')"
             )
         )
         connection.commit()
@@ -69,10 +69,10 @@ def main():
         # create with context manager
         with connect.connect() as conn:
             for entry in historical_data:
-                index_id = get_index_id(entry, conn)
+                company_id = get_company_id(entry, conn)
                 try:
                     # Excute row insertion
-                    execute_insert(conn,entry,index_id)
+                    execute_insert(conn,entry,company_id)
                 except SQLAlchemyError as e:
                     # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
                     print(f"Error: {e}")

@@ -1,6 +1,7 @@
 import connect
 import unittest
-from realtime_stock_insert import execute_insert, get_company_id, load_output_file, main
+from database.processing.realtime_stock_insert import execute_insert, get_company_id, load_output_file
+
 realtime_data = load_output_file("database/processing/stocks_test.json")
 class StockInsertion(unittest.TestCase):  
     def testCompanyChecker(self):
@@ -16,6 +17,5 @@ class StockInsertion(unittest.TestCase):
                 comp_id = get_company_id(entry, conn)
                 execute_insert(conn, entry, comp_id)
         
-
 if __name__ == '__main__':
     unittest.main()
