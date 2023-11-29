@@ -6,7 +6,7 @@
 import time
 import requests
 from datetime import datetime
-from JsonModifier import JsonModifier
+from JsonHandler import JsonHandler
 
 # Globals
 REALTIME_CFG_PATH = "../configuration/realtime_query_cfg.json"
@@ -75,7 +75,7 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
 
 
 def main():
-    json_config = JsonModifier.load_config(REALTIME_CFG_PATH)
+    json_config = JsonHandler.load_config(REALTIME_CFG_PATH)
     stock_output = []
     index_output = []
     commodity_output = []
@@ -91,13 +91,13 @@ def main():
         index_list = json_config[api]['index_composites']
         commodity_list = json_config[api]['commodities']
 
-        stock_output = make_queries(api_url, api_key, stock_list, api_rate_limit, api_fields, non_api_fields)
-        index_output = make_queries(api_url, api_key, index_list, api_rate_limit, api_fields, non_api_fields)
-        commodity_output = make_queries(api_url, api_key, commodity_list, api_rate_limit, api_fields, non_api_fields)
+        stock_output += make_queries(api_url, api_key, stock_list, api_rate_limit, api_fields, non_api_fields)
+        index_output += make_queries(api_url, api_key, index_list, api_rate_limit, api_fields, non_api_fields)
+        commodity_output += make_queries(api_url, api_key, commodity_list, api_rate_limit, api_fields, non_api_fields)
 
-    JsonModifier.write_files(stock_output, OUTPUT_FOLDER, OUTPUT_FILENAME_STOCKS)
-    JsonModifier.write_files(index_output, OUTPUT_FOLDER, OUTPUT_FILENAME_INDEX)
-    JsonModifier.write_files(commodity_output, OUTPUT_FOLDER, OUTPUT_FILENAME_COMMODITIES)
+    JsonHandler.write_files(stock_output, OUTPUT_FOLDER, OUTPUT_FILENAME_STOCKS)
+    JsonHandler.write_files(index_output, OUTPUT_FOLDER, OUTPUT_FILENAME_INDEX)
+    JsonHandler.write_files(commodity_output, OUTPUT_FOLDER, OUTPUT_FILENAME_COMMODITIES)
 
 
 # code to only be executed if ran as script

@@ -5,8 +5,7 @@
 
 import requests
 from datetime import date
-from JsonModifier import JsonModifier
-
+from JsonHandler import JsonHandler
 # Variable to track symbols that are changed for global usage
 # A dict of OLD_SYMBOL:NEW_SYMBOL key, value pairs
 symbol_changelog = {}
@@ -93,7 +92,7 @@ def modify_system_config(system_config_json):
 
 
 def main():
-    symbol_query_config = JsonModifier.load_config("../configuration/symbol_change_query_cfg.json")
+    symbol_query_config = JsonHandler.load_config("../configuration/symbol_change_query_cfg.json")
     raw_API_query_output = []
     symbol_change_output = []
     # Iterate through each API in the list
@@ -107,17 +106,17 @@ def main():
     # If no symbols have changed, proceed to final activities
     if symbol_changed:
         print('Symbols changed. Performing system change tasks.')
-        system_config = JsonModifier.load_config("../configuration/realtime_query_cfg.json")
+        system_config = JsonHandler.load_config("../configuration/realtime_query_cfg.json")
         # Write modified output to symbol_change file
         symbol_change_output = modify_output_list(modified_API_output, system_config)
         # Modify changed symbols in system config file
         modified_system_config = modify_system_config(system_config)
         # Write changes to system config file
-        JsonModifier.write_files(modified_system_config, "../configuration/", "realtime_query_cfg.json")
+        JsonHandler.write_files(modified_system_config, "../configuration/", "realtime_query_cfg.json")
     # Write empty list, or changedlist to output file, exit with success code
     print('Task complete.')
     # write_output_file(symbol_change_output)
-    JsonModifier.write_files(symbol_change_output, "../output/", "symbol_change_list.json")
+    JsonHandler.write_files(symbol_change_output, "../output/", "symbol_change_list.json")
     exit(0)
 
 

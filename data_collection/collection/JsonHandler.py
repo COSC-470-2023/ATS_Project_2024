@@ -3,7 +3,7 @@ import errno
 import os
 
 
-class JsonModifier:
+class JsonHandler:
     @staticmethod
     def load_config(config_path: str):
         """
