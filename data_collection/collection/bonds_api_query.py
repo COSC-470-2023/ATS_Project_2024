@@ -3,8 +3,8 @@ from datetime import date, timedelta
 from JsonHandler import JsonHandler
 
 # Globals
-BONDS_CFG_PATH = "../configuration/bonds_query_cfg.json"
-OUTPUT_FOLDER = "../output/"
+BONDS_CFG_PATH = "./data_collection/configuration/bonds_query_cfg.json"
+OUTPUT_FOLDER = "./data_collection/output/"
 OUTPUT_FILENAME_BONDS = "bonds_output.json"
 
 
@@ -31,7 +31,7 @@ def create_date_window(days_queried):
         start = end - timedelta(days=rem)
         window = {start: end}
         date_windows.append(window)
-
+        
     return date_windows
 
 

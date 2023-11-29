@@ -10,7 +10,7 @@ CREATE TABLE `bonds` (
   PRIMARY KEY (`bond_id`)
 );
 
-CREATE TABLE `bonds_values` (
+CREATE TABLE `bond_values` (
   `bond_id` BIGINT,
   `date` DATETIME,
   `1_month` DECIMAL(5,2),
