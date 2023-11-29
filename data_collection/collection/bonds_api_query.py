@@ -31,7 +31,7 @@ def create_date_window(days_queried):
         start = end - timedelta(days=rem)
         window = {start: end}
         date_windows.append(window)
-
+        
     return date_windows
 
 
