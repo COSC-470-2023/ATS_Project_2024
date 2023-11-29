@@ -1,27 +1,20 @@
-import json
-import os
-import errno
 import requests
-from datetime import date
-from datetime import timedelta
+from datetime import date, timedelta
+from JsonHandler import JsonHandler
 
-
-# Loads the configuration file.
-def load_config():
-    config_path = "../configuration/bonds_query_cfg.json"
-    with open(config_path, 'r') as file:
-        try:
-            config = json.load(file)
-            return config
-        except IOError:
-            print(f"IOError while accessing bonds query config file at path: {config_path}")
-            exit(-1001)  # Exit program with code -1001 (Invalid config path)
-        except json.JSONDecodeError as e:
-            print(f"JSON decoding encountered an error while decoding {config_path}:\n{e}")
-            exit(-1002)  # Exit program with code -1002 (Invalid config structure)
+# Globals
+BONDS_CFG_PATH = "../configuration/bonds_query_cfg.json"
+OUTPUT_FOLDER = "../output/"
+OUTPUT_FILENAME_BONDS = "bonds_output.json"
 
 
 def create_date_window(days_queried):
+    """
+    Takes the inputted number of days and returns a window of dates
+    segmented by 90-day intervals for iteration.
+    :param days_queried: Number of days to observe from current date
+    :return: datetime object containing a list of segmented dates
+    """
     total_days = int(days_queried)
     date_windows = []
     num_chunks = total_days // 90  # Give the number of 90-day chunks plus the remainder
@@ -38,10 +31,11 @@ def create_date_window(days_queried):
         start = end - timedelta(days=rem)
         window = {start: end}
         date_windows.append(window)
+
     return date_windows
 
 
-def make_queries(api_url, api_key, api_fields, non_api_fields, days_queried):
+def make_queries(api_url, api_key, api_fields, treasuries, non_api_fields, days_queried):
     bonds_data = []
     windows = create_date_window(days_queried)
     # TODO MAKE TRY EXCEPT BLOCK
@@ -53,50 +47,63 @@ def make_queries(api_url, api_key, api_fields, non_api_fields, days_queried):
         start_date = start_date_key[0]
         end_date = end_date_value[0]
         # Replace the URL parameters with our current API configs
-        query = api_url.replace("{START_DATE}", str(start_date)).replace("{END_DATE}", str(end_date)).replace("{API_KEY}", api_key)
+        query = (api_url.replace("{START_DATE}", str(start_date))
+                 .replace("{END_DATE}", str(end_date))
+                 .replace("{API_KEY}", api_key))
+
         response = requests.get(query)
-        # Convert the response to json
-        bonds_output = json.loads(response.text)
-        for data in bonds_output:
-            # Get name and mapping from config
-            map_to = non_api_fields['name']['mapping']
-            name = non_api_fields['name']['src']
-            bonds_dict = {map_to: name}
-            # Format output
-            bonds_dict.update(zip(api_fields.values(), list(data.values())))
-            # Add non_api_fields field to output
-            bonds_data.append(bonds_dict)
+        # convert the response to json and append to list
+        data = response.json()
+
+        for entry in data:
+            # Remap the field names to the config, using the values from API fields,
+            # as the key, and the values of entry as the values of the new entry.
+            entry = dict((zip(api_fields.values(), list(entry.values()))))
+
+            # Get name from the config
+            if non_api_fields != {}:  # There is a manually added field in the cfg.
+                for non_api_field in non_api_fields:
+                    # Compare the manually added field to where it should get its data from
+                    # in the normal fields
+                    try:
+                        src = non_api_fields[non_api_field]['src']
+                        map_to = non_api_fields[non_api_field]['mapping']
+                        input_type = non_api_fields[non_api_field]['input_type']
+                        output_type = non_api_fields[non_api_field]['output_type']
+                        # Handler for grabbing the name of treasury from config.
+                        # This also can handler conversion, so It's needed to not just doa  static mapping in the future.
+                        if input_type == "_string" and output_type == "_string":
+                            if src == "_config_name":
+                                entry[map_to] = treasuries[0]['name']
+                    except KeyError as e:
+                        print(f"Key Error on api {iter(entry)}:\n{e}")
+                        pass  # TODO make log files entry
+
+            # Append the modified entry to the output
+            bonds_data.append(entry)
     return bonds_data
 
 
-def write_file(bond_output):
-    output_dir = "../output/"
-    if not os.path.exists(os.path.dirname(output_dir)):
-        try:
-            os.makedirs(os.path.dirname(output_dir))
-        except OSError as exc:  # Guard against race condition
-            if exc.errno != errno.EEXIST:
-                raise
-
-    with open("../output/bonds_output.json", "w") as outfile:
-        json.dump(bond_output, outfile, indent=2)
-
-
 def main():
-    bond_config = load_config()
+    bond_config = JsonHandler.load_config(BONDS_CFG_PATH)
     output = []
     # TODO make try except
-    for entry in range(len(bond_config)):
+    for api in range(len(bond_config)):
         # Load variables from the configuration
-        url = bond_config[entry]['url']
-        key = bond_config[entry]['api_key']
-        api_fields = bond_config[entry]['api_fields']
-        non_api_fields = bond_config[entry]['non_api_fields']
-        days_queried = bond_config[entry]['days_queried']
-        output = make_queries(url, key, api_fields, non_api_fields, days_queried)
-    write_file(output)
+        url = bond_config[api]['url']
+        key = bond_config[api]['api_key']
+        api_fields = bond_config[api]['api_fields']
+        non_api_fields = bond_config[api]['non_api_fields']
+        days_queried = bond_config[api]['days_queried']
+
+        # TODO Handle adding name via a data field or something so its not hanging out.
+        #   Should be done in a way that an API that doesnt only return one treasury can use it.
+        treasuries = bond_config[api]['treasuries']
+
+        output += make_queries(url, key, api_fields, treasuries, non_api_fields, days_queried)
+
+    JsonHandler.write_files(output, OUTPUT_FOLDER, OUTPUT_FILENAME_BONDS)
 
 
-# Code to only be executed if ran as script
 if __name__ == "__main__":
     main()

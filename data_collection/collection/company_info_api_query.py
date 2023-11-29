@@ -3,7 +3,7 @@
 import time
 import requests
 from datetime import datetime
-from JsonModifier import JsonModifier
+from JsonHandler import JsonHandler
 
 # Globals
 COMPANY_INFO_CFG_PATH = "../configuration/company_info_query_cfg.json"
@@ -68,7 +68,7 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
 
 
 def main():
-    json_config = JsonModifier.load_config(COMPANY_INFO_CFG_PATH)
+    json_config = JsonHandler.load_config(COMPANY_INFO_CFG_PATH)
     company_output = []
 
     # Iterate through each API in the list
@@ -81,9 +81,9 @@ def main():
 
         company_list = json_config[api]['companies']
 
-        company_output = make_queries(api_url, api_key, company_list, api_rate_limit, api_fields, non_api_fields)
+        company_output += make_queries(api_url, api_key, company_list, api_rate_limit, api_fields, non_api_fields)
 
-    JsonModifier.write_files(company_output, OUTPUT_FOLDER, OUTPUT_FILENAME)
+    JsonHandler.write_files(company_output, OUTPUT_FOLDER, OUTPUT_FILENAME)
 
 
 if __name__ == "__main__":
