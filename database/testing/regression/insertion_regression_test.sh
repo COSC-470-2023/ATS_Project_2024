@@ -3,11 +3,18 @@
 # list of unittest scripts, to test more scripts add their path to the list
 unittest_scripts=("company_statements_UnitTest.py" "realtime_stocks_UnitTest.py")
 
+# flag to silence python output by default
+VERBOSE_MODE=false
+
 # run unittest code and print results
 run_unittest() 
 {
   script_name=$1
-  python3 "$script_name"
+  if [ "$VERBOSE_MODE" = true ]; then
+    python3 "$script_name"
+  else
+    python3 "$script_name" > /dev/null 2>&1
+  fi
   # $? is an env var that holds the exit code of the last run command
   exit_code=$?
   if [ $exit_code -eq 0 ]; then
@@ -16,6 +23,19 @@ run_unittest()
     echo "Regression: $script_name failed."
   fi
 }
+
+# check for verbose mode option
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --verbose | -v )
+      VERBOSE_MODE=true
+      shift
+      ;;
+    * )
+      shift
+      ;;
+  esac
+done
 
 # iterate over scripts and run each
 for script in "${unittest_scripts[@]}"; do
