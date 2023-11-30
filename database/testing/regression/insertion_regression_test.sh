@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # list of unittest scripts, to test more scripts add their path to the list
-unittest_scripts=("company_statements_UnitTest.py" "realtime_stocks_UnitTest.py")
+unittest_scripts=("company_statements_insert_UnitTest.py" "realtime_stock_insert_UnitTest.py")
 
 # flag to silence python output by default
 VERBOSE_MODE=false
