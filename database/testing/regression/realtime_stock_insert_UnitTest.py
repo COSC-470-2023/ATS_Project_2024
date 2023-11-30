@@ -29,6 +29,7 @@ class StockInsertion(unittest.TestCase):
     def testCompanyChecker(self):
         with connect.connect() as conn:
             for entry in realtime_data:
+                # if an exception is thrown, the test fails
                 get_company_id(entry, conn)
 
 
@@ -49,7 +50,6 @@ class StockInsertion(unittest.TestCase):
 
 
     def testInsertion(self):
-        
         with connect.connect() as conn:
             for entry in realtime_data:
                 comp_id = get_company_id(entry, conn)

@@ -89,7 +89,7 @@ def get_company_id(entry, conn):
 def main():
     # Load json data
     realtime_data = load_output_file(
-        "database/processing/test_data/stocks_test.json"
+        "./test_data/stocks_test.json"
     )
 
     try:
