@@ -95,13 +95,10 @@ def main():
                     
             # Commit changes to database (otherwise it rolls back)
             conn.commit()       
-            
-
     except Exception as e:
         print(traceback.format_exc())
         print(f"SQL connection error: {e}")
         
-
 # protected entrypoint
 if __name__ == "__main__":
     main()
