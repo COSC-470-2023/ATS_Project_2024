@@ -7,13 +7,13 @@ unittest_scripts=("company_statements_UnitTest.py" "realtime_stocks_UnitTest.py"
 run_unittest() 
 {
   script_name=$1
-  python "$script_name"
+  python3 "$script_name"
   # $? is an env var that holds the exit code of the last run command
   exit_code=$?
   if [ $exit_code -eq 0 ]; then
-    echo "$script_name passed successfully."
+    echo "Regression: $script_name passed successfully."
   else
-    echo "$script_name failed."
+    echo "Regression: $script_name failed."
     exit 1
   fi
 }
@@ -23,5 +23,5 @@ for script in "${unittest_scripts[@]}"; do
   run_unittest "$script"
 done
 
-echo "All scripts passed successfully."
+echo "Regression: All scripts passed successfully."
 exit 0
