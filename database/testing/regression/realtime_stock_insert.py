@@ -69,6 +69,7 @@ def execute_insert(connection, entry, company_id):
 
 def get_company_id(entry, conn):
     params = {"symbol": entry["_realtime_symbol"], "name": entry["_realtime_name"]}
+    print(params)
     # check if company exists in companies table
     result = conn.execute(text("SELECT id FROM `companies` WHERE symbol = :symbol"), parameters=params)
     row = result.one_or_none()

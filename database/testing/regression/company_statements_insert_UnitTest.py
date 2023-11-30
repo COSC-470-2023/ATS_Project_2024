@@ -38,12 +38,6 @@ company_data = 	[{
 	}]
 
 class StockInsertion(unittest.TestCase):  
-    
-    def testCompanyChecker(self):
-        with connect.connect() as conn:
-            for entry in company_data:
-                get_company_id(entry, conn)
-
 
     def test_check_keys(self):
         # mock entry missing a lot of keys
@@ -61,8 +55,13 @@ class StockInsertion(unittest.TestCase):
                 self.assertEqual(value, None)
 
 
+    def testCompanyChecker(self):
+        with connect.connect() as conn:
+            for entry in company_data:
+                get_company_id(entry, conn)
+
+
     def testInsertion(self):
-        
         with connect.connect() as conn:
             for entry in company_data:
                 comp_id = get_company_id(entry, conn)
