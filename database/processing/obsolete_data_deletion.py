@@ -13,9 +13,9 @@ def main():
         with connect.connect() as conn:
             result = (conn.execute(text(f"SHOW TABLES"))).fetchall()
             #Iterate through all the tables in the database and fetch the table name for delete operation
-            #Need to modify so that we DO NOT DELETE any data in the change_log file!!!!
             for tables in result:
                 table = tables[0] 
+                #Aviod delete data in the company_changelogs
                 if table != 'company_changelogs':
                     dataDeletion(table, conn)
                     conn.commit()
