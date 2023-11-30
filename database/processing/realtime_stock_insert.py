@@ -21,7 +21,7 @@ def load_output_file(path):
         print(f"Error decoding JSON in '{path}'")
         exit(1)
 
-def execute_insert(connection, entry, company_id):
+def check_keys(entry):
     # keys expected to be committed
     keys = [
         "_realtime_date", 
@@ -45,7 +45,12 @@ def execute_insert(connection, entry, company_id):
     ]
 
     # get key value, assign value to key. if key doesn't exist, assign value of None
-    row = {key: entry.get(key, None) for key in keys}
+    return {key: entry.get(key, None) for key in keys}
+
+
+def execute_insert(connection, entry, company_id):
+    # check for any missing keys and assign values of None
+    row = check_keys(entry)
 
     # check if earningsAnnouncement is not None, if it's not None convert to a datetime object and format for mysql datetime
     # if it is None, assign None to earnings_announcement
