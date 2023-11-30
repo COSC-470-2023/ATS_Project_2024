@@ -9,8 +9,8 @@ from datetime import datetime
 from JsonHandler import JsonHandler
 
 # Globals
-REALTIME_CFG_PATH = "../configuration/realtime_query_cfg.json"
-OUTPUT_FOLDER = "../output/"
+REALTIME_CFG_PATH = "./SMF_Project_2023/data_collection/configuration/realtime_query_cfg.json"
+OUTPUT_FOLDER = "./SMF_Project_2023/data_collection/output/"
 OUTPUT_FILENAME_STOCKS = "realtime_stocks_output.json"
 OUTPUT_FILENAME_INDEX = "realtime_index_output.json"
 OUTPUT_FILENAME_COMMODITIES = "realtime_commodity_output.json"

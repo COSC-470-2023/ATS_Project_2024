@@ -6,7 +6,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
 # Globals
-OUTPUT_FILE_PATH = "./data_collection/output/realtime_commodity_output.json"
+OUTPUT_FILE_PATH = "./SMF_Project_2023/data_collection/output/realtime_commodity_output.json"
 
 def load_output_file(path):
     try:
@@ -65,8 +65,6 @@ def get_commodity_id(entry, connection):
                 f"INSERT INTO `commodities`(`commodityName`, `symbol`) VALUES ('{name}', '{symbol}')"
             )
         )
-        
-
         # get the generated ID
         result = connection.execute(text(id_query))
         commodity_id = result.one()[0]

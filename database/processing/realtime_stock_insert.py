@@ -4,10 +4,10 @@ import datetime
 import connect
 import json
 import traceback
-
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
+OUTPUT_FILE_PATH = "./SMF_Project_2023/data_collection/output/realtime_stocks_output.json"
 
 def load_output_file(path):
     try:
@@ -63,14 +63,14 @@ def execute_insert(connection, entry, company_id):
     connection.execute(statement=query, parameters=row)
 
 def get_company_id(entry, conn):
-    params = {"symbol": entry["_realtime_symbol"], "name": entry["_realtime_name"]}
+    params = {"symbol": entry["_realtime_symbol"], "name": entry["_realtime_name"], "isListed": 1}
     # check if company exists in companies table
     result = conn.execute(text("SELECT id FROM `companies` WHERE symbol = :symbol"), parameters=params)
     row = result.one_or_none()
 
     if row is None:
         # if company doesn't exist, create new row in companies table - trigger generates new ID
-        conn.execute(text("INSERT INTO `companies` (`companyName`, `symbol`) VALUES (:name, :symbol)"), parameters=params)
+        conn.execute(text("INSERT INTO `companies` (`companyName`, `symbol`, `isListed`) VALUES (:name, :symbol, :isListed)"), parameters=params)
 
         # get the generated ID
         result = conn.execute(text("SELECT id FROM `companies` WHERE symbol = :symbol"), parameters=params)
@@ -83,9 +83,7 @@ def get_company_id(entry, conn):
 
 def main():
     # Load json data
-    realtime_data = load_output_file(
-        "database/processing/test_data/stocks_test.json"
-    )
+    realtime_data = load_output_file(OUTPUT_FILE_PATH)
 
     try:
         # create connection with context manager, connection closed on exit

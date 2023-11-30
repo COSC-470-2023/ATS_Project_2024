@@ -6,8 +6,8 @@ from datetime import datetime
 from JsonHandler import JsonHandler
 
 # Globals
-COMPANY_INFO_CFG_PATH = "../configuration/company_info_query_cfg.json"
-OUTPUT_FOLDER = "../output/"
+COMPANY_INFO_CFG_PATH = "./SMF_Project_2023/data_collection/configuration/company_info_query_cfg.json"
+OUTPUT_FOLDER = "./SMF_Project_2023/data_collection/output/"
 OUTPUT_FILENAME = "company_info_output.json"
 
 

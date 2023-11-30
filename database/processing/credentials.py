@@ -7,8 +7,8 @@ shell = {
 }
 
 db = {
-    "user": "username",
-    "pass": "password",
-    "host": "hostname",
-    "database": "db_name",
+    "user": "dbu1163716",
+    "pass": "aewL7!D%&xy6",
+    "host": "db5014801950.hosting-data.io",
+    "database": "dbs12298116",
 }
