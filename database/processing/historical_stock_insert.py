@@ -5,7 +5,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
 # Globals
-OUTPUT_FILE_PATH = "./data_collection/output/historical_stocks_output.json"
+OUTPUT_FILE_PATH = "./SMF_Project_2023/data_collection/output/historical_stocks_output.json"
 
 def load_output_file(path):
     try:
@@ -51,7 +51,7 @@ def get_company_id(entry, connection):
         # execute plain sql insert statement - trigger will fire
         connection.execute(
             text(
-                f"INSERT INTO `companies`(`companyName`, `symbol`) VALUES ('{name}', '{symbol}')"
+                f"INSERT INTO `companies`(`companyName`, `symbol`, `isListed`) VALUES ('{name}', '{symbol}', 1)"
             )
         )
         connection.commit()

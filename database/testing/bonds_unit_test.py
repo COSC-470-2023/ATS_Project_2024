@@ -1,18 +1,8 @@
 # https://docs.sqlalchemy.org/en/20/changelog/migration_20.html
-
-import traceback
-import sys
-import os
 import connect
-import bonds_db_script as bd
+import bonds_insert as bd
 import unittest
-
 from decimal import *
-
-from sqlalchemy import column
-from sqlalchemy import create_engine
-from sqlalchemy import select
-from sqlalchemy import table
 from sqlalchemy import text
 # common sqlalchemy exceptions
 from sqlalchemy.exc import (

@@ -3,15 +3,13 @@
 # Iterate through the stocks using the key and url, then move onto the next API
 # TODO make the directories for file read and out absolute ie not relative locations to the script
 
-import datetime
-import json
 import time
 import requests
 from JsonHandler import JsonHandler
 
 # Globals
-HISTORICAL_CFG_PATH = "../configuration/historical_query_cfg.json"
-OUTPUT_FOLDER = "../output/"
+HISTORICAL_CFG_PATH = "./SMF_Project_2023/data_collection/configuration/historical_query_cfg.json"
+OUTPUT_FOLDER = "./SMF_Project_2023/data_collection/output/"
 OUTPUT_FILENAME_STOCKS = "historical_stocks_output.json"
 OUTPUT_FILENAME_INDEX = "historical_index_output.json"
 OUTPUT_FILENAME_COMMODITIES = "historical_commodity_output.json"

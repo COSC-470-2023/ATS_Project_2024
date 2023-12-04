@@ -1,12 +1,10 @@
-# dakota/noah
-
 import connect
 import json
 import traceback
-
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
+OUTPUT_FILE_PATH = "./SMF_Project_2023/data_collection/output/company_info_output.json"
 
 def load_output_file(path):
     try:
@@ -82,14 +80,14 @@ def execute_insert(connection, entry, company_id):
 
 def get_company_id(entry, conn):
     # parameters for queries
-    params = {"symbol": entry["_company_symbol"], "name": entry["_company_name"]}
+    params = {"symbol": entry["_company_symbol"], "name": entry["_company_name"], "isListed": 1}
     # check if company exists in companies table
     result = conn.execute(text("SELECT id FROM `companies` WHERE symbol = :symbol"), parameters=params)
     row = result.one_or_none()
 
     if row is None:
         # if company doesn't exist, create new row in companies table - trigger generates new ID
-        conn.execute(text("INSERT INTO `companies` (`companyName`, `symbol`) VALUES (:name, :symbol)"), parameters=params)
+        conn.execute(text("INSERT INTO `companies` (`companyName`, `symbol`, `isListed`) VALUES (:name, :symbol, :isListed)"), parameters=params)
 
         # get the generated ID
         result = conn.execute(text("SELECT id FROM `companies` WHERE symbol = :symbol"), parameters=params)
@@ -102,7 +100,7 @@ def get_company_id(entry, conn):
 
 def main():
     # Load json data
-    company_data = load_output_file("database/processing/test_data/company_test.json")
+    company_data = load_output_file(OUTPUT_FILE_PATH)
 
     try:
         # create with context manager, implicit commit on close

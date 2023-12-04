@@ -16,13 +16,13 @@ symbol_changelog = {}
 symbol_changed = False
 ##########################################################################
 # FILE/PATH VARIABLES
-SYSTEM_CONFIG_PATH_LIST = ["../configuration/realtime_query_cfg.json", 
-                            "../configuration/company_info_query_cfg.json",
-                            "../configuration/historical_query_cfg.json"]
-CONFIG_PATH = "../configuration/"
-CONFIG_BACKUP_PATH = "../configuration/backup/"
-QUERY_CONFIG_PATH = "../configuration/symbol_change_query_cfg.json"
-OUTPUT_PATH = "../output/"
+SYSTEM_CONFIG_PATH_LIST = ["./SMF_Project_2023/data_collection/configuration/realtime_query_cfg.json", 
+                            "./SMF_Project_2023/data_collection/configuration/company_info_query_cfg.json",
+                            "./SMF_Project_2023/data_collection/configuration/historical_query_cfg.json"]
+CONFIG_PATH = "./SMF_Project_2023/data_collection/configuration/"
+CONFIG_BACKUP_PATH = "./SMF_Project_2023/data_collection/configuration/backup/"
+QUERY_CONFIG_PATH = "./SMF_Project_2023/data_collection/configuration/symbol_change_query_cfg.json"
+OUTPUT_PATH = "./SMF_Project_2023/data_collection/output/"
 OUTPUT_FILE_NAME = "symbol_change_list.json"
 ##########################################################################
 
