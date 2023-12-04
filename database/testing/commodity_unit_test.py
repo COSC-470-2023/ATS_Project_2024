@@ -4,8 +4,8 @@ import traceback
 import sys
 import os
 import connect
-import historical_commodities_db_script as ht
-import realtime_commodities_db_script as rt
+import historical_commodity_insert as ht
+import realtime_commodity_insert as rt
 import unittest
 
 from sqlalchemy import column

@@ -2,7 +2,7 @@
   {
     "url": "https://financialmodelingprep.com/api/v3/profile/{QUERY_PARAMS}?apikey={API_KEY}",
     "rate_limit_per_min": 300,
-    "api_key": "cae0e091a31773bcf0ffdd4bf97a9e61",
+    "api_key": "<PASTE KEY HERE>",
     "api_fields": {
       "symbol": "_company_symbol",
       "price": "_company_price",
