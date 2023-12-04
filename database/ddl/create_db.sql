@@ -9,6 +9,7 @@ CREATE TABLE `bonds` (
   `treasuryName` VARCHAR(300),
   PRIMARY KEY (`bond_id`)
 );
+CREATE INDEX treasury_idx ON bonds (treasuryName);
 
 CREATE TABLE `bond_values` (
   `bond_id` BIGINT,
@@ -37,6 +38,7 @@ CREATE TABLE `commodities` (
   `symbol` VARCHAR(10) NOT NULL,
   PRIMARY KEY (`id`)
 );
+CREATE INDEX commodity_symbol_idx ON commodities (symbol);
 
 CREATE TABLE `realtime_commodity_values` (
   `commodity_id` BIGINT,
@@ -85,6 +87,7 @@ CREATE TABLE `companies` (
   `isListed` boolean,
   PRIMARY KEY (`id`)
 );
+CREATE INDEX company_symbol_idx ON companies (symbol);
 
 CREATE TABLE `company_changelogs` (
   `company_id` BIGINT,
@@ -185,6 +188,7 @@ CREATE TABLE `indexes` (
   `symbol` VARCHAR(10) NOT NULL,
   PRIMARY KEY (`id`)
 );
+CREATE INDEX index_symbol_idx ON indexes (symbol);
 
 CREATE TABLE `realtime_index_values` (
   `index_id` BIGINT,
