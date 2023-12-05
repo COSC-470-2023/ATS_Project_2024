@@ -19,10 +19,14 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
 
         # Replace the URL parameters with our current API configs
         query = parsed_api_url.replace("{QUERY_PARAMS}", query_item['symbol']).replace("{API_KEY}", parsed_api_key)
-        response = requests.get(query)
-        # Convert the response to json and append to list
-        data = response.json()
-        remapped_entry = {}
+        try:
+            response = requests.get(query)
+            # Convert the response to json and append to list
+            data = response.json()
+            remapped_entry = {}
+        except requests.RequestException as e:
+            print(f"api_error {e}")
+            continue
 
         for entry in data:
             if non_api_fields != {}:  # There is a manually added field in the cfg.
