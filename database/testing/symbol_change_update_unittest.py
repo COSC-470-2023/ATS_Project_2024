@@ -13,7 +13,7 @@ class SymbolChangeTest(unittest.TestCase):
         print("Starting Test 1...")
         
         # Load test data
-        test1 = load_output_file(r"test1.json")
+        test1 = load_output_file(r"symbol_change_test1.json")
         
         # Check to see if the loaded test data is a proper list
         self.assertIsInstance(test1, list)
@@ -29,7 +29,7 @@ class SymbolChangeTest(unittest.TestCase):
         print("Starting Test 2...")
         
         # Load test data
-        test2 = load_output_file(r"test2.json")
+        test2 = load_output_file(r"symbol_change_test2.json")
         
         # Check to see if the loaded test data is a proper list
         self.assertIsInstance(test2, list)
@@ -45,7 +45,7 @@ class SymbolChangeTest(unittest.TestCase):
         print("Starting Test 3...")
         
         # Load test data
-        test3 = load_output_file(r"test3.json")
+        test3 = load_output_file(r"symbol_change_test3.json")
         
         # Check to see if the loaded test data is a proper list
         self.assertIsInstance(test3, list)
