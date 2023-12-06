@@ -1,14 +1,14 @@
 [
   {
-    "date": "2023-11-17",
-    "name": "Apple",
-    "oldSymbol": "AAPL",
-    "newSymbol": "OOPL"
+    "_change_date": "2023-11-17",
+    "_change_newName": "Apple",
+    "_change_oldSymbol": "AAPL",
+    "_change_newSymbol": "OOPL"
   },
   {
-    "date": "2023-11-17",
-    "name": "Sundial",
-    "oldSymbol": "SUN",
-    "newSymbol": "SNDL"
+    "_change_date": "2023-11-17",
+    "_change_newName": "Sundial",
+    "_change_oldSymbol": "SUN",
+    "_change_newSymbol": "SNDL"
   }
 ]

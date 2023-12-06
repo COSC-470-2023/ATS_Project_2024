@@ -56,7 +56,6 @@ def get_commodity_id(entry, connection):
                 f"INSERT INTO `commodities`(`commodityName`, `symbol`) VALUES ('{name}', '{symbol}')"
             )
         )
-        connection.commit()
         # get the generated ID
         result = connection.execute(text(id_query))
         commodity_id = result.one()[0]
