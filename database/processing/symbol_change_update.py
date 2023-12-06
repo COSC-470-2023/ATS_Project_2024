@@ -25,9 +25,9 @@ def load_output_file(path):
 def update_symbol(connection, symbol):
     try:
         # Variable Declarations
-        name = symbol["name"]
-        old_symbol = symbol["oldSymbol"]
-        new_symbol = symbol["newSymbol"]
+        name = symbol["_change_newName"]
+        old_symbol = symbol["_change_oldSymbol"]
+        new_symbol = symbol["_change_newSymbol"]
 
         #  SQL query
         company_update = text(f"UPDATE Companies SET companyName = '{name}', symbol = '{new_symbol}' WHERE symbol = '{old_symbol}'")
