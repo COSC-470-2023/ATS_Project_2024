@@ -63,13 +63,13 @@ def update_cfg(system_config, symbol_list):
 
 
 def main():
-    # Pretty ratchet should be reworked so that we aren't constantly calling make_queries() to repopulate symbol list
-    symbol_list = make_queries()
     # Load in config files
     realtime_cfg = JsonHandler.load_config(REALTIME_CFG_PATH)
     historical_cfg = JsonHandler.load_config(HISTORICAL_CFG_PATH)
     company_info_cfg = JsonHandler.load_config(COMPANY_INFO_CFG_PATH)
     # Update config files
+    # Pretty ratchet should be reworked so that we aren't constantly calling make_queries() to repopulate symbol list
+    symbol_list = make_queries()
     new_rt_config = update_cfg(realtime_cfg, symbol_list)
     symbol_list = make_queries()
     new_hist_config = update_cfg(historical_cfg, symbol_list)
