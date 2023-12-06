@@ -29,11 +29,11 @@ class TestRealtimeIndexInsert(TestCase):
         except json.JSONDecodeError:
             print(f"Error decoding JSON in '{path}'")
             exit(1)
-            
+
     # Load output data
     realtime_data = load_output_file('./test_files/static_test_files/static_index_realtime.json')
-    
-    def test_index_insert(self):  
+
+    def test_index_insert(self):
         expect_output = [
             (1, '2023-11-16 14:14:00', 4508.24, 0.119, 5.3604, 4511.99, 4487.83, 4607.07, 3764.49, None, 'INDEX', 4497.08, 4502.88, 2502113000, 3708302656),
             (2, '2023-11-16 14:15:59', 14113.673, 0.0697, 9.8369, 14130.448, 14033.791, 14446.55, 10207.47, None, 'INDEX', 14066.9, 14103.836, 4080972000, 4589035625),
