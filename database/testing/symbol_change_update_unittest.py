@@ -6,7 +6,6 @@ sys.path.insert(0, '../../database/processing')
 import connect
 from symbol_change_update import load_output_file, update_symbol
 
-
 class SymbolChangeTest(unittest.TestCase):
     
     def test_empty(self):
