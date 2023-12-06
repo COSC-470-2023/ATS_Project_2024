@@ -19,7 +19,7 @@ def load_output_file(path):
         exit(1)
 
 
-def execute_insert(connection, entry, company_id):
+def check_keys(entry):
     # list of expected keys
     keys = [
         "_company_date",
@@ -55,7 +55,12 @@ def execute_insert(connection, entry, company_id):
     ]
 
     # change keys that don't exist in the output to None for insertion
-    row = {key: entry.get(key, None) for key in keys}
+    return {key: entry.get(key, None) for key in keys}
+
+
+def execute_insert(connection, entry, company_id):
+    # check for any missing keys and assign values of None
+    row = check_keys(entry)
 
     # if the key exists and value wasn't changed to None
     if row["_company_isEtf"] is not None:

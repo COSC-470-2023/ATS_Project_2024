@@ -2,7 +2,6 @@ import unittest
 from database.processing import connect
 from database.processing.symbol_change_update import load_output_file, update_symbol
 
-
 class SymbolChangeTest(unittest.TestCase):
     def test_update_symbol(self):
         try:
