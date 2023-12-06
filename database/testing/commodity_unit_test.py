@@ -2,7 +2,7 @@ import unittest
 from sqlalchemy import text
 
 import sys
-sys.path.insert(0, '../../database/processing')
+sys.path.insert(0, '../processing')
 import connect
 import historical_commodity_insert as ht
 import realtime_commodity_insert as rt

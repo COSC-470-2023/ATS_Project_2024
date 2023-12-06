@@ -4,7 +4,7 @@ import unittest
 from sqlalchemy import text
 
 import sys
-sys.path.insert(0, '../../database/processing')
+sys.path.insert(0, '../processing')
 import connect
 import historical_index_insert as ht
 import realtime_index_insert as rt

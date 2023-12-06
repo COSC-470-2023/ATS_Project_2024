@@ -3,7 +3,7 @@ from decimal import *
 from sqlalchemy import text
 
 import sys
-sys.path.insert(0, '../../database/processing')
+sys.path.insert(0, '../processing')
 import connect
 import bonds_insert as bd
 
