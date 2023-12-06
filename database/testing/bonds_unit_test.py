@@ -20,7 +20,7 @@ class bondTest(unittest.TestCase):
             row = result.one_or_none()
             self.assertIsNotNone(row, msg="The insertion script did not insert into commodities as expected, as the expected row was not found in the database.")
             retrieved_bond_id = row[0]
-            result = conn.execute(text(f"select 1_year from `bond_values` where bond_id = '{bond_id}' and date = '2023-11-14'"))
+            result = conn.execute(text(f"select 1_year from `bond_values` where bond_id = '{retrieved_bond_id}' and date = '2023-11-14'"))
             row = result.one_or_none()
             self.assertIsNotNone(row, msg="The insertion script did not insert into bond_values as expected, as the expected row was not found in the database.")
             one_year = row[0]
