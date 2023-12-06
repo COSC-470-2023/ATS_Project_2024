@@ -19,7 +19,7 @@ from sqlalchemy.exc import (
 class bondTest(unittest.TestCase):
                     
     def test_bond_insertion(self):
-        data = bd.load_output_file("bonds_test.json")
+        data = bd.load_output_file("../../test_files/static_test_files/static_bonds_30day.json")
         with connect.connect() as conn:
             for entry in data: 
                 bond_id = bd.get_bond_id(entry, conn)

@@ -28,9 +28,9 @@ from sqlalchemy.exc import (
 class CommodityTest(unittest.TestCase):
                     
     def test_historical(self):
-        data = ht.load_output_file("historical_commodity_test.json")
+        data = ht.load_output_file("../../test_files/static_test_files/static_commodities_historical.json")
         with connect.connect() as conn:
-            for entry in data["historicalStockList"]: # should just be one entry, but have to go a layer down anyway
+            for entry in data:
                 print(entry)
                 commodity_id = ht.get_commodity_id(entry, conn)
                 ht.execute_insert(conn, entry, commodity_id)
@@ -46,9 +46,9 @@ class CommodityTest(unittest.TestCase):
                 self.assertEqual(volume, 89522, msg="Volume doesn't match the expected value. Either the test JSON was altered, or the insertion script is inserting the wrong value.")
             
     def test_realtime(self):
-        data = rt.load_output_file("realtime_commodity_test.json")
+        data = rt.load_output_file("../../test_files/static_test_files/static_commodities_realtime.json")
         with connect.connect() as conn:
-            for entry in data: # should just be one entry, but have to go a layer down anyway
+            for entry in data:
                 commodity_id = rt.get_commodity_id(entry, conn)
                 rt.execute_insert(conn, entry, commodity_id)
                 result = conn.execute(text(f"select id from `commodities` where symbol = 'HGUSD'"))
