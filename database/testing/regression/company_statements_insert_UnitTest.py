@@ -1,5 +1,8 @@
-import connect
 import unittest
+
+import sys
+sys.path.insert(0, '../../processing')
+import connect
 from company_statements_insert import execute_insert, get_company_id, check_keys
 
 company_data = 	[{

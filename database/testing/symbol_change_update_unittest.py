@@ -2,7 +2,7 @@
 import unittest
 
 import sys
-sys.path.insert(0, '../../database/processing')
+sys.path.insert(0, '../processing')
 import connect
 from symbol_change_update import load_output_file, update_symbol
 
@@ -24,6 +24,7 @@ class SymbolChangeTest(unittest.TestCase):
                 self.assertIsNone(update_symbol(conn, test1[0]))
         
         print("Test 1 Complete")
+        
     def test_one(self):
         print("Starting Test 2...")
         
@@ -40,6 +41,7 @@ class SymbolChangeTest(unittest.TestCase):
                 self.assertIsNone(update_symbol(conn, test2[0]))
                 
         print("Test 2 Complete")
+        
     def test_two(self):
         print("Starting Test 3...")
         
