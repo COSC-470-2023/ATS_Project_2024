@@ -12,6 +12,7 @@ def load_output_file(path):
             output_data = json.load(output_file)
             if not output_data:
                 print("No symbol change update required")
+                exit(0)
         return output_data
     except FileNotFoundError:
         print(f"Error: Output file '{path}' not found.")
@@ -25,12 +26,12 @@ def load_output_file(path):
 def update_symbol(connection, symbol):
     try:
         # Variable Declarations
-        name = symbol["name"]
-        old_symbol = symbol["oldSymbol"]
-        new_symbol = symbol["newSymbol"]
+        name = symbol["_change_newName"]
+        old_symbol = symbol["_change_oldSymbol"]
+        new_symbol = symbol["_change_newSymbol"]
 
         #  SQL query
-        company_update = text(f"UPDATE Companies SET companyName = '{name}', symbol = '{new_symbol}' WHERE symbol = '{old_symbol}'")
+        company_update = text(f"UPDATE companies SET companyName = '{name}', symbol = '{new_symbol}' WHERE symbol = '{old_symbol}'")
 
         connection.execute(company_update)
         connection.commit()
