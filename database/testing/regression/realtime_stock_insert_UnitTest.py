@@ -1,5 +1,8 @@
-import connect
 import unittest
+
+import sys
+sys.path.insert(0, '../../processing')
+import connect
 from realtime_stock_insert import execute_insert, get_company_id, load_output_file, check_keys
 
 realtime_data = [{
