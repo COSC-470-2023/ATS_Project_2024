@@ -28,9 +28,21 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
         response = requests.get(query)
         # convert the response to json and append to list
         data = response.json()
-        remapped_entry = {}
 
-        for entry in data:
+        output.append({})
+        output[-1] = remap_entries(data, non_api_fields, api_fields)
+
+        # Rate limit the query speed based on the rate limit
+        # From inside the JSON. Check that the key wasnt valued at null, signifying no rate limit.
+        if api_rate_limit is not None:
+            time.sleep(60 / api_rate_limit)
+
+    return output
+
+def remap_entries(response_data, non_api_fields, api_fields):
+    remapped_entry = {}
+
+    for entry in response_data:
             if non_api_fields != {}:  # There is a manually added field in the cfg.
                 for non_api_field in non_api_fields:
                     # Compare the manually added field to where it should get its data from
@@ -62,17 +74,8 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
                             field]  # API field mapping was set to null, dump it as cfg doesnt care to keep.
             except AttributeError:
                 continue  # The copy failed of the dict because it was probably an error message.
-
-        output.append({})
-        output[-1] = remapped_entry
-
-        # Rate limit the query speed based on the rate limit
-        # From inside the JSON. Check that the key wasnt valued at null, signifying no rate limit.
-        if api_rate_limit is not None:
-            time.sleep(60 / api_rate_limit)
-
-    return output
-
+    
+    return remapped_entry
 
 def main():
     json_config = JsonHandler.load_config(REALTIME_CFG_PATH)
