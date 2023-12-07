@@ -64,7 +64,7 @@ def execute_insert(connection, entry, commodity_id):
     
 def get_commodity_id(entry, connection):
     # create dict of parameters to pass
-    params = {"symbol": entry["_realtime_symbol"], "name": entry["_realtime_name"]}
+    params = {"_realtime_symbol": entry["_realtime_symbol"], "_realtime_name": entry["_realtime_name"]}
 
     # query to fetch id
     id_query = text("SELECT id FROM `commodities` WHERE symbol = ':_realtime_symbol'")
