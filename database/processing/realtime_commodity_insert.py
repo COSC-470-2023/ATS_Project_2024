@@ -39,10 +39,6 @@ def check_keys(entry):
         "_realtime_volAvg",
         "_realtime_open",
         "_realtime_prevClose",
-        "_realtime_eps",
-        "_realtime_pe",
-        "_realtime_earningsAnnouncement",
-        "_realtime_sharesOutstanding",
         "_realtime_date",
     ]
 
@@ -57,7 +53,7 @@ def execute_insert(connection, entry, commodity_id):
     row["commodity_id"] = commodity_id
 
     # parameterized query
-    query = text("INSERT INTO `realtime_commodity_values` VALUES (:commodity_id, :_realtime_symbol, :_realtime_name, :_realtime_price, :_realtime_changePercent, :_realtime_change, :_realtime_dayLow, :_realtime_dayHigh, :_realtime_yearHigh, :_realtime_yearLow, :_realtime_mktCap, :_realtime_exchange, :_realtime_volume, :_realtime_volAvg, :_realtime_open, :_realtime_prevClose, :_realtime_eps, :_realtime_pe, :_realtime_earningsAnnouncement, :_realtime_sharesOutstanding, :_realtime_date)")
+    query = text("INSERT INTO `realtime_commodity_values` VALUES (:commodity_id, :_realtime_symbol, :_realtime_name, :_realtime_price, :_realtime_changePercent, :_realtime_change, :_realtime_dayLow, :_realtime_dayHigh, :_realtime_yearHigh, :_realtime_yearLow, :_realtime_mktCap, :_realtime_exchange, :_realtime_volume, :_realtime_volAvg, :_realtime_open, :_realtime_prevClose, :_realtime_date)")
 
     # dict unpacked into query :parameters by matching key to parameter name
     connection.execute(statement=query, parameters=row)
