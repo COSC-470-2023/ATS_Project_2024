@@ -67,7 +67,7 @@ def get_commodity_id(entry, connection):
     params = {"_realtime_symbol": entry["_realtime_symbol"], "_realtime_name": entry["_realtime_name"]}
 
     # query to fetch id
-    id_query = text("SELECT id FROM `commodities` WHERE symbol = ':_realtime_symbol'")
+    id_query = text("SELECT id FROM `commodities` WHERE symbol = :_realtime_symbol")
 
     # check if commodity exists in commodities table already
     result = connection.execute(id_query, parameters=params)
