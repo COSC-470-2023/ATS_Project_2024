@@ -20,8 +20,7 @@ def load_output_file(path):
         print(f"Error decoding JSON in '{path}'")
         exit(1)
 
-def execute_insert(connection, entry, index_id):
-
+def check_keys(entry):
     # keys expected to be committed
     keys = [
     "_realtime_date",
@@ -39,18 +38,20 @@ def execute_insert(connection, entry, index_id):
     "_realtime_open",
     "_realtime_prevClose",
     ]
-    
     # get key value, assign value to key. if key doesn't exist, assign value of None
-    row = {key: entry.get(key, None) for key in keys}
+    return {key: entry.get(key, None) for key in keys}
+
+def execute_insert(connection, entry, index_id):
+    # check for any missing keys and assign values of None
+    row = check_keys(entry)
     # append generated id
     row["index_id"] = index_id
-    
     # parameterized query
     query = text(
             f"INSERT INTO `realtime_index_values` VALUES (:index_id, :_realtime_date, :_realtime_price, :_realtime_changePercent, :_realtime_change, :_realtime_dayLow, :_realtime_dayHigh, :_realtime_yearHigh, :_realtime_yearLow, :_realtime_mktCap, :_realtime_exchange, :_realtime_volume, :_realtime_volAvg, :_realtime_open, :_realtime_prevClose)"
         )
     # execute row insertion
-    connection.execute(statement=query, parameters=row)
+    connection.execute(query, row)
 
 
 def get_index_id(entry, connection):

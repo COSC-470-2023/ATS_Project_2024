@@ -43,7 +43,6 @@ def check_keys(entry):
         "_realtime_earningsAnnouncement", 
         "_realtime_sharesOutstanding",
     ]
-
     # get key value, assign value to key. if key doesn't exist, assign value of None
     return {key: entry.get(key, None) for key in keys}
 
@@ -64,8 +63,8 @@ def execute_insert(connection, entry, company_id):
 
     # parameterized query
     query = text("INSERT INTO `realtime_stock_values` VALUES (:company_id, :_realtime_date, :_realtime_price, :_realtime_changePercent, :_realtime_change, :_realtime_dayLow, :_realtime_dayHigh, :_realtime_yearHigh, :_realtime_yearLow, :_realtime_mktCap, :_realtime_exchange, :_realtime_volume, :_realtime_volAvg, :_realtime_open, :_realtime_prevClose, :_realtime_eps, :_realtime_pe, :_realtime_earningsAnnouncement, :_realtime_sharesOutstanding)")
-    # execute row insertion, it would only work by explicitly naming the function args for unknown reasons
-    connection.execute(statement=query, parameters=row)
+    # execute row insertion
+    connection.execute(query, row)
 
 def get_company_id(entry, conn):
     params = {"symbol": entry["_realtime_symbol"], "name": entry["_realtime_name"], "isListed": 1}
@@ -87,10 +86,9 @@ def get_company_id(entry, conn):
 
 
 def main():
-    # Load json data
-    realtime_data = load_output_file(OUTPUT_FILE_PATH)
-
     try:
+        # Load json data
+        realtime_data = load_output_file(OUTPUT_FILE_PATH)  
         # create connection with context manager, connection closed on exit
         with connect.connect() as conn:
             # begin transaction with context manager, implicit commit on exit or rollback on exception

@@ -53,7 +53,6 @@ def check_keys(entry):
         "_company_isAdr",
         "_company_isFund",
     ]
-
     # change keys that don't exist in the output to None for insertion
     return {key: entry.get(key, None) for key in keys}
 
@@ -106,7 +105,6 @@ def get_company_id(entry, conn):
 def main():
     # Load json data
     company_data = load_output_file(OUTPUT_FILE_PATH)
-
     try:
         # create with context manager, implicit commit on close
         with connect.connect() as conn:
