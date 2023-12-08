@@ -34,7 +34,6 @@ def update_symbol(connection, symbol):
         company_update = text(f"UPDATE companies SET companyName = '{name}', symbol = '{new_symbol}' WHERE symbol = '{old_symbol}'")
 
         connection.execute(company_update)
-        connection.commit()
     except Exception as e:
         print(f"Error in updating database: {e}")
         print(traceback.format_exc())

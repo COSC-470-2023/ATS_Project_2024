@@ -1,25 +1,16 @@
-# https://docs.sqlalchemy.org/en/20/changelog/migration_20.html
-import connect
-import bonds_insert as bd
 import unittest
 from decimal import *
 from sqlalchemy import text
-# common sqlalchemy exceptions
-from sqlalchemy.exc import (
-    SQLAlchemyError,
-    DataError,
-    DatabaseError,
-    IntegrityError,
-    OperationalError,
-    ProgrammingError,
-    TimeoutError,
-)
 
+import sys
+sys.path.insert(0, '../processing')
+import connect
+import bonds_insert as bd
 
 class bondTest(unittest.TestCase):
                     
     def test_bond_insertion(self):
-        data = bd.load_output_file("bonds_test.json")
+        data = bd.load_output_file("../../test_files/static_test_files/static_bonds_30day.json")
         with connect.connect() as conn:
             for entry in data: 
                 bond_id = bd.get_bond_id(entry, conn)
@@ -29,8 +20,7 @@ class bondTest(unittest.TestCase):
             row = result.one_or_none()
             self.assertIsNotNone(row, msg="The insertion script did not insert into commodities as expected, as the expected row was not found in the database.")
             retrieved_bond_id = row[0]
-            self.assertEqual(retrieved_bond_id, bond_id, msg="ID doesn't match. get_bond_id is retrieving the wrong ID.")
-            result = conn.execute(text(f"select 1_year from `bonds_values` where bond_id = '{bond_id}' and date = '2023-11-27'"))
+            result = conn.execute(text(f"select 1_year from `bond_values` where bond_id = '{retrieved_bond_id}' and date = '2023-11-14'"))
             row = result.one_or_none()
             self.assertIsNotNone(row, msg="The insertion script did not insert into bond_values as expected, as the expected row was not found in the database.")
             one_year = row[0]

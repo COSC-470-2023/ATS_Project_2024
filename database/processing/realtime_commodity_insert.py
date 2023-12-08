@@ -7,6 +7,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 # Globals
 OUTPUT_FILE_PATH = "./SMF_Project_2023/data_collection/output/realtime_commodity_output.json"
+# OUTPUT_FILE_PATH = "./static_commodities_realtime.json"
 
 def load_output_file(path):
     try:
@@ -21,26 +22,29 @@ def load_output_file(path):
         exit(1)
 
 def check_keys(entry):
-    # keys expected to be committed
+    # list of keys expected to be committed
     keys = [
-    "_realtime_date",
-    "_realtime_price",
-    "_realtime_changePercent",
-    "_realtime_change",
-    "_realtime_dayLow",
-    "_realtime_dayHigh",
-    "_realtime_yearHigh",
-    "_realtime_yearLow",
-    "_realtime_mktCap", 
-    "_realtime_exchange",
-    "_realtime_volume",
-    "_realtime_volAvg",
-    "_realtime_open",
-    "_realtime_prevClose",
+        "_realtime_symbol",
+        "_realtime_name",
+        "_realtime_price",
+        "_realtime_changePercent",
+        "_realtime_change",
+        "_realtime_dayLow",
+        "_realtime_dayHigh",
+        "_realtime_yearHigh",
+        "_realtime_yearLow",
+        "_realtime_mktCap",
+        "_realtime_exchange",
+        "_realtime_volume",
+        "_realtime_volAvg",
+        "_realtime_open",
+        "_realtime_prevClose",
+        "_realtime_date",
     ]
+
     # get key value, assign value to key. if key doesn't exist, assign value of None
     return {key: entry.get(key, None) for key in keys}
-        
+
 def execute_insert(connection, entry, commodity_id):
     # check for any missing keys and assign values of None
     row = check_keys(entry)
@@ -64,9 +68,8 @@ def get_commodity_id(entry, connection):
     row = result.one_or_none()
 
     if row is None:
-        # if commodity doesn't exist, create new row in commodities table - trigger generates new ID
-        connection.execute(text("INSERT INTO `commodities` (`commodityName`, `symbol`) VALUES (:name, :symbol)") ,parameters=params)
-
+        # if commodity doesn't exist, create new row in commodites table - trigger generates new ID
+        connection.execute(text("INSERT INTO `commodities`(`commodityName`, `symbol`) VALUES (:_realtime_name, :_realtime_symbol)"), parameters=params)
         # get the generated ID
         result = connection.execute(id_query, parameters=params) 
         commodity_id = result.one()[0]   
