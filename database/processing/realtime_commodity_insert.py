@@ -7,7 +7,6 @@ from sqlalchemy.exc import SQLAlchemyError
 
 # Globals
 OUTPUT_FILE_PATH = "./SMF_Project_2023/data_collection/output/realtime_commodity_output.json"
-# OUTPUT_FILE_PATH = "./static_commodities_realtime.json"
 
 def load_output_file(path):
     try:

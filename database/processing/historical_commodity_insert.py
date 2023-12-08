@@ -60,7 +60,7 @@ def get_commodity_id(entry, connection):
 
     if row is None:
         # if commodity doesn't exist, create new row in commodities table - trigger generates new ID
-        connection.execute(text("INSERT INTO `commodities` (`commodityName`, `symbol`) VALUES (:name, :symbol)") ,parameters=params)
+        connection.execute(text("INSERT INTO `commodities` (`commodityName`, `symbol`) VALUES (:name, :symbol)"), parameters=params)
     
         # get id generated from trigger
         result = connection.execute(id_query, parameters=params) 
