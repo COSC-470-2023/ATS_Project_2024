@@ -5,7 +5,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
 # Globals
-OUTPUT_FILE_PATH = "./data_collection/output/historical_index_output.json"
+OUTPUT_FILE_PATH = "./SMF_Project_2023/data_collection/output/historical_index_output.json"
 
 def load_output_file(path):
     try:
@@ -18,8 +18,9 @@ def load_output_file(path):
     except json.JSONDecodeError:
         print(f"Error decoding JSON in '{path}'")
         exit(1)
-        
-def execute_insert(connection, entry, index_id):
+
+def check_keys(entry):
+    # keys expected to be committed
     keys = [    
         '_historical_date',
         '_historical_open',
@@ -34,17 +35,18 @@ def execute_insert(connection, entry, index_id):
         '_historical_vwap',
         '_historical_changeOverTime',
     ]
-
     # get key value, assign value to key. if key doesn't exist, assign value of None
-    row = {key: entry.get(key, None) for key in keys}
-
+    return {key: entry.get(key, None) for key in keys}
+        
+def execute_insert(connection, entry, index_id):
+    # get key value, assign value to key. if key doesn't exist, assign value of None
+    row = check_keys(entry)
     # append generated id
     row["index_id"] = index_id
-
+    # parameterized query
     query = text("INSERT INTO `historical_index_values` VALUES (:index_id, :_historical_date, :_historical_open, :_historical_high, :_historical_low, :_historical_close, :_historical_adjClose, :_historical_volume, :_historical_unadjustedVolume, :_historical_change, :_historical_changePercent, :_historical_vwap, :_historical_changeOverTime)")
-        
     # Excute row insertion
-    connection.execute(statement=query, parameters=row)
+    connection.execute(query, row)
 
 # Used to get id associated with an index        
 def get_index_id(entry, connection):

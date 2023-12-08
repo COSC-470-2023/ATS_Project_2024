@@ -83,7 +83,7 @@ def main():
         api_fields = json_config[api]['api_fields']
         non_api_fields = json_config[api]['non_api_fields']
 
-        company_list = json_config[api]['companies']
+        company_list = json_config[api]['stocks']
 
         company_output += make_queries(api_url, api_key, company_list, api_rate_limit, api_fields, non_api_fields)
 

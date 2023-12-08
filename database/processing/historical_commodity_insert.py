@@ -19,68 +19,78 @@ def load_output_file(path):
         print(f"Error decoding JSON in '{path}'")
         exit(1)
 
+def check_keys(entry):
+    # keys expected to be committed
+    keys = [    
+        '_historical_date',
+        '_historical_open',
+        '_historical_high',
+        '_historical_low',
+        '_historical_close',
+        '_historical_adjClose',
+        '_historical_volume',
+        '_historical_unadjustedVolume',
+        '_historical_change',
+        '_historical_changePercent',
+        '_historical_vwap',
+        '_historical_changeOverTime',
+    ]
+    # get key value, assign value to key. if key doesn't exist, assign value of None
+    return {key: entry.get(key, None) for key in keys}
+
 def execute_insert(connection, entry, commodity_id):
-        # Declare and initialize variables
-        date = entry['_historical_date']
-        commodity_open = entry['_historical_open']
-        high = entry['_historical_high']
-        low = entry['_historical_low']
-        close = entry['_historical_close']
-        adj_close = entry['_historical_adjClose']
-        volume = entry['_historical_volume']
-        unadjusted_volume = entry['_historical_unadjustedVolume']
-        change = entry['_historical_change']
-        change_percentage = entry['_historical_changePercent']
-        vwap = entry['_historical_vwap']
-        change_over_time = entry['_historical_changeOverTime']
-        # Execute row insertion
-        connection.execute(
-            text(
-                f"INSERT INTO `historical_commodity_values` VALUES ('{commodity_id}', '{date}', '{commodity_open}', '{high}', '{low}', '{close}', '{adj_close}', '{volume}', '{unadjusted_volume}', '{change}', '{change_percentage}', '{vwap}', '{change_over_time}')"
-            )
-        )
+    # get key value, assign value to key. if key doesn't exist, assign value of None
+    row = check_keys(entry)
+    # append generated id
+    row["commodity_id"] = commodity_id
+    # parameterized query
+    query = text("INSERT INTO `historical_commodity_values` VALUES (:commodity_id, :_historical_date, :_historical_open, :_historical_high, :_historical_low, :_historical_close, :_historical_adjClose, :_historical_volume, :_historical_unadjustedVolume, :_historical_change, :_historical_changePercent, :_historical_vwap, :_historical_changeOverTime)")
+    # Excute row insertion
+    connection.execute(query, row)
         
 def get_commodity_id(entry, connection):
-    #Declare and initialize variables
-    symbol = entry["_historical_symbol"]
-    name = entry["_historical_name"]
-    id_query = f"SELECT id from `commodities` WHERE symbol = '{symbol}'"
-    # check if index exists in indexes table
-    result = connection.execute(text(id_query))
+    # set query parameters
+    params = {"symbol": entry["_historical_symbol"], "name": entry["_historical_name"]}
+
+    id_query = text("SELECT id FROM `commodities` WHERE symbol = :symbol")
+    # check if commodity exists in commodities table
+    result = connection.execute(text("SELECT id FROM `commodities` WHERE symbol = :symbol"), parameters=params)
+    
     row = result.one_or_none()
 
     if row is None:
-        # if company doesn't exist, create new row in commodities table - trigger generates new ID
-        connection.execute(
-            text(
-                f"INSERT INTO `commodities`(`commodityName`, `symbol`) VALUES ('{name}', '{symbol}')"
-            )
-        )
-        # get the generated ID
-        result = connection.execute(text(id_query))
-        commodity_id = result.one()[0]
+        # if commodity doesn't exist, create new row in commodities table - trigger generates new ID
+        connection.execute(text("INSERT INTO `commodities` (`commodityName`, `symbol`) VALUES (:name, :symbol)"), parameters=params)
+    
+        # get id generated from trigger
+        result = connection.execute(id_query, parameters=params) 
+        commodity_id = result.one()[0]    
     else:
-        # if the company exists, fetch the existing ID
+        # if the commodity exists, fetch the existing ID
         commodity_id = row[0]
     return commodity_id
 
 def main():
     try:
-        # load json data
+        # Load json data
         historical_data = load_output_file(OUTPUT_FILE_PATH)
-        # create with context manager, implicit commit on close
+        # create with context manager
         with connect.connect() as conn:
-            for entry in historical_data:
-                commodity_id = get_commodity_id(entry, conn)
-                try:
-                    # process historical data
-                    execute_insert(conn, entry, commodity_id)
-                except SQLAlchemyError as e:
-                    # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
-                    print(f"Error: {e}")
-                    continue           
-            # Commit changes to database (otherwise it rolls back)
-            conn.commit()   
+            # begin transaction with context manager, implicit commit on exit or rollback on exception
+            with conn.begin():
+                for entry in historical_data:
+                    if isinstance(entry, dict):
+                        commodity_id = get_commodity_id(entry, conn)
+                        try:
+                            # Excute row insertion
+                            execute_insert(conn,entry,commodity_id)
+                        except SQLAlchemyError as e:
+                            # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
+                            print(f"Error: {e}")
+                            continue
+                    else:
+                        # entry is not a dictionary, skip it
+                        continue 
 
     except Exception as e:
         print(traceback.format_exc())

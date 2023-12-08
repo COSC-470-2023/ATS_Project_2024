@@ -49,21 +49,63 @@
         "output_type": "_date_time"
       }
     },
-    "companies": [
-        { "symbol": "AAPL", "name": "Apple Inc."},
-        { "symbol": "NDAQ", "name": "Nasdaq, Inc."},
-        { "symbol": "META", "name": "Meta Platforms, Inc."},
-        { "symbol": "GOOG", "name": "Alphabet Inc."},
-        { "symbol": "MSFT", "name": "Microsoft Corporation"},
-        { "symbol": "NVDA", "name": "NVIDIA Corporation"},
-        { "symbol": "WBA", "name": "Walgreens Boots Alliance, Inc."},
-        { "symbol": "TSLA", "name": "Tesla, Inc."},
-        { "symbol": "AMZN", "name": "Amazon.com, Inc."},
-        { "symbol": "WMT", "name": "Walmart Inc."},
-        { "symbol": "ADBE", "name": "Adobe Inc."},
-        { "symbol": "JNJ", "name": "Johnson & Johnson"},
-        { "symbol": "V", "name": "Visa Inc."},
-        { "symbol": "CVX", "name": "Chevron Corporation"}
-      ]
-    }
+    "stocks": [
+      {
+        "symbol": "AAPL",
+        "name": "Apple Inc."
+      },
+      {
+        "symbol": "NDAQ",
+        "name": "Nasdaq, Inc."
+      },
+      {
+        "symbol": "META",
+        "name": "Meta Platforms, Inc."
+      },
+      {
+        "symbol": "GOOG",
+        "name": "Alphabet Inc."
+      },
+      {
+        "symbol": "MSFT",
+        "name": "Microsoft Corporation"
+      },
+      {
+        "symbol": "NVDA",
+        "name": "NVIDIA Corporation"
+      },
+      {
+        "symbol": "WBA",
+        "name": "Walgreens Boots Alliance, Inc."
+      },
+      {
+        "symbol": "TSLA",
+        "name": "Tesla, Inc."
+      },
+      {
+        "symbol": "AMZN",
+        "name": "Amazon.com, Inc."
+      },
+      {
+        "symbol": "WMT",
+        "name": "Walmart Inc."
+      },
+      {
+        "symbol": "ADBE",
+        "name": "Adobe Inc."
+      },
+      {
+        "symbol": "JNJ",
+        "name": "Johnson & Johnson"
+      },
+      {
+        "symbol": "V",
+        "name": "Visa Inc."
+      },
+      {
+        "symbol": "CVX",
+        "name": "Chevron Corporation"
+      }
+    ]
+  }
 ]

@@ -12,6 +12,7 @@ def load_output_file(path):
             output_data = json.load(output_file)
             if not output_data:
                 print("No symbol change update required")
+                exit(0)
         return output_data
     except FileNotFoundError:
         print(f"Error: Output file '{path}' not found.")
