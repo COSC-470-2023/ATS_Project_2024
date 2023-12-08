@@ -16,6 +16,7 @@ class JsonHandler:
         try:
             config_file = open(config_path, "r")
             config = json.load(config_file)
+            config_file.close()
             return config
         except IOError:  # TODO Implement system logging when defined to log/flag a failure in this component
             print(f"IOError while query config at path: {config_path}")
