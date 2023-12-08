@@ -6,11 +6,11 @@ from datetime import timedelta, date
 from JsonHandler import JsonHandler
 
 # Globals
-CFG_DIRECTORY = "./data_collection/configuration"
-REALTIME_CFG_PATH = "./data_collection/configuration/realtime_query_cfg.json"
-HISTORICAL_CFG_PATH = "./data_collection/configuration/historical_query_cfg.json"
-COMPANY_INFO_CFG_PATH = "./data_collection/configuration/company_info_query_cfg.json"
-INDEX_CONSTITUENT_CFG_PATH = "./data_collection/configuration/index_constituent_cfg.json"
+CFG_DIRECTORY = "./SMF_Project_2023/data_collection/configuration"
+REALTIME_CFG_PATH = "./SMF_Project_2023/data_collection/configuration/realtime_query_cfg.json"
+HISTORICAL_CFG_PATH = "./SMF_Project_2023/data_collection/configuration/historical_query_cfg.json"
+COMPANY_INFO_CFG_PATH = "./SMF_Project_2023/data_collection/configuration/company_info_query_cfg.json"
+INDEX_CONSTITUENT_CFG_PATH = "./SMF_Project_2023/data_collection/configuration/index_constituent_cfg.json"
 OUTPUT_FILENAME_REALTIME = "realtime_query_cfg.json"
 OUTPUT_FILENAME_HISTORICAL = "historical_query_cfg.json"
 OUTPUT_FILENAME_COMPANY = "company_info_query_cfg.json"

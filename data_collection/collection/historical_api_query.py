@@ -8,8 +8,8 @@ import requests
 from JsonHandler import JsonHandler
 
 # Globals
-HISTORICAL_CFG_PATH = "./data_collection/configuration/historical_query_cfg.json"
-OUTPUT_FOLDER = "./data_collection/output/"
+HISTORICAL_CFG_PATH = "./SMF_Project_2023/data_collection/configuration/historical_query_cfg.json"
+OUTPUT_FOLDER = "./SMF_Project_2023/data_collection/output/"
 OUTPUT_FILENAME_STOCKS = "historical_stocks_output.json"
 OUTPUT_FILENAME_INDEX = "historical_index_output.json"
 OUTPUT_FILENAME_COMMODITIES = "historical_commodity_output.json"
