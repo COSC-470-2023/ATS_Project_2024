@@ -1,0 +1,111 @@
+[
+  {
+    "url": "https://financialmodelingprep.com/api/v3/profile/{QUERY_PARAMS}?apikey={API_KEY}",
+    "rate_limit_per_min": 300,
+    "api_key": "<PASTE KEY HERE>",
+    "api_fields": {
+      "symbol": "_company_symbol",
+      "price": "_company_price",
+      "beta": "_company_beta",
+      "volAvg": "_company_volAvg",
+      "mktCap": "_company_mktCap",
+      "lastDiv": "_company_lastDiv",
+      "changes": "_company_changes",
+      "companyName": "_company_name",
+      "currency": "_company_currency",
+      "cik": "_company_cik",
+      "isin": "_company_isin",
+      "cusip": "_company_cusip",
+      "exchange": "_company_exchangeFullName",
+      "exchangeShortName": "_company_exchange",
+      "industry": "_company_industry",
+      "website": null,
+      "description": null,
+      "range": null,
+      "image": null,
+      "defaultImage": null,
+      "ceo": "_company_ceo",
+      "sector": "_company_sector",
+      "country": "_company_country",
+      "fullTimeEmployees": "_company_fullTimeEmployees",
+      "phone": "_company_phone",
+      "address": "_company_address",
+      "city": "_company_city",
+      "state": "_company_state",
+      "zip": "_company_zip",
+      "dcfDiff": "_company_dcfDiff",
+      "dcf": "_company_dcf",
+      "ipoDate": "_company_ipoDate",
+      "isEtf": "_company_isEtf",
+      "isActivelyTrading": "_company_isActivelyTrading",
+      "isAdr": "_company_isAdr",
+      "isFund": "_company_isFund"
+    },
+    "non_api_fields": {
+      "date": {
+        "src": null,
+        "mapping": "_company_date",
+        "input_type": null,
+        "output_type": "_date_time"
+      }
+    },
+    "stocks": [
+      {
+        "symbol": "AAPL",
+        "name": "Apple Inc."
+      },
+      {
+        "symbol": "NDAQ",
+        "name": "Nasdaq, Inc."
+      },
+      {
+        "symbol": "META",
+        "name": "Meta Platforms, Inc."
+      },
+      {
+        "symbol": "GOOG",
+        "name": "Alphabet Inc."
+      },
+      {
+        "symbol": "MSFT",
+        "name": "Microsoft Corporation"
+      },
+      {
+        "symbol": "NVDA",
+        "name": "NVIDIA Corporation"
+      },
+      {
+        "symbol": "WBA",
+        "name": "Walgreens Boots Alliance, Inc."
+      },
+      {
+        "symbol": "TSLA",
+        "name": "Tesla, Inc."
+      },
+      {
+        "symbol": "AMZN",
+        "name": "Amazon.com, Inc."
+      },
+      {
+        "symbol": "WMT",
+        "name": "Walmart Inc."
+      },
+      {
+        "symbol": "ADBE",
+        "name": "Adobe Inc."
+      },
+      {
+        "symbol": "JNJ",
+        "name": "Johnson & Johnson"
+      },
+      {
+        "symbol": "V",
+        "name": "Visa Inc."
+      },
+      {
+        "symbol": "CVX",
+        "name": "Chevron Corporation"
+      }
+    ]
+  }
+]

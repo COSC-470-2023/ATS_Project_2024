@@ -1,0 +1,30 @@
+[
+    {
+        "query":"stocks_realtime",
+        "query_string":"https://financialmodelingprep.com/api/v3/quote/AAPL,NDAQ,META,GOOG,MSFT?&apikey={API_KEY}"
+    },
+    {
+        "query":"stocks_historical",
+        "query_string":"https://financialmodelingprep.com/api/v3/historical-price-full/AAPL,NDAQ,META,GOOG,MSFT?&apikey={API_KEY}&from=2023-10-24&to=2023-11-24"
+    },
+    {
+        "query":"commodities_historical",
+        "query_string":"https://financialmodelingprep.com/api/v3/historical-price-full/HGUSD,CLUSD,GCUSD,SIUSD,NGUSD?&apikey={API_KEY}&from=2023-10-24&to=2023-11-24"
+    },
+    {
+        "query":"commodities_realtime",
+        "query_string":"https://financialmodelingprep.com/api/v3/quote/HGUSD,CLUSD,GCUSD,SIUSD,NGUSD?&apikey={API_KEY}"
+    },
+    {
+        "query":"index_realtime",
+        "query_string":"https://financialmodelingprep.com/api/v3/quote/%5EGSPC,%5EIXIC,%5EDJI,%5ERUA,%5EFTSE?&apikey={API_KEY}"
+    },
+    {
+        "query":"index_historical",
+        "query_string":"https://financialmodelingprep.com/api/v3/historical-price-full/%5EGSPC,%5EIXIC,%5EDJI,%5ERUA,%5EFTSE?&apikey={API_KEY}&from=2023-10-24&to=2023-11-24"
+    },
+    {
+        "query":"bonds",
+        "query_string": "https://financialmodelingprep.com/api/v4/treasury?from=2023-10-16&to=2023-11-16?&apikey={API_KEY}"
+    }
+]

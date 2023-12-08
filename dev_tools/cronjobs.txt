@@ -1,0 +1,19 @@
+### Symbol Changes ###
+
+        # Mon - Fri, just after market opens (10:00 am)
+        0 10 * * 1-5 SMF_Project_2023/job_scheduling/symbol_change_scheduling.sh >> ~/ATSLogs/cron_log.txt 2>&1
+
+### Realtime Data (Stocks, Indexes, Commodities) ###
+
+        # Mon - Fri at market close (4 pm)
+        0 16 * * 1-5 SMF_Project_2023/job_scheduling/realtime_scheduling.sh >> ~/ATSLogs/cron_log.txt 2>&1
+
+### Bonds ###
+
+        # Once per week on Saturday @12AM
+        0 0 * * SAT SMF_Project_2023/job_scheduling/bond_scheduling.sh >> ~/ATSLogs/cron_log.txt 2>&1
+
+### Company Statements ###
+
+        # Once per month on Sunday @12AM
+        0 0 * * SUN SMF_Project_2023/job_scheduling/company_statement_scheduling.sh >> ~/ATSLogs/cron_log.txt 2>&1																																									
