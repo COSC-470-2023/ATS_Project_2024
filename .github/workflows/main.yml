@@ -1,6 +1,6 @@
 on:
   push:
-    branches: main #Feature/ActionsCI
+    branches: Feature/ActionsCI
 
 jobs:
   build:
@@ -30,3 +30,4 @@ jobs:
           echo "print 1"
           sudo mysql -u root < database/ddl/create_db.sql
           sudo mysql -u root < database/ddl/create_triggers.sql
+          echo "print 2"
