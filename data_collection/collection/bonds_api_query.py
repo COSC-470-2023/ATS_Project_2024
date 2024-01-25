@@ -1,4 +1,4 @@
-import json
+import jsonc
 
 import requests
 from datetime import date, timedelta
