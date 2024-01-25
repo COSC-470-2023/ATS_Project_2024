@@ -28,6 +28,6 @@ jobs:
           sudo apt install -y mysql-server
           sudo systemctl start mysql
           echo "print 1"
-          sudo mysql -u root < database/ddl/create_db.sql
-          sudo mysql -u root < database/ddl/create_triggers.sql
+          sudo mysql -uroot -proot < database/ddl/create_db.sql
+          sudo mysql -uroot -proot < database/ddl/create_triggers.sql
           echo "print 2"
