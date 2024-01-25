@@ -5,6 +5,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    #ubuntu latest on actions has mysql automatically installed
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -25,9 +26,9 @@ jobs:
       - name: Build system
         run: |
           sudo apt -y update
-          sudo apt install -y mysql-server
           sudo systemctl start mysql
           echo "print 1"
+          #must use -proot to access root mysql on ubuntu latest
           sudo mysql -uroot -proot < database/ddl/create_db.sql
-          sudo mysql -uroot -proot < database/ddl/create_triggers.sql
+          sudo mysql -uroot -proot -e "use ats_db;" < database/ddl/create_triggers.sql
           echo "print 2"
