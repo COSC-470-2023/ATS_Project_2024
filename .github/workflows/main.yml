@@ -28,7 +28,7 @@ jobs:
           sudo apt install -y mysql-server
           sudo service mysql start
           echo "ALTER USER 'root'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY 'letmein';" | sudo mysql -u root
-          echo "CREATE DATABASE ats_db;" | sudo mysql -u root -pletmein
+          echo  "CREATE DATABASE ats_db;" | mysql --password=letmein --user=root --host=localhost         
           pwd
           sudo mysql -u root -pletmein ats_db < database/ddl/create_db.sql
           sudo mysql -u root -pletmein ats_db < database/ddl/create_triggers.sql
