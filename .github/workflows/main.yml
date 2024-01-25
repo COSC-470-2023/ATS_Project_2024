@@ -24,8 +24,8 @@ jobs:
   
       - name: Build system
         run: |
-          sudo apt update -y
-          sudo apt-get mysql-server -y
+          sudo apt -y update
+          sudo apt -y mysql-server
           sudo service mysql start
           echo "ALTER USER 'root'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY 'letmein';" | sudo mysql -u root
           echo "CREATE DATABASE ats_db;" | sudo mysql -u root -pletmein
