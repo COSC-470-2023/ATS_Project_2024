@@ -1,6 +1,6 @@
 on:
   push:
-    branches: Feature/ActionsCI
+    branches: main #Feature/ActionsCI
 
 jobs:
   build:
@@ -26,13 +26,7 @@ jobs:
         run: |
           sudo apt -y update
           sudo apt install -y mysql-server
-          sudo service mysql start
+          sudo systemctl start mysql
           echo "print 1"
-          # echo "ALTER USER 'root'@'localhost' IDENTIFIED BY 'letmein';" | mysql -u root -h localhost
-          # echo "past ALTER USER"
-          ######issue is here figure it out nerd
-          echo  "CREATE DATABASE ats_db;" | mysql  --user=root --host=localhost 
-          # echo  "CREATE DATABASE ats_db;" | mysql --password=letmein --user=root --host=localhost         
-          pwd
-          sudo mysql -u root -pletmein ats_db < database/ddl/create_db.sql
-          sudo mysql -u root -pletmein ats_db < database/ddl/create_triggers.sql
+          sudo mysql -u root < database/ddl/create_db.sql
+          sudo mysql -u root < database/ddl/create_triggers.sql
