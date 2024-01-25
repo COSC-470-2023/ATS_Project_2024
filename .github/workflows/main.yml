@@ -30,6 +30,7 @@ jobs:
           echo "print 1"
           # echo "ALTER USER 'root'@'localhost' IDENTIFIED BY 'letmein';" | mysql -u root -h localhost
           # echo "past ALTER USER"
+          ######issue is here figure it out nerd
           echo  "CREATE DATABASE ats_db;" | mysql  --user=root --host=localhost 
           # echo  "CREATE DATABASE ats_db;" | mysql --password=letmein --user=root --host=localhost         
           pwd
