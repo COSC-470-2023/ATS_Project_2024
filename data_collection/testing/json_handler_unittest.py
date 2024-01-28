@@ -1,15 +1,12 @@
 import unittest
+import json
 
-from sqlalchemy import column, create_engine
-from sqlalchemy import select
-from sqlalchemy import table
-from sqlalchemy import text
+import sys
+sys.path.insert(0, '../collection')
+import JsonHandler as jh
 
-from data_collection.collection import bonds_api_query
-
-
-class ConfigLoadTestCase(unittest.TestCase):
-    json_config = bonds_api_query.load_config()
+class JSONHandlerTestCase(unittest.TestCase):    
+    json_config = jh.load_config()
 
     def test_url(self):
         expected_url = "https://financialmodelingprep.com/api/v4/treasury?from={START_DATE}&to={END_DATE}&apikey={API_KEY}"
@@ -20,7 +17,3 @@ class ConfigLoadTestCase(unittest.TestCase):
         expected_key = "PASTE KEY HERE"
         retrieved_key = self.json_config[0]['api_key']  # Get the API field from the loaded JSON
         self.assertEqual(expected_key, retrieved_key, "Retrieved API key does not match what was expected.")
-
-
-if __name__ == '__main__':
-    unittest.main()
