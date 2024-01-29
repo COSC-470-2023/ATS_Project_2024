@@ -1,0 +1,47 @@
+---
+- url: https://financialmodelingprep.com/api/v3/historical-price-full/{QUERY_PARAMS}?from={START_DATE}&to={END_DATE}&apikey={API_KEY}
+  api_key: <PASTE KEY HERE>
+  rate_limit: 300
+  api_fields:
+    symbol: _historical_symbol
+    date: _historical_date
+    open: _historical_open
+    high: _historical_high
+    low: _historical_low
+    close: _historical_close
+    adjClose: _historical_adjClose
+    volume: _historical_volume
+    unadjustedVolume: _historical_unadjustedVolume
+    change: _historical_change
+    changePercent: _historical_changePercent
+    vwap: _historical_vwap
+    changeOverTime: _historical_changeOverTime
+    label: null
+  non_api_fields:
+    name:
+      src: _config_name
+      mapping: _historical_name
+      input_type: _string
+      output_type: _string
+  index_composites:
+    - symbol: "^GSPC"
+      name: S&P 500
+      start_date: 2023-20-11
+      end_date: 2023-27-11
+    - symbol: "^IXIC"
+      name: NASDAQ Composite
+      start_date: 2023-20-11
+      end_date: 2023-27-11
+    - symbol: "^DJI"
+      name: Dow Jones Industrial Average
+      start_date: 2023-20-11
+      end_date: 2023-27-11
+    - symbol: "^RUA"
+      name: Russell 3000
+      start_date: 2023-20-11
+      end_date: 2023-27-11
+    - symbol: "^FTSE"
+      name: FTSE 100
+      start_date: 2023-20-11
+      end_date: 2023-27-11
+  stocks:
