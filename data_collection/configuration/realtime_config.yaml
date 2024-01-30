@@ -1,57 +1,57 @@
 ---
-- url: https://financialmodelingprep.com/api/v3/quote/{QUERY_PARAMS}?apikey={API_KEY}
-  api_key: <PASTE KEY HERE>
-  rate_limit_per_min: 300
-  api_fields:
-    symbol: _realtime_symbol
-    name: _realtime_name
-    price: _realtime_price
-    changesPercentage: _realtime_changePercent
-    change: _realtime_change
-    dayLow: _realtime_dayLow
-    dayHigh: _realtime_dayHigh
-    yearHigh: _realtime_yearHigh
-    yearLow: _realtime_yearLow
-    marketCap: _realtime_mktCap
-    priceAvg50:
-    priceAvg200:
-    exchange: _realtime_exchange
-    volume: _realtime_volume
-    avgVolume: _realtime_volAvg
-    open: _realtime_open
-    previousClose: _realtime_prevClose
-    eps: _realtime_eps
-    pe: _realtime_pe
-    earningsAnnouncement: _realtime_earningsAnnouncement
-    sharesOutstanding: _realtime_sharesOutstanding
-    timestamp:
-  non_api_fields:
-    date:
-      src: timestamp
-      mapping: _realtime_date
-      input_type: _unix_time
-      output_type: _date_time
-  index_composites:
-  - symbol: "^GSPC"
-    name: S&P 500
-  - symbol: "^IXIC"
-    name: NASDAQ Composite
-  - symbol: "^DJI"
-    name: Dow Jones Industrial Average
-  - symbol: "^RUA"
-    name: Russell 3000
-  - symbol: "^FTSE"
-    name: FTSE 100
-  stocks:
+url: https://financialmodelingprep.com/api/v3/quote/{QUERY_PARAMS}?apikey={API_KEY}
+api_key: <PASTE KEY HERE>
+rate_limit_per_min: 300
+api_fields:
+  symbol: _realtime_symbol
+  name: _realtime_name
+  price: _realtime_price
+  changesPercentage: _realtime_changePercent
+  change: _realtime_change
+  dayLow: _realtime_dayLow
+  dayHigh: _realtime_dayHigh
+  yearHigh: _realtime_yearHigh
+  yearLow: _realtime_yearLow
+  marketCap: _realtime_mktCap
+  priceAvg50:
+  priceAvg200:
+  exchange: _realtime_exchange
+  volume: _realtime_volume
+  avgVolume: _realtime_volAvg
+  open: _realtime_open
+  previousClose: _realtime_prevClose
+  eps: _realtime_eps
+  pe: _realtime_pe
+  earningsAnnouncement: _realtime_earningsAnnouncement
+  sharesOutstanding: _realtime_sharesOutstanding
+  timestamp:
+non_api_fields:
+  date:
+    src: timestamp
+    mapping: _realtime_date
+    input_type: _unix_time
+    output_type: _date_time
+index_composites:
+ - symbol: "^GSPC"
+   name: S&P 500
+ - symbol: "^IXIC"
+   name: NASDAQ Composite
+ - symbol: "^DJI"
+   name: Dow Jones Industrial Average
+ - symbol: "^RUA"
+   name: Russell 3000
+ - symbol: "^FTSE"
+   name: FTSE 100
+stocks:
 
-  commodities:
-  - symbol: HGUSD
-    name: Copper
-  - symbol: CLUSD
-    name: Crude Oil
-  - symbol: GCUSD
-    name: Gold Futures
-  - symbol: SIUSD
-    name: Silver Futures
-  - symbol: NGUSD
-    name: Natural Gas
+commodities:
+ - symbol: HGUSD
+   name: Copper
+ - symbol: CLUSD
+   name: Crude Oil
+ - symbol: GCUSD
+   name: Gold Futures
+ - symbol: SIUSD
+   name: Silver Futures
+ - symbol: NGUSD
+   name: Natural Gas
