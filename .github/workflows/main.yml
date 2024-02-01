@@ -33,8 +33,6 @@ jobs:
           
       - name: Testing
         run: |
-          pwd
-          ls -r
-          ls database/testing
-          python3 /home/runner/work/ATS_Project_2024/database/testing/test_bond_insert.py
+          ls -R
+          python3 /home/runner/work/ATS_Project_2024/database/testing/test_bonds_insert.py
           echo "end of the line bucko"
