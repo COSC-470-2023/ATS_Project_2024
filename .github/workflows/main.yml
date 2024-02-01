@@ -34,5 +34,5 @@ jobs:
       - name: Testing
         run: |
           ls -R
-          python3 /home/runner/work/ATS_Project_2024/database/testing/test_bonds_insert.py
+          python3 database/testing/test_bonds_insert.py
           echo "end of the line bucko"
