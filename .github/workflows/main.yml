@@ -33,6 +33,6 @@ jobs:
           
       - name: Testing
         run: |
-          ls -R
-          python3 database/testing/test_bonds_insert.py
+          cd database/testing/
+          python3 test_bonds_insert.py
           echo "end of the line bucko"
