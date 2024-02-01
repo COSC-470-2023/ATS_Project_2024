@@ -7,7 +7,7 @@ import connect
 import sys
 
 sys.path.insert(0, '../processing')
-from bonds_insert import BondsInsert as bi
+import bonds_insert as bi
 
 # from database.processing.bonds_insert import BondsInsert
 
