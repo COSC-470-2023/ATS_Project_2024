@@ -6,7 +6,7 @@ from sqlalchemy import text
 import connect
 import sys
 
-sys.path.insert(1, '../SMF_Project_2023/database/processing')
+sys.path.insert(0, '../processing')
 from bonds_insert import BondsInsert as bi
 
 # from database.processing.bonds_insert import BondsInsert
