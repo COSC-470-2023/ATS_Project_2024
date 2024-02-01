@@ -33,5 +33,5 @@ jobs:
           
       - name: Testing
         run: |
-          python3 /database/testing/test_bond_insert.py
+          python3 ./database/testing/test_bond_insert.py
           echo "end of the line bucko"
