@@ -1,6 +1,6 @@
 on:
   push:
-    branches: Feature/ActionsCI
+    #branches: Feature/ActionsCI
 
 jobs:
   build:
@@ -27,8 +27,9 @@ jobs:
         run: |
           sudo apt -y update
           sudo systemctl start mysql
-          echo "print 1"
           #must use -proot to access root mysql on ubuntu latest
           sudo mysql -uroot -proot < database/ddl/create_db.sql
           sudo mysql -uroot -proot -e "use ats_db;" < database/ddl/create_triggers.sql
-          echo "print 2"
+      - name: Testing
+        run: |
+          sudo apt 
