@@ -1,15 +1,12 @@
-# Get historical data from the bonds API list file
-# Parse the json so we know what our URL and keys are
-# Iterate through the stocks using the key and url, then move onto the next API
-# TODO make the directories for file read and out absolute ie not relative locations to the script
-
 import time
 import requests
-from JsonHandler import JsonHandler
+from data_collection.collection.JsonHandler import JsonHandler
+from data_collection.collection.yaml_handler import YamlHandler
+
 
 # Globals
-HISTORICAL_CFG_PATH = "./SMF_Project_2023/data_collection/configuration/historical_query_cfg.json"
-OUTPUT_FOLDER = "./SMF_Project_2023/data_collection/output/"
+HISTORICAL_CFG_PATH = "./ATS_Project_2024/data_collection/configuration/historical_config.yaml"
+OUTPUT_FOLDER = "./ATS_Project_2024/data_collection/output/"
 OUTPUT_FILENAME_STOCKS = "historical_stocks_output.json"
 OUTPUT_FILENAME_INDEX = "historical_index_output.json"
 OUTPUT_FILENAME_COMMODITIES = "historical_commodity_output.json"
@@ -18,8 +15,7 @@ OUTPUT_FILENAME_COMMODITIES = "historical_commodity_output.json"
 def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api_fields, non_api_fields):
     output = []
 
-    # Iterate through each stocks and make a API call
-    # TODO make it query with 5 items at a time ("APPL, TSLA, %5EGSPC")
+    # Iterate through each stock and make an API call
     for query_itr in range(len(query_list)):
         query_item = query_list[query_itr]
         # Replace the URL parameters with our current API configs
@@ -37,11 +33,12 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
         output[-1] = remap_entries(data, query_item, api_fields, non_api_fields)
 
         # Rate limit the query speed based on the rate limit
-        # From inside the JSON. Check that the key wasnt valued at null, signifying no rate limit.
+        # From inside the JSON. Check that the key wasn't valued at null, signifying no rate limit.
         if api_rate_limit is not None:
             time.sleep(60 / api_rate_limit)
 
     return output
+
 
 def remap_entries(response_data, query_item, api_fields, non_api_fields):
     entries = response_data['historical']
@@ -87,7 +84,7 @@ def remap_entries(response_data, query_item, api_fields, non_api_fields):
                         pass
                 else:
                     del remapped_entry[field]
-                    # dump it as cfg doesnt care to keep.
+                    # dump it as cfg doesn't care to keep.
         except AttributeError as e:
             print(f"Attribute Error on {entry}:\n{e}")
             pass  # The copy failed of the dict because it was probably an error message.
@@ -95,26 +92,23 @@ def remap_entries(response_data, query_item, api_fields, non_api_fields):
     return remapped_entry
 
 def main():
-    json_config = JsonHandler.load_config(HISTORICAL_CFG_PATH)
+    historical_config = YamlHandler.load_config(HISTORICAL_CFG_PATH)
     stock_output = []
     index_output = []
     commodity_output = []
 
     # Iterate through each API in the list
-    for api in range(len(json_config)):
-        api_url = json_config[api]['url']
-        api_key = json_config[api]['api_key']
-        api_rate_limit = json_config[api]['rate_limit_per_min']
-        api_fields = json_config[api]['api_fields']
-        non_api_fields = json_config[api]['non_api_fields']
-
-        stock_list = json_config[api]['stocks']
-        index_list = json_config[api]['index_composites']
-        commodity_list = json_config[api]['commodities']
-
-        stock_output += make_queries(api_url, api_key, stock_list, api_rate_limit, api_fields, non_api_fields)
-        index_output += make_queries(api_url, api_key, index_list, api_rate_limit, api_fields, non_api_fields)
-        commodity_output += make_queries(api_url, api_key, commodity_list, api_rate_limit, api_fields, non_api_fields)
+    api_url = historical_config['url']
+    api_key = historical_config['api_key']
+    api_rate_limit = historical_config['rate_limit_per_min']
+    api_fields = historical_config['api_fields']
+    non_api_fields = historical_config['non_api_fields']
+    stock_list = historical_config['stocks']
+    index_list = historical_config['index_composites']
+    commodity_list = historical_config['commodities']
+    stock_output += make_queries(api_url, api_key, stock_list, api_rate_limit, api_fields, non_api_fields)
+    index_output += make_queries(api_url, api_key, index_list, api_rate_limit, api_fields, non_api_fields)
+    commodity_output += make_queries(api_url, api_key, commodity_list, api_rate_limit, api_fields, non_api_fields)
 
     JsonHandler.write_files(stock_output, OUTPUT_FOLDER, OUTPUT_FILENAME_STOCKS)
     JsonHandler.write_files(index_output, OUTPUT_FOLDER, OUTPUT_FILENAME_INDEX)

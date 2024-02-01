@@ -1,13 +1,12 @@
-# Get data from company info API list file
-
 import time
 import requests
 from datetime import datetime
-from JsonHandler import JsonHandler
+from data_collection.collection.JsonHandler import JsonHandler
+from data_collection.collection.yaml_handler import YamlHandler
 
 # Globals
-COMPANY_INFO_CFG_PATH = "./SMF_Project_2023/data_collection/configuration/company_info_query_cfg.json"
-OUTPUT_FOLDER = "./SMF_Project_2023/data_collection/output/"
+COMPANY_INFO_CFG_PATH = "./ATS_Project_2024/data_collection/configuration/company_info_config.yaml"
+OUTPUT_FOLDER = "./ATS_Project_2024/data_collection/output/"
 OUTPUT_FILENAME = "company_info_output.json"
 
 
@@ -57,7 +56,7 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
                         del remapped_entry[field]  # API field has a mapping value, rename it.
                     else:
                         del remapped_entry[field]  # API field mapping was set to null,
-                        # dump it as cfg doesnt care to keep.
+                        # dump it as cfg doesn't care to keep.
 
             except AttributeError:
                 continue  # The copy failed of the dict because it was probably an error message.
@@ -72,21 +71,19 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
 
 
 def main():
-    json_config = JsonHandler.load_config(COMPANY_INFO_CFG_PATH)
+    company_config = YamlHandler.load_config(COMPANY_INFO_CFG_PATH)
     company_output = []
-
-    # Iterate through each API in the list
-    for api in range(len(json_config)):
-        api_url = json_config[api]['url']
-        api_key = json_config[api]['api_key']
-        api_rate_limit = json_config[api]['rate_limit_per_min']
-        api_fields = json_config[api]['api_fields']
-        non_api_fields = json_config[api]['non_api_fields']
-
-        company_list = json_config[api]['stocks']
-
-        company_output += make_queries(api_url, api_key, company_list, api_rate_limit, api_fields, non_api_fields)
-
+    # TODO make try except
+    # Load variables from the configuration files
+    url = company_config['url']
+    key = company_config['api_key']
+    rate_limit = company_config['rate_limit_per_min']
+    fields = company_config['api_fields']
+    non_api_fields = company_config['non_api_fields']
+    company_list = company_config['stocks']
+    # Generate output
+    company_output += make_queries(url, key, company_list, rate_limit, fields, non_api_fields)
+    # Write file
     JsonHandler.write_files(company_output, OUTPUT_FOLDER, OUTPUT_FILENAME)
 
 
