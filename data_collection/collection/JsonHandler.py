@@ -2,7 +2,7 @@ import json
 import errno
 import os
 
-
+ 
 class JsonHandler:
     @staticmethod
     def load_config(config_path: str):

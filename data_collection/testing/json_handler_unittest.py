@@ -1,5 +1,7 @@
 import unittest
 import json
+import errno
+import os
 
 import sys
 sys.path.insert(0, '../collection')
