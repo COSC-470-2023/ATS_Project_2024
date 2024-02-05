@@ -99,7 +99,7 @@ def modify_output_list(symbol_change_list, system_config_json):
 
 # Modifies the symbols that have been changed in the system configuration file and returns the modified list to be written
 # NOTE Currently assumes only one API configuration exists in the system
-def modify_system_config(system_config_json):
+def modify_system_config(system_config_json, symbol_changelog=symbol_changelog):
     modified_system_config = system_config_json
     # For each dictionary in list
     for entry in modified_system_config:
