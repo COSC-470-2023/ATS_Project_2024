@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title> Change Configuration </title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+    <nav class="navbar">
+        <button class="btn btn-change-con" type="button"> Change Configurations </button>
+        <button class="btn btn-job-sched" type="button"> Job Scheduling </button>
+        <button class="btn btn-download" type="button"> Download Data </button>
+        <!-- <button class="btn btn-logout"><i class="fa fa-arrow-right"> | Logout </i> </button> -->
+    </nav>
+
+    <div class="heading container-fluid">
+      <h1 class="title"> Change Configuration Files </h1>
+      <p class="description"> Choose to add or remove configuration files </p>
+    </div>
+
+    <div class="row config-section">
+     <div class="config"> 
+        <h3 class="title"> Stocks </h3>
+        <p class="description"> Current Config: </p>
+        <div class="stock-list">
+          <ul class="list-groups">
+            <li class="stock-item"> APPL - Apple Inc </li>
+            <li class="stock-item"> META - Meta Platforms Inc. </li>
+            <li class="stock-item"> GOOG - Alphabet Inc. </li>
+            <li class="stock-item"> TSLA - Tesla Inc. </li>
+          </ul>
+        </div>
+         <div class="btn-config">
+          <button class="btn btn-download" type="button"> Remove Stock </button>
+          <button class="btn btn-download" type="button"> Add Stock </button>
+        </div>
+      </div>
+
+      <div class="config"> 
+        <h3 class="title"> Constituent </h3>
+        <p class="description"> Current Config: </p>
+        <div class="const-list">
+          <ul class="list-groups">
+            <li class="const-item"> SNP500 </li>
+            <li class="const-item"> DJIA - Dow jones Industrial Average </li>
+          </ul>
+        </div>
+         <div class="btn-config">
+          <button class="btn btn-download" type="button"> Remove Constituent </button>
+          <button class="btn btn-download" type="button"> Add Constituent </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="heading container-fluid">
+      <h1 class="title"> Change Data Sources </h1>
+      <p class="description"> Choose to add or remove data financial </p>
+    </div>
+
+    <div class="row data-section">
+      <div class="config"> 
+         <p class="description"> Current Sources: </p>
+         <div class="data-list">
+           <ul class="list-groups">
+             <li class="data-item"> FinancialModelingPrep </li>
+           </ul>
+         </div>
+          <div class="btn-config">
+           <button class="btn btn-download" type="button"> Remove Source </button>
+           <button class="btn btn-download" type="button"> Add Source </button>
+         </div>
+       </div>
+     </div>
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>

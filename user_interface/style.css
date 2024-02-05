@@ -1,0 +1,113 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #fff;
+}
+
+form {
+    width: 25%;
+    padding: 50px;
+    margin-top: 120px;
+}
+
+form h1{
+    font-size: 70px;
+}
+
+.form-control {
+    background-color: #D9D9D9;
+}
+
+.btn-login {
+    width: 50%;
+    background: #D9D9D9;
+    border: none;
+    color: #000;
+}
+
+.navbar {
+    justify-content: center;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.navbar button{
+    background: #D9D9D9;
+    color:#000;
+    margin-left: 10px;
+    width: 15%;
+    padding: 20px;
+    font-size: 15px;
+    border-radius: 20px;
+}
+
+.heading {
+    padding: 0px 20px;
+    margin-top: 20px;
+}
+
+.config-section {
+    justify-content: center;
+    margin: 0px 20px;
+    border-radius: 10px;
+    padding: 20px;
+    background: #F7F7F7;
+    justify-content: center;
+}
+
+.config {
+    background: #D9D9D9;
+    margin: 0 50px;
+    padding: 20px;
+    border-radius: 10px;
+    width: 35%;
+}
+
+.stock-list {
+    background: #fff;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.const-list {
+    background: #fff;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.data-list {
+    background: #fff;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.list-groups {
+    list-style-type: none;
+}
+
+.btn-config button{
+    background: #fff;
+    color:#000;
+    margin-top: 10px;
+    border-radius: 20px;
+    font-size: 15px;
+}
+
+.data-section {
+    justify-content: center;
+    margin: 0px 20px;
+    border-radius: 10px;
+    padding: 20px;
+    background: #F7F7F7;
+    justify-content: center;
+}
+
+@media only screen and (max-width) {
+    form {
+        width: 100% !important;
+    }
+}
