@@ -43,6 +43,734 @@ index_composites:
  - symbol: "^FTSE"
    name: FTSE 100
 stocks:
+  - symbol: COO
+    name: CooperCompanies
+    sector: Health Care
+    subSector: Health Care Supplies
+    headQuarter: San Ramon, California
+    dateFirstAdded: '2016-09-23'
+    cik: '0000711404'
+    founded: '1958'
+  - symbol: CHTR
+    name: Charter Communications
+    sector: Communication Services
+    subSector: Cable & Satellite
+    headQuarter: Stamford, Connecticut
+    dateFirstAdded: '2016-09-08'
+    cik: '0001091667'
+    founded: '1993'
+  - symbol: MTD
+    name: Mettler Toledo
+    sector: Health Care
+    subSector: Life Sciences Tools & Services
+    headQuarter: Columbus, Ohio
+    dateFirstAdded: '2016-09-06'
+    cik: '0001037646'
+    founded: '1945'
+  - symbol: ALB
+    name: Albemarle Corporation
+    sector: Materials
+    subSector: Specialty Chemicals
+    headQuarter: Charlotte, North Carolina
+    dateFirstAdded: '2016-07-01'
+    cik: '0000915913'
+    founded: '1994'
+  - symbol: FTV
+    name: Fortive
+    sector: Industrials
+    subSector: Industrial Machinery & Supplies & Components
+    headQuarter: Everett, Washington
+    dateFirstAdded: '2016-07-01'
+    cik: '0001659166'
+    founded: '2016'
+  - symbol: LNT
+    name: Alliant Energy
+    sector: Utilities
+    subSector: Electric Utilities
+    headQuarter: Madison, Wisconsin
+    dateFirstAdded: '2016-07-01'
+    cik: '0000352541'
+    founded: '1917'
+  - symbol: TDG
+    name: TransDigm Group
+    sector: Industrials
+    subSector: Aerospace & Defense
+    headQuarter: Cleveland, Ohio
+    dateFirstAdded: '2016-06-03'
+    cik: '0001260221'
+    founded: '1993'
+  - symbol: AJG
+    name: Arthur J. Gallagher & Co.
+    sector: Financials
+    subSector: Insurance Brokers
+    headQuarter: Rolling Meadows, Illinois
+    dateFirstAdded: '2016-05-31'
+    cik: '0000354190'
+    founded: '1927'
+  - symbol: LKQ
+    name: LKQ Corporation
+    sector: Consumer Discretionary
+    subSector: Distributors
+    headQuarter: Chicago, Illinois
+    dateFirstAdded: '2016-05-23'
+    cik: '0001065696'
+    founded: '1998'
+  - symbol: DLR
+    name: Digital Realty
+    sector: Real Estate
+    subSector: Data Center REITs
+    headQuarter: Austin, Texas
+    dateFirstAdded: '2016-05-18'
+    cik: '0001297996'
+    founded: '2004'
+  - symbol: GPN
+    name: Global Payments
+    sector: Financials
+    subSector: Transaction & Payment Processing Services
+    headQuarter: Atlanta, Georgia
+    dateFirstAdded: '2016-04-25'
+    cik: '0001123360'
+    founded: '2000'
+  - symbol: ULTA
+    name: Ulta Beauty
+    sector: Consumer Discretionary
+    subSector: Other Specialty Retail
+    headQuarter: Bolingbrook, Illinois
+    dateFirstAdded: '2016-04-18'
+    cik: '0001403568'
+    founded: '1990'
+  - symbol: CNC
+    name: Centene Corporation
+    sector: Health Care
+    subSector: Managed Health Care
+    headQuarter: St. Louis, Missouri
+    dateFirstAdded: '2016-03-30'
+    cik: '0001071739'
+    founded: '1984'
+  - symbol: HOLX
+    name: Hologic
+    sector: Health Care
+    subSector: Health Care Equipment
+    headQuarter: Marlborough, Massachusetts
+    dateFirstAdded: '2016-03-30'
+    cik: '0000859737'
+    founded: '1985'
+  - symbol: UDR
+    name: UDR, Inc.
+    sector: Real Estate
+    subSector: Multi-Family Residential REITs
+    headQuarter: Highlands Ranch, Colorado
+    dateFirstAdded: '2016-03-07'
+    cik: '0000074208'
+    founded: '1972'
+  - symbol: AWK
+    name: American Water Works
+    sector: Utilities
+    subSector: Water Utilities
+    headQuarter: Camden, New Jersey
+    dateFirstAdded: '2016-03-04'
+    cik: '0001410636'
+    founded: '1886'
+  - symbol: FRT
+    name: Federal Realty
+    sector: Real Estate
+    subSector: Retail REITs
+    headQuarter: Rockville, Maryland
+    dateFirstAdded: '2016-02-01'
+    cik: '0000034903'
+    founded: '1962'
+  - symbol: CFG
+    name: Citizens Financial Group
+    sector: Financials
+    subSector: Regional Banks
+    headQuarter: Providence, Rhode Island
+    dateFirstAdded: '2016-01-29'
+    cik: '0000759944'
+    founded: '1828'
+  - symbol: EXR
+    name: Extra Space Storage
+    sector: Real Estate
+    subSector: Self-Storage REITs
+    headQuarter: Salt Lake City, Utah
+    dateFirstAdded: '2016-01-19'
+    cik: '0001289490'
+    founded: '1977'
+  - symbol: WTW
+    name: Willis Towers Watson
+    sector: Financials
+    subSector: Insurance Brokers
+    headQuarter: London, United Kingdom
+    dateFirstAdded: '2016-01-05'
+    cik: '0001140536'
+    founded: '2016'
+  - symbol: CHD
+    name: Church & Dwight
+    sector: Consumer Staples
+    subSector: Household Products
+    headQuarter: Ewing, New Jersey
+    dateFirstAdded: '2015-12-29'
+    cik: '0000313927'
+    founded: '1847'
+  - symbol: ILMN
+    name: Illumina
+    sector: Health Care
+    subSector: Life Sciences Tools & Services
+    headQuarter: San Diego, California
+    dateFirstAdded: '2015-11-19'
+    cik: '0001110803'
+    founded: '1998'
+  - symbol: SYF
+    name: Synchrony Financial
+    sector: Financials
+    subSector: Consumer Finance
+    headQuarter: Stamford, Connecticut
+    dateFirstAdded: '2015-11-18'
+    cik: '0001601712'
+    founded: '2003'
+  - symbol: HPE
+    name: Hewlett Packard Enterprise
+    sector: Information Technology
+    subSector: Technology Hardware, Storage & Peripherals
+    headQuarter: Houston, Texas
+    dateFirstAdded: '2015-11-02'
+    cik: '0001645590'
+    founded: '2015'
+  - symbol: WDC
+    name: Western Digital
+    sector: Information Technology
+    subSector: Technology Hardware, Storage & Peripherals
+    headQuarter: San Jose, California
+    dateFirstAdded: '2009-07-01'
+    cik: '0000106040'
+    founded: '1970'
+  - symbol: ORLY
+    name: O'Reilly Auto Parts
+    sector: Consumer Discretionary
+    subSector: Automotive Retail
+    headQuarter: Springfield, Missouri
+    dateFirstAdded: '2009-03-27'
+    cik: '0000898173'
+    founded: '1957'
+  - symbol: HRL
+    name: Hormel Foods
+    sector: Consumer Staples
+    subSector: Packaged Foods & Meats
+    headQuarter: Austin, Minnesota
+    dateFirstAdded: '2009-03-04'
+    cik: '0000048465'
+    founded: '1891'
+  - symbol: VTR
+    name: Ventas
+    sector: Real Estate
+    subSector: Health Care REITs
+    headQuarter: Chicago, Illinois
+    dateFirstAdded: '2009-03-04'
+    cik: '0000740260'
+    founded: '1998'
+  - symbol: WELL
+    name: Welltower
+    sector: Real Estate
+    subSector: Health Care REITs
+    headQuarter: Toledo, Ohio
+    dateFirstAdded: '2009-01-30'
+    cik: '0000766704'
+    founded: '1970'
+  - symbol: IRM
+    name: Iron Mountain
+    sector: Real Estate
+    subSector: Other Specialized REITs
+    headQuarter: Boston, Massachusetts
+    dateFirstAdded: '2009-01-06'
+    cik: '0001020569'
+    founded: '1951'
+  - symbol: RSG
+    name: Republic Services
+    sector: Industrials
+    subSector: Environmental & Facilities Services
+    headQuarter: Phoenix, Arizona
+    dateFirstAdded: '2008-12-05'
+    cik: '0001060391'
+    founded: '1998'
+  - symbol: WYNN
+    name: Wynn Resorts
+    sector: Consumer Discretionary
+    subSector: Casinos & Gaming
+    headQuarter: Paradise, Nevada
+    dateFirstAdded: '2008-11-14'
+    cik: '0001174922'
+    founded: '2002'
+  - symbol: XRAY
+    name: Dentsply Sirona
+    sector: Health Care
+    subSector: Health Care Supplies
+    headQuarter: Charlotte, North Carolina
+    dateFirstAdded: '2008-11-14'
+    cik: '0000818479'
+    founded: '2016'
+  - symbol: SJM
+    name: J.M. Smucker Company (The)
+    sector: Consumer Staples
+    subSector: Packaged Foods & Meats
+    headQuarter: Orrville, Ohio
+    dateFirstAdded: '2008-11-06'
+    cik: '0000091419'
+    founded: '1897'
+  - symbol: WEC
+    name: WEC Energy Group
+    sector: Utilities
+    subSector: Electric Utilities
+    headQuarter: Milwaukee, Wisconsin
+    dateFirstAdded: '2008-10-31'
+    cik: '0000783325'
+    founded: '1896'
+  - symbol: NDAQ
+    name: Nasdaq, Inc.
+    sector: Financials
+    subSector: Financial Exchanges & Data
+    headQuarter: New York City, New York
+    dateFirstAdded: '2008-10-22'
+    cik: '0001120193'
+    founded: '1971'
+  - symbol: APH
+    name: Amphenol
+    sector: Information Technology
+    subSector: Electronic Components
+    headQuarter: Wallingford, Connecticut
+    dateFirstAdded: '2008-09-30'
+    cik: '0000820313'
+    founded: '1932'
+  - symbol: PXD
+    name: Pioneer Natural Resources
+    sector: Energy
+    subSector: Oil & Gas Exploration & Production
+    headQuarter: Irving, Texas
+    dateFirstAdded: '2008-09-24'
+    cik: '0001038357'
+    founded: '1997'
+  - symbol: LHX
+    name: L3Harris
+    sector: Industrials
+    subSector: Aerospace & Defense
+    headQuarter: Melbourne, Florida
+    dateFirstAdded: '2008-09-22'
+    cik: '0000202058'
+    founded: '2019'
+  - symbol: CRM
+    name: Salesforce
+    sector: Information Technology
+    subSector: Application Software
+    headQuarter: San Francisco, California
+    dateFirstAdded: '2008-09-15'
+    cik: '0001108524'
+    founded: '1999'
+  - symbol: FAST
+    name: Fastenal
+    sector: Industrials
+    subSector: Trading Companies & Distributors
+    headQuarter: Winona, Minnesota
+    dateFirstAdded: '2008-09-15'
+    cik: '0000815556'
+    founded: '1967'
+  - symbol: CF
+    name: CF Industries
+    sector: Materials
+    subSector: Fertilizers & Agricultural Chemicals
+    headQuarter: Deerfield, Illinois
+    dateFirstAdded: '2008-08-27'
+    cik: '0001324404'
+    founded: '1946'
+  - symbol: IVZ
+    name: Invesco
+    sector: Financials
+    subSector: Asset Management & Custody Banks
+    headQuarter: Atlanta, Georgia
+    dateFirstAdded: '2008-08-21'
+    cik: '0000914208'
+    founded: '1935'
+  - symbol: DVA
+    name: DaVita Inc.
+    sector: Health Care
+    subSector: Health Care Services
+    headQuarter: Denver, Colorado
+    dateFirstAdded: '2008-07-31'
+    cik: '0000927066'
+    founded: '1979'
+  - symbol: MA
+    name: Mastercard
+    sector: Financials
+    subSector: Transaction & Payment Processing Services
+    headQuarter: Harrison, New York
+    dateFirstAdded: '2008-07-18'
+    cik: '0001141391'
+    founded: '1966'
+  - symbol: CTRA
+    name: Coterra
+    sector: Energy
+    subSector: Oil & Gas Exploration & Production
+    headQuarter: Houston, Texas
+    dateFirstAdded: '2008-06-23'
+    cik: '0000858470'
+    founded: '2021'
+  - symbol: ISRG
+    name: Intuitive Surgical
+    sector: Health Care
+    subSector: Health Care Equipment
+    headQuarter: Sunnyvale, California
+    dateFirstAdded: '2008-06-02'
+    cik: '0001035267'
+    founded: '1995'
+  - symbol: PEAK
+    name: Healthpeak
+    sector: Real Estate
+    subSector: Health Care REITs
+    headQuarter: Long Beach, California
+    dateFirstAdded: '2008-03-31'
+    cik: '0000765880'
+    founded: '1985'
+  - symbol: PM
+    name: Philip Morris International
+    sector: Consumer Staples
+    subSector: Tobacco
+    headQuarter: New York City, New York
+    dateFirstAdded: '2008-03-31'
+    cik: '0001413329'
+    founded: '2008'
+  - symbol: AMT
+    name: American Tower
+    sector: Real Estate
+    subSector: Telecom Tower REITs
+    headQuarter: Boston, Massachusetts
+    dateFirstAdded: '2007-11-19'
+    cik: '0001053507'
+    founded: '1995'
+  - symbol: GOOG
+    name: Alphabet Inc. (Class C)
+    sector: Communication Services
+    subSector: Interactive Media & Services
+    headQuarter: Mountain View, California
+    dateFirstAdded: '2006-04-03'
+    cik: '0001652044'
+    founded: '1998'
+  - symbol: VRSN
+    name: Verisign
+    sector: Information Technology
+    subSector: Internet Services & Infrastructure
+    headQuarter: Dulles, Virginia
+    dateFirstAdded: '2006-02-01'
+    cik: '0001014473'
+    founded: '1995'
+  - symbol: EL
+    name: Estée Lauder Companies (The)
+    sector: Consumer Staples
+    subSector: Personal Care Products
+    headQuarter: New York City, New York
+    dateFirstAdded: '2006-01-05'
+    cik: '0001001250'
+    founded: '1946'
+  - symbol: AMZN
+    name: Amazon
+    sector: Consumer Discretionary
+    subSector: Broadline Retail
+    headQuarter: Seattle, Washington
+    dateFirstAdded: '2005-11-18'
+    cik: '0001018724'
+    founded: '1994'
+  - symbol: LEN
+    name: Lennar
+    sector: Consumer Discretionary
+    subSector: Homebuilding
+    headQuarter: Miami, Florida
+    dateFirstAdded: '2005-10-04'
+    cik: '0000920760'
+    founded: '1954'
+  - symbol: AMP
+    name: Ameriprise Financial
+    sector: Financials
+    subSector: Asset Management & Custody Banks
+    headQuarter: Minneapolis, Minnesota
+    dateFirstAdded: '2005-10-03'
+    cik: '0000820027'
+    founded: '1894'
+  - symbol: PSA
+    name: Public Storage
+    sector: Real Estate
+    subSector: Self-Storage REITs
+    headQuarter: Glendale, California
+    dateFirstAdded: '2005-08-19'
+    cik: '0001393311'
+    founded: '1972'
+  - symbol: TSN
+    name: Tyson Foods
+    sector: Consumer Staples
+    subSector: Packaged Foods & Meats
+    headQuarter: Springdale, Arkansas
+    dateFirstAdded: '2005-08-10'
+    cik: '0000100493'
+    founded: '1935'
+  - symbol: STZ
+    name: Constellation Brands
+    sector: Consumer Staples
+    subSector: Distillers & Vintners
+    headQuarter: Victor, New York
+    dateFirstAdded: '2005-07-01'
+    cik: '0000016918'
+    founded: '1945'
+  - symbol: DHI
+    name: DR Horton
+    sector: Consumer Discretionary
+    subSector: Homebuilding
+    headQuarter: Arlington, Texas
+    dateFirstAdded: '2005-06-22'
+    cik: '0000882184'
+    founded: '1978'
+  - symbol: LH
+    name: LabCorp
+    sector: Health Care
+    subSector: Health Care Services
+    headQuarter: Burlington, North Carolina
+    dateFirstAdded: '2004-11-01'
+    cik: '0000920148'
+    founded: '1978'
+  - symbol: TPR
+    name: Tapestry, Inc.
+    sector: Consumer Discretionary
+    subSector: Apparel, Accessories & Luxury Goods
+    headQuarter: New York City, New York
+    dateFirstAdded: '2004-09-01'
+    cik: '0001116132'
+    founded: '2017'
+  - symbol: TMO
+    name: Thermo Fisher Scientific
+    sector: Health Care
+    subSector: Life Sciences Tools & Services
+    headQuarter: Waltham, Massachusetts
+    dateFirstAdded: '2004-08-03'
+    cik: '0000097745'
+    founded: '2006'
+  - symbol: GILD
+    name: Gilead Sciences
+    sector: Health Care
+    subSector: Biotechnology
+    headQuarter: Foster City, California
+    dateFirstAdded: '2004-07-01'
+    cik: '0000882095'
+    founded: '1987'
+  - symbol: VTRS
+    name: Viatris
+    sector: Health Care
+    subSector: Pharmaceuticals
+    headQuarter: Pittsburgh, Pennsylvania
+    dateFirstAdded: '2004-04-23'
+    cik: '0001792044'
+    founded: '1961'
+  - symbol: MTB
+    name: M&T Bank
+    sector: Financials
+    subSector: Regional Banks
+    headQuarter: Buffalo, New York
+    dateFirstAdded: '2004-02-23'
+    cik: '0000036270'
+    founded: '1856'
+  - symbol: BIIB
+    name: Biogen
+    sector: Health Care
+    subSector: Biotechnology
+    headQuarter: Cambridge, Massachusetts
+    dateFirstAdded: '2003-11-13'
+    cik: '0000875045'
+    founded: '1978'
+  - symbol: PLD
+    name: Prologis
+    sector: Real Estate
+    subSector: Industrial REITs
+    headQuarter: San Francisco, California
+    dateFirstAdded: '2003-07-17'
+    cik: '0001045609'
+    founded: '1983'
+  - symbol: GEN
+    name: Gen Digital
+    sector: Information Technology
+    subSector: Systems Software
+    headQuarter: Tempe, Arizona
+    dateFirstAdded: '2003-03-25'
+    cik: '0000849399'
+    founded: '1982'
+  - symbol: MKC
+    name: McCormick & Company
+    sector: Consumer Staples
+    subSector: Packaged Foods & Meats
+    headQuarter: Hunt Valley, Maryland
+    dateFirstAdded: '2003-03-20'
+    cik: '0000063754'
+    founded: '1889'
+  - symbol: STT
+    name: State Street Corporation
+    sector: Financials
+    subSector: Asset Management & Custody Banks
+    headQuarter: Boston, Massachusetts
+    dateFirstAdded: '2003-03-14'
+    cik: '0000093751'
+    founded: '1792'
+  - symbol: VLO
+    name: Valero Energy
+    sector: Energy
+    subSector: Oil & Gas Refining & Marketing
+    headQuarter: San Antonio, Texas
+    dateFirstAdded: '2002-12-20'
+    cik: '0001035002'
+    founded: '1980'
+  - symbol: DGX
+    name: Quest Diagnostics
+    sector: Health Care
+    subSector: Health Care Services
+    headQuarter: Secaucus, New Jersey
+    dateFirstAdded: '2002-12-12'
+    cik: '0001022079'
+    founded: '1967'
+  - symbol: CMCSA
+    name: Comcast
+    sector: Communication Services
+    subSector: Cable & Satellite
+    headQuarter: Philadelphia, Pennsylvania
+    dateFirstAdded: '2002-11-19'
+    cik: '0001166691'
+    founded: '1963'
+  - symbol: TRV
+    name: Travelers Companies (The)
+    sector: Financials
+    subSector: Property & Casualty Insurance
+    headQuarter: New York City, New York
+    dateFirstAdded: '2002-08-21'
+    cik: '0000086312'
+    founded: '1853'
+  - symbol: ELV
+    name: Elevance Health
+    sector: Health Care
+    subSector: Managed Health Care
+    headQuarter: Indianapolis, Indiana
+    dateFirstAdded: '2002-07-25'
+    cik: '0001156039'
+    founded: '2014'
+  - symbol: EA
+    name: Electronic Arts
+    sector: Communication Services
+    subSector: Interactive Home Entertainment
+    headQuarter: Redwood City, California
+    dateFirstAdded: '2002-07-22'
+    cik: '0000712515'
+    founded: '1982'
+  - symbol: EBAY
+    name: eBay
+    sector: Consumer Discretionary
+    subSector: Broadline Retail
+    headQuarter: San Jose, California
+    dateFirstAdded: '2002-07-22'
+    cik: '0001065088'
+    founded: '1995'
+  - symbol: GS
+    name: Goldman Sachs
+    sector: Financials
+    subSector: Investment Banking & Brokerage
+    headQuarter: New York City, New York
+    dateFirstAdded: '2002-07-22'
+    cik: '0000886982'
+    founded: '1869'
+  - symbol: PFG
+    name: Principal Financial Group
+    sector: Financials
+    subSector: Life & Health Insurance
+    headQuarter: Des Moines, Iowa
+    dateFirstAdded: '2002-07-22'
+    cik: '0001126328'
+    founded: '1879'
+  - symbol: PRU
+    name: Prudential Financial
+    sector: Financials
+    subSector: Life & Health Insurance
+    headQuarter: Newark, New Jersey
+    dateFirstAdded: '2002-07-22'
+    cik: '0001137774'
+    founded: '1875'
+  - symbol: UPS
+    name: United Parcel Service
+    sector: Industrials
+    subSector: Air Freight & Logistics
+    headQuarter: Sandy Springs, Georgia
+    dateFirstAdded: '2002-07-22'
+    cik: '0001090727'
+    founded: '1907'
+  - symbol: SPG
+    name: Simon Property Group
+    sector: Real Estate
+    subSector: Retail REITs
+    headQuarter: Indianapolis, Indiana
+    dateFirstAdded: '2002-06-26'
+    cik: '0001063761'
+    founded: '2003'
+  - symbol: WAT
+    name: Waters Corporation
+    sector: Health Care
+    subSector: Life Sciences Tools & Services
+    headQuarter: Milford, Massachusetts
+    dateFirstAdded: '2002-01-02'
+    cik: '0001000697'
+    founded: '1958'
+  - symbol: EQR
+    name: Equity Residential
+    sector: Real Estate
+    subSector: Multi-Family Residential REITs
+    headQuarter: Chicago, Illinois
+    dateFirstAdded: '2001-12-03'
+    cik: '0000906107'
+    founded: '1969'
+  - symbol: NVDA
+    name: Nvidia
+    sector: Information Technology
+    subSector: Semiconductors
+    headQuarter: Santa Clara, California
+    dateFirstAdded: '2001-11-30'
+    cik: '0001045810'
+    founded: '1993'
+  - symbol: CTAS
+    name: Cintas
+    sector: Industrials
+    subSector: Diversified Support Services
+    headQuarter: Mason, Ohio
+    dateFirstAdded: '2001-03-01'
+    cik: '0000723254'
+    founded: '1929'
+  - symbol: SYK
+    name: Stryker Corporation
+    sector: Health Care
+    subSector: Health Care Equipment
+    headQuarter: Kalamazoo, Michigan
+    dateFirstAdded: '2000-12-12'
+    cik: '0000310764'
+    founded: '1941'
+  - symbol: MET
+    name: MetLife
+    sector: Financials
+    subSector: Life & Health Insurance
+    headQuarter: New York City, New York
+    dateFirstAdded: '2000-12-11'
+    cik: '0001099219'
+    founded: '1868'
+  - symbol: INTU
+    name: Intuit
+    sector: Information Technology
+    subSector: Application Software
+    headQuarter: Mountain View, California
+    dateFirstAdded: '2000-12-05'
+    cik: '0000896878'
+    founded: '1983'
+  - symbol: RHI
+    name: Robert Half
+    sector: Industrials
+    subSector: Human Resource & Employment Services
+    headQuarter: Menlo Park, California
+    dateFirstAdded: '2000-12-05'
+    cik: '0000315213'
+    founded: '1948'
 
 commodities:
  - symbol: HGUSD

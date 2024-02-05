@@ -33,9 +33,6 @@ def update_cfg(system_config, symbol_list):
     modified_system_config = system_config
     # For each key in dictionary
     listofdict = modified_system_config.items()
-    print(listofdict)
-    getstock = modified_system_config.get('stocks')
-    print(getstock)
     for key, value in listofdict:
         # If the key matches the specified condition, enter and assess if the symbol value is in the changelog
         if key == 'stocks':
