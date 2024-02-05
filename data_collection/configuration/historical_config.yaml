@@ -1,6 +1,6 @@
 ---
 url: https://financialmodelingprep.com/api/v3/historical-price-full/{QUERY_PARAMS}?from={START_DATE}&to={END_DATE}&apikey={API_KEY}
-api_key: <PASTE KEY HERE>
+api_key: cae0e091a31773bcf0ffdd4bf97a9e61
 rate_limit: 300
 api_fields:
   symbol: _historical_symbol
@@ -26,44 +26,44 @@ non_api_fields:
 index_composites:
  - symbol: "^GSPC"
    name: S&P 500
-   start_date: 2023-20-11
-   end_date: 2023-27-11
+   start_date: 2023-11-20
+   end_date: 2023-11-27
  - symbol: "^IXIC"
    name: NASDAQ Composite
-   start_date: 2023-20-11
-   end_date: 2023-27-11
+   start_date: 2023-11-20
+   end_date: 2023-11-27
  - symbol: "^DJI"
    name: Dow Jones Industrial Average
-   start_date: 2023-20-11
-   end_date: 2023-27-11
+   start_date: 2023-11-20
+   end_date: 2023-11-27
  - symbol: "^RUA"
    name: Russell 3000
-   start_date: 2023-20-11
-   end_date: 2023-27-11
+   start_date: 2023-11-20
+   end_date: 2023-11-27
  - symbol: "^FTSE"
    name: FTSE 100
-   start_date: 2023-20-11
-   end_date: 2023-27-11
+   start_date: 2023-11-20
+   end_date: 2023-11-27
 stocks:
 
 commodities:
  - symbol: HGUSD
    name: Copper
-   start_date: 2023-20-11
-   end_date: 2023-27-11
+   start_date: 2023-11-20
+   end_date: 2023-11-27
  - symbol: CLUSD
    name: Crude Oil
-   start_date: 2023-20-11
-   end_date: 2023-27-11
+   start_date: 2023-11-20
+   end_date: 2023-11-27
  - symbol: GCUSD
    name: Gold Futures
-   start_date: 2023-20-11
-   end_date: 2023-27-11
+   start_date: 2023-11-20
+   end_date: 2023-11-27
  - symbol: SIUSD
    name: Silver Futures
-   start_date: 2023-20-11
-   end_date: 2023-27-11
+   start_date: 2023-11-20
+   end_date: 2023-11-27
  - symbol: NGUSD
    name: Natural Gas
-   start_date: 2023-20-11
-   end_date: 2023-27-11
+   start_date: 2023-11-20
+   end_date: 2023-11-27

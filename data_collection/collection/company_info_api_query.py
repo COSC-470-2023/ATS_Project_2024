@@ -5,8 +5,8 @@ from data_collection.collection.JsonHandler import JsonHandler
 from data_collection.collection.yaml_handler import YamlHandler
 
 # Globals
-COMPANY_INFO_CFG_PATH = "./ATS_Project_2024/data_collection/configuration/company_info_config.yaml"
-OUTPUT_FOLDER = "./ATS_Project_2024/data_collection/output/"
+COMPANY_INFO_CFG_PATH = "/home/ben/ATS_Project_2024/data_collection/configuration/company_info_config.yaml"
+OUTPUT_FOLDER = "/home/ben/ATS_Project_2024/data_collection/output"
 OUTPUT_FILENAME = "company_info_output.json"
 
 

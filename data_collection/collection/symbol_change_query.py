@@ -9,18 +9,14 @@ from data_collection.collection.yaml_handler import YamlHandler
 symbol_changelog = {}
 # Global flag for symbol changes
 symbol_changed = False
-##########################################################################
-# FILE/PATH VARIABLES
-SYSTEM_CONFIG_PATH_LIST = ["./ATS_Project_2024/data_collection/configuration/realtime_config.yaml",
-                           "./ATS_Project_2024/data_collection/configuration/historical_config.yaml"]
-CONFIG_PATH = "./ATS_Project_2024/data_collection/configuration/"
-CONFIG_BACKUP_PATH = "./ATS_Project_2024/data_collection/configuration/backup/"
-QUERY_CONFIG_PATH = "./ATS_Project_2024/data_collection/configuration/symbol_change_query_cfg.json"
-OUTPUT_PATH = "./ATS_Project_2024/data_collection/output/"
+# File Paths
+SYSTEM_CONFIG_PATH_LIST = ["/home/ben/ATS_Project_2024/data_collection/configuration/realtime_config.yaml",
+                           "/home/ben/ATS_Project_2024/data_collection/configuration/historical_config.yaml"]
+CONFIG_PATH = "/home/ben/ATS_Project_2024/data_collection/configuration/"
+CONFIG_BACKUP_PATH = "/home/ben/ATS_Project_2024/data_collection/configuration/backup/"
+QUERY_CONFIG_PATH = "/home/ben/ATS_Project_2024/data_collection/configuration/symbol_change_query_cfg.json"
+OUTPUT_PATH = "/home/ben/ATS_Project_2024/data_collection/output/"
 OUTPUT_FILE_NAME = "symbol_change_list.json"
-
-
-##########################################################################
 
 # Using provided API URL and Key, queries and appends results to an unmodified raw output
 def make_queries(parsed_api_url, parsed_api_key):
@@ -119,12 +115,10 @@ def main():
     symbol_query_config = YamlHandler.load_config(QUERY_CONFIG_PATH)
     raw_api_query_output = []
     symbol_change_output = []
-    # Iterate through each API in the list
-    for api in range(len(symbol_query_config)):
-        api_url = symbol_query_config[api]['url']
-        api_key = symbol_query_config[api]['api_key']
-        # Run queries for each API and append to raw output
-        raw_api_query_output += make_queries(api_url, api_key)
+    api_url = symbol_query_config['url']
+    api_key = symbol_query_config['api_key']
+    # Run queries for each API and append to raw output
+    raw_api_query_output += make_queries(api_url, api_key)
 
     modified_api_output = trim_query_output(raw_api_query_output)
     # If symbols for current day have changed, perform the expected component tasks

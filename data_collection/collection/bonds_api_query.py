@@ -6,8 +6,8 @@ from data_collection.collection.yaml_handler import YamlHandler
 
 
 # Globals
-BONDS_CFG_PATH = "./ATS_Project_2024/data_collection/configuration/bonds_config.yaml"
-OUTPUT_FOLDER = "./ATS_Project_2024/data_collection/output/"
+BONDS_CFG_PATH = "/home/ben/ATS_Project_2024/data_collection/configuration/bonds_config.yaml"
+OUTPUT_FOLDER = "/home/ben/ATS_Project_2024/data_collection/output/"
 OUTPUT_FILENAME_BONDS = "bonds_output.json"
 
 

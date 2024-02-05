@@ -5,8 +5,8 @@ from data_collection.collection.yaml_handler import YamlHandler
 
 
 # Globals
-HISTORICAL_CFG_PATH = "./ATS_Project_2024/data_collection/configuration/historical_config.yaml"
-OUTPUT_FOLDER = "./ATS_Project_2024/data_collection/output/"
+HISTORICAL_CFG_PATH = "/home/ben/ATS_Project_2024/data_collection/configuration/historical_config.yaml"
+OUTPUT_FOLDER = "/home/ben/ATS_Project_2024/data_collection/output/"
 OUTPUT_FILENAME_STOCKS = "historical_stocks_output.json"
 OUTPUT_FILENAME_INDEX = "historical_index_output.json"
 OUTPUT_FILENAME_COMMODITIES = "historical_commodity_output.json"

@@ -1,16 +1,13 @@
-# This script will be used in order to automatically populate config files with specific index constituents
-# Available constituents per API are: sp500_constituent, nasdaq_constituent, dowjones_constituent
-
 import requests
 from datetime import timedelta, date
 from data_collection.collection.yaml_handler import YamlHandler
 
 # Globals
-CFG_DIRECTORY = "./ATS_Project_2024/data_collection/configuration"
-REALTIME_CFG_PATH = "./ATS_Project_2024/data_collection/configuration/realtime_config.yaml"
-HISTORICAL_CFG_PATH = "./ATS_Project_2024/data_collection/configuration/historical_config.yaml"
-COMPANY_INFO_CFG_PATH = "./ATS_Project_2024/data_collection/configuration/company_info_config.yaml"
-INDEX_CONSTITUENT_CFG_PATH = "./ATS_Project_2024/data_collection/configuration/index_config.yaml"
+CFG_DIRECTORY = "/home/ben/ATS_Project_2024/data_collection/configuration"
+REALTIME_CFG_PATH = "/home/ben/ATS_Project_2024/data_collection/configuration/realtime_config.yaml"
+HISTORICAL_CFG_PATH = "/home/ben/ATS_Project_2024/data_collection/configuration/historical_config.yaml"
+COMPANY_INFO_CFG_PATH = "/home/ben/ATS_Project_2024/data_collection/configuration/company_info_config.yaml"
+INDEX_CONSTITUENT_CFG_PATH = "/home/ben/ATS_Project_2024/data_collection/configuration/index_config.yaml"
 OUTPUT_FILENAME_REALTIME = "realtime_config.yaml"
 OUTPUT_FILENAME_HISTORICAL = "historical_config.yaml"
 OUTPUT_FILENAME_COMPANY = "company_info_config.yaml"
@@ -34,27 +31,29 @@ def update_cfg(system_config, symbol_list):
     # Boolean to check if query is historical (needs start/end date)
     is_historical = system_config == YamlHandler.load_config(HISTORICAL_CFG_PATH)
     modified_system_config = system_config
-    # For each dictionary in list
-    for entry in modified_system_config:
-        # For each key in dictionary
-        for key, value in entry.items():
-            # If the key matches the specified condition, enter and assess if the symbol value is in the changelog
-            if key == 'stocks':
-                value.clear()
-                for stock in symbol_list:
-                    stock.pop('sector')
-                    stock.pop('subSector')
-                    stock.pop('headQuarter')
-                    stock.pop('dateFirstAdded')
-                    stock.pop('cik')
-                    stock.pop('founded')
-                    if is_historical:
-                        # Config start/end date for 3 year historical queries
-                        end = date.today()
-                        start = end - timedelta(days=1095)
-                        stock['start_date'] = start.strftime('%Y-%m-%d')
-                        stock['end_date'] = end.strftime('%Y-%m-%d')
-                    value.append(stock)
+    # For each key in dictionary
+    listofdict = modified_system_config.items()
+    print(listofdict)
+    getstock = modified_system_config.get('stocks')
+    print(getstock)
+    for key, value in listofdict:
+        # If the key matches the specified condition, enter and assess if the symbol value is in the changelog
+        if key == 'stocks':
+            value.clear()
+            for stock in symbol_list:
+                stock.pop('sector')
+                stock.pop('subSector')
+                stock.pop('headQuarter')
+                stock.pop('dateFirstAdded')
+                stock.pop('cik')
+                stock.pop('founded')
+                if is_historical:
+                    # Config start/end date for 3 year historical queries
+                    end = date.today()
+                    start = end - timedelta(days=1095)
+                    stock['start_date'] = start.strftime('%Y-%m-%d')
+                    stock['end_date'] = end.strftime('%Y-%m-%d')
+                value.append(stock)
             else:
                 continue
 

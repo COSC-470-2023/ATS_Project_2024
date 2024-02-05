@@ -1,7 +1,7 @@
 ---
 url: https://financialmodelingprep.com/api/v4/treasury?from={START_DATE}&to={END_DATE}&apikey={API_KEY}
 rate_limit: 300
-api_key: <PASTE KEY HERE>
+api_key: cae0e091a31773bcf0ffdd4bf97a9e61
 days_queried: 100
 treasuries:
   name: US Treasury
