@@ -32,4 +32,4 @@ class YamlHandler:
                     raise
 
         with open(output_folder + "/" + filename, "w") as outfile:
-            yaml.dump_all(yaml_data, outfile, indent=2)
+            yaml.dump(yaml_data, outfile, indent=2)

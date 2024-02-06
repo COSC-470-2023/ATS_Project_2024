@@ -6,8 +6,8 @@ from data_collection.collection.yaml_handler import YamlHandler
 
 
 # Globals
-BONDS_CFG_PATH = "/home/ben/ATS_Project_2024/data_collection/configuration/bonds_config.yaml"
-OUTPUT_FOLDER = "/home/ben/ATS_Project_2024/data_collection/output/"
+BONDS_CFG_PATH = "C:/Users/BCarr/Documents/GitHub/ATS_Project_2024/data_collection/configuration/bonds_config.yaml"
+OUTPUT_FOLDER = "C:/Users/BCarr/Documents/GitHub/ATS_Project_2024/data_collection/output/"
 OUTPUT_FILENAME_BONDS = "bonds_output.json"
 
 
@@ -89,7 +89,7 @@ def main():
     bond_config = YamlHandler.load_config(BONDS_CFG_PATH)
     output = []
     #  TODO make try except
-    #  Load variables from the configuration files
+    #  Load variables from the configuration
     url = bond_config['url']
     key = bond_config['api_key']
     api_fields = bond_config['api_fields']
@@ -98,9 +98,8 @@ def main():
     #  TODO Handle adding name via a data field or something so its not hanging out.
     #  Should be done in a way that an API that doesnt only return one treasury can use it.
     treasuries = bond_config['treasuries']
-    # Generate output
     output = make_queries(url, key, api_fields, treasuries, non_api_fields, days_queried)
-    # Write file
+
     JsonHandler.write_files(output, OUTPUT_FOLDER, OUTPUT_FILENAME_BONDS)
 
 

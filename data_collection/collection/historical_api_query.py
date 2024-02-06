@@ -5,8 +5,8 @@ from data_collection.collection.yaml_handler import YamlHandler
 
 
 # Globals
-HISTORICAL_CFG_PATH = "/home/ben/ATS_Project_2024/data_collection/configuration/historical_config.yaml"
-OUTPUT_FOLDER = "/home/ben/ATS_Project_2024/data_collection/output/"
+HISTORICAL_CFG_PATH = "C:/Users/BCarr/Documents/GitHub/ATS_Project_2024/data_collection/configuration/historical_config.yaml"
+OUTPUT_FOLDER = "C:/Users/BCarr/Documents/GitHub/ATS_Project_2024/data_collection/output/"
 OUTPUT_FILENAME_STOCKS = "historical_stocks_output.json"
 OUTPUT_FILENAME_INDEX = "historical_index_output.json"
 OUTPUT_FILENAME_COMMODITIES = "historical_commodity_output.json"
@@ -91,24 +91,21 @@ def remap_entries(response_data, query_item, api_fields, non_api_fields):
     
     return remapped_entry
 
+
 def main():
     historical_config = YamlHandler.load_config(HISTORICAL_CFG_PATH)
-    stock_output = []
-    index_output = []
-    commodity_output = []
-
     # Iterate through each API in the list
     api_url = historical_config['url']
     api_key = historical_config['api_key']
-    api_rate_limit = historical_config['rate_limit_per_min']
+    api_rate_limit = historical_config['rate_limit']
     api_fields = historical_config['api_fields']
     non_api_fields = historical_config['non_api_fields']
     stock_list = historical_config['stocks']
     index_list = historical_config['index_composites']
     commodity_list = historical_config['commodities']
-    stock_output += make_queries(api_url, api_key, stock_list, api_rate_limit, api_fields, non_api_fields)
-    index_output += make_queries(api_url, api_key, index_list, api_rate_limit, api_fields, non_api_fields)
-    commodity_output += make_queries(api_url, api_key, commodity_list, api_rate_limit, api_fields, non_api_fields)
+    stock_output = make_queries(api_url, api_key, stock_list, api_rate_limit, api_fields, non_api_fields)
+    index_output = make_queries(api_url, api_key, index_list, api_rate_limit, api_fields, non_api_fields)
+    commodity_output = make_queries(api_url, api_key, commodity_list, api_rate_limit, api_fields, non_api_fields)
 
     JsonHandler.write_files(stock_output, OUTPUT_FOLDER, OUTPUT_FILENAME_STOCKS)
     JsonHandler.write_files(index_output, OUTPUT_FOLDER, OUTPUT_FILENAME_INDEX)

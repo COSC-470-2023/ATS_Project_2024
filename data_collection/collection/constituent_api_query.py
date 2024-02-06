@@ -3,11 +3,11 @@ from datetime import timedelta, date
 from data_collection.collection.yaml_handler import YamlHandler
 
 # Globals
-CFG_DIRECTORY = "/home/ben/ATS_Project_2024/data_collection/configuration"
-REALTIME_CFG_PATH = "/home/ben/ATS_Project_2024/data_collection/configuration/realtime_config.yaml"
-HISTORICAL_CFG_PATH = "/home/ben/ATS_Project_2024/data_collection/configuration/historical_config.yaml"
-COMPANY_INFO_CFG_PATH = "/home/ben/ATS_Project_2024/data_collection/configuration/company_info_config.yaml"
-INDEX_CONSTITUENT_CFG_PATH = "/home/ben/ATS_Project_2024/data_collection/configuration/index_config.yaml"
+CFG_DIRECTORY = "C:/Users/BCarr/Documents/GitHub/ATS_Project_2024/data_collection/configuration"
+REALTIME_CFG_PATH = "C:/Users/BCarr/Documents/GitHub/ATS_Project_2024/data_collection/configuration/realtime_config.yaml"
+HISTORICAL_CFG_PATH = "C:/Users/BCarr/Documents/GitHub/ATS_Project_2024/data_collection/configuration/historical_config.yaml"
+COMPANY_INFO_CFG_PATH = "C:/Users/BCarr/Documents/GitHub/ATS_Project_2024/data_collection/configuration/company_info_config.yaml"
+INDEX_CONSTITUENT_CFG_PATH = "C:/Users/BCarr/Documents/GitHub/ATS_Project_2024/data_collection/configuration/index_config.yaml"
 OUTPUT_FILENAME_REALTIME = "realtime_config.yaml"
 OUTPUT_FILENAME_HISTORICAL = "historical_config.yaml"
 OUTPUT_FILENAME_COMPANY = "company_info_config.yaml"
@@ -28,31 +28,63 @@ def make_queries():
 
 
 def update_cfg(system_config, symbol_list):
-    # Boolean to check if query is historical (needs start/end date)
+    # Boolean to check if query is historical (needs start/end date appended)
     is_historical = system_config == YamlHandler.load_config(HISTORICAL_CFG_PATH)
     modified_system_config = system_config
-    # For each key in dictionary
-    listofdict = modified_system_config.items()
-    for key, value in listofdict:
-        # If the key matches the specified condition, enter and assess if the symbol value is in the changelog
+    for key in modified_system_config:
+        constituent_list = []
+        hist_constituent_list = []
         if key == 'stocks':
-            value.clear()
+            # Remove unused keys from query
             for stock in symbol_list:
-                stock.pop('sector')
-                stock.pop('subSector')
-                stock.pop('headQuarter')
-                stock.pop('dateFirstAdded')
-                stock.pop('cik')
-                stock.pop('founded')
+                del stock['sector']
+                del stock['subSector']
+                del stock['headQuarter']
+                del stock['dateFirstAdded']
+                del stock['cik']
+                del stock['founded']
+                constituent_list.append(stock)
                 if is_historical:
-                    # Config start/end date for 3 year historical queries
+                    # 1095 days is 3 years from today
                     end = date.today()
                     start = end - timedelta(days=1095)
+                    # Append start and end dates to config for query
                     stock['start_date'] = start.strftime('%Y-%m-%d')
                     stock['end_date'] = end.strftime('%Y-%m-%d')
-                value.append(stock)
-            else:
-                continue
+                    hist_constituent_list.append(stock)
+                    # Add stocks to historical config
+                    modified_system_config[key] = hist_constituent_list
+                else:
+                    # Add stocks to realtime/company_info configs
+                    modified_system_config[key] = constituent_list
+        else:
+            continue
+
+
+#    for key in modified_system_config:
+#        # For each key in dictionary
+#       for value in key:
+#           print(key)
+#           print(value)
+#           # If the key matches the specified condition, enter and assess if the symbol value is in the changelog
+#           if key == 'stocks':
+#               value.clear()
+#               for stock in symbol_list:
+#                   stock.pop('sector')
+#                   stock.pop('subSector')
+#                   stock.pop('headQuarter')
+#                   stock.pop('dateFirstAdded')
+#                   stock.pop('cik')
+#                   stock.pop('founded')
+#                   if is_historical:
+#                       # Config start/end date for 3 year historical queries
+#                       end = date.today()
+#                       start = end - timedelta(days=1095)
+#                       stock['start_date'] = start.strftime('%Y-%m-%d')
+#                       stock['end_date'] = end.strftime('%Y-%m-%d')
+#                   value.append(stock)
+#               else:
+#                   continue
 
     return modified_system_config
 

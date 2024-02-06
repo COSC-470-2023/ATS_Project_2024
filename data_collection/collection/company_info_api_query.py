@@ -5,8 +5,8 @@ from data_collection.collection.JsonHandler import JsonHandler
 from data_collection.collection.yaml_handler import YamlHandler
 
 # Globals
-COMPANY_INFO_CFG_PATH = "/home/ben/ATS_Project_2024/data_collection/configuration/company_info_config.yaml"
-OUTPUT_FOLDER = "/home/ben/ATS_Project_2024/data_collection/output"
+COMPANY_INFO_CFG_PATH = "C:/Users/BCarr/Documents/GitHub/ATS_Project_2024/data_collection/configuration/company_info_config.yaml"
+OUTPUT_FOLDER = "C:/Users/BCarr/Documents/GitHub/ATS_Project_2024/data_collection/output"
 OUTPUT_FILENAME = "company_info_output.json"
 
 
@@ -28,25 +28,20 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
             continue
 
         for entry in data:
-            if non_api_fields != {}:  # There is a manually added field in the cfg.
-                for non_api_field in non_api_fields:
-                    # Compare the manually added field to where it should get its data from
-                    # in the normal fields
-                    try:
-                        src = non_api_fields[non_api_field]['src']
-                        map_to = non_api_fields[non_api_field]['mapping']
-                        input_type = non_api_fields[non_api_field]['input_type']
-                        output_type = non_api_fields[non_api_field]['output_type']
-                        # Handler for "unix_time" conversion to date time
-                        # TODO add more cases later, for the first API this is all we need.
-                        if input_type is None:
-                            if output_type == "_date_time":
-                                try:
-                                    entry[map_to] = str(datetime.now())
-                                except TypeError:
-                                    continue
-                    except KeyError:
-                        continue  # TODO make log files entry
+            try:
+                src = non_api_fields['src']
+                map_to = non_api_fields['mapping']
+                input_type = non_api_fields['input_type']
+                output_type = non_api_fields['output_type']
+                # Handler for "unix_time" conversion to date time
+                if input_type is None:
+                    if output_type == "_date_time":
+                        try:
+                            entry[map_to] = str(datetime.now())
+                        except TypeError:
+                            continue
+            except KeyError:
+                continue
             try:
                 remapped_entry = entry.copy()  # Cant iterate over a dict that is changing in size.
                 # Iterate over the fields and then rename them, by reinserting and deleting the old.
@@ -82,7 +77,7 @@ def main():
     non_api_fields = company_config['non_api_fields']
     company_list = company_config['stocks']
     # Generate output
-    company_output += make_queries(url, key, company_list, rate_limit, fields, non_api_fields)
+    company_output = make_queries(url, key, company_list, rate_limit, fields, non_api_fields)
     # Write file
     JsonHandler.write_files(company_output, OUTPUT_FOLDER, OUTPUT_FILENAME)
 
