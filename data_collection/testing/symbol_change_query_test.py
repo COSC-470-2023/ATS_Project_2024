@@ -21,7 +21,7 @@ def test_make_queries():
     
     output = symbol_change_query.make_queries(test_url, test_key)
     requests.get.assert_called_with(expected_query)
-    assertEqual(response_data, output)
+    assert response_data == output
 
 def test_trim_query_output():
     today = date.today().strftime('%Y-%m-%d')
