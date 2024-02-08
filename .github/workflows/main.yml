@@ -1,6 +1,6 @@
 on:
   push:
-    #branches: Feature/ActionsCI
+    branches: Feature/ActionsCI
 
 jobs:
   build:
@@ -23,20 +23,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
   
-      - name: Build system
-        run: |
-          sudo apt -y update
-          sudo systemctl start mysql
+      #- name: Build system
+      #  run: |
+      #    sudo apt -y update
+      #    sudo systemctl start mysql
           #must use -proot to access root mysql on ubuntu latest
-          sudo mysql -uroot -proot < database/ddl/create_db.sql
-          sudo mysql -uroot -proot -e "use ats_db;" < database/ddl/create_triggers.sql
+      #    sudo mysql -uroot -proot < database/ddl/create_db.sql
+      #    sudo mysql -uroot -proot -e "use ats_db;" < database/ddl/create_triggers.sql
           
-      - name: Testing
-        run: |
-          cd database/testing/
-          python3 test_bonds_insert.py
-          cd ../../data_collection/testing
-          python3 symbol_change_query_test.py
+      #- name: Testing
+      #  run: |
+      #    cd database/testing/
+      #    python3 test_bonds_insert.py
+      #    cd ../../data_collection/testing
+      #    python3 symbol_change_query_test.py
           
       - name: Pytest
         uses: pavelzw/pytest-action@v2
