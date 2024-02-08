@@ -39,7 +39,9 @@ jobs:
       #    python3 symbol_change_query_test.py
           
       - name: Pytest
-        uses: pavelzw/pytest-action@v2
+        run: |
+          pytest /data_collection/testing/
+          pytest /database/testing/
 
         
           
