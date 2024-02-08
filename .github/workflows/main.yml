@@ -40,8 +40,8 @@ jobs:
           
       - name: Pytest
         run: |
-          pytest /data_collection/testing/
-          pytest /database/testing/
+          pytest data_collection/testing/
+          pytest database/testing/
 
         
           
