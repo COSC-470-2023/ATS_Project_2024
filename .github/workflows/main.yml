@@ -1,6 +1,6 @@
 on:
   push:
-    branches: Feature/ActionsCI
+    #branches: Feature/ActionsCI
 
 jobs:
   build:
@@ -37,4 +37,15 @@ jobs:
           python3 test_bonds_insert.py
           cd ../../data_collection/testing
           python3 symbol_change_query_test.py
-          echo "end of the line bucko"
+          
+      - name: Pytest
+        uses: pavelzw/pytest-action@v2
+        with:
+          verbose: true
+          job-summary: true
+          run: |
+            pytest data_collection/testing/
+            pytest database/testing/
+        
+          
+        
