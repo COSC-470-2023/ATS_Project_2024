@@ -41,7 +41,7 @@ jobs:
       - name: Pytest
         run: |
           cd data_collection/testing
-          pytest -v --cov=. .
+          pytest -v --cov=. --cov-report=term-missing .
 
         
           
