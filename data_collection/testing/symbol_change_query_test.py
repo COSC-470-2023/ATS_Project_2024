@@ -1,5 +1,5 @@
 import requests
-import unittest
+import pytest
 from unittest.mock import Mock
 from datetime import date
 
@@ -21,7 +21,7 @@ def test_make_queries():
     
     output = symbol_change_query.make_queries(test_url, test_key)
     requests.get.assert_called_with(expected_query)
-    self.assertEqual(response_data, output)
+    assertEqual(response_data, output)
 
 def test_trim_query_output():
     today = date.today().strftime('%Y-%m-%d')
@@ -29,8 +29,8 @@ def test_trim_query_output():
     test_input = [test_item, {'date': '1969-01-30', 'oldSymbol': '', 'newSymbol': ''}]
     
     output = symbol_change_query.trim_query_output(test_input)
-    self.assertEqual(1, len(output))
-    self.assertEqual(test_item, output[0])
+    assertEqual(1, len(output))
+    assertEqual(test_item, output[0])
 
 def test_get_old_name():
     test_symbol = 'AAPL'
