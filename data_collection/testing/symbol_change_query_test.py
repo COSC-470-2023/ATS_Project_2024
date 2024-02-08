@@ -29,8 +29,8 @@ def test_trim_query_output():
     test_input = [test_item, {'date': '1969-01-30', 'oldSymbol': '', 'newSymbol': ''}]
     
     output = symbol_change_query.trim_query_output(test_input)
-    assertEqual(1, len(output))
-    assertEqual(test_item, output[0])
+    assert 1 == len(output)
+    assert test_item == output[0]
 
 def test_get_old_name():
     test_symbol = 'AAPL'
@@ -39,8 +39,8 @@ def test_get_old_name():
     
     success_output = symbol_change_query.get_old_name(test_config, test_symbol)
     fail_output = symbol_change_query.get_old_name(test_config, 'APPL')
-    assertEqual(test_name, success_output)
-    assertEqual("", fail_output)
+    assert test_name == success_output)
+    assert "" == fail_output
 
 def test_modify_output_list():
     date = '3034-01-31'
@@ -53,7 +53,7 @@ def test_modify_output_list():
     expected_output = [{"_change_date": date, "_change_newName": new_name, "_change_oldName": old_name, "_change_newSymbol": new_symbol, "_change_oldSymbol": old_symbol}]
     
     output = symbol_change_query.modify_output_list(test_list, test_config)
-    assertEqual(expected_output, output)
+    assert expected_output == output
 
 def test_modify_system_config():
     test_name = 'AppleSoft Corporation'
@@ -64,5 +64,5 @@ def test_modify_system_config():
     expected_output = [{'stocks': [{'name': test_name, 'symbol': new_symbol}]}]
     print(test_config, test_changelog)
     output = symbol_change_query.modify_system_config(test_config, test_changelog)
-    assertEqual(expected_output, output)
+    assert expected_output == output
 
