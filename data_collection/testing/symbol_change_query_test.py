@@ -39,7 +39,7 @@ def test_get_old_name():
     
     success_output = symbol_change_query.get_old_name(test_config, test_symbol)
     fail_output = symbol_change_query.get_old_name(test_config, 'APPL')
-    assert test_name == success_output)
+    assert test_name == success_output
     assert "" == fail_output
 
 def test_modify_output_list():
