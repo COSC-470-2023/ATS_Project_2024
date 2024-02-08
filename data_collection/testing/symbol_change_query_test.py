@@ -62,7 +62,7 @@ class TestSymbolChangeQueryMethods(unittest.TestCase):
         test_config = [{'stocks': [{'name': test_name, 'symbol': old_symbol}]}]
         test_changelog = {old_symbol: new_symbol}
         expected_output = [{'stocks': [{'name': test_name, 'symbol': new_symbol}]}]
-        
+        print(test_config, test_changelog)
         output = symbol_change_query.modify_system_config(test_config, test_changelog)
         self.assertEqual(expected_output, output)
 
