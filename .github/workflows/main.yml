@@ -41,11 +41,9 @@ jobs:
       - name: Pytest
         uses: pavelzw/pytest-action@v2
         with:
-          verbose: true
-          job-summary: true
-          run: |
-            pytest data_collection/testing/
-            pytest database/testing/
+          custom-pytest: pytest
+          report-title: Test Report
+          click-to-expand: true
         
           
         
