@@ -35,4 +35,6 @@ jobs:
         run: |
           cd database/testing/
           python3 test_bonds_insert.py
+          cd ../../data_collection/testing
+          python3 symbol_change_query_test.py
           echo "end of the line bucko"
