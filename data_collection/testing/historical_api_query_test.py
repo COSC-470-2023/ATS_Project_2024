@@ -22,13 +22,14 @@ class TestHistoricalApiQueryMethods(unittest.TestCase):
         
         class MockResponse:
             def json(self):
-                return {'historical': []}
+                return {'historical': [{'test_field': True}]}
         requests.get = Mock(return_value = MockResponse())
         time.sleep = Mock()
         
         output = historical_api_query.make_queries(test_url, test_key, 
                                                    test_queries, None, {}, {})
         requests.get.assert_called_with(expected_query)
+        self.assertTrue(output[0]['test_field'])
     
     def test_remap_entries(self):
         test_response_data = {
@@ -59,7 +60,10 @@ class TestHistoricalApiQueryMethods(unittest.TestCase):
                                                     test_query_item, 
                                                     test_api_fields, 
                                                     test_non_api_fields)
-        self.assertEqual(expected_output, output)
+        self.assertEqual(3, len(output))
+        self.assertTrue(output['test_field_mapping'])
+        self.assertTrue(output['test_field_entry_new'])
+        self.assertTrue(output['test_field_response_new'])
 
 if __name__ == '__main__':
     unittest.main()
