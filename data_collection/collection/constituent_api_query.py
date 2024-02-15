@@ -60,32 +60,6 @@ def update_cfg(system_config, symbol_list):
         else:
             continue
 
-
-#    for key in modified_system_config:
-#        # For each key in dictionary
-#       for value in key:
-#           print(key)
-#           print(value)
-#           # If the key matches the specified condition, enter and assess if the symbol value is in the changelog
-#           if key == 'stocks':
-#               value.clear()
-#               for stock in symbol_list:
-#                   stock.pop('sector')
-#                   stock.pop('subSector')
-#                   stock.pop('headQuarter')
-#                   stock.pop('dateFirstAdded')
-#                   stock.pop('cik')
-#                   stock.pop('founded')
-#                   if is_historical:
-#                       # Config start/end date for 3 year historical queries
-#                       end = date.today()
-#                       start = end - timedelta(days=1095)
-#                       stock['start_date'] = start.strftime('%Y-%m-%d')
-#                       stock['end_date'] = end.strftime('%Y-%m-%d')
-#                   value.append(stock)
-#               else:
-#                   continue
-
     return modified_system_config
 
 
