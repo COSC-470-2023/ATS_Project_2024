@@ -21,7 +21,7 @@ api_fields:
   volume: _realtime_volume
   yearHigh: _realtime_yearHigh
   yearLow: _realtime_yearLow
-api_key: cae0e091a31773bcf0ffdd4bf97a9e61
+api_key: <PASTE KEY HERE>
 commodities:
 - name: Copper
   symbol: HGUSD

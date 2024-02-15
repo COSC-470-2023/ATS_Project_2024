@@ -10,12 +10,12 @@ symbol_changelog = {}
 # Global flag for symbol changes
 symbol_changed = False
 # File Paths
-SYSTEM_CONFIG_PATH_LIST = ["/home/ben/ATS_Project_2024/data_collection/configuration/realtime_config.yaml",
-                           "/home/ben/ATS_Project_2024/data_collection/configuration/historical_config.yaml"]
-CONFIG_PATH = "/home/ben/ATS_Project_2024/data_collection/configuration/"
-CONFIG_BACKUP_PATH = "/home/ben/ATS_Project_2024/data_collection/configuration/backup/"
-QUERY_CONFIG_PATH = "/home/ben/ATS_Project_2024/data_collection/configuration/symbol_change_query_cfg.json"
-OUTPUT_PATH = "/home/ben/ATS_Project_2024/data_collection/output/"
+SYSTEM_CONFIG_PATH_LIST = ["./ATS_Project_2024/data_collection/configuration/realtime_config.yaml",
+                           "./ATS_Project_2024/data_collection/configuration/historical_config.yaml"]
+CONFIG_PATH = "./ATS_Project_2024/data_collection/configuration/"
+CONFIG_BACKUP_PATH = "./ATS_Project_2024/data_collection/configuration/backup/"
+QUERY_CONFIG_PATH = "./ATS_Project_2024/data_collection/configuration/symbol_change_config.yaml"
+OUTPUT_PATH = "./ATS_Project_2024/data_collection/output/"
 OUTPUT_FILE_NAME = "symbol_change_list.json"
 
 # Using provided API URL and Key, queries and appends results to an unmodified raw output

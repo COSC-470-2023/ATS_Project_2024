@@ -5,8 +5,8 @@ from data_collection.collection.yaml_handler import YamlHandler
 
 
 # Globals
-HISTORICAL_CFG_PATH = "C:/Users/BCarr/Documents/GitHub/ATS_Project_2024/data_collection/configuration/historical_config.yaml"
-OUTPUT_FOLDER = "C:/Users/BCarr/Documents/GitHub/ATS_Project_2024/data_collection/output/"
+HISTORICAL_CFG_PATH = "./ATS_Project_2024/data_collection/configuration/historical_config.yaml"
+OUTPUT_FOLDER = "./ATS_Project_2024/data_collection/output/"
 OUTPUT_FILENAME_STOCKS = "historical_stocks_output.json"
 OUTPUT_FILENAME_INDEX = "historical_index_output.json"
 OUTPUT_FILENAME_COMMODITIES = "historical_commodity_output.json"
@@ -31,11 +31,6 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
 
         output.append({})
         output[-1] = remap_entries(data, query_item, api_fields, non_api_fields)
-
-        # Rate limit the query speed based on the rate limit
-        # From inside the JSON. Check that the key wasn't valued at null, signifying no rate limit.
-        if api_rate_limit is not None:
-            time.sleep(60 / api_rate_limit)
 
     return output
 

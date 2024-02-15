@@ -3,11 +3,11 @@ from datetime import timedelta, date
 from data_collection.collection.yaml_handler import YamlHandler
 
 # Globals
-CFG_DIRECTORY = "C:/Users/BCarr/Documents/GitHub/ATS_Project_2024/data_collection/configuration"
-REALTIME_CFG_PATH = "C:/Users/BCarr/Documents/GitHub/ATS_Project_2024/data_collection/configuration/realtime_config.yaml"
-HISTORICAL_CFG_PATH = "C:/Users/BCarr/Documents/GitHub/ATS_Project_2024/data_collection/configuration/historical_config.yaml"
-COMPANY_INFO_CFG_PATH = "C:/Users/BCarr/Documents/GitHub/ATS_Project_2024/data_collection/configuration/company_info_config.yaml"
-INDEX_CONSTITUENT_CFG_PATH = "C:/Users/BCarr/Documents/GitHub/ATS_Project_2024/data_collection/configuration/index_config.yaml"
+CFG_DIRECTORY = "./ATS_Project_2024/data_collection/configuration"
+REALTIME_CFG_PATH = "./ATS_Project_2024/data_collection/configuration/realtime_config.yaml"
+HISTORICAL_CFG_PATH = "./ATS_Project_2024/data_collection/configuration/historical_config.yaml"
+COMPANY_INFO_CFG_PATH = "./ATS_Project_2024/data_collection/configuration/company_info_config.yaml"
+INDEX_CONSTITUENT_CFG_PATH = "./ATS_Project_2024/data_collection/configuration/index_config.yaml"
 OUTPUT_FILENAME_REALTIME = "realtime_config.yaml"
 OUTPUT_FILENAME_HISTORICAL = "historical_config.yaml"
 OUTPUT_FILENAME_COMPANY = "company_info_config.yaml"

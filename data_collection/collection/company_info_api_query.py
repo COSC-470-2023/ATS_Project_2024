@@ -5,8 +5,8 @@ from data_collection.collection.JsonHandler import JsonHandler
 from data_collection.collection.yaml_handler import YamlHandler
 
 # Globals
-COMPANY_INFO_CFG_PATH = "C:/Users/BCarr/Documents/GitHub/ATS_Project_2024/data_collection/configuration/company_info_config.yaml"
-OUTPUT_FOLDER = "C:/Users/BCarr/Documents/GitHub/ATS_Project_2024/data_collection/output"
+COMPANY_INFO_CFG_PATH = "./ATS_Project_2024/data_collection/configuration/company_info_config.yaml"
+OUTPUT_FOLDER = "./ATS_Project_2024/data_collection/output"
 OUTPUT_FILENAME = "company_info_output.json"
 
 
@@ -58,9 +58,6 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
 
         output.append({})
         output[-1] = remapped_entry
-
-        if api_rate_limit is not None:
-            time.sleep(60 / api_rate_limit)
 
     return output
 

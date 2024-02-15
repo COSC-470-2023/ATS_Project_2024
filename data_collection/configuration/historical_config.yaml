@@ -13,48 +13,48 @@ api_fields:
   unadjustedVolume: _historical_unadjustedVolume
   volume: _historical_volume
   vwap: _historical_vwap
-api_key: cae0e091a31773bcf0ffdd4bf97a9e61
+api_key: <PASTE KEY HERE>
 commodities:
-- end_date: 2023-11-27
+- end_date: '2023-11-27'
   name: Copper
-  start_date: 2023-11-20
+  start_date: '2023-11-20'
   symbol: HGUSD
-- end_date: 2023-11-27
+- end_date: '2023-11-27'
   name: Crude Oil
-  start_date: 2023-11-20
+  start_date: '2023-11-20'
   symbol: CLUSD
-- end_date: 2023-11-27
+- end_date: '2023-11-27'
   name: Gold Futures
-  start_date: 2023-11-20
+  start_date: '2023-11-20'
   symbol: GCUSD
-- end_date: 2023-11-27
+- end_date: '2023-11-27'
   name: Silver Futures
-  start_date: 2023-11-20
+  start_date: '2023-11-20'
   symbol: SIUSD
-- end_date: 2023-11-27
+- end_date: '2023-11-27'
   name: Natural Gas
-  start_date: 2023-11-20
+  start_date: '2023-11-20'
   symbol: NGUSD
 index_composites:
-- end_date: 2023-11-27
+- end_date: '2023-11-27'
   name: S&P 500
-  start_date: 2023-11-20
+  start_date: '2023-11-20'
   symbol: ^GSPC
-- end_date: 2023-11-27
+- end_date: '2023-11-27'
   name: NASDAQ Composite
-  start_date: 2023-11-20
+  start_date: '2023-11-20'
   symbol: ^IXIC
-- end_date: 2023-11-27
+- end_date: '2023-11-27'
   name: Dow Jones Industrial Average
-  start_date: 2023-11-20
+  start_date: '2023-11-20'
   symbol: ^DJI
-- end_date: 2023-11-27
+- end_date: '2023-11-27'
   name: Russell 3000
-  start_date: 2023-11-20
+  start_date: '2023-11-20'
   symbol: ^RUA
-- end_date: 2023-11-27
+- end_date: '2023-11-27'
   name: FTSE 100
-  start_date: 2023-11-20
+  start_date: '2023-11-20'
   symbol: ^FTSE
 non_api_fields:
   name:

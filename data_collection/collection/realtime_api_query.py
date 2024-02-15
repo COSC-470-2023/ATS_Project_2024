@@ -6,8 +6,8 @@ from data_collection.collection.yaml_handler import YamlHandler
 
 
 # Globals
-REALTIME_CFG_PATH = "C:/Users/BCarr/Documents/GitHub/ATS_Project_2024/data_collection/configuration/realtime_config.yaml"
-OUTPUT_FOLDER = "C:/Users/BCarr/Documents/GitHub/ATS_Project_2024/data_collection/output/"
+REALTIME_CFG_PATH = "./ATS_Project_2024/data_collection/configuration/realtime_config.yaml"
+OUTPUT_FOLDER = "./ATS_Project_2024/data_collection/output/"
 OUTPUT_FILENAME_STOCKS = "realtime_stocks_output.json"
 OUTPUT_FILENAME_INDEX = "realtime_index_output.json"
 OUTPUT_FILENAME_COMMODITIES = "realtime_commodity_output.json"

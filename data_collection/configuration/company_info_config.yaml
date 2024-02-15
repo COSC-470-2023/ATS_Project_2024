@@ -35,7 +35,7 @@ api_fields:
   volAvg: _company_volAvg
   website: null
   zip: _company_zip
-api_key: cae0e091a31773bcf0ffdd4bf97a9e61
+api_key: <PASTE KEY HERE>
 non_api_fields:
   date: null
   input_type: null
