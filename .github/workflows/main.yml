@@ -1,6 +1,7 @@
 on:
   push:
-    branches: Feature/ActionsCI
+    branches: 
+      - Feature/ActionsCI #replace with "Feature or dev or main later
 
 jobs:
   build:
