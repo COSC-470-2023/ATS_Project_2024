@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %} Change Configuration {% endblock %}
+{% block mainTitle %} Change Configuration {% endblock %}
+{% block mainDescription %} Choose to add or remove configuration files {% endblock %}
+
+{% block content %}
+<div class="row pt-3" id="change-config-section">
+    <div class="col-md-6">
+        <div class="container" id="change-config-stock">
+            <div class="row pt-3">
+                <div class="col">
+                    <h3>Stocks</h3>
+                    <p>Current Config:</p>
+                    <div class="card container-list">
+                        <ul>
+                            <li>Stock 1</li>
+                            <li>Stock 2</li>
+                            <li>Stock 3</li>
+                            <li>Stock 4</li>
+                            <li>Stock 5</li>
+                            <li>Stock 6</li>
+                        </ul>
+                    </div>
+                    <!-- Button trigger modal -->
+                    <div class="row pt-3 pb-3 align-items-center justify-content-center">
+                        <div class="col-sm-6 mb-2 mb-sm-0 text-center text-sm-right">
+                            <button type="button" class="btn btn-secondary mr-sm-3 removeStock" data-toggle="modal"
+                                data-target="#remove-stock-modal">
+                                Remove Stock
+                            </button>
+                        </div>
+                        <div class="col-sm-6 text-center text-sm-left">
+                            <button type="button" class="btn btn-secondary addStock" data-toggle="modal"
+                                data-target="#add-stock-modal">
+                                Add Stock
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="container" id="change-config-stock">
+            <div class="row pt-3">
+                <div class="col">
+                    <h3>Constituents</h3>
+                    <p>Current Config:</p>
+                    <div class="card container-list">
+                        <ul>
+                            <li>Constituents 1</li>
+                            <li>Constituents 2</li>
+                            <li>Constituents 3</li>
+                            <li>Constituents 4</li>
+                            <li>Constituents 5</li>
+                            <li>Constituents 6</li>
+                        </ul>
+                    </div>
+                    <!-- Button trigger modal -->
+                    <div class="row pt-3 pb-3 align-items-center justify-content-center">
+                        <div class="col-sm-6 mb-2 mb-sm-0 text-center text-sm-right">
+                            <button type="button" class="btn btn-secondary mr-sm-3 removeStock" data-toggle="modal"
+                                data-target="#remove-stock-modal">
+                                Remove Constituents
+                            </button>
+                        </div>
+                        <div class="col-sm-6 text-center text-sm-left">
+                            <button type="button" class="btn btn-secondary addStock" data-toggle="modal"
+                                data-target="#add-stock-modal">
+                                Add Constituents
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- Data Sources -->
+
+{% block mainTitle2 %} Change Data Sources {% endblock %}
+{% block mainDescription2 %} Choose to add or remove data {% endblock %}
+
+{% block content2 %}
+<div class="row pt-3" id="change-config-section">
+    <div class="col-md-6">
+        <div class="container" id="change-config-stock">
+            <div class="row pt-3">
+                <div class="col">
+                    <p>Current Source:</p>
+                    <div class="card container-list">
+                        <ul>
+                            <li>Data Source 1</li>
+                            <li>Data Source 2</li>
+                            <li>Data Source 3</li>
+                            <li>Data Source 4</li>
+                            <li>Data Source 5</li>
+                            <li>Data Source 6</li>
+                        </ul>
+                    </div>
+                    <!-- Button trigger modal -->
+                    <div class="row pt-3 pb-3 align-items-center justify-content-center">
+                        <div class="col-sm-6 mb-2 mb-sm-0 text-center text-sm-right">
+                            <button type="button" class="btn btn-secondary mr-sm-3 removeStock" data-toggle="modal"
+                                data-target="#remove-stock-modal" id="btn-longg">
+                                Remove Data Source
+                            </button>
+                        </div>
+                        <div class="col-sm-6 text-center text-sm-left">
+                            <button type="button" class="btn btn-secondary addStock" data-toggle="modal"
+                                data-target="#add-stock-modal">
+                                Add Data Source
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6"></div>
+</div>
+{% endblock %}
