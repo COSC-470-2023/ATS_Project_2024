@@ -9,15 +9,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Setup python
         uses: actions/setup-python@v2
         with:
           python-version: 3.11
-        
+
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"  
-  
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -27,16 +27,8 @@ jobs:
         run: |
           sudo apt -y update
           sudo systemctl start mysql
-      #must use -proot to access root mysql on ubuntu latest
           sudo mysql -uroot -proot < database/ddl/create_db.sql
           sudo mysql -uroot -proot -e "use ats_db;" < database/ddl/create_triggers.sql
-          
-      # - name: Testing
-      #  run: |
-      #    cd database/testing/
-      #    python3 test_bonds_insert.py
-      #    cd ../../data_collection/testing
-      #    python3 symbol_change_query_test.py
           
       - name: Pytest
         run: |
