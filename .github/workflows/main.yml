@@ -34,7 +34,7 @@ jobs:
         run: |
           cd data_collection/testing
           pytest -v --cov=. --cov-report=term-missing .
-          cd ../database/testing
+          cd ../../database/testing
           pytest -v --cov=. --cov-report=term-missing .
 
         
