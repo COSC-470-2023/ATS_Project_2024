@@ -18,7 +18,7 @@ If `src` is set to null, it should tell the query script that we are to provide 
 The API's field named `timestamp` will be pulled into a field we add, using the common field `_realtime_date`, and also be converted from a unix epoch timestamp to the date time format.
 <br>
 ```yaml
-timestamp: 1700168401"
+timestamp: 1700168401
 ```
 becomes
 ```yaml
