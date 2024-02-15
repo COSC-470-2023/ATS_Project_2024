@@ -9,7 +9,7 @@ sys.path.insert(0, '../collection')
 import historical_api_query
 
 #class TestHistoricalApiQueryMethods(unittest.TestCase):
-def test_make_queries(self):
+def test_make_queries():
     test_url = ('https://www.test.com/api?key={API_KEY}'
                 '&query={QUERY_PARAMS}&start={START_DATE}&end={END_DATE}')
     test_key = 'key'
@@ -30,9 +30,9 @@ def test_make_queries(self):
     output = historical_api_query.make_queries(test_url, test_key, 
                                                test_queries, None, {}, {})
     requests.get.assert_called_with(expected_query)
-    self.assertTrue(output[0]['test_field'])
+    assert output[0]['test_field']
 
-def test_remap_entries(self):
+def test_remap_entries():
     test_response_data = {
         'historical': [{
             'test_field_entry': True, 'test_field_mapping': None, 
@@ -61,10 +61,10 @@ def test_remap_entries(self):
                                                 test_query_item, 
                                                 test_api_fields, 
                                                 test_non_api_fields)
-    self.assertEqual(3, len(output))
-    self.assertTrue(output['test_field_mapping'])
-    self.assertTrue(output['test_field_entry_new'])
-    self.assertTrue(output['test_field_response_new'])
+    assert 3 == len(output)
+    assert output['test_field_mapping'] == True
+    assert output['test_field_entry_new']
+    assert output['test_field_response_new']
 
 #if __name__ == '__main__':
 #    unittest.main()
