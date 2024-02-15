@@ -23,15 +23,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
   
-      #- name: Build system
-      #  run: |
-      #    sudo apt -y update
-      #    sudo systemctl start mysql
-          #must use -proot to access root mysql on ubuntu latest
-      #    sudo mysql -uroot -proot < database/ddl/create_db.sql
-      #    sudo mysql -uroot -proot -e "use ats_db;" < database/ddl/create_triggers.sql
+      - name: Build system
+        run: |
+          sudo apt -y update
+          sudo systemctl start mysql
+      #must use -proot to access root mysql on ubuntu latest
+          sudo mysql -uroot -proot < database/ddl/create_db.sql
+          sudo mysql -uroot -proot -e "use ats_db;" < database/ddl/create_triggers.sql
           
-      #- name: Testing
+      # - name: Testing
       #  run: |
       #    cd database/testing/
       #    python3 test_bonds_insert.py
@@ -41,6 +41,8 @@ jobs:
       - name: Pytest
         run: |
           cd data_collection/testing
+          pytest -v --cov=. --cov-report=term-missing .
+          cd ../database/testing
           pytest -v --cov=. --cov-report=term-missing .
 
         
