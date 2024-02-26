@@ -1,6 +1,11 @@
 import time
 import requests
+import sys
+
+from loguru import logger
+
 from datetime import datetime
+
 from data_collection.collection.JsonHandler import JsonHandler
 from data_collection.collection.yaml_handler import YamlHandler
 
@@ -9,6 +14,12 @@ COMPANY_INFO_CFG_PATH = "./ATS_Project_2024/data_collection/configuration/compan
 OUTPUT_FOLDER = "./ATS_Project_2024/data_collection/output"
 OUTPUT_FILENAME = "company_info_output.json"
 
+# Loguru init
+logger.remove()
+log_format = "<green>{time:YYYY-MM-DD HH:mm:ss.SSS zz}</green> | <level>{level: <8}</level> | <yellow>Line {line: >4} ({file}):</yellow> <b>{message}</b>"
+logger.add(sys.stderr, level="DEBUG", format=log_format, colorize=True, backtrace=True, diagnose=True)
+logger.add("log_file.log", level="DEBUG", format=log_format, colorize=False, backtrace=True, diagnose=True)
+logger.add("log_file.log", level="INFO", format=log_format, colorize=False, backtrace=True, diagnose=True)
 
 def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api_fields, non_api_fields):
     output = []
