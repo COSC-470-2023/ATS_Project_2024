@@ -1,3 +1,4 @@
+# Represents fields that are expected to be returned by the API output
 api_fields:
   address: _company_address
   beta: _company_beta
@@ -36,6 +37,7 @@ api_fields:
   website: null
   zip: _company_zip
 api_key: <PASTE KEY HERE>
+# Represents fields that may not be returned by the API, but should be included in query output
 non_api_fields:
   date: null
   input_type: null
@@ -43,6 +45,7 @@ non_api_fields:
   output_type: null
   src: null
 rate_limit_per_min: 300
+# Stocks to be collected (Auto populated by constituent_api_query)
 stocks:
 - name: Builders FirstSource
   symbol: BLDR
