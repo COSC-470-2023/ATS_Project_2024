@@ -227,3 +227,14 @@ CREATE TABLE `historical_index_values` (
   PRIMARY KEY (`index_id`, `date`),
   FOREIGN KEY (`index_id`) REFERENCES `indexes`(`id`)
 );
+
+-- User Tables --
+
+CREATE TABLE `authorized_users` (
+  `id` BIGINT,
+  `username` VARCHAR(300),
+  `password` VARCHAR(300),
+  `firstName` VARCHAR(300),
+  `lastName` VARCHAR(300)
+  PRIMARY KEY ('id')
+);

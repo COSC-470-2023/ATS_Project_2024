@@ -8,7 +8,6 @@ from contextlib import contextmanager
 import credentials as cred
 from sqlalchemy import create_engine
 
-
 @contextmanager
 def connect():
     try:

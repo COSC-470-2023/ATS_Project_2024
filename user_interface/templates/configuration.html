@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Configuration Management{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <!-- Configuration Header -->
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>Change Configurations</h1>
+                <button type="button" class="btn btn-custom">Logout</button>
+            </div>
+        </div>
+    </div>
+    <!-- Configuration Boxes -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="config-box">
+                <div class="config-title">Change Configuration Files</div>
+                <p>Choose to add or remove configuration files</p>
+                <div class="form-group">
+                    <label for="stocks">Stocks</label>
+                    <select id="stocks" class="form-control">
+                        <option>APPL - Apple Inc</option>
+                        <option>META - Meta Platforms, Inc.</option>
+                        <option>GOOG - Alphabet Inc.</option>
+                        <option>TSLA - Tesla, Inc.</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-secondary">Remove Stock</button>
+                <button type="button" class="btn btn-primary">Add Stock</button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="config-box">
+                <div class="config-title">Constituents</div>
+                <p>Choose to add or remove constituents</p>
+                <div class="form-group">
+                    <label for="constituents">Current Config:</label>
+                    <select id="constituents" class="form-control">
+                        <option>S&P500</option>
+                        <option>DJIA - Dow Jones Industrial Average</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-secondary">Remove Constituent</button>
+                <button type="button" class="btn btn-primary">Add Constituent</button>
+            </div>
+        </div>
+    </div>
+    <!-- Data Sources Box -->
+    <div class="row">
+        <div class="col-12">
+            <div class="config-box mt-4">
+                <div class="config-title">Change Data Sources</div>
+                <p>Choose to add or remove data financial</p>
+                <div class="form-group">
+                    <label for="dataSources">Current Sources:</label>
+                    <select id="dataSources" class="form-control">
+                        <option>FinancialModelingPrep</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-secondary">Remove Source</button>
+                <button type="button" class="btn btn-primary">Add Source</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
