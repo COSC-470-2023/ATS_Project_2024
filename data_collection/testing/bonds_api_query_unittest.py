@@ -2,7 +2,7 @@ import unittest
 import json
 
 import sys
-sys.path.insert(0, '../collection')
+sys.path.insert(0, './data_collection/collection')
 import bonds_api_query as baq
 
 from sqlalchemy import column, create_engine
