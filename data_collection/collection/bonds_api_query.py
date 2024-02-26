@@ -1,12 +1,13 @@
 import json
-
 import requests
 from datetime import date, timedelta
-from JsonHandler import JsonHandler
+from data_collection.collection.JsonHandler import JsonHandler
+from data_collection.collection.yaml_handler import YamlHandler
+
 
 # Globals
-BONDS_CFG_PATH = "./SMF_Project_2023/data_collection/configuration/bonds_query_cfg.json"
-OUTPUT_FOLDER = "./SMF_Project_2023/data_collection/output/"
+BONDS_CFG_PATH = "./ATS_Project_2024/data_collection/configuration/bonds_config.yaml"
+OUTPUT_FOLDER = "./ATS_Project_2024/data_collection/output/"
 OUTPUT_FILENAME_BONDS = "bonds_output.json"
 
 
@@ -74,7 +75,7 @@ def make_queries(api_url, api_key, api_fields, treasuries, non_api_fields, days_
                 # This also can handler conversion, so It's needed to not just doa  static mapping in the future.
                 if input_type == "_string" and output_type == "_string":
                     if src == "_config_name":
-                        entry[map_to] = treasuries[0]['name']
+                        entry[map_to] = treasuries['name']
             except KeyError as e:
                 print(f"Key Error on api {iter(entry)}:\n{e}")
                 pass  # TODO make log files entry
@@ -85,22 +86,19 @@ def make_queries(api_url, api_key, api_fields, treasuries, non_api_fields, days_
 
 
 def main():
-    bond_config = JsonHandler.load_config(BONDS_CFG_PATH)
+    bond_config = YamlHandler.load_config(BONDS_CFG_PATH)
     output = []
-    # TODO make try except
-    for api in range(len(bond_config)):
-        # Load variables from the configuration
-        url = bond_config[api]['url']
-        key = bond_config[api]['api_key']
-        api_fields = bond_config[api]['api_fields']
-        non_api_fields = bond_config[api]['non_api_fields']
-        days_queried = bond_config[api]['days_queried']
-
-        # TODO Handle adding name via a data field or something so its not hanging out.
-        #   Should be done in a way that an API that doesnt only return one treasury can use it.
-        treasuries = bond_config[api]['treasuries']
-
-        output = make_queries(url, key, api_fields, treasuries, non_api_fields, days_queried)
+    #  TODO make try except
+    #  Load variables from the configuration
+    url = bond_config['url']
+    key = bond_config['api_key']
+    api_fields = bond_config['api_fields']
+    non_api_fields = bond_config['non_api_fields']
+    days_queried = bond_config['days_queried']
+    #  TODO Handle adding name via a data field or something so its not hanging out.
+    #  Should be done in a way that an API that doesnt only return one treasury can use it.
+    treasuries = bond_config['treasuries']
+    output = make_queries(url, key, api_fields, treasuries, non_api_fields, days_queried)
 
     JsonHandler.write_files(output, OUTPUT_FOLDER, OUTPUT_FILENAME_BONDS)
 
