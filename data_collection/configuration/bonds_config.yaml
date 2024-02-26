@@ -2,9 +2,15 @@
 url: https://financialmodelingprep.com/api/v4/treasury?from={START_DATE}&to={END_DATE}&apikey={API_KEY}
 rate_limit: 300
 api_key: <PASTE KEY HERE>
+# days_queried is a parameter added to deal with an API limitation.
+# For bonds, the maximum time window you can gather with one call is 90
+# days. If days_queried > 90, it will be broken up into 'date windows'
+# to make the required number of calls for the requested information.
 days_queried: 100
+# Bonds treasury to be queried
 treasuries:
   name: US Treasury
+# Fields expected to be returned by the api
 api_fields:
   date: _bond_date
   month1: _bond_month1
@@ -19,6 +25,7 @@ api_fields:
   year10: _bond_year10
   year20: _bond_year20
   year30: _bond_year30
+# Fields that may not be returned by the API, but should be included in query output
 non_api_fields:
   name:
     src: _config_name
