@@ -16,5 +16,15 @@ def login():
 def configuration():
     return render_template('change_configuration.html')
 
+@views.route('/job-scheduling')
+@login_required
+def job_scheduling():
+    return render_template('job_scheduling.html')
+
+@views.route('/data-export')
+@login_required
+def data_export():
+    return render_template('download_data.html')
+
 
 
