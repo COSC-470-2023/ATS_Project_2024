@@ -3,8 +3,10 @@ from flask_login import login_user, logout_user, login_required, current_user
 from .models import Users
 from werkzeug.security import generate_password_hash, check_password_hash
 
+# Create authorization Blueprint
 auth = Blueprint('auth', __name__)
 
+# Route for login functionality
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -13,6 +15,7 @@ def login():
 
         user = Users.query.filter_by(username=username).first()
 
+        # Check for valid user
         if user:
             if user.password == password:
                 flash('Login successful', category='success')
@@ -25,12 +28,14 @@ def login():
         
     return render_template('login.html')
 
+# Route for logout functionality
 @auth.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('auth.login'))
 
+# Route for user creation form
 @auth.route('/create-user', methods=['GET', 'POST'])
 def create_user():
     if request.method == 'POST':

@@ -21,18 +21,22 @@ def create_app():
     app.app_context().push()
     db.init_app(app)
 
+    # Import blueprints
     from .auth import auth
     from .views import views
 
+    # Register blueprints
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(views, url_prefix='/')
 
     from .models import Users
 
+    # Setup login manager
     login_manager = LoginManager() 
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
 
+    # User loader callback. User by Flask-Login for authentaction handling
     @login_manager.user_loader
     def load_user(id):
         return Users.query.get(int(id))
