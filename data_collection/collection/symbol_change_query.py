@@ -1,5 +1,10 @@
 import requests
+import sys
+
 from datetime import date
+
+from loguru import logger
+
 from data_collection.collection.JsonHandler import JsonHandler
 from data_collection.collection.yaml_handler import YamlHandler
 
@@ -18,19 +23,37 @@ QUERY_CONFIG_PATH = "./ATS_Project_2024/data_collection/configuration/symbol_cha
 OUTPUT_PATH = "./ATS_Project_2024/data_collection/output/"
 OUTPUT_FILE_NAME = "symbol_change_list.json"
 
+# Loguru init
+logger.remove()
+log_format = ("<green>{time:YYYY-MM-DD HH:mm:ss.SSS zz}</green> | <level>{level: <8}</level> | <yellow>Line {line: >4} "
+              "({file}):</yellow> <b>{message}</b>")
+logger.add(sys.stderr, level="DEBUG", format=log_format, colorize=True, backtrace=True, diagnose=True)
+# TODO add retention parameter to loggers when client has specified length
+logger.add("log_file.log", rotation='00:00', level="DEBUG", format=log_format, colorize=False, backtrace=True,
+           diagnose=True, backup=5)
+logger.add("log_file.log", rotation='00:00', level="INFO", format=log_format, colorize=False, backtrace=True,
+           diagnose=True, backup=5)
+
+
 # Using provided API URL and Key, queries and appends results to an unmodified raw output
 def make_queries(parsed_api_url, parsed_api_key):
-    output = []
-    query = parsed_api_url.replace("{API_KEY}", parsed_api_key)
-    response = requests.get(query)
-    # Convert the response to json and append to list
-    data = response.json()
-    output += data
+    logger.info("Symbol Change Query starting")
+    try:
+        output = []
+        query = parsed_api_url.replace("{API_KEY}", parsed_api_key)
+        response = requests.get(query)
+        # Convert the response to json and append to list
+        data = response.json()
+        output += data
+    except Exception as e:
+        logger.debug(e)
+    logger.info("Symbol Change Query complete")
     return output
 
 
 # Trim the raw output to remove changes that are not from the current date
 def trim_query_output(raw_api_output):
+    logger.info("Trim Query Output starting")
     modified_api_output = []
     today_date = date.today()
     # Convert date to string format
@@ -45,16 +68,16 @@ def trim_query_output(raw_api_output):
                 symbol_changed = True
                 global symbol_changelog
                 symbol_changelog |= {modified_api_output[item]['oldSymbol']: modified_api_output[item]['newSymbol']}
-                # print(raw_API_output[item])
-        # TODO Implement system logging when defined to log/flag a failure in this component
         except (ValueError, TypeError) as e:
-            print(f"Error processing date: {e}")
+            logger.debug(f"Error processing date: {e}")
             exit(1)
+    logger.info("Trim Query Output complete")
     return modified_api_output
 
 
 # Function to pull old name from system config files
 def get_old_name(system_config_json, old_symbol):
+    logger.info("Get Old Name starting")
     # Iterate over each config entry in the system config
     for config_entry in system_config_json:
         # Iterate over the keys in the config
@@ -66,6 +89,7 @@ def get_old_name(system_config_json, old_symbol):
                         # Return the name if a match is found
                         return index['name']
     # Return an empty string if no match is found
+    logger.info("Get Old Name complete")
     return ""
 
 
@@ -73,6 +97,7 @@ def get_old_name(system_config_json, old_symbol):
 # output names
 # TODO Pull oldName from system_config NOTE Consider how multiple API sources are handled in this process
 def modify_output_list(symbol_change_list, system_config_json):
+    logger.info("Modify Output List starting")
     modified_symbols_list = []
     old_name = ""
 
@@ -84,8 +109,10 @@ def modify_output_list(symbol_change_list, system_config_json):
 
         # Currently only works with one API in the configuration list
         old_name = get_old_name(system_config_json, old_symbol)
-        modified_symbols_list.append({"_change_date": change_date, "_change_newName": new_name, "_change_oldName": old_name,
-                                      "_change_newSymbol": new_symbol, "_change_oldSymbol": old_symbol})
+        modified_symbols_list.append({"_change_date": change_date, "_change_newName": new_name,
+                                      "_change_oldName": old_name, "_change_newSymbol": new_symbol,
+                                      "_change_oldSymbol": old_symbol})
+    logger.info("Modify Output List complete")
     return modified_symbols_list
 
 
@@ -93,6 +120,7 @@ def modify_output_list(symbol_change_list, system_config_json):
 # written
 # NOTE Currently assumes only one API configuration exists in the system
 def modify_system_config(system_config_json):
+    logger.info("Modify System Config starting")
     modified_system_config = system_config_json
     # For each dictionary in list
     for entry in modified_system_config:
@@ -106,7 +134,7 @@ def modify_system_config(system_config_json):
                         index['symbol'] = symbol_changelog[symbol]
             else:
                 continue
-
+    logger.info("Modify System Config complete")
     return modified_system_config
 
 
@@ -124,7 +152,7 @@ def main():
     # If symbols for current day have changed, perform the expected component tasks
     # If no symbols have changed, proceed to final activities
     if symbol_changed:
-        print('Symbols changed. Performing system change tasks.')
+        logger.info("Symbols changed. Performing system change tasks")
 
         for path in SYSTEM_CONFIG_PATH_LIST:
             system_config = YamlHandler.load_config(path)
@@ -144,7 +172,7 @@ def main():
 
     # Write empty list, or changed list to output file, exit with success code
     JsonHandler.write_files(symbol_change_output, OUTPUT_PATH, OUTPUT_FILE_NAME)
-    print(f'Task complete. Symbols changed for ' + str(date.today()) + ': ' + str(symbol_changed))
+    logger.info(f'Task complete. Symbols changed for ' + str(date.today()) + ': ' + str(symbol_changed))
     exit(0)
 
 

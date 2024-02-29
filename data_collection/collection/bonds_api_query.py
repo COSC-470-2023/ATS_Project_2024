@@ -6,8 +6,8 @@ from loguru import logger
 
 from datetime import date, timedelta
 
-from data_collection.collection.JsonHandler import JsonHandler
-from data_collection.collection.yaml_handler import YamlHandler
+from data_collection.collection.JsonHandler import json_write_files
+from data_collection.collection.yaml_handler import yaml_load_config
 
 
 # Globals
@@ -17,10 +17,15 @@ OUTPUT_FILENAME_BONDS = "bonds_output.json"
 
 # Loguru init
 logger.remove()
-log_format = "<green>{time:YYYY-MM-DD HH:mm:ss.SSS zz}</green> | <level>{level: <8}</level> | <yellow>Line {line: >4} ({file}):</yellow> <b>{message}</b>"
+log_format = ("<green>{time:YYYY-MM-DD HH:mm:ss.SSS zz}</green> | <level>{level: <8}</level> | <yellow>Line {line: >4} "
+              "({file}):</yellow> <b>{message}</b>")
 logger.add(sys.stderr, level="DEBUG", format=log_format, colorize=True, backtrace=True, diagnose=True)
-logger.add("log_file.log", level="DEBUG", format=log_format, colorize=False, backtrace=True, diagnose=True)
-logger.add("log_file.log", level="INFO", format=log_format, colorize=False, backtrace=True, diagnose=True)
+# TODO add retention parameter to loggers when client has specified length
+logger.add("log_file.log", rotation='00:00', level="DEBUG", format=log_format, colorize=False, backtrace=True,
+           diagnose=True, backup=5)
+logger.add("log_file.log", rotation='00:00', level="INFO", format=log_format, colorize=False, backtrace=True,
+           diagnose=True, backup=5)
+
 
 def create_date_window(days_queried):
     """
@@ -29,7 +34,7 @@ def create_date_window(days_queried):
     :param days_queried: Number of days to observe from current date
     :return: datetime object containing a list of segmented dates
     """
-    logger.info("Creating Bonds Date Windows")
+    logger.info("creating Bonds Date Windows")
     try:
         total_days = int(days_queried)
         date_windows = []
@@ -49,17 +54,15 @@ def create_date_window(days_queried):
             date_windows.append(window)
     except Exception as e:
         logger.debug(e)
-
-    logger.info("Bonds Date Windows Creation Complete")
-        
+    logger.info("Bonds Date Windows creation complete")
     return date_windows
 
 
 def make_queries(api_url, api_key, api_fields, treasuries, non_api_fields, days_queried):
-    bonds_data = []
-    windows = create_date_window(days_queried)
-    logger.info("Bonds Query Starting")
+    logger.info("Bonds Query starting")
     try:
+        bonds_data = []
+        windows = create_date_window(days_queried)
         # For each date_window, execute query
         for date_window in windows:
             # Retrieve key value pair from date_window
@@ -71,7 +74,6 @@ def make_queries(api_url, api_key, api_fields, treasuries, non_api_fields, days_
             query = (api_url.replace("{START_DATE}", str(start_date))
                     .replace("{END_DATE}", str(end_date))
                     .replace("{API_KEY}", api_key))
-
             response = requests.get(query)
             # convert the response to json and append to list
             bonds_output = json.loads(response.text)
@@ -80,10 +82,8 @@ def make_queries(api_url, api_key, api_fields, treasuries, non_api_fields, days_
                 # Remap the field names to the config, using the values from API fields,
                 # as the key, and the values of entry as the values of the new entry.
                 entry = dict((zip(api_fields.values(), list(data.values()))))
-
     except requests.RequestException as e:
         logger.debug(f"api_error {e}")
-
         try:
             # Get name from the config
             # Compare the manually added field to where it should get its data from
@@ -97,24 +97,22 @@ def make_queries(api_url, api_key, api_fields, treasuries, non_api_fields, days_
             if input_type == "_string" and output_type == "_string":
                 if src == "_config_name":
                     entry[map_to] = treasuries['name']
-
         except KeyError as e:
             logger.debug(f"Key Error on api {iter(entry)}:\n{e}")
             pass
-
         except Exception as e:
             logger.debug(e)
-
-            # Append the modified entry to the output
-            bonds_data.append(entry)
-            logger.info("Bonds Query Complete")
+        # Append the modified entry to the output
+        bonds_data.append(entry)
+        logger.info("Bonds Query complete")
     return bonds_data
 
 
 def main():
-    bond_config = YamlHandler.load_config(BONDS_CFG_PATH)
-    output = []
     try:
+        # Load config file
+        bond_config = yaml_load_config(BONDS_CFG_PATH)
+        output = []
         #  Load variables from the configuration
         url = bond_config['url']
         key = bond_config['api_key']
@@ -122,13 +120,14 @@ def main():
         non_api_fields = bond_config['non_api_fields']
         days_queried = bond_config['days_queried']
         treasuries = bond_config['treasuries']
-        logger.info("Creating Bonds Output")
+        logger.info("creating Bonds Output")
         # Create output
         output = make_queries(url, key, api_fields, treasuries, non_api_fields, days_queried)
+        logger.info("Bonds Output created successfully")
         # Write output file
-        JsonHandler.write_files(output, OUTPUT_FOLDER, OUTPUT_FILENAME_BONDS)
-        logger.info("Bonds Output File Creation Complete")
-
+        logger.info("writing Bonds Query output file")
+        json_write_files(output, OUTPUT_FOLDER, OUTPUT_FILENAME_BONDS)
+        logger.info("Bonds Query output file write complete")
     except Exception as e:
         logger.debug(e)
 

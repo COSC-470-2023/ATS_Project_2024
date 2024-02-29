@@ -1,7 +1,12 @@
 import time
 import requests
+import sys
+
 from datetime import datetime
-from data_collection.collection.JsonHandler import JsonHandler
+
+from loguru import logger
+
+from data_collection.collection.JsonHandler import json_write_files
 from data_collection.collection.yaml_handler import YamlHandler
 
 
@@ -12,28 +17,39 @@ OUTPUT_FILENAME_STOCKS = "realtime_stocks_output.json"
 OUTPUT_FILENAME_INDEX = "realtime_index_output.json"
 OUTPUT_FILENAME_COMMODITIES = "realtime_commodity_output.json"
 
+# Loguru init
+logger.remove()
+log_format = ("<green>{time:YYYY-MM-DD HH:mm:ss.SSS zz}</green> | <level>{level: <8}</level> | <yellow>Line {line: >4} "
+              "({file}):</yellow> <b>{message}</b>")
+logger.add(sys.stderr, level="DEBUG", format=log_format, colorize=True, backtrace=True, diagnose=True)
+# TODO add retention parameter to loggers when client has specified length
+logger.add("log_file.log", rotation='00:00', level="DEBUG", format=log_format, colorize=False, backtrace=True,
+           diagnose=True, backup=5)
+logger.add("log_file.log", rotation='00:00', level="INFO", format=log_format, colorize=False, backtrace=True,
+           diagnose=True, backup=5)
+
 
 def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api_fields, non_api_fields):
-    output = []
-
-    # Iterate through each stocks and make a API call
-    # TODO make it query with 5 items at a time ("APPL, TSLA, %5EGSPC")
-    for query_itr in range(len(query_list)):
-        query_item = query_list[query_itr]
-        # Replace the URL parameters with our current API configs
-        query = parsed_api_url.replace("{QUERY_PARAMS}", query_item['symbol']).replace("{API_KEY}", parsed_api_key)
-        response = requests.get(query)
-        # convert the response to json and append to list
-        data = response.json()
-
-        output.append({})
-        output[-1] = remap_entries(data, non_api_fields, api_fields)
-
-        # Rate limit the query speed based on the rate limit
-        # From inside the JSON. Check that the key wasn't valued at null, signifying no rate limit.
-        if api_rate_limit is not None:
-            time.sleep(60 / api_rate_limit)
-
+    logger.info("Realtime Query starting")
+    try:
+        output = []
+        # Iterate through each stock and make an API call
+        for query_itr in range(len(query_list)):
+            query_item = query_list[query_itr]
+            # Replace the URL parameters with our current API configs
+            query = parsed_api_url.replace("{QUERY_PARAMS}", query_item['symbol']).replace("{API_KEY}", parsed_api_key)
+            response = requests.get(query)
+            # convert the response to json and append to list
+            data = response.json()
+            output.append({})
+            output[-1] = remap_entries(data, non_api_fields, api_fields)
+            # Rate limit the query speed based on the rate limit
+            # From inside the JSON. Check that the key wasn't valued at null, signifying no rate limit.
+            if api_rate_limit is not None:
+                time.sleep(60 / api_rate_limit)
+    except Exception as e:
+        logger.debug(e)
+    logger.info("Realtime Query complete")
     return output
 
 
@@ -56,10 +72,12 @@ def remap_entries(response_data, non_api_fields, api_fields):
                         if output_type == "_date_time":
                             try:
                                 entry[map_to] = str(datetime.fromtimestamp(entry[src]))
-                            except TypeError:
+                            except TypeError as e:
+                                logger.debug(e)
                                 continue
-                except KeyError:
-                    continue  # TODO make log files entry
+                except KeyError as e:
+                    logger.debug(e)
+                    continue
         try:
             remapped_entry = entry.copy()  # Cant iterate over a dict that is changing in size.
             # Iterate over the fields and then rename them, by reinserting and deleting the old.
@@ -95,9 +113,9 @@ def main():
     index_output += make_queries(api_url, api_key, index_list, api_rate_limit, api_fields, non_api_fields)
     commodity_output += make_queries(api_url, api_key, commodity_list, api_rate_limit, api_fields, non_api_fields)
 
-    JsonHandler.write_files(stock_output, OUTPUT_FOLDER, OUTPUT_FILENAME_STOCKS)
-    JsonHandler.write_files(index_output, OUTPUT_FOLDER, OUTPUT_FILENAME_INDEX)
-    JsonHandler.write_files(commodity_output, OUTPUT_FOLDER, OUTPUT_FILENAME_COMMODITIES)
+    json_write_files(stock_output, OUTPUT_FOLDER, OUTPUT_FILENAME_STOCKS)
+    json_write_files(index_output, OUTPUT_FOLDER, OUTPUT_FILENAME_INDEX)
+    json_write_files(commodity_output, OUTPUT_FOLDER, OUTPUT_FILENAME_COMMODITIES)
 
 
 # Code to only be executed if ran as script

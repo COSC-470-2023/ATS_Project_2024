@@ -6,8 +6,9 @@ from loguru import logger
 
 from datetime import datetime
 
-from data_collection.collection.JsonHandler import JsonHandler
+from data_collection.collection.JsonHandler import json_write_files
 from data_collection.collection.yaml_handler import YamlHandler
+
 
 # Globals
 COMPANY_INFO_CFG_PATH = "./ATS_Project_2024/data_collection/configuration/company_info_config.yaml"
@@ -16,27 +17,33 @@ OUTPUT_FILENAME = "company_info_output.json"
 
 # Loguru init
 logger.remove()
-log_format = "<green>{time:YYYY-MM-DD HH:mm:ss.SSS zz}</green> | <level>{level: <8}</level> | <yellow>Line {line: >4} ({file}):</yellow> <b>{message}</b>"
+log_format = ("<green>{time:YYYY-MM-DD HH:mm:ss.SSS zz}</green> | <level>{level: <8}</level> | <yellow>Line {line: >4} "
+              "({file}):</yellow> <b>{message}</b>")
 logger.add(sys.stderr, level="DEBUG", format=log_format, colorize=True, backtrace=True, diagnose=True)
-logger.add("log_file.log", level="DEBUG", format=log_format, colorize=False, backtrace=True, diagnose=True)
-logger.add("log_file.log", level="INFO", format=log_format, colorize=False, backtrace=True, diagnose=True)
+# TODO add retention parameter to loggers when client has specified length
+logger.add("log_file.log", rotation='00:00', level="DEBUG", format=log_format, colorize=False, backtrace=True,
+           diagnose=True, backup=5)
+logger.add("log_file.log", rotation='00:00', level="INFO", format=log_format, colorize=False, backtrace=True,
+           diagnose=True, backup=5)
 
-def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api_fields, non_api_fields):
-    output = []
-    # Iterate through each stock and make an API call
-    for query_itr in range(len(query_list)):
-        query_item = query_list[query_itr]
+def make_queries(parsed_api_url, parsed_api_key, query_list, api_fields, non_api_fields):
+    logger.info("Company Info Query starting")
+    try:
+        output = []
+        # Iterate through each stock and make an API call
+        for query_itr in range(len(query_list)):
+            query_item = query_list[query_itr]
+            # Replace the URL parameters with our current API configs
+            query = parsed_api_url.replace("{QUERY_PARAMS}", query_item['symbol']).replace("{API_KEY}", parsed_api_key)
+            try:
+                response = requests.get(query)
+                # Convert the response to json and append to list
+                data = response.json()
+                remapped_entry = {}
 
-        # Replace the URL parameters with our current API configs
-        query = parsed_api_url.replace("{QUERY_PARAMS}", query_item['symbol']).replace("{API_KEY}", parsed_api_key)
-        try:
-            response = requests.get(query)
-            # Convert the response to json and append to list
-            data = response.json()
-            remapped_entry = {}
-        except requests.RequestException as e:
-            print(f"api_error {e}")
-            continue
+            except requests.RequestException as e:
+                print(f"api_error {e}")
+                continue
 
         for entry in data:
             try:
@@ -51,7 +58,8 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
                             entry[map_to] = str(datetime.now())
                         except TypeError:
                             continue
-            except KeyError:
+            except KeyError as e:
+                logger.debug(f"Key Error on {query_item}:\n{e}")
                 continue
             try:
                 remapped_entry = entry.copy()  # Cant iterate over a dict that is changing in size.
@@ -63,31 +71,38 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
                     else:
                         del remapped_entry[field]  # API field mapping was set to null,
                         # dump it as cfg doesn't care to keep.
-
-            except AttributeError:
+            except AttributeError as e:
+                logger.debug(e)
                 continue  # The copy failed of the dict because it was probably an error message.
-
         output.append({})
         output[-1] = remapped_entry
-
+    except Exception as e:
+        logger.debug(e)
+        logger.info("Company Info Query complete")
     return output
 
 
 def main():
-    company_config = YamlHandler.load_config(COMPANY_INFO_CFG_PATH)
-    company_output = []
-    # TODO make try except
-    # Load variables from the configuration files
-    url = company_config['url']
-    key = company_config['api_key']
-    rate_limit = company_config['rate_limit_per_min']
-    fields = company_config['api_fields']
-    non_api_fields = company_config['non_api_fields']
-    company_list = company_config['stocks']
-    # Generate output
-    company_output = make_queries(url, key, company_list, rate_limit, fields, non_api_fields)
-    # Write file
-    JsonHandler.write_files(company_output, OUTPUT_FOLDER, OUTPUT_FILENAME)
+    try:
+        company_config = YamlHandler.load_config(COMPANY_INFO_CFG_PATH)
+        company_output = []
+        # Load variables from the configuration files
+        url = company_config['url']
+        key = company_config['api_key']
+        rate_limit = company_config['rate_limit_per_min']
+        fields = company_config['api_fields']
+        non_api_fields = company_config['non_api_fields']
+        company_list = company_config['stocks']
+        # Generate output
+        logger.info("creating Company Info output")
+        company_output = make_queries(url, key, company_list, rate_limit, fields, non_api_fields)
+        logger.info("Company Info output created successfully")
+        # Write file
+        logger.info("writing Company Info output file")
+        json_write_files(company_output, OUTPUT_FOLDER, OUTPUT_FILENAME)
+        logger.info("Company Info output file write complete")
+    except Exception as e:
+        logger.debug(e)
 
 
 if __name__ == "__main__":
