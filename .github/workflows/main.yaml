@@ -1,0 +1,42 @@
+on:
+  push:
+    branches: 
+      - main
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    #ubuntu latest on actions has mysql automatically installed
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
+
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"  
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          
+      - name: Build system
+        run: |
+          sudo apt -y update
+          sudo systemctl start mysql
+          sudo mysql -uroot -proot < database/ddl/create_db.sql
+          sudo mysql -uroot -proot -e "use ats_db;" < database/ddl/create_triggers.sql
+          
+      - name: Pytest
+        run: |
+          cd data_collection/testing
+          pytest -v --cov=. --cov-report=term-missing .
+          cd ../../database/testing
+          pytest -v --cov=. --cov-report=term-missing .

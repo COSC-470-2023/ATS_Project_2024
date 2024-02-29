@@ -235,6 +235,6 @@ CREATE TABLE `authorized_users` (
   `username` VARCHAR(300),
   `password` VARCHAR(300),
   `firstName` VARCHAR(300),
-  `lastName` VARCHAR(300)
-  PRIMARY KEY ('id')
+  `lastName` VARCHAR(300),
+  PRIMARY KEY (`id`)
 );
