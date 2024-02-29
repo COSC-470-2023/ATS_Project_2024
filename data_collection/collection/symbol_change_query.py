@@ -5,8 +5,8 @@ from datetime import date
 
 from loguru import logger
 
-from data_collection.collection.JsonHandler import JsonHandler
-from data_collection.collection.yaml_handler import YamlHandler
+from data_collection.collection.JsonHandler import json_write_files
+from data_collection.collection.yaml_handler import yaml_load_config, yaml_write_config
 
 # GLOBALS
 # Variable to track symbols that are changed for global usage
@@ -140,7 +140,7 @@ def modify_system_config(system_config_json):
 
 def main():
     # Load the symbol change query config
-    symbol_query_config = YamlHandler.load_config(QUERY_CONFIG_PATH)
+    symbol_query_config = yaml_load_config(QUERY_CONFIG_PATH)
     raw_api_query_output = []
     symbol_change_output = []
     api_url = symbol_query_config['url']
@@ -155,23 +155,23 @@ def main():
         logger.info("Symbols changed. Performing system change tasks")
 
         for path in SYSTEM_CONFIG_PATH_LIST:
-            system_config = YamlHandler.load_config(path)
+            system_config = yaml_load_config(path)
             symbol_change_output = modify_output_list(modified_api_output, system_config)
 
         for system_config_path in SYSTEM_CONFIG_PATH_LIST:
-            system_config = YamlHandler.load_config(system_config_path)
+            system_config = yaml_load_config(system_config_path)
             # Pull config file name from path
             system_config_name = system_config_path.split("/")[-1]
             # Write a backup config file to the backup directory
             system_config_name_backup = system_config_name + "_" + str(date.today()) + "~"
-            JsonHandler.write_files(system_config, CONFIG_BACKUP_PATH, system_config_name_backup)
+            json_write_files(system_config, CONFIG_BACKUP_PATH, system_config_name_backup)
             # Modify changed symbols in system config file
             modified_system_config = modify_system_config(system_config)
             # Write changes to system config file
-            JsonHandler.write_files(modified_system_config, CONFIG_PATH, system_config_name)
+            yaml_write_config(modified_system_config, CONFIG_PATH, system_config_name)
 
     # Write empty list, or changed list to output file, exit with success code
-    JsonHandler.write_files(symbol_change_output, OUTPUT_PATH, OUTPUT_FILE_NAME)
+    json_write_files(symbol_change_output, OUTPUT_PATH, OUTPUT_FILE_NAME)
     logger.info(f'Task complete. Symbols changed for ' + str(date.today()) + ': ' + str(symbol_changed))
     exit(0)
 

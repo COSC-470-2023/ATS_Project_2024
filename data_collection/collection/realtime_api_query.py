@@ -7,7 +7,7 @@ from datetime import datetime
 from loguru import logger
 
 from data_collection.collection.JsonHandler import json_write_files
-from data_collection.collection.yaml_handler import YamlHandler
+from data_collection.collection.yaml_handler import yaml_load_config
 
 
 # Globals
@@ -95,7 +95,7 @@ def remap_entries(response_data, non_api_fields, api_fields):
 
 
 def main():
-    realtime_config = YamlHandler.load_config(REALTIME_CFG_PATH)
+    realtime_config = yaml_load_config(REALTIME_CFG_PATH)
     stock_output = []
     index_output = []
     commodity_output = []

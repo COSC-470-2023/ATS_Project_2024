@@ -7,7 +7,7 @@ from loguru import logger
 from datetime import datetime
 
 from data_collection.collection.JsonHandler import json_write_files
-from data_collection.collection.yaml_handler import YamlHandler
+from data_collection.collection.yaml_handler import yaml_load_config
 
 
 # Globals
@@ -26,6 +26,7 @@ logger.add("log_file.log", rotation='00:00', level="DEBUG", format=log_format, c
 logger.add("log_file.log", rotation='00:00', level="INFO", format=log_format, colorize=False, backtrace=True,
            diagnose=True, backup=5)
 
+
 def make_queries(parsed_api_url, parsed_api_key, query_list, api_fields, non_api_fields):
     logger.info("Company Info Query starting")
     try:
@@ -42,9 +43,8 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_fields, non_api
                 remapped_entry = {}
 
             except requests.RequestException as e:
-                print(f"api_error {e}")
+                logger.debug(f"api_error {e}")
                 continue
-
         for entry in data:
             try:
                 src = non_api_fields['src']
@@ -56,7 +56,8 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_fields, non_api
                     if output_type == "_date_time":
                         try:
                             entry[map_to] = str(datetime.now())
-                        except TypeError:
+                        except TypeError as e:
+                            logger.debug(e)
                             continue
             except KeyError as e:
                 logger.debug(f"Key Error on {query_item}:\n{e}")
@@ -84,7 +85,7 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_fields, non_api
 
 def main():
     try:
-        company_config = YamlHandler.load_config(COMPANY_INFO_CFG_PATH)
+        company_config = yaml_load_config(COMPANY_INFO_CFG_PATH)
         company_output = []
         # Load variables from the configuration files
         url = company_config['url']

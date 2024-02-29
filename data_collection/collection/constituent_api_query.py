@@ -5,7 +5,7 @@ from loguru import logger
 
 from datetime import timedelta, date
 
-from data_collection.collection.yaml_handler import YamlHandler
+from data_collection.collection.yaml_handler import yaml_load_config, yaml_write_config
 
 # Globals
 CFG_DIRECTORY = "./ATS_Project_2024/data_collection/configuration"
@@ -33,7 +33,7 @@ def make_queries():
     logger.info("Constituent Query starting")
     try:
         symbol_list = []
-        config = YamlHandler.load_config(INDEX_CONSTITUENT_CFG_PATH)
+        config = yaml_load_config(INDEX_CONSTITUENT_CFG_PATH)
         key = config['api_key']
         constituent = config['constituent']
         url = config['url']
@@ -51,7 +51,7 @@ def make_queries():
 def update_cfg(system_config, symbol_list):
     logger.info("Constituent configuration update starting")
     # Boolean to check if query is historical (needs start/end date appended)
-    is_historical = system_config == YamlHandler.load_config(HISTORICAL_CFG_PATH)
+    is_historical = system_config == yaml_load_config(HISTORICAL_CFG_PATH)
     modified_system_config = system_config
     for key in modified_system_config:
         constituent_list = []
@@ -88,9 +88,9 @@ def update_cfg(system_config, symbol_list):
 def main():
     try:
         # Load config files
-        realtime_cfg = YamlHandler.load_config(REALTIME_CFG_PATH)
-        historical_cfg = YamlHandler.load_config(HISTORICAL_CFG_PATH)
-        company_info_cfg = YamlHandler.load_config(COMPANY_INFO_CFG_PATH)
+        realtime_cfg = yaml_load_config(REALTIME_CFG_PATH)
+        historical_cfg = yaml_load_config(HISTORICAL_CFG_PATH)
+        company_info_cfg = yaml_load_config(COMPANY_INFO_CFG_PATH)
         # Update config files
         # Pretty ratchet should be reworked so that we aren't constantly calling make_queries() to repopulate symbol
         # list
@@ -104,13 +104,13 @@ def main():
         logger.info("Constituent output created successfully")
         # Write new config files with updated stocks
         logger.info("writing Realtime configuration file")
-        YamlHandler.write_files(new_rt_config, CFG_DIRECTORY, OUTPUT_FILENAME_REALTIME)
+        yaml_write_config(new_rt_config, CFG_DIRECTORY, OUTPUT_FILENAME_REALTIME)
         logger.info("Realtime configuration file write complete")
         logger.info("writing Historical configuration file")
-        YamlHandler.write_files(new_hist_config, CFG_DIRECTORY, OUTPUT_FILENAME_HISTORICAL)
+        yaml_write_config(new_hist_config, CFG_DIRECTORY, OUTPUT_FILENAME_HISTORICAL)
         logger.info("Historical configuration file write complete")
         logger.info("writing Company Info configuration file")
-        YamlHandler.write_files(new_comp_config, CFG_DIRECTORY, OUTPUT_FILENAME_COMPANY)
+        yaml_write_config(new_comp_config, CFG_DIRECTORY, OUTPUT_FILENAME_COMPANY)
         logger.info("Company Info configuration file write complete")
     except Exception as e:
         logger.debug(e)

@@ -31,7 +31,7 @@ def yaml_load_config(config_path: str):
 
 
 # Write yaml configuration file
-def yaml_write_files(yaml_data, output_folder: str, filename: str):
+def yaml_write_config(yaml_data, output_folder: str, filename: str):
     output_dir = output_folder
     # Create output directory if not found
     if not os.path.exists(os.path.dirname(output_dir)):
