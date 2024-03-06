@@ -14,7 +14,9 @@ def login():
 @views.route('/configuration')
 @login_required
 def configuration():
-    return render_template('change_configuration.html')
+    return render_template('configuration.html', user=current_user)
 
-
-
+# @views.route('/data-export')
+# @login_required
+# def export():
+#     return render_template('data_export.html', user=current_user)

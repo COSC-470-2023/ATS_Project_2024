@@ -1,0 +1,108 @@
+{% extends "base.html" %} {% block title %} Export Data {% endblock %} {% block
+mainTitle %} Export Data {% endblock %} {% block mainDescription %} Choose the
+data you want to export {% endblock %} {% block content %}
+<div class="row pt-3">
+  <div class="col-md-6 pr-md-4" id="export-col">
+    <div class="row text-left">
+      <div class="card modal-list" id="export-data-list">
+        <ul class="list-unstyled">
+          {% for stock in stocks %}
+          <li>
+            <input
+              type="checkbox"
+              name="stocks[]"
+              id="{{ stock['symbol'] }}"
+              value="{{ stock['symbol'] }}"
+            />
+            <label for="{{ stock['symbol'] }}">
+              {{ stock["symbol"] }} - {{ stock["name"] }}
+            </label>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="row pb-3 justify-content-center">
+      <button
+        type="button"
+        class="btn btn-secondary selectAll"
+        id="data-selectAll-Btn"
+      >
+        Select All
+      </button>
+    </div>
+  </div>
+
+  <div class="col-md-6 pl-md-4">
+    <div class="row" id="export-data-type">
+      <div class="col">
+        <h6>Data Type:</h6>
+      </div>
+      <div class="col">
+        <ul id="data-type-list">
+          <li>
+            <a> Historical Data </a>
+          </li>
+          <li>
+            <a> Realtime Data </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row pt-3" id="export-date-range">
+      <div class="col">
+        <h6>Date Range:</h6>
+      </div>
+      <div class="col">
+        <div class="flex-row d-flex justify-content-center">
+          <div class="col">
+            <div class="input-group input-daterange">
+              <input type="text" name="daterange" value="" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row pt-3" id="export-data-format">
+      <div class="col">
+        <h6>Data Format:</h6>
+      </div>
+      <div class="col">
+        <div class="dropdown">
+          <button
+            class="btn btn-secondary dropdown-toggle"
+            type="button"
+            id="dropdownButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Select Data
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownButton">
+            <ul class="list-unstyled">
+              <li>test</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-3">
+  <div class="col"></div>
+  <div class="col-md-2">
+    <button type="button" class="btn btn-secondary resetAll">Reset All</button>
+  </div>
+  <div class="col-md-3">
+    <form action="/data-export/export-data">
+      <button type="submit" class="btn btn-secondary exportFile">
+        Export File
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}
