@@ -24,7 +24,7 @@ body {
 
 /*index.html*/
 
-form {
+#login-form {
     width: 25%;
     padding: 50px;
     margin-top: 120px;

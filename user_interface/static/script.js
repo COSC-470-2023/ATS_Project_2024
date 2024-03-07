@@ -175,28 +175,53 @@ function customBorder() {
 }
 
 // --------------------------- DOWNLOAD DATA PAGE ---------------------------------------------------
-$(document).ready(function(){
+
+function datepicker() {
   $(function() {
     $('input[name="daterange"]').daterangepicker({
       startDate: new Date(),
       endDate: new Date(),
+      yearRange: "-3,0",
       opens: 'center',
       locale: {
         format: 'DD/MM/YYYY'
       }
     });
   });
-});
+}
 
-// Select all button
-$(document).ready(function() {
-  // Select All button click event
-  $('#data-selectAll-Btn').on('click', function() {
-    // Toggle all check boxes
-    $('input[name="stocks[]"]').prop('checked', function(_, current) {
-      return !current;
+function selectAllItem() {
+  $(function() {
+    var selectAllButton = $(".selectAll");
+    var checkboxes = $(".modal-list .checkbox");
+
+    selectAllButton.on("click", function() {
+        // Check if any of the checkboxes are already checked
+        var anyChecked = checkboxes.is(":checked");
+
+        // Toggle the checked state of the checkboxes
+        checkboxes.prop("checked", !anyChecked);
+    });
+});
+}
+
+function resetAll() {
+  $(function() {
+    var resetAllButton = $(".resetAll");
+    var dataCB = $(".modal-list .checkbox");
+    var dataTypeCB = $("#data-type-list .checkbox")
+    var selectData = $("#select-data option")
+    var dateRange = $("#datepicker")
+
+    resetAllButton.on("click", function() {
+      dataCB.prop("checked", false);
+      dataTypeCB.prop("checked", false);
+      selectData.prop("selected", false);
+      datepicker();
     });
   });
-});
+}
 
-
+datepicker();
+selectAllItem();
+resetAll();

@@ -1,21 +1,23 @@
 {% extends "base.html" %} {% block title %} Export Data {% endblock %} {% block
 mainTitle %} Export Data {% endblock %} {% block mainDescription %} Choose the
 data you want to export {% endblock %} {% block content %}
+<form action="/data-export/export-data" method="POST">
 <div class="row pt-3">
   <div class="col-md-6 pr-md-4" id="export-col">
     <div class="row text-left">
       <div class="card modal-list" id="export-data-list">
-        <ul class="list-unstyled">
+        <ul class="list-unstyled" id="data-list">
           {% for stock in stocks %}
           <li>
             <input
               type="checkbox"
-              name="stocks[]"
+              name="stock-name"
               id="{{ stock['symbol'] }}"
               value="{{ stock['symbol'] }}"
+              class='checkbox'
             />
             <label for="{{ stock['symbol'] }}">
-              {{ stock["symbol"] }} - {{ stock["name"] }}
+              {{ stock["symbol"] }} - {{ stock["companyName"] }}
             </label>
           </li>
           {% endfor %}
@@ -27,6 +29,7 @@ data you want to export {% endblock %} {% block content %}
         type="button"
         class="btn btn-secondary selectAll"
         id="data-selectAll-Btn"
+        onclick="selectAll()"
       >
         Select All
       </button>
@@ -98,11 +101,12 @@ data you want to export {% endblock %} {% block content %}
     <button type="button" class="btn btn-secondary resetAll">Reset All</button>
   </div>
   <div class="col-md-3">
-    <form action="/data-export/export-data">
+    
       <button type="submit" class="btn btn-secondary exportFile">
         Export File
       </button>
-    </form>
+
   </div>
 </div>
+</form>
 {% endblock %}
