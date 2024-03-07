@@ -4,11 +4,9 @@ import sys
 
 from datetime import datetime
 
-from loguru import logger
-
-from data_collection.collection.JsonHandler import json_write_files
+from data_collection.collection.json_handler import json_write_files
 from data_collection.collection.yaml_handler import yaml_load_config
-
+from dev_tools import loguru_init
 
 # Globals
 REALTIME_CFG_PATH = "./ATS_Project_2024/data_collection/configuration/realtime_config.yaml"
@@ -18,15 +16,7 @@ OUTPUT_FILENAME_INDEX = "realtime_index_output.json"
 OUTPUT_FILENAME_COMMODITIES = "realtime_commodity_output.json"
 
 # Loguru init
-logger.remove()
-log_format = ("<green>{time:YYYY-MM-DD HH:mm:ss.SSS zz}</green> | <level>{level: <8}</level> | <yellow>Line {line: >4} "
-              "({file}):</yellow> <b>{message}</b>")
-logger.add(sys.stderr, level="DEBUG", format=log_format, colorize=True, backtrace=True, diagnose=True)
-# TODO add retention parameter to loggers when client has specified length
-logger.add("log_file.log", rotation='00:00', level="DEBUG", format=log_format, colorize=False, backtrace=True,
-           diagnose=True, backup=5)
-logger.add("log_file.log", rotation='00:00', level="INFO", format=log_format, colorize=False, backtrace=True,
-           diagnose=True, backup=5)
+logger = loguru_init.initialize()
 
 
 def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api_fields, non_api_fields):
@@ -43,12 +33,10 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
             data = response.json()
             output.append({})
             output[-1] = remap_entries(data, non_api_fields, api_fields)
-            # Rate limit the query speed based on the rate limit
-            # From inside the JSON. Check that the key wasn't valued at null, signifying no rate limit.
-            if api_rate_limit is not None:
-                time.sleep(60 / api_rate_limit)
+            print("we're looping")
     except Exception as e:
         logger.debug(e)
+        print("we're buggin")
     logger.info("Realtime Query complete")
     return output
 
@@ -90,32 +78,40 @@ def remap_entries(response_data, non_api_fields, api_fields):
                         field]  # API field mapping was set to null, dump it as cfg doesn't care to keep.
         except AttributeError:
             continue  # The copy failed of the dict because it was probably an error message.
-    
+
     return remapped_entry
 
 
 def main():
-    realtime_config = yaml_load_config(REALTIME_CFG_PATH)
-    stock_output = []
-    index_output = []
-    commodity_output = []
+    try:
+        realtime_config = yaml_load_config(REALTIME_CFG_PATH)
+        stock_output = []
+        index_output = []
+        commodity_output = []
 
-    # Iterate through each API in the list
-    api_url = realtime_config['url']
-    api_key = realtime_config['api_key']
-    api_rate_limit = realtime_config['rate_limit_per_min']
-    api_fields = realtime_config['api_fields']
-    non_api_fields = realtime_config['non_api_fields']
-    stock_list = realtime_config['stocks']
-    index_list = realtime_config['index_composites']
-    commodity_list = realtime_config['commodities']
-    stock_output += make_queries(api_url, api_key, stock_list, api_rate_limit, api_fields, non_api_fields)
-    index_output += make_queries(api_url, api_key, index_list, api_rate_limit, api_fields, non_api_fields)
-    commodity_output += make_queries(api_url, api_key, commodity_list, api_rate_limit, api_fields, non_api_fields)
+        # Iterate through each API in the list
+        api_url = realtime_config['url']
+        api_key = realtime_config['api_key']
+        api_rate_limit = realtime_config['rate_limit_per_min']
+        api_fields = realtime_config['api_fields']
+        non_api_fields = realtime_config['non_api_fields']
+        stock_list = realtime_config['stocks']
+        index_list = realtime_config['index_composites']
+        commodity_list = realtime_config['commodities']
 
-    json_write_files(stock_output, OUTPUT_FOLDER, OUTPUT_FILENAME_STOCKS)
-    json_write_files(index_output, OUTPUT_FOLDER, OUTPUT_FILENAME_INDEX)
-    json_write_files(commodity_output, OUTPUT_FOLDER, OUTPUT_FILENAME_COMMODITIES)
+        # Attempt to populate output
+        stock_output += make_queries(api_url, api_key, stock_list, api_rate_limit, api_fields, non_api_fields)
+        index_output += make_queries(api_url, api_key, index_list, api_rate_limit, api_fields, non_api_fields)
+        commodity_output += make_queries(api_url, api_key, commodity_list, api_rate_limit, api_fields, non_api_fields)
+
+        # Write output files
+        json_write_files(stock_output, OUTPUT_FOLDER, OUTPUT_FILENAME_STOCKS)
+        json_write_files(index_output, OUTPUT_FOLDER, OUTPUT_FILENAME_INDEX)
+        json_write_files(commodity_output, OUTPUT_FOLDER, OUTPUT_FILENAME_COMMODITIES)
+    except Exception as e:
+        logger.error(e)
+
+    logger.success("realtime_api_query.py ran successfully.")
 
 
 # Code to only be executed if ran as script

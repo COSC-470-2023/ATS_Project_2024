@@ -3,10 +3,9 @@ import sys
 
 from datetime import date
 
-from loguru import logger
-
-from data_collection.collection.JsonHandler import json_write_files
+from data_collection.collection.json_handler import json_write_files
 from data_collection.collection.yaml_handler import yaml_load_config, yaml_write_config
+from dev_tools import loguru_init
 
 # GLOBALS
 # Variable to track symbols that are changed for global usage
@@ -24,16 +23,7 @@ OUTPUT_PATH = "./ATS_Project_2024/data_collection/output/"
 OUTPUT_FILE_NAME = "symbol_change_list.json"
 
 # Loguru init
-logger.remove()
-log_format = ("<green>{time:YYYY-MM-DD HH:mm:ss.SSS zz}</green> | <level>{level: <8}</level> | <yellow>Line {line: >4} "
-              "({file}):</yellow> <b>{message}</b>")
-logger.add(sys.stderr, level="DEBUG", format=log_format, colorize=True, backtrace=True, diagnose=True)
-# TODO add retention parameter to loggers when client has specified length
-logger.add("log_file.log", rotation='00:00', level="DEBUG", format=log_format, colorize=False, backtrace=True,
-           diagnose=True, backup=5)
-logger.add("log_file.log", rotation='00:00', level="INFO", format=log_format, colorize=False, backtrace=True,
-           diagnose=True, backup=5)
-
+logger = loguru_init.initialize()
 
 # Using provided API URL and Key, queries and appends results to an unmodified raw output
 def make_queries(parsed_api_url, parsed_api_key):

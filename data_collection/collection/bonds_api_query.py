@@ -2,12 +2,11 @@ import json
 import requests
 import sys
 
-from loguru import logger
-
 from datetime import date, timedelta
 
-from data_collection.collection.JsonHandler import json_write_files
+from data_collection.collection.json_handler import json_write_files
 from data_collection.collection.yaml_handler import yaml_load_config
+from dev_tools import loguru_init
 
 
 # Globals
@@ -16,15 +15,7 @@ OUTPUT_FOLDER = "./ATS_Project_2024/data_collection/output/"
 OUTPUT_FILENAME_BONDS = "bonds_output.json"
 
 # Loguru init
-logger.remove()
-log_format = ("<green>{time:YYYY-MM-DD HH:mm:ss.SSS zz}</green> | <level>{level: <8}</level> | <yellow>Line {line: >4} "
-              "({file}):</yellow> <b>{message}</b>")
-logger.add(sys.stderr, level="DEBUG", format=log_format, colorize=True, backtrace=True, diagnose=True)
-# TODO add retention parameter to loggers when client has specified length
-logger.add("log_file.log", rotation='00:00', level="DEBUG", format=log_format, colorize=False, backtrace=True,
-           diagnose=True, backup=5)
-logger.add("log_file.log", rotation='00:00', level="INFO", format=log_format, colorize=False, backtrace=True,
-           diagnose=True, backup=5)
+logger = loguru_init.initialize()
 
 
 def create_date_window(days_queried):

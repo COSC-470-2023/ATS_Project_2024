@@ -1,6 +1,6 @@
 import json
 import unittest
-from data_collection.collection.JsonHandler import JsonHandler
+from data_collection.collection.json_handler import JsonHandler
 
 # GLOBALS
 REALTIME_CFG_PATH = "../configuration/realtime_query_cfg.json"
