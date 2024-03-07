@@ -1,27 +1,5 @@
-black==23.9.1
-certifi==2023.7.22
-charset-normalizer==3.3.0
-click==8.1.7
-connect==0.2
-connect.py==0.4.2
-idna==3.4
-iniconfig==2.0.0
-mypy-extensions==1.0.0
-mysql-connector==2.2.9
-mysql-connector-python==8.1.0
-numpy==1.26.2
-packaging==23.2
-pathspec==0.11.2
-platformdirs==3.11.0
-pluggy==1.4.0
-PyMySQL==1.1.0
-pytest==7.4.4
-python-dateutil==2.8.2
-pytz==2023.3.post1
-requests==2.31.0
-SQLAlchemy==2.0.21
-typing_extensions==4.8.0
-urllib3==2.0.6
-pytest
-coverage
-pytest-cov
+pytest ~= 8.0
+python-dotenv ~= 1.0
+pyyaml ~= 6.0
+requests ~= 2.31
+sqlalchemy ~= 2.0
