@@ -21,9 +21,9 @@ logger = loguru_init.initialize()
 
 def make_queries():
     logger.info("Constituent Query starting")
+    symbol_list = []
     try:
         logger.debug("Executing API call.")
-        symbol_list = []
         config = yaml_load_config(INDEX_CONSTITUENT_CFG_PATH)
         key = config['api_key']
         constituent = config['constituent']
@@ -42,11 +42,11 @@ def make_queries():
 
 
 def update_cfg(system_config, symbol_list):
+    logger.info("Constituent configuration update starting")
+    modified_system_config = system_config
     try:
-        logger.info("Constituent configuration update starting")
         # Boolean to check if query is historical (needs start/end date appended)
         is_historical = system_config == yaml_load_config(HISTORICAL_CFG_PATH)
-        modified_system_config = system_config
         for key in modified_system_config:
             constituent_list = []
             hist_constituent_list = []

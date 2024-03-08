@@ -20,9 +20,9 @@ logger = loguru_init.initialize()
 
 
 def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api_fields, non_api_fields):
-    logger.info("Realtime Query starting")
+    logger.info("Realtime Collection Query starting")
+    output = []
     try:
-        output = []
         # Iterate through each stock and make an API call
         for query_itr in range(len(query_list)):
             query_item = query_list[query_itr]
@@ -33,19 +33,19 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
             data = response.json()
             output.append({})
             output[-1] = remap_entries(data, non_api_fields, api_fields)
-            print("we're looping")
     except Exception as e:
-        logger.debug(e)
-        print("we're buggin")
+        logger.error(e)
     logger.info("Realtime Query complete")
     return output
 
 
 def remap_entries(response_data, non_api_fields, api_fields):
+    logger.info("Remapping entries")
     remapped_entry = {}
 
     for entry in response_data:
         if non_api_fields != {}:  # There is a manually added field in the cfg.
+            logger.debug("Manually added field(s) detected: Mapping data")
             for non_api_field in non_api_fields:
                 # Compare the manually added field to where it should get its data from
                 # in the normal fields
@@ -61,24 +61,27 @@ def remap_entries(response_data, non_api_fields, api_fields):
                             try:
                                 entry[map_to] = str(datetime.fromtimestamp(entry[src]))
                             except TypeError as e:
-                                logger.debug(e)
+                                logger.error(e)
                                 continue
                 except KeyError as e:
-                    logger.debug(e)
+                    logger.error(e)
                     continue
+            logger.debug("Manual field mapping complete")
         try:
             remapped_entry = entry.copy()  # Cant iterate over a dict that is changing in size.
             # Iterate over the fields and then rename them, by reinserting and deleting the old.
             for field in api_fields:
                 if api_fields[field] is not None:
                     remapped_entry[api_fields[field]] = remapped_entry[field]
-                    del remapped_entry[field]  # API field has a mapping value, rename it.
+                    # API field has a mapping value, rename it.
+                    del remapped_entry[field]
                 else:
-                    del remapped_entry[
-                        field]  # API field mapping was set to null, dump it as cfg doesn't care to keep.
-        except AttributeError:
+                    # API field mapping was set to null, dump it as cfg doesn't care to keep.
+                    del remapped_entry[field]
+        except AttributeError as e:
+            logger.error(e)
             continue  # The copy failed of the dict because it was probably an error message.
-
+    logger.info("Remapping complete")
     return remapped_entry
 
 
