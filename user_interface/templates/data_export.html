@@ -44,10 +44,16 @@ data you want to export {% endblock %} {% block content %}
       <div class="col">
         <ul id="data-type-list">
           <li>
-            <a> Historical Data </a>
+            <input type="radio" id="historicalData" name="table-name" value="historical">
+            <label for="historicalData">Historical Data</label>
           </li>
           <li>
-            <a> Realtime Data </a>
+            <input type="radio" id="realtimeData" name="table-name" value="realtimeData">
+            <label for="realtimeData">Real time Data</label>
+          </li>
+          <li>
+            <input type="radio" id="companyInfo" name="table-name" value="companyinfo">
+            <label for="companyInfo">Company Info</label>
           </li>
         </ul>
       </div>
