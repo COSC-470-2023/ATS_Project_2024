@@ -45,3 +45,23 @@ def json_write_files(json_data, output_folder: str, filename: str):
                 raise
     with open(output_folder + "/" + filename, "w") as outfile:
         json.dump(json_data, outfile, indent=2)
+
+
+def json_load_output(path: str):
+    """
+    Attempts to load the output file specified.
+    Exits with 1 if config path is invalid.
+    Exits with 1 if config json is invalid structure
+    :param path: A string containing the filename and path of the output data file
+    :return: output data
+    """
+    try:
+        with open(path, "r") as output_file:
+            output_data = json.load(output_file)
+        return output_data
+    except FileNotFoundError:
+        logger.critical(f"Output file '{path}' not found.")
+        exit(1)
+    except json.JSONDecodeError:
+        logger.critical(f"Error decoding JSON in '{path}'")
+        exit(1)

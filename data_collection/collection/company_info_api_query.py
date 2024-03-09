@@ -17,6 +17,7 @@ OUTPUT_FILENAME = "company_info_output.json"
 # Loguru init
 logger = loguru_init.initialize()
 
+
 # TODO: refactor remapping logic into its own method (similar to realtime_api_query
 def make_queries(parsed_api_url, parsed_api_key, query_list, api_fields, non_api_fields):
     logger.info("Company Info Collection Query starting")
