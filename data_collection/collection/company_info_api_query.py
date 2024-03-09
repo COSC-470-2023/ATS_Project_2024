@@ -17,25 +17,20 @@ OUTPUT_FILENAME = "company_info_output.json"
 # Loguru init
 logger = loguru_init.initialize()
 
-
+# TODO: refactor remapping logic into its own method (similar to realtime_api_query
 def make_queries(parsed_api_url, parsed_api_key, query_list, api_fields, non_api_fields):
-    logger.info("Company Info Query starting")
+    logger.info("Company Info Collection Query starting")
+    output = []
     try:
-        output = []
         # Iterate through each stock and make an API call
         for query_itr in range(len(query_list)):
             query_item = query_list[query_itr]
             # Replace the URL parameters with our current API configs
             query = parsed_api_url.replace("{QUERY_PARAMS}", query_item['symbol']).replace("{API_KEY}", parsed_api_key)
-            try:
-                response = requests.get(query)
-                # Convert the response to json and append to list
-                data = response.json()
-                remapped_entry = {}
-
-            except requests.RequestException as e:
-                logger.debug(f"api_error {e}")
-                continue
+            response = requests.get(query)
+            # Convert the response to json and append to list
+            data = response.json()
+            remapped_entry = {}
         for entry in data:
             try:
                 src = non_api_fields['src']
@@ -48,10 +43,10 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_fields, non_api
                         try:
                             entry[map_to] = str(datetime.now())
                         except TypeError as e:
-                            logger.debug(e)
+                            logger.error(f"Type Error on {entry}:\n{e}")
                             continue
             except KeyError as e:
-                logger.debug(f"Key Error on {query_item}:\n{e}")
+                logger.error(f"Key Error on {entry}:\n{e}")
                 continue
             try:
                 remapped_entry = entry.copy()  # Cant iterate over a dict that is changing in size.
@@ -64,13 +59,13 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_fields, non_api
                         del remapped_entry[field]  # API field mapping was set to null,
                         # dump it as cfg doesn't care to keep.
             except AttributeError as e:
-                logger.debug(e)
+                logger.error(f"Attribute Error on {entry}:\n{e}")
                 continue  # The copy failed of the dict because it was probably an error message.
         output.append({})
         output[-1] = remapped_entry
     except Exception as e:
-        logger.debug(e)
-        logger.info("Company Info Query complete")
+        logger.error(e)
+    logger.info("Company Info Query complete")
     return output
 
 
@@ -94,7 +89,9 @@ def main():
         json_write_files(company_output, OUTPUT_FOLDER, OUTPUT_FILENAME)
         logger.info("Company Info output file write complete")
     except Exception as e:
-        logger.debug(e)
+        logger.error(e)
+
+    logger.success("company_info_api_query.py ran successfully.")
 
 
 if __name__ == "__main__":
