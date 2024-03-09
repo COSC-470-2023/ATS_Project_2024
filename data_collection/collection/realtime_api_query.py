@@ -40,7 +40,7 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
 
 
 def remap_entries(response_data, non_api_fields, api_fields):
-    logger.info("Remapping entries")
+    logger.info("Realtime field remapping: Starting")
     remapped_entry = {}
 
     for entry in response_data:
@@ -64,7 +64,7 @@ def remap_entries(response_data, non_api_fields, api_fields):
                                 logger.error(e)
                                 continue
                 except KeyError as e:
-                    logger.error(e)
+                    logger.error(f"Key Error on {entry}:\n{e}")
                     continue
             logger.debug("Manual field mapping complete")
         try:
@@ -79,9 +79,9 @@ def remap_entries(response_data, non_api_fields, api_fields):
                     # API field mapping was set to null, dump it as cfg doesn't care to keep.
                     del remapped_entry[field]
         except AttributeError as e:
-            logger.error(e)
+            logger.error(f"Attribute Error on {entry}:\n{e}")
             continue  # The copy failed of the dict because it was probably an error message.
-    logger.info("Remapping complete")
+    logger.info("Realtime field remapping: Complete")
     return remapped_entry
 
 

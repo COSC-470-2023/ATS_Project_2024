@@ -19,9 +19,9 @@ logger = loguru_init.initialize()
 
 
 def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api_fields, non_api_fields):
-    logger.info("Historical Query starting")
+    logger.info("Historical Collection Query starting")
+    output = []
     try:
-        output = []
         # Iterate through each stock and make an API call
         for query_itr in range(len(query_list)):
             query_item = query_list[query_itr]
@@ -36,17 +36,19 @@ def make_queries(parsed_api_url, parsed_api_key, query_list, api_rate_limit, api
             output.append({})
             output[-1] = remap_entries(data, query_item, api_fields, non_api_fields)
     except Exception as e:
-        logger.debug(e)
+        logger.error(e)
     logger.info("Historical Query complete")
     return output
 
 
 def remap_entries(response_data, query_item, api_fields, non_api_fields):
-    logger.info("Historical Remap starting")
+    logger.info("Historical field remapping: Starting")
     entries = response_data['historical']
     remapped_entry = {}
     for entry in entries:
+        # TODO: This is repeated logic in other files -> refactor.
         if non_api_fields != {}:  # There is a manually added field in the cfg.
+            logger.debug("Manually added field(s) detected: Mapping data")
             for non_api_field in non_api_fields:
                 # Compare the manually added field to where it should get its data from
                 # in the normal fields
@@ -63,11 +65,12 @@ def remap_entries(response_data, query_item, api_fields, non_api_fields):
                             try:
                                 entry[map_to] = query_item['name']
                             except TypeError as e:
-                                logger.debug(e)
+                                logger.error(e)
                                 continue
                 except KeyError as e:
-                    logger.debug(f"Key Error on {query_item}:\n{e}")
+                    logger.error(f"Key Error on {query_item}:\n{e}")
                     continue
+            logger.debug("Manual field mapping complete")
         try:
             remapped_entry = entry.copy()  # Cant iterate over a dict that is changing in size.
             # Iterate over the fields and then rename them, by reinserting and deleting the old.
@@ -86,9 +89,9 @@ def remap_entries(response_data, query_item, api_fields, non_api_fields):
                     del remapped_entry[field]
                     # dump it as cfg doesn't care to keep.
         except AttributeError as e:
-            logger.debug(f"Attribute Error on {entry}:\n{e}")
+            logger.error(f"Attribute Error on {entry}:\n{e}")
             pass  # The copy failed of the dict because it was probably an error message.
-    logger.info("Historical Remap complete")
+    logger.info("Historical field remapping: Complete")
     return remapped_entry
 
 
@@ -123,7 +126,9 @@ def main():
         json_write_files(commodity_output, OUTPUT_FOLDER, OUTPUT_FILENAME_COMMODITIES)
         logger.info("Historical Commodity file write complete")
     except Exception as e:
-        logger.debug(e)
+        logger.error(e)
+
+    logger.success("historical_api_query.py ran successfully.")
 
 
 if __name__ == "__main__":
