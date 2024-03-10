@@ -31,6 +31,7 @@ def create_app():
     app.app_context().push()
     db.init_app(app)
 
+    # Import blueprints
     from .auth import auth
     from .views import views
     from .data_export import data_export
@@ -41,10 +42,12 @@ def create_app():
 
     from .models import Users
 
+    # Setup login manager
     login_manager = LoginManager()
     login_manager.login_view = "auth.login"
     login_manager.init_app(app)
 
+    # User loader callback. User by Flask-Login for authentaction handling
     @login_manager.user_loader
     def load_user(id):
         return Users.query.get(int(id))
