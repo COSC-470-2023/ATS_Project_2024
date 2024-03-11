@@ -122,7 +122,7 @@ BEGIN
 	SELECT COUNT(*) INTO temp FROM bonds WHERE treasuryName = NEW.treasuryName;
 	IF (temp = 0) THEN
     	WHILE (valid = 1) DO
-        	SELECT COUNT(*) INTO temp FROM bonds WHERE bond_id = new_id;
+        	SELECT COUNT(*) INTO temp FROM bonds WHERE id = new_id;
         	IF (temp = 1) THEN
             	SET new_id = UUID_SHORT();
    		 	  ELSE
@@ -133,7 +133,7 @@ BEGIN
     	SIGNAL SQLSTATE '45000'
    	  SET MESSAGE_TEXT = 'A record for this treasury already exists.';
     END IF;
-	SET NEW.bond_id = new_id;
+	SET NEW.id = new_id;
 END;
 $$
 DELIMITER ;

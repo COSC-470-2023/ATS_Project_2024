@@ -16,15 +16,9 @@ class Users(db.Model, UserMixin):
 class Bonds(db.Model):
     __table__ = db.Model.metadata.tables["bonds"]
 
-    def __repr__(self):
-        return self.DISTRICT
-
 
 class BondValues(db.Model):
     __table__ = db.Model.metadata.tables["bond_values"]
-
-    def __repr__(self):
-        return self.DISTRICT
 
 
 ## Commodity Tables ##
@@ -33,22 +27,13 @@ class BondValues(db.Model):
 class Commodities(db.Model):
     __table__ = db.Model.metadata.tables["commodities"]
 
-    def __repr__(self):
-        return self.DISTRICT
-
 
 class RealtimeCommodityValues(db.Model):
     __table__ = db.Model.metadata.tables["realtime_commodity_values"]
 
-    def __repr__(self):
-        return self.DISTRICT
-
 
 class HistoricalCommodityValues(db.Model):
     __table__ = db.Model.metadata.tables["historical_commodity_values"]
-
-    def __repr__(self):
-        return self.DISTRICT
 
 
 ## Company/Stock Tables ##
@@ -61,9 +46,6 @@ class Companies(db.Model):
 class CompanyStatements(db.Model):
     __table__ = db.Model.metadata.tables["company_statements"]
 
-    def __repr__(self):
-        return self.DISTRICT
-
 
 class RealtimeStockValues(db.Model):
     __table__ = db.Model.metadata.tables["realtime_stock_values"]
@@ -72,9 +54,6 @@ class RealtimeStockValues(db.Model):
 class HistoricalStockValues(db.Model):
     __table__ = db.Model.metadata.tables["historical_stock_values"]
 
-    def __repr__(self):
-        return self.DISTRICT
-
 
 ## Index Tables ##
 
@@ -82,19 +61,10 @@ class HistoricalStockValues(db.Model):
 class Indexes(db.Model):
     __table__ = db.Model.metadata.tables["indexes"]
 
-    def __repr__(self):
-        return self.DISTRICT
-
 
 class RealtimeIndexValues(db.Model):
     __table__ = db.Model.metadata.tables["realtime_index_values"]
 
-    def __repr__(self):
-        return self.DISTRICT
-
 
 class HistoricalIndexValues(db.Model):
     __table__ = db.Model.metadata.tables["historical_index_values"]
-
-    def __repr__(self):
-        return self.DISTRICT
