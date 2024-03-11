@@ -8,32 +8,62 @@ from data_collection.collection.json_handler import json_load_output
 from dev_tools import loguru_init
 
 # Globals
-OUTPUT_FILE_PATH = "./SMF_Project_2023/data_collection/output/bonds_output.json"
+OUTPUT_FILE_PATH = "./test_files/static_test_files/static_bonds_30day.json"
+
+
+def load_output_file(path):
+    try:
+        with open(path, "r") as output_file:
+            output_data = json.load(output_file)
+        return output_data
+    except FileNotFoundError:
+        print(f"Output file '{path}' not found.")
+        exit(1)
+    except json.JSONDecodeError:
+        print(f"Error decoding JSON in '{path}'")
+        exit(1)
+
 
 # Loguru init
 logger = loguru_init.initialize()
 
 
 def execute_insert(connection, entry, bond_id):
+    # Declare and initialize variables
+    date = entry["_bond_date"]
+    month1 = entry["_bond_month1"]
+    month2 = entry["_bond_month2"]
+    month3 = entry["_bond_month3"]
+    month6 = entry["_bond_month6"]
+    year1 = entry["_bond_year1"]
+    year2 = entry["_bond_year2"]
+    year3 = entry["_bond_year3"]
+    year5 = entry["_bond_year5"]
+    year7 = entry["_bond_year7"]
+    year10 = entry["_bond_year10"]
+    year20 = entry["_bond_year20"]
+    year30 = entry["_bond_year30"]
+
+    # Execute row insertion
     logger.info(f"Inserting record for bond ID: {bond_id}")
     try:
         # Declare and initialize variables
-        date = entry['_bond_date']
-        month1 = entry['_bond_month1']
-        month2 = entry['_bond_month2']
-        month3 = entry['_bond_month3']
-        month6 = entry['_bond_month6']
-        year1 = entry['_bond_year1']
-        year2 = entry['_bond_year2']
-        year3 = entry['_bond_year3']
-        year5 = entry['_bond_year5']
-        year7 = entry['_bond_year7']
-        year10 = entry['_bond_year10']
-        year20 = entry['_bond_year20']
-        year30 = entry['_bond_year30']
+        date = entry["_bond_date"]
+        month1 = entry["_bond_month1"]
+        month2 = entry["_bond_month2"]
+        month3 = entry["_bond_month3"]
+        month6 = entry["_bond_month6"]
+        year1 = entry["_bond_year1"]
+        year2 = entry["_bond_year2"]
+        year3 = entry["_bond_year3"]
+        year5 = entry["_bond_year5"]
+        year7 = entry["_bond_year7"]
+        year10 = entry["_bond_year10"]
+        year20 = entry["_bond_year20"]
+        year30 = entry["_bond_year30"]
     except Exception as e:
         logger.error(f"Error occurred when assigning bond field values: {e}")
-    
+
     # Execute row insertion
     connection.execute(
         text(
@@ -43,32 +73,25 @@ def execute_insert(connection, entry, bond_id):
 
 
 def get_bond_id(entry, connection):
-    logger.debug("Assigning bond ID")
+    # Declare and initalize variables
+    name = entry["_bond_name"]
+    id_query = f"SELECT bond_id FROM `bonds` WHERE treasuryName = '{name}'"
 
-    try:
-        # Declare and initialize variables
-        name = entry['_bond_name']
-        id_query = f"SELECT bond_id FROM `bonds` WHERE treasuryName = '{name}'"
+    # Check if bond exists in bonds table
+    result = connection.execute(text(id_query))
+    row = result.one_or_none()
 
-        # Check if bond exists in bonds table
+    if row is None:
+        # if bond doesn't exist, create new row in bonds table - trigger generates new ID
+        connection.execute(
+            text(f"INSERT INTO `bonds`(`treasuryName`) VALUES ('{name}')")
+        )
+        # get the generated ID
         result = connection.execute(text(id_query))
-        row = result.one_or_none()
-        if row is None:
-            logger.debug("ID not found, creating new row")
-            # if bond doesn't exist, create new row in bonds table - trigger generates new ID
-            connection.execute(
-                text(
-                    f"INSERT INTO `bonds`(`treasuryName`) VALUES ('{name}')"
-                )
-            )
-            # get the generated ID
-            result = connection.execute(text(id_query))
-            bond_id = result.one()[0]
-        else:
-            # if the bond exists, fetch the existing ID
-            bond_id = row[0]
-    except Exception as e:
-        logger.error(f"Error occurred when assigning ID: {e}")
+        bond_id = result.one()[0]
+    else:
+        # if the bond exists, fetch the existing ID
+        bond_id = row[0]
     return bond_id
 
 
@@ -89,15 +112,17 @@ def main():
                         logger.error(f"Error: {e}")
                         continue
                 else:
-                    continue         
+                    continue
             # Commit changes to database (otherwise it rolls back)
-            conn.commit()       
+            conn.commit()
     except Exception as e:
         print(traceback.format_exc())
+        print(f"SQL connection error: {e}")
+
         logger.critical(f"Error when connecting to remote database: {e}")
 
     logger.success("bonds_insert ran successfully.")
-        
+
 
 # protected entrypoint
 if __name__ == "__main__":
