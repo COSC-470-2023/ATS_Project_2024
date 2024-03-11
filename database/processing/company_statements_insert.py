@@ -1,22 +1,16 @@
 import connect
 import json
 import traceback
-from sqlalchemy import text
-from sqlalchemy.exc import SQLAlchemyError
+
+from sqlalchemy import text, SQLAlchemyError
+
+from data_collection.collection.json_handler import json_load_output
+from dev_tools import loguru_init
 
 OUTPUT_FILE_PATH = "./SMF_Project_2023/data_collection/output/company_info_output.json"
 
-def load_output_file(path):
-    try:
-        with open(path, "r") as output_file:
-            output_data = json.load(output_file)
-        return output_data
-    except FileNotFoundError:
-        print(f"Output file '{path}' not found.")
-        exit(1)
-    except json.JSONDecodeError:
-        print(f"Error decoding JSON in '{path}'")
-        exit(1)
+# Loguru init
+logger = loguru_init.initialize()
 
 
 def check_keys(entry):
@@ -76,7 +70,8 @@ def execute_insert(connection, entry, company_id):
     row["company_id"] = company_id
 
     # parameterized query
-    query = text("INSERT INTO `company_statements` VALUES (:company_id, :_company_date, :_company_price, :_company_beta, :_company_volAvg, :_company_mktCap, :_company_lastDiv, :_company_changes, :_company_currency, :_company_cik, :_company_isin, :_company_cusip, :_company_exchangeFullName, :_company_exchange, :_company_industry, :_company_ceo, :_company_sector, :_company_country, :_company_fullTimeEmployees, :_company_phone, :_company_address, :_company_city, :_company_state, :_company_zip, :_company_dcfDiff, :_company_dcf, :_company_ipoDate, :_company_isEtf, :_company_isActivelyTrading, :_company_isAdr, :_company_isFund)")
+    query = text(
+        "INSERT INTO `company_statements` VALUES (:company_id, :_company_date, :_company_price, :_company_beta, :_company_volAvg, :_company_mktCap, :_company_lastDiv, :_company_changes, :_company_currency, :_company_cik, :_company_isin, :_company_cusip, :_company_exchangeFullName, :_company_exchange, :_company_industry, :_company_ceo, :_company_sector, :_company_country, :_company_fullTimeEmployees, :_company_phone, :_company_address, :_company_city, :_company_state, :_company_zip, :_company_dcfDiff, :_company_dcf, :_company_ipoDate, :_company_isEtf, :_company_isActivelyTrading, :_company_isAdr, :_company_isFund)")
 
     # execute insertion
     connection.execute(statement=query, parameters=row)
@@ -91,7 +86,9 @@ def get_company_id(entry, conn):
 
     if row is None:
         # if company doesn't exist, create new row in companies table - trigger generates new ID
-        conn.execute(text("INSERT INTO `companies` (`companyName`, `symbol`, `isListed`) VALUES (:name, :symbol, :isListed)"), parameters=params)
+        conn.execute(
+            text("INSERT INTO `companies` (`companyName`, `symbol`, `isListed`) VALUES (:name, :symbol, :isListed)"),
+            parameters=params)
 
         # get the generated ID
         result = conn.execute(text("SELECT id FROM `companies` WHERE symbol = :symbol"), parameters=params)
@@ -104,7 +101,7 @@ def get_company_id(entry, conn):
 
 def main():
     # Load json data
-    company_data = load_output_file(OUTPUT_FILE_PATH)
+    company_data = json_load_output(OUTPUT_FILE_PATH)
     try:
         # create with context manager, implicit commit on close
         with connect.connect() as conn:
@@ -125,7 +122,9 @@ def main():
 
     except Exception as e:
         print(traceback.format_exc())
-        print(f"Error: {e}")
+        logger.critical(f"Error when connecting to remote database: {e}")
+    logger.success("company_statements_insertion ran successfully.")
+
 
 # protected entrypoint
 if __name__ == "__main__":

@@ -3,53 +3,48 @@ import traceback
 from sqlalchemy import text
 import connect
 
+from data_collection.collection.json_handler import json_load_output
+from dev_tools import loguru_init
+
 # Globals
 OUTPUT_FILE_PATH = "./SMF_Project_2023/data_collection/output/symbol_change_list.json"
 
-def load_output_file(path):
-    try:
-        with open(path, "r") as output_file:
-            output_data = json.load(output_file)
-            if not output_data:
-                print("No symbol change update required")
-                exit(0)
-        return output_data
-    except FileNotFoundError:
-        print(f"Error: Output file '{path}' not found.")
-        exit(1)
-    except json.JSONDecodeError as e:
-        print(f"Error decoding JSON in '{path}'.")
-        print(e)
-        exit(1)
+logger = loguru_init.initialize()
 
 
 def update_symbol(connection, symbol):
+    logger.info(f"Updating symbol: {symbol}")
     try:
         # Variable Declarations
         name = symbol["_change_newName"]
         old_symbol = symbol["_change_oldSymbol"]
         new_symbol = symbol["_change_newSymbol"]
+        logger.debug(f"{old_symbol} updated to {new_symbol}")
 
         #  SQL query
         company_update = text(f"UPDATE companies SET companyName = '{name}', symbol = '{new_symbol}' WHERE symbol = '{old_symbol}'")
 
         connection.execute(company_update)
     except Exception as e:
-        print(f"Error in updating database: {e}")
         print(traceback.format_exc())
+        logger.critical(f"Error in updating database: {e}")
+
 
 def main():
+    # Load json data
+    symbol_change = json_load_output(OUTPUT_FILE_PATH)
     try:
         # Establish a connection to server
         with connect.connect() as conn:
-            symbol_change = load_output_file(OUTPUT_FILE_PATH)
             for symbol in symbol_change:
                 update_symbol(conn, symbol)
             conn.commit()
     except Exception as e:
-        print(e)
         print(traceback.format_exc())
-        print("Database connection error")
+        logger.critical(f"Error when connecting to remote database: {e}")
+
+    logger.success("symbol_change_update.py ran successfully.")
+
 
 if __name__ == "__main__":
     main()

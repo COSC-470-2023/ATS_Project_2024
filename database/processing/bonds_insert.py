@@ -1,12 +1,15 @@
 import connect
 import json
 import traceback
-from sqlalchemy import sql
-from sqlalchemy import text
-from sqlalchemy.exc import SQLAlchemyError
+
+from sqlalchemy import sql, text, SQLAlchemyError
+
+from data_collection.collection.json_handler import json_load_output
+from dev_tools import loguru_init
 
 # Globals
 OUTPUT_FILE_PATH = "./test_files/static_test_files/static_bonds_30day.json"
+
 
 def load_output_file(path):
     try:
@@ -19,6 +22,10 @@ def load_output_file(path):
     except json.JSONDecodeError:
         print(f"Error decoding JSON in '{path}'")
         exit(1)
+
+
+# Loguru init
+logger = loguru_init.initialize()
 
 
 def execute_insert(connection, entry, bond_id):
@@ -38,6 +45,26 @@ def execute_insert(connection, entry, bond_id):
     year30 = entry["_bond_year30"]
 
     # Execute row insertion
+    logger.info(f"Inserting record for bond ID: {bond_id}")
+    try:
+        # Declare and initialize variables
+        date = entry["_bond_date"]
+        month1 = entry["_bond_month1"]
+        month2 = entry["_bond_month2"]
+        month3 = entry["_bond_month3"]
+        month6 = entry["_bond_month6"]
+        year1 = entry["_bond_year1"]
+        year2 = entry["_bond_year2"]
+        year3 = entry["_bond_year3"]
+        year5 = entry["_bond_year5"]
+        year7 = entry["_bond_year7"]
+        year10 = entry["_bond_year10"]
+        year20 = entry["_bond_year20"]
+        year30 = entry["_bond_year30"]
+    except Exception as e:
+        logger.error(f"Error occurred when assigning bond field values: {e}")
+
+    # Execute row insertion
     connection.execute(
         text(
             f"INSERT INTO `bond_values` VALUES ('{bond_id}', '{date}', '{month1}', '{month2}', '{month3}', '{month6}', '{year1}', '{year2}', '{year3}', {year5}, '{year7}', '{year10}', '{year20}', '{year30}')"
@@ -48,7 +75,7 @@ def execute_insert(connection, entry, bond_id):
 def get_bond_id(entry, connection):
     # Declare and initalize variables
     name = entry["_bond_name"]
-    id_query = f"SELECT id FROM `bonds` WHERE treasuryName = '{name}'"
+    id_query = f"SELECT bond_id FROM `bonds` WHERE treasuryName = '{name}'"
 
     # Check if bond exists in bonds table
     result = connection.execute(text(id_query))
@@ -69,8 +96,8 @@ def get_bond_id(entry, connection):
 
 
 def main():
-    # load ouput
-    bonds_data = load_output_file(OUTPUT_FILE_PATH)
+    # load output
+    bonds_data = json_load_output(OUTPUT_FILE_PATH)
     try:
         # create with context manager, implicit commit on close
         with connect.connect() as conn:
@@ -81,8 +108,8 @@ def main():
                         # process bond data
                         execute_insert(conn, entry, bond_id)
                     except SQLAlchemyError as e:
-                        # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
-                        print(f"Error: {e}")
+                        # log sqlalchemy error, then continue to prevent silent rollbacks
+                        logger.error(f"Error: {e}")
                         continue
                 else:
                     continue
@@ -91,6 +118,10 @@ def main():
     except Exception as e:
         print(traceback.format_exc())
         print(f"SQL connection error: {e}")
+
+        logger.critical(f"Error when connecting to remote database: {e}")
+
+    logger.success("bonds_insert ran successfully.")
 
 
 # protected entrypoint
