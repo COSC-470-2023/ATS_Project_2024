@@ -195,47 +195,36 @@ function customBorder() {
 // --------------------------- DOWNLOAD DATA PAGE ---------------------------------------------------
 
 function datepicker() {
-  $(function () {
+  $(function() {
     $('input[name="daterange"]').daterangepicker({
       startDate: new Date(),
       endDate: new Date(),
-      yearRange: "-3,0",
-      opens: "center",
+      minDate: new Date(new Date().getFullYear() - 3, 0, 1),
+      opens: 'center',
       locale: {
-        format: "DD/MM/YYYY",
-      },
+        format: 'DD/MM/YYYY'
+      }
     });
   });
 }
 
 function selectAll() {
-  var selectAllButton = $(".selectAll");
   var checkboxes = $(".modal-list .checkbox");
-
-  selectAllButton.on("click", function () {
-    // Check if any of the checkboxes are already checked
-    var anyChecked = checkboxes.is(":checked");
-
-    // Toggle the checked state of the checkboxes
-    checkboxes.prop("checked", !anyChecked);
-  });
+  // Check if any of the checkboxes are already checked
+  var anyChecked = checkboxes.is(":checked");
+  checkboxes.prop("checked", !anyChecked);
 }
 
 function resetAll() {
-  $(function () {
-    var resetAllButton = $(".resetAll");
-    var dataCB = $(".modal-list .checkbox");
-    var dataTypeCB = $("#data-type-list .checkbox");
-    var selectData = $("#select-data option");
-    var dateRange = $("#datepicker");
+  var dataCB = $(".modal-list .checkbox");
+  var dataTypeCB = $("#data-type-list .checkbox");
+  var selectData = $("#select-data option");
+  var dateRange = $("#datepicker");
 
-    resetAllButton.on("click", function () {
-      dataCB.prop("checked", false);
-      dataTypeCB.prop("checked", false);
-      selectData.prop("selected", false);
-      datepicker();
-    });
-  });
+  dataCB.prop("checked", false);
+  dataTypeCB.prop("checked", false);
+  selectData.prop("selected", false);
+  datepicker();
 }
 
 // changes the state of "Data Type" radio button based on the data selection
@@ -260,7 +249,6 @@ function onDataChange() {
   params.set("dataValue", dataValue);
   sessionStorage.setItem("selectedValue", dataValue);
 
-
   window.location.href = "/data-export?" + params.toString();
 }
 
@@ -276,5 +264,5 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 datepicker();
-selectAll();
+//selectAll();
 resetAll();

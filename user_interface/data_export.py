@@ -59,7 +59,6 @@ def export_data():
         selected = request.form.getlist("data-item")
         table_prefix = request.form.get("data-type")
         entity = request.form.get("select-data")
-        print(entity)
         data_table_name = ""
         id_specifier = ""
 
@@ -88,7 +87,6 @@ def export_data():
                 entity_map[entity].symbol.in_(selected)
             )
         elif entity == "Commodities":
-            print("hello for comm")
             id_specifier = "commodity_id"
             data_table_name = "CommodityValues"
             entity_query = entity_map[entity].query.filter(

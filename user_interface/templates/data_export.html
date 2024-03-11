@@ -58,6 +58,7 @@ data you want to export {% endblock %} {% block content %}
           type="button"
           class="btn btn-secondary selectAll"
           id="data-selectAll-Btn"
+          onclick="selectAll()"
         >
           Select All
         </button>
@@ -141,7 +142,7 @@ data you want to export {% endblock %} {% block content %}
   <div class="row mt-3">
     <div class="col"></div>
     <div class="col-md-2">
-      <button type="button" class="btn btn-secondary resetAll">
+      <button type="button" class="btn btn-secondary resetAll" onclick="resetAll()">
         Reset All
       </button>
     </div>
