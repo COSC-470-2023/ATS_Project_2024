@@ -1,25 +1,19 @@
 import connect
 import json
 import traceback
-from sqlalchemy import text
-from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy import text, SQLAlchemyError
+
+from data_collection.collection.json_handler import json_load_output
+from dev_tools import loguru_init
 
 # Globals
 OUTPUT_FILE_PATH = "./SMF_Project_2023/data_collection/output/historical_commodity_output.json"
 
-def load_output_file(path):
-    try:
-        with open(path, "r") as output_file:
-            output_data = json.load(output_file)
-        return output_data
-    except FileNotFoundError:
-        print(f"Output file '{path}' not found.")
-        exit(1)
-    except json.JSONDecodeError:
-        print(f"Error decoding JSON in '{path}'")
-        exit(1)
+logger = loguru_init.initialize()
+
 
 def check_keys(entry):
+    logger.debug("Historical commodity insertion: Checking keys")
     # keys expected to be committed
     keys = [    
         '_historical_date',
@@ -38,42 +32,51 @@ def check_keys(entry):
     # get key value, assign value to key. if key doesn't exist, assign value of None
     return {key: entry.get(key, None) for key in keys}
 
+
 def execute_insert(connection, entry, commodity_id):
+    logger.info(f"Inserting record for commodity ID: {commodity_id}")
     # get key value, assign value to key. if key doesn't exist, assign value of None
     row = check_keys(entry)
     # append generated id
     row["commodity_id"] = commodity_id
     # parameterized query
     query = text("INSERT INTO `historical_commodity_values` VALUES (:commodity_id, :_historical_date, :_historical_open, :_historical_high, :_historical_low, :_historical_close, :_historical_adjClose, :_historical_volume, :_historical_unadjustedVolume, :_historical_change, :_historical_changePercent, :_historical_vwap, :_historical_changeOverTime)")
-    # Excute row insertion
+    # Execute row insertion
     connection.execute(query, row)
-        
+
+
 def get_commodity_id(entry, connection):
-    # set query parameters
-    params = {"symbol": entry["_historical_symbol"], "name": entry["_historical_name"]}
+    logger.debug("Assigning historical commodity ID")
 
-    id_query = text("SELECT id FROM `commodities` WHERE symbol = :symbol")
-    # check if commodity exists in commodities table
-    result = connection.execute(text("SELECT id FROM `commodities` WHERE symbol = :symbol"), parameters=params)
-    
-    row = result.one_or_none()
+    try:
+        # set query parameters
+        params = {"symbol": entry["_historical_symbol"], "name": entry["_historical_name"]}
 
-    if row is None:
-        # if commodity doesn't exist, create new row in commodities table - trigger generates new ID
-        connection.execute(text("INSERT INTO `commodities` (`commodityName`, `symbol`) VALUES (:name, :symbol)"), parameters=params)
-    
-        # get id generated from trigger
-        result = connection.execute(id_query, parameters=params) 
-        commodity_id = result.one()[0]    
-    else:
-        # if the commodity exists, fetch the existing ID
-        commodity_id = row[0]
+        id_query = text("SELECT id FROM `commodities` WHERE symbol = :symbol")
+        # check if commodity exists in commodities table
+        result = connection.execute(text("SELECT id FROM `commodities` WHERE symbol = :symbol"), parameters=params)
+
+        row = result.one_or_none()
+
+        if row is None:
+            # if commodity doesn't exist, create new row in commodities table - trigger generates new ID
+            connection.execute(text("INSERT INTO `commodities` (`commodityName`, `symbol`) VALUES (:name, :symbol)"), parameters=params)
+
+            # get id generated from trigger
+            result = connection.execute(id_query, parameters=params)
+            commodity_id = result.one()[0]
+        else:
+            # if the commodity exists, fetch the existing ID
+            commodity_id = row[0]
+    except Exception as e:
+        logger.error(f"Error occurred when assigning ID: {e}")
     return commodity_id
 
+
 def main():
+    # Load json data
+    historical_data = json_load_output(OUTPUT_FILE_PATH)
     try:
-        # Load json data
-        historical_data = load_output_file(OUTPUT_FILE_PATH)
         # create with context manager
         with connect.connect() as conn:
             # begin transaction with context manager, implicit commit on exit or rollback on exception
@@ -82,11 +85,11 @@ def main():
                     if isinstance(entry, dict):
                         commodity_id = get_commodity_id(entry, conn)
                         try:
-                            # Excute row insertion
+                            # Execute row insertion
                             execute_insert(conn,entry,commodity_id)
                         except SQLAlchemyError as e:
                             # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
-                            print(f"Error: {e}")
+                            logger.error(f"Error: {e}")
                             continue
                     else:
                         # entry is not a dictionary, skip it
@@ -94,7 +97,10 @@ def main():
 
     except Exception as e:
         print(traceback.format_exc())
-        print(f"SQL connection error: {e}")
+        logger.critical(f"Error when connecting to remote database: {e}")
+
+    logger.success("historical_commodity_insert.py ran successfully.")
+
 
 if __name__ == "__main__":
     main()

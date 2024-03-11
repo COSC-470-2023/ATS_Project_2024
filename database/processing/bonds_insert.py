@@ -43,7 +43,7 @@ def execute_insert(connection, entry, bond_id):
 
 
 def get_bond_id(entry, connection):
-    logger.info("Assigning bond ID")
+    logger.debug("Assigning bond ID")
 
     try:
         # Declare and initialize variables
@@ -54,7 +54,7 @@ def get_bond_id(entry, connection):
         result = connection.execute(text(id_query))
         row = result.one_or_none()
         if row is None:
-            logger.debug("Bond ID not found, creating new row")
+            logger.debug("ID not found, creating new row")
             # if bond doesn't exist, create new row in bonds table - trigger generates new ID
             connection.execute(
                 text(
@@ -94,9 +94,9 @@ def main():
             conn.commit()       
     except Exception as e:
         print(traceback.format_exc())
-        logger.error(f"Error when connecting to remote database: {e}")
+        logger.critical(f"Error when connecting to remote database: {e}")
 
-    logger.success("bonds_insertion ran successfully.")
+    logger.success("bonds_insert ran successfully.")
         
 
 # protected entrypoint
