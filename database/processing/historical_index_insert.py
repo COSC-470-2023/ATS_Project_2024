@@ -95,8 +95,6 @@ def main():
                     else:
                         # entry is not a dictionary, skip it
                         continue
-
-                
     except Exception as e:
         print(traceback.format_exc())
         logger.critical(f"Error when connecting to remote database: {e}")
