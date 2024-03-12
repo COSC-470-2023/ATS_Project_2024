@@ -5,9 +5,9 @@ USE ats_db;
 -- Bonds tables --
 
 CREATE TABLE `bonds` (
-  `bond_id` BIGINT,
+  `id` BIGINT,
   `treasuryName` VARCHAR(300),
-  PRIMARY KEY (`bond_id`)
+  PRIMARY KEY (`id`)
 );
 CREATE INDEX treasury_idx ON bonds (treasuryName);
 
@@ -27,7 +27,7 @@ CREATE TABLE `bond_values` (
   `20_year` DECIMAL(5,2),
   `30_year` DECIMAL(5,2),
   PRIMARY KEY (`bond_id`, `date`),
-  FOREIGN KEY (`bond_id`) REFERENCES `bonds`(`bond_id`)
+  FOREIGN KEY (`bond_id`) REFERENCES `bonds`(`id`)
 );
 
 -- Commodities tables --
@@ -236,5 +236,5 @@ CREATE TABLE `authorized_users` (
   `password` VARCHAR(300),
   `firstName` VARCHAR(300),
   `lastName` VARCHAR(300),
-  PRIMARY KEY (`id`)
+  PRIMARY KEY ('id')
 );

@@ -2,6 +2,11 @@ import errno
 import json
 import os
 
+from ats import loguru_init
+
+# Loguru init
+logger = loguru_init.initialize()
+
 
 def load_config(config_path: str):
     """
@@ -16,11 +21,11 @@ def load_config(config_path: str):
         config = json.load(config_file)
         config_file.close()
         return config
-    except IOError:  # TODO Implement system logging when defined to log/flag a failure in this component
-        print(f"IOError while query config at path: {config_path}")
+    except IOError:
+        logger.critical(f"IOError while query config at path: {config_path}")
         exit(-1001)  # Exit program with code -1001 (Invalid config path)
-    except json.JSONDecodeError as e:  # TODO Implement system logging when defined to log/flag a failure in this component
-        print(f"JSON decoding encountered an error while decoding {config_path}:\n{e}")
+    except json.JSONDecodeError as e:
+        logger.critical(f"JSON decoding encountered an error while decoding {config_path}:\n{e}")
         exit(-1002)  # Exit program with code -1002 (Invalid config structure)
 
 
@@ -41,3 +46,23 @@ def write_files(json_data, output_folder: str, filename: str):
 
     with open(output_folder + "/" + filename, "w") as outfile:
         json.dump(json_data, outfile, indent=2)
+
+
+def load_output(path: str):
+    """
+    Attempts to load the output file specified.
+    Exits with 1 if config path is invalid.
+    Exits with 1 if config json is invalid structure
+    :param path: A string containing the filename and path of the output data file
+    :return: output data
+    """
+    try:
+        with open(path, "r") as output_file:
+            output_data = json.load(output_file)
+        return output_data
+    except FileNotFoundError:
+        logger.critical(f"Output file '{path}' not found.")
+        exit(1)
+    except json.JSONDecodeError:
+        logger.critical(f"Error decoding JSON in '{path}'")
+        exit(1)

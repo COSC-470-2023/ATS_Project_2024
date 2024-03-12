@@ -1,27 +1,12 @@
-import json
 import traceback
 
 import sqlalchemy
 
+from ats import loguru_init
 from ats.globals import DIR_OUTPUT, OUTPUT_SYMBOL_CHANGE
-from ats.util import connect
+from ats.util import connect, json_handler
 
-
-def load_output_file(path):
-    try:
-        with open(path, "r") as output_file:
-            output_data = json.load(output_file)
-            if not output_data:
-                print("No symbol change update required")
-                exit(0)
-        return output_data
-    except FileNotFoundError:
-        print(f"Error: Output file '{path}' not found.")
-        exit(1)
-    except json.JSONDecodeError as e:
-        print(f"Error decoding JSON in '{path}'.")
-        print(e)
-        exit(1)
+logger = loguru_init.initialize()
 
 
 def update_symbol(connection, symbol):
@@ -36,22 +21,23 @@ def update_symbol(connection, symbol):
 
         connection.execute(company_update)
     except Exception as e:
-        print(f"Error in updating database: {e}")
         print(traceback.format_exc())
+        logger.critical(f"Error in updating database: {e}")
 
 
 def main():
     try:
         # Establish a connection to server
         with connect.connect() as conn:
-            symbol_change = load_output_file(DIR_OUTPUT + OUTPUT_SYMBOL_CHANGE)
+            symbol_change = json_handler.load_output(DIR_OUTPUT + OUTPUT_SYMBOL_CHANGE)
             for symbol in symbol_change:
                 update_symbol(conn, symbol)
             conn.commit()
     except Exception as e:
-        print(e)
         print(traceback.format_exc())
-        print("Database connection error")
+        logger.critical(f"Error when connecting to remote database: {e}")
+
+    logger.success("symbol_change_update.py ran successfully.")
 
 
 if __name__ == "__main__":

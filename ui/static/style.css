@@ -24,14 +24,21 @@ body {
 
 /*index.html*/
 
-form {
-    width: 25%;
+#login-form {
+    width: 100%;
     padding: 50px;
-    margin-top: 120px;
+    max-width: 400px;
 }
 
-form h1 {
+#login-form h1 {
     font-size: 70px;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 .form-control {
@@ -52,8 +59,8 @@ form h1 {
 }
 
 #sidebar {
-    width: 70px;
-    min-width: 70px;
+    width: 260px;
+    min-width: 260px;
     z-index: 1000;
     transition: all .25s ease-in-out;
     display: flex;
@@ -62,8 +69,8 @@ form h1 {
 }
 
 #sidebar.expand {
-    width: 260px;
-    min-width: 260px;
+    width: 70px;
+    min-width: 70px;
 }
 
 #toggle-btn {
@@ -83,8 +90,8 @@ form h1 {
     font-weight: 600;
 }
 
-#sidebar:not(.expand) .sidebar-logo,
-#sidebar:not(.expand) a.sidebar-link span {
+#sidebar.expand .sidebar-logo,
+#sidebar.expand a.sidebar-link span {
     display: none;
 }
 
@@ -156,27 +163,33 @@ a.sidebar-link:hover {
     border-radius: 10px;
 }
 
-#change-config-stock {
-    background: #D9D9D9;
+#change-config-box {
     border-radius: 10px;
 }
 
 .card {
-    padding: 10px 0px;
+    /* padding: 10px 0px; */
 }
 
-.container-list {
+.config-list {
     height: 150px;
     width: 100%;
     overflow: hidden;
     overflow-y: scroll;
 }
 
-.container-list ul {
+.config-list ul {
     height: 150px;
     width: 100%;
     overflow: hidden;
-    overflow-y: scroll;
+}
+
+#config-buttons {
+    text-align: center;
+}
+
+#config-buttons .btn {
+    margin-right: 10px;
 }
 
 #searchInput {
@@ -200,4 +213,199 @@ a.sidebar-link:hover {
 #stock-list li a:hover:not(.header) {
     background-color: #eee;
     /* Add a hover effect to all links, except for headers */
+}
+
+#change-data-section {
+    background: #f7f7f7;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+#change-data-list {
+    background: #D9D9D9;
+    border-radius: 10px;
+}
+
+/* Job Scheduling Page */
+
+#data-section {
+    background-color: #f7f7f7;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#settings-section {
+    background-color: #f7f7f7;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#default-setting {
+    background-color: #d9d9d9;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#custom-setting {
+    background-color: #d9d9d9;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 0px 10px;
+}
+
+.border-on-checkbox {
+    border: 3px solid #000; 
+    border-radius: 10px; 
+}
+
+#days-section {
+    background-color: #f7f7f7;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#buttons-section {
+    padding: 20px;
+    border-radius: 10px;
+    align-items: end;
+    justify-content: end;
+}
+
+/* Download Data Page */
+
+.modal-list {
+    border: none;
+    box-shadow: none;
+  }
+
+  #export-select-data {
+    background-color: #f7f7f7;
+    padding: 20px;
+    border-radius: 10px;
+  }
+
+  #export-data-type {
+    background-color: #f7f7f7;
+    padding: 20px;
+    border-radius: 10px;
+  }
+
+  #export-data-type label {
+    margin-left: 1rem;
+  }
+
+  #export-sort-by {
+    background-color: #f7f7f7;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 5px;
+  }
+
+  #export-date-range {
+    background-color: #f7f7f7;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 5px;
+  }
+
+  #export-data-format {
+    background-color: #f7f7f7;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 5px;
+  }
+
+#export-data-list {
+    max-height: 100%;
+    width: 100%;
+    overflow: hidden;
+    margin: 15px;
+    padding-left: 1rem;
+    background-color: #ffffff;
+}
+
+#export-data-list ul {
+    max-height: 200px;
+    min-height: 150px;
+    width: 100%;
+    margin: 0;
+    overflow-y: scroll;
+}
+
+#export-data-list label {
+    margin-left: 1rem;
+}
+
+#export-col {
+    background-color: #f7f7f7;
+    border-radius: 10px;
+}
+
+#data-type-list {
+    margin: 0;
+    padding: 0;
+}
+
+.input-daterange input {
+    padding: 10px 15px !important;
+    border: 1px solid #CFD8DC !important;
+    border-radius: 4px !important;
+    box-sizing: border-box;
+    background-color: #fff !important;
+    color: #000 !important;
+    font-size: 16px !important;
+    letter-spacing: 1px;
+    position: relative;
+    width: 250px;
+}
+
+.input-daterange input:focus {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border: 1px solid #FFA000 !important;
+    outline-width: 0;
+}
+
+.daterangepicker {
+  background-color: #fff;
+  border-radius: 0 !important;
+  align-content: center !important;
+  padding: 0 !important;
+}
+
+/*Weekday Heading*/
+thead tr:nth-child(2) {
+  color: #BDBDBD !important;
+}
+
+tbody tr td {
+  padding: 5px 7px !important;
+}
+
+.month {
+  font-size: 16px !important;
+  padding-bottom: 10px !important;
+  padding-top: 10px !important;
+}
+
+.start-date, .end-date {
+  border-radius: 0px !important;
+}
+
+.available:hover {
+  border-radius: 0px !important;
+}
+
+.off {
+  color: #EEEEEE !important;
+}
+
+.off:hover {
+  background-color: #EEEEEE !important;
+  color: #fff !important;
+}
+
+.drp-buttons {
+  display: none !important;
 }

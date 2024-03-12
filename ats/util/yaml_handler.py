@@ -2,6 +2,11 @@ import errno
 import os
 import yaml
 
+from ats import loguru_init
+
+# Loguru init
+logger = loguru_init.initialize()
+
 
 def load_config(config_path: str):
     try:
@@ -9,11 +14,11 @@ def load_config(config_path: str):
         config = yaml.safe_load(config_file)
         config_file.close()
         return config
-    except IOError:  # TODO Implement logging system
-        print(f"IOError while querying config at path: {config_path}")
+    except IOError:
+        logger.critical(f"IOError while querying config at path: {config_path}")
         exit(-1001)  # Exit program with code -1001 (Invalid config path)
     except yaml.YAMLError:
-        print(yaml.YAMLError)
+        logger.critical(yaml.YAMLError)
         exit(-1003)  # Exit program with code -1003 (YAML error)
 
 

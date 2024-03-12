@@ -1,27 +1,17 @@
 import datetime
-import json
 import traceback
 
 import sqlalchemy
 
+from ats import loguru_init
 from ats.globals import DIR_OUTPUT, OUTPUT_REALTIME_STOCKS
-from ats.util import connect
+from ats.util import connect, json_handler
 
-
-def load_output_file(path):
-    try:
-        with open(path, "r") as output_file:
-            output_data = json.load(output_file)
-        return output_data
-    except FileNotFoundError:
-        print(f"Output file '{path}' not found.")
-        exit(1)
-    except json.JSONDecodeError:
-        print(f"Error decoding JSON in '{path}'")
-        exit(1)
+logger = loguru_init.initialize()
 
 
 def check_keys(entry):
+    logger.debug("Realtime stock insertion: Checking keys")
     # keys expected to be committed
     keys = [
         "_realtime_date", 
@@ -48,10 +38,11 @@ def check_keys(entry):
 
 
 def execute_insert(connection, entry, company_id):
+    logger.info(f"Inserting record for stock ID: {company_id}")
     # check for any missing keys and assign values of None
     row = check_keys(entry)
 
-    # check if earningsAnnouncement is not None, if it's not None convert to a datetime object and format for mysql datetime
+    # check if earningsAnnouncement is not None, convert to a datetime object and format for mysql datetime
     # if it is None, assign None to earnings_announcement
     earnings_announcement = (
         datetime.datetime.strptime(row["_realtime_earningsAnnouncement"], "%Y-%m-%dT%H:%M:%S.%f%z").strftime("%Y-%m-%d %H:%M:%S") if row["_realtime_earningsAnnouncement"] is not None else None
@@ -68,28 +59,36 @@ def execute_insert(connection, entry, company_id):
 
 
 def get_company_id(entry, conn):
-    params = {"symbol": entry["_realtime_symbol"], "name": entry["_realtime_name"], "isListed": 1}
-    # check if company exists in companies table
-    result = conn.execute(sqlalchemy.text("SELECT id FROM `companies` WHERE symbol = :symbol"), parameters=params)
-    row = result.one_or_none()
+    logger.debug("Assigning realtime stock ID")
+    company_id = None
 
-    if row is None:
-        # if company doesn't exist, create new row in companies table - trigger generates new ID
-        conn.execute(sqlalchemy.text("INSERT INTO `companies` (`companyName`, `symbol`, `isListed`) VALUES (:name, :symbol, :isListed)"), parameters=params)
-
-        # get the generated ID
+    try:
+        params = {"symbol": entry["_realtime_symbol"], "name": entry["_realtime_name"], "isListed": 1}
+        # check if company exists in companies table
         result = conn.execute(sqlalchemy.text("SELECT id FROM `companies` WHERE symbol = :symbol"), parameters=params)
-        company_id = result.one()[0]
-    else:
-        # if the company exists, fetch the existing ID
-        company_id = row[0]
+        row = result.one_or_none()
+
+        if row is None:
+            # if company doesn't exist, create new row in companies table - trigger generates new ID
+            conn.execute(sqlalchemy.text("INSERT INTO `companies` (`companyName`, `symbol`, `isListed`) VALUES (:name, :symbol, :isListed)"), parameters=params)
+
+            # get the generated ID
+            result = conn.execute(sqlalchemy.text("SELECT id FROM `companies` WHERE symbol = :symbol"), parameters=params)
+            company_id = result.one()[0]
+        else:
+            # if the company exists, fetch the existing ID
+            company_id = row[0]
+    except Exception as e:
+        logger.error(f"Error occurred when assigning ID: {e}")
+
     return company_id
 
 
 def main():
+    # Load json data
+    realtime_data = json_handler.load_output(DIR_OUTPUT + OUTPUT_REALTIME_STOCKS)
+
     try:
-        # Load json data
-        realtime_data = load_output_file(DIR_OUTPUT + OUTPUT_REALTIME_STOCKS)
         # create connection with context manager, connection closed on exit
         with connect.connect() as conn:
             # begin transaction with context manager, implicit commit on exit or rollback on exception
@@ -102,7 +101,7 @@ def main():
                             execute_insert(conn, entry, company_id)
                         except sqlalchemy.exc.SQLAlchemyError as e:
                             # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
-                            print(f"Error: {e}")
+                            logger.error(f"Error: {e}")
                             continue
                     else:
                         # entry is not a dictionary, skip it
@@ -110,7 +109,9 @@ def main():
 
     except Exception as e:
         print(traceback.format_exc())
-        print(f"Error: {e}")
+        logger.critical(f"Error when connecting to remote database: {e}")
+
+    logger.success("realtime_stock_insert.py ran successfully.")
 
 
 # protected entrypoint

@@ -2,7 +2,10 @@ import traceback
 
 import sqlalchemy
 
+from ats import loguru_init
 from ats.util import connect
+
+logger = loguru_init.initialize()
 
 deletion_list = [
     'bond_values',
@@ -17,6 +20,7 @@ deletion_list = [
 
 
 def data_deletion(table, conn):
+    logger.info("Executing obsolet data deletion")
     # Delete entries that is stored longer than 3 years
     conn.execute(sqlalchemy.text(f"DELETE FROM {table} WHERE date < DATE_SUB(CURDATE(), INTERVAL 3 YEAR)"))
 
@@ -33,9 +37,9 @@ def main():
                     conn.commit()
                     
     except Exception as e:
-        print(e)
         print(traceback.format_exc())
-        print("SQL connection error")
+        logger.critical(f"Error when connecting to remote database: {e}")
+    logger.success("obsolete_data_deletion ran successfully.")
 
 
 # protected entrypoint
