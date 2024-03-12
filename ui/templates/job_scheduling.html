@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %} Job Scheduling {% endblock %}
+
+{% block mainTitle %} Job Scheduling {% endblock %}
+{% block mainDescription %} Choose the days you would like the service to be active {% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row" id="data-section">
+        <div class="col-md-2">
+            <h5> Data File: </h5>
+        </div>
+        <div class="col-md-10">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Select Data
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <ul class="list-unstyled">
+                        <li class="dropdown-item" onclick="selectItem(this)">Realtime Data</li>
+                        <li class="dropdown-item" onclick="selectItem(this)">Historical Data</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row pt-3 mt-3" id="settings-section">
+        <div class="col"></div>
+        <div class="col-md-5" id="default-setting">
+            <div class="row">
+                <div class="col">
+                    <h5> Default </h5>
+                </div>
+                <div class="col">
+                    <input type="checkbox" id="default-checkbox" aria-label="Checkbox for following text input" onchange="defaultBorder()">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p> Recommended. The default job scheduling of the service </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5" id="custom-setting">
+            <div class="row">
+                <div class="col">
+                    <h5> Custom </h5>
+                </div>
+                <div class="col">
+                    <input type="checkbox" id="custom-checkbox" aria-label="Checkbox for following text input" onchange="customBorder()">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p> Best suited for use of specific time and dates for the service </p>
+                </div>
+            </div>
+        </div>
+        <div class="col"></div>
+    </div>
+    <div class="row pt-3 mt-3" id="days-section">
+        <div class="col-md">
+            <div class="row pl-3">
+                <h5> Day of the week </h5>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-secondary sunday"> Sunday </button>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-secondary monday"> Monday </button>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-secondary tuesday"> Tuesday </button>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-secondary wednesday"> Wednesday </button>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-secondary thursday"> Thursday </button>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-secondary friday"> Friday </button>
+                </div>
+                <!-- <div class="col-md-2">
+                    <button type="button" class="btn btn-secondary saturday"> Saturday </button>
+                </div> -->
+            </div>
+        </div>
+    </div>
+    <div class="row pt-3 mt-3" id="buttons-section">
+        <div class="col"></div>
+        <div class="col-md-2">
+            <button type="button" class="btn btn-secondary cancel"> Cancel </button>
+        </div>
+        <div class="col-md-3">
+            <button type="button" class="btn btn-secondary applyChanges"> Apply Changes </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block mainTitle2 %} {% endblock %}
+{% block mainDescription2 %} {% endblock %}
+
+{% block content2 %}
+{% endblock %}
