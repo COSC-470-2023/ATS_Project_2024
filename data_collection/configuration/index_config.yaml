@@ -1,4 +1,0 @@
----
-url: https://financialmodelingprep.com/api/v3/{QUERY_PARAMS}?apikey={API_KEY}
-api_key: <PASTE KEY HERE>
-constituent: sp500_constituent

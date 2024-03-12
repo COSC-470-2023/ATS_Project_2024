@@ -1,4 +1,4 @@
-from user_interface import create_app
+from ui import create_app
 
 app = create_app()
 
