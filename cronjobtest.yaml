@@ -1,12 +1,12 @@
 SymbolChanges:
   time: '0 10 * * 1-5'
-  script_path: 'SMF_Project_2023/job_scheduling/symbol_change_scheduling.sh'
+  script_path: 'SMF_Project_2023/scripts/symbol_change_scheduling.sh'
 RealtimeData:
   time: '0 16 * * 1-5'
-  script_path: 'SMF_Project_2023/job_scheduling/realtime_scheduling.sh'
+  script_path: 'SMF_Project_2023/scripts/realtime_scheduling.sh'
 Bonds:
   time: '0 0 * * SAT'
-  script_path: 'SMF_Project_2023/job_scheduling/bond_scheduling.sh'
+  script_path: 'SMF_Project_2023/scripts/bond_scheduling.sh'
 CompanyStatements:
   time: '0 0 * * SUN'
-  script_path: 'SMF_Project_2023/job_scheduling/company_statement_scheduling.sh'
+  script_path: 'SMF_Project_2023/scripts/company_statement_scheduling.sh'
