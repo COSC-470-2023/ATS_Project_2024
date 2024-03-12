@@ -1,16 +1,9 @@
+import os
+from dotenv import load_dotenv
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
-
-# import sys
-# sys.path.insert(0, './database/processing')
-# import credentials as cred
-
-import sys
-
-sys.path.insert(0, "./database")
-from processing import credentials as cred
 
 
 class Base(DeclarativeBase):
@@ -19,11 +12,18 @@ class Base(DeclarativeBase):
 
 db = SQLAlchemy(model_class=Base)
 
+load_dotenv()
+
+username = os.getenv("ATS_DBMS_USER")
+password = os.getenv("ATS_DBMS_PASS")
+hostname = os.getenv("ATS_DBMS_HOST")
+database = os.getenv("ATS_DBMS_DATABASE")
+
 
 def create_app():
     app = Flask(__name__)
     app.config["SQLALCHEMY_DATABASE_URI"] = (
-        f"mysql+pymysql://{cred.db['user']}:{cred.db['pass']}@{cred.db['host']}/{cred.db['database']}"
+        f"mysql+pymysql://{username}:{password}@{hostname}/{database}"
     )
     app.secret_key = "secret_key"  # TODO: MUST change this key to something better and store elsewhere
 
