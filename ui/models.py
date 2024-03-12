@@ -7,7 +7,7 @@ db.Model.metadata.reflect(db.engine)
 
 
 class Users(db.Model, UserMixin):
-    __table__ = db.Model.metadata.tables["authorized_users"]
+    __table__ = db.Model.metadata.tables["users"]
 
 
 ## Bonds Tables ##
