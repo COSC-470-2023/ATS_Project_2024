@@ -152,10 +152,10 @@ def main():
     # Write empty list, or changed list to output file, exit with success code
     json_handler.write_files(symbol_change_output, DIR_OUTPUT, OUTPUT_SYMBOL_CHANGE)
     logger.info(
-        "Task complete. Symbols changed for "
-        + str(datetime.date.today())
-        + ": "
-        + str(symbol_changed)
+        "Task complete. Symbols changed for " +
+        str(datetime.date.today()) +
+        ": " +
+        str(symbol_changed)
     )
     exit(0)
 
