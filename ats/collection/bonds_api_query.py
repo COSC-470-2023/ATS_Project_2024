@@ -38,7 +38,7 @@ def create_date_window(days_queried):
             window = {start: end}
             date_windows.append(window)
     except Exception as e:
-        logger.debug(e)
+        logger.error(e)
     logger.info("Bonds Date Windows creation complete")
     return date_windows
 
@@ -86,12 +86,12 @@ def make_queries(api_url, api_key, api_fields, treasuries, non_api_fields, days_
                         if src == "_config_name":
                             entry[map_to] = treasuries['name']
                 except KeyError as e:
-                    logger.debug(f"Key Error on api {iter(entry)}:\n{e}")
+                    logger.error(f"Key Error on api {iter(entry)}:\n{e}")
 
                 # Append the modified entry to the output
                 bonds_data.append(entry)
     except Exception as e:
-        logger.debug(e)
+        logger.error(e)
 
     logger.info("Bonds Query complete")
     return bonds_data
