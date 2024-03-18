@@ -19,10 +19,10 @@ def create_date_window(days_queried):
     :param days_queried: Number of days to observe from current date
     :return: datetime object containing a list of segmented dates
     """
+    date_windows = []
     logger.info("creating Bonds Date Windows")
     try:
         total_days = int(days_queried)
-        date_windows = []
         num_chunks = total_days // 90  # Give the number of 90-day chunks plus the remainder
         rem = total_days % 90  # Calculate the remaining days that weren't in the 90-day chunks
         end = datetime.date.today()
