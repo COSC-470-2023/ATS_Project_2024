@@ -130,6 +130,30 @@ a.sidebar-link:hover {
   opacity: 1;
 }
 
+/* Media query for mobile devices */
+@media (max-width: 767px) {
+  #sidebar {
+      width: 70px;
+      min-width: 70px;
+  }
+
+  #sidebar.expand {
+      width: 260px;
+      min-width: 260px;
+  }
+
+  #sidebar.expand .sidebar-logo,
+  #sidebar.expand a.sidebar-link span {
+      display: initial;
+  }
+
+  #sidebar:not(.expand) .sidebar-logo,
+  #sidebar:not(.expand) .sidebar-item, 
+  #sidebar:not(.expand) .sidebar-footer {
+      display: none; /* Hide text when sidebar is collapsed */
+  }
+}
+
 /* Main Container */
 
 .main {
