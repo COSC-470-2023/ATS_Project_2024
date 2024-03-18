@@ -94,8 +94,15 @@ function datepicker() {
   });
 }
 
-function selectAll() {
-  var checkboxes = $(".modal-list .checkbox");
+function selectAllData() {
+  var checkboxes = $("#data-list .checkbox");
+  // Check if any of the checkboxes are already checked
+  var anyChecked = checkboxes.is(":checked");
+  checkboxes.prop("checked", !anyChecked);
+}
+
+function selectAllColumns() {
+  var checkboxes = $("#column-list .checkbox");
   // Check if any of the checkboxes are already checked
   var anyChecked = checkboxes.is(":checked");
   checkboxes.prop("checked", !anyChecked);
@@ -119,6 +126,20 @@ function resetAll() {
   selectData.prop("selected", false);
   datepicker();
 }
+
+// Function to handle when data type is changed (historical or realtime)
+function onDataTypeChange(event) {
+  if (event.target.checked) {
+    localStorage.setItem('selectedDataType', event.target.value);
+    location.reload();
+  }
+}
+
+const dataTypeRadios = document.querySelectorAll('input[name="data-type"]')
+
+dataTypeRadios.forEach(radio => {
+  radio.addEventListener('change', onDataTypeChange);
+});
 
 // changes the state of "Data Type" radio button based on the data selection
 function onDataChange() {
@@ -147,12 +168,21 @@ function onDataChange() {
 
 document.addEventListener("DOMContentLoaded", function () {
   const storedValue = sessionStorage.getItem("selectedValue");
+  const dataType = localStorage.getItem('selectedDataType');
+  const radio = document.querySelector(`input[value="${dataType}"]`)
   if (storedValue) {
     const dataSelect = document.getElementById("select-data");
     dataSelect.value = storedValue;
 
     // Clear the stored value
     sessionStorage.removeItem("selectedValue");
+  }
+  if (dataType) {
+    if (radio.disabled) {
+      radio.checked = false;
+    } else {
+      radio.checked = true;
+    }
   }
 });
 

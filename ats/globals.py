@@ -8,6 +8,7 @@ CONFIG_SYMBOL_CHANGE = "symbol_change_config.yaml"
 DIR_CONFIG = "config/"
 DIR_CONFIG_BACKUP = "config/bak/"
 DIR_OUTPUT = "output/"
+DIR_UI_OUPUT = "ui_ouput/"
 
 OUTPUT_BONDS = "bonds_output.json"
 OUTPUT_COMPANY_INFO = "company_info_output.json"

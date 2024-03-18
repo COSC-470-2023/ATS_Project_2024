@@ -1,113 +1,199 @@
 {% extends "base.html" %} {% block title %} Export Data {% endblock %} {% block
 mainTitle %} Export Data {% endblock %} {% block mainDescription %} Choose the
 data you want to export {% endblock %} {% block content %}
-<form action="/data-export/export-data" method="POST">
-  <select class="form-select dropdown p-1" id="select-data" name="select-data" onchange="onDataChange()">
+<form class="export-content" action="/data-export/export-data" method="POST">
+  <select
+    class="form-select dropdown p-1 mb-3"
+    id="select-data"
+    name="select-data"
+    onchange="onDataChange()"
+  >
     <option name="entity" value="Companies">Stocks</option>
     <option name="entity" value="Indexes">Indexes</option>
     <option name="entity" value="Bonds">Bonds</option>
     <option name="entity" value="Commodities">Commodities</option>
     <option name="entity" value="company-info">Company Info</option>
   </select>
-  <div class="row pt-3 justify-content-center">
-    <div class="col-md-6 p-md-4 mt-3" id="export-col">
-      <h6>Data</h6>
-      <div class="row">
-        <div class="card modal-list" id="export-data-list">
-          <ul class="list-unstyled" id="data-list">
-            {% if entity == "Bonds" %} {% for item in items %}
-            <li>
-              <input type="checkbox" name="data-item" id="{{ item['treasuryName'] }}" value="{{ item['treasuryName'] }}"
-                class="checkbox" />
-              <label for="{{ item['treasuryName'] }}">
-                {{ item['treasuryName'] }}
-              </label>
-            </li>
-            {% endfor %} {% else %} {% if entity == "company-info" or entity ==
-            None or entity == "Companies" %} {% set name = "companyName" %} {% elif entity ==
-            "Commodities" %} {% set name = "commodityName" %} {% elif entity ==
-            "Indexes" %} {% set name = "indexName" %} {% endif %} {% for item in
-            items %}
-            <li>
-              <input type="checkbox" name="data-item" id="{{ item['symbol'] }}" value="{{ item['symbol'] }}"
-                class="checkbox" />
-              <label for="{{ item['symbol'] }}">
-                {{ item["symbol"] }} - {{ item[name|string] }}
-              </label>
-            </li>
-            {% endfor %} {% endif %}
-          </ul>
-        </div>
-      </div>
-      <div class="row pb-3 justify-content-center">
-        <button type="button" class="btn btn-secondary selectAll" id="data-selectAll-Btn" onclick="selectAll()">
-          Select All
-        </button>
-      </div>
-    </div>
-
-    <div class="col-md-6 p-md-4 mt-3" id="export-col">
-      <h6>Filter?</h6>
-      <div class="row">
-        <div class="card filter-modal-list" id="export-data-list">
-          <ul class="list-unstyled" id="data-list">
-            {% for a in range(10) %}
-            <li>
-              <input type="checkbox" name="data-list" id="filter" value="filter" class="checkbox" />
-              <label for="filter">
-                Filter?
-              </label>
-            </li>
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
-      <div class="row pb-3 justify-content-center">
-        <button type="button" class="btn btn-secondary selectAll" id="data-selectAll-Btn" onclick="selectAllFilter()">
-          Select All
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <div class="row mt-3">
-    <div class="col-md-6 p-md-4 mt-3" id="export-col">
-      <h6>Data Type:</h6>
-      <ul id="data-type-list">
-        <li>
-          <input type="radio" id="realtime-data" name="data-type" value="realtime" {% if realtime_disabled %} disabled
-            {% endif %} />
-          <label for="realtime-data">Realtime Data</label>
-        </li>
-        <li>
-          <input type="radio" id="historical-data" name="data-type" value="historical" {% if realtime_disabled %}
-            disabled {% endif %} />
-          <label for="historical-data">Historical Data</label>
-        </li>
-      </ul>
-    </div>
-
-    <div class="col-md-6 p-md-4 mt-3" id="export-col">
-      <h6>Date Range:</h6>
-      <div class="flex-row d-flex justify-content-center">
-        <div class="col">
-          <div class="input-group input-daterange">
-            <input type="text" name="daterange" value="" />
+  <div class="container p-0">
+    <!-- First Row -->
+    <div class="row">
+      <div class="col">
+        <div class="card content-card p-0">
+          <div class="card-body">
+            <!-- Your content here -->
+            <div class="row justify-content-between">
+              <div class="col-md-7">
+                <!-- First column content -->
+                <h6 class="card-title">Select Data:</h6>
+                <div id="export-data-list">
+                  <ul class="list-unstyled" id="data-list">
+                    {% if entity == "Bonds" %} {% for item in items %}
+                    <li>
+                      <input
+                        type="checkbox"
+                        name="data-item"
+                        id="{{ item['treasuryName'] }}"
+                        value="{{ item['treasuryName'] }}"
+                        class="checkbox"
+                      />
+                      <label for="{{ item['treasuryName'] }}">
+                        {{ item['treasuryName'] }}
+                      </label>
+                    </li>
+                    {% endfor %} {% else %} {% if entity == "company-info" or
+                    entity == None or entity == "Companies" %} {% set name =
+                    "companyName" %} {% elif entity == "Commodities" %} {% set
+                    name = "commodityName" %} {% elif entity == "Indexes" %} {%
+                    set name = "indexName" %} {% endif %} {% for item in items
+                    %}
+                    <li>
+                      <input
+                        type="checkbox"
+                        name="data-item"
+                        id="{{ item['symbol'] }}"
+                        value="{{ item['symbol'] }}"
+                        class="checkbox"
+                      />
+                      <label for="{{ item['symbol'] }}">
+                        {{ item["symbol"] }} - {{ item[name|string] }}
+                      </label>
+                    </li>
+                    {% endfor %} {% endif %}
+                  </ul>
+                </div>
+                <div class="row justify-content-center">
+                  <button
+                    type="button"
+                    class="btn btn-secondary selectAll"
+                    id="data-selectAll-Btn"
+                    onclick="selectAllData()"
+                  >
+                    Select All
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <!-- Second column content -->
+                <h6 class="card-title">Select Fields:</h6>
+                <div id="export-data-list">
+                  <ul class="list-unstyled" id="column-list">
+                    {% for field in fields %}
+                    <li>
+                      <input
+                        type="checkbox"
+                        name="data-item"
+                        id="{{ field }}"
+                        value="{{ field }}"
+                        class="checkbox"
+                      />
+                      <label for="{{ field }}">
+                        {{ field }}
+                      </label>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+                <div class="row justify-content-center">
+                  <button
+                    type="button"
+                    class="btn btn-secondary selectAll"
+                    id="data-selectAll-Btn"
+                    onclick="selectAllColumns()"
+                  >
+                    Select All
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="row pt-3 justify-content-center">
-    <div class="col-md px-0">
-      &nbsp;
+    <!-- Second Row -->
+    <div class="row justify-content-between">
+      <div class="col-md-6">
+        <div class="card content-card">
+          <div class="card-body">
+            <div class="row">
+              <h6 class="card-title">Data Type:</h6>
+              <ul id="data-type-list">
+                <li>
+                  <input
+                    type="radio"
+                    id="realtime-data"
+                    name="data-type"
+                    value="realtime"
+                    checked
+                    {%
+                    if
+                    realtime_disabled
+                    %}
+                    disabled
+                    {%
+                    endif
+                    %}
+                  />
+                  <label for="realtime-data">Realtime Data</label>
+                </li>
+                <li>
+                  <input
+                    type="radio"
+                    id="historical-data"
+                    name="data-type"
+                    value="historical"
+                    {%
+                    if
+                    realtime_disabled
+                    %}
+                    disabled
+                    {%
+                    endif
+                    %}
+                  />
+                  <label for="historical-data">Historical Data</label>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card content-card">
+          <div class="card-body">
+            <!-- Your content here -->
+            <div class="row">
+              <div class="col-sm-4">
+                <h6>Date Range:</h6>
+              </div>
+              <div class="col-md-8">
+                <div class="input-group input-daterange">
+                  <input type="text" name="daterange" value="" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="col-md-2 col-sm-12 text-center pl-0 pr-1">
-      <button type="button" class="btn btn-secondary resetAll" onclick="resetAll()">Reset All</button>
-    </div>
-    <div class="col-md-2 col-sm-12 text-center pl-0 pr-1"> 
-      <button type="button" class="btn btn-secondary exportFile">Export File</button>
+    <!-- Third Row -->
+    <div class="row">
+      <div class="col d-flex justify-content-end">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          id="reset-all-btn"
+          onclick="resetAll()"
+        >
+          Reset All
+        </button>
+        <button
+          type="submit"
+          class="btn btn-secondary ml-2"
+          id="export-file-btn"
+        >
+          Export File
+        </button>
+      </div>
     </div>
   </div>
 </form>

@@ -230,7 +230,7 @@ CREATE TABLE `historical_index_values` (
 
 -- User Tables --
 
-CREATE TABLE `authorized_users` (
+CREATE TABLE `users` (
   `id` BIGINT,
   `username` VARCHAR(300),
   `password` VARCHAR(300),
