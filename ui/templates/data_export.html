@@ -2,12 +2,7 @@
 mainTitle %} Export Data {% endblock %} {% block mainDescription %} Choose the
 data you want to export {% endblock %} {% block content %}
 <form class="export-content" action="/data-export/export-data" method="POST">
-  <select
-    class="form-select dropdown p-1 mb-3"
-    id="select-data"
-    name="select-data"
-    onchange="onDataChange()"
-  >
+  <select class="form-select dropdown p-1 mb-3" id="select-data" name="select-data" onchange="onDataChange()">
     <option name="entity" value="Companies">Stocks</option>
     <option name="entity" value="Indexes">Indexes</option>
     <option name="entity" value="Bonds">Bonds</option>
@@ -18,7 +13,7 @@ data you want to export {% endblock %} {% block content %}
     <!-- First Row -->
     <div class="row">
       <div class="col">
-        <div class="card content-card p-0">
+        <div class="card content-card p-0 mb-3">
           <div class="card-body">
             <!-- Your content here -->
             <div class="row justify-content-between">
@@ -29,13 +24,8 @@ data you want to export {% endblock %} {% block content %}
                   <ul class="list-unstyled" id="data-list">
                     {% if entity == "Bonds" %} {% for item in items %}
                     <li>
-                      <input
-                        type="checkbox"
-                        name="data-item"
-                        id="{{ item['treasuryName'] }}"
-                        value="{{ item['treasuryName'] }}"
-                        class="checkbox"
-                      />
+                      <input type="checkbox" name="data-item" id="{{ item['treasuryName'] }}"
+                        value="{{ item['treasuryName'] }}" class="checkbox" />
                       <label for="{{ item['treasuryName'] }}">
                         {{ item['treasuryName'] }}
                       </label>
@@ -47,13 +37,8 @@ data you want to export {% endblock %} {% block content %}
                     set name = "indexName" %} {% endif %} {% for item in items
                     %}
                     <li>
-                      <input
-                        type="checkbox"
-                        name="data-item"
-                        id="{{ item['symbol'] }}"
-                        value="{{ item['symbol'] }}"
-                        class="checkbox"
-                      />
+                      <input type="checkbox" name="data-item" id="{{ item['symbol'] }}" value="{{ item['symbol'] }}"
+                        class="checkbox" />
                       <label for="{{ item['symbol'] }}">
                         {{ item["symbol"] }} - {{ item[name|string] }}
                       </label>
@@ -62,12 +47,8 @@ data you want to export {% endblock %} {% block content %}
                   </ul>
                 </div>
                 <div class="row justify-content-center">
-                  <button
-                    type="button"
-                    class="btn btn-secondary selectAll"
-                    id="data-selectAll-Btn"
-                    onclick="selectAllData()"
-                  >
+                  <button type="button" class="btn btn-secondary selectAll" id="data-selectAll-Btn"
+                    onclick="selectAllData(this)">
                     Select All
                   </button>
                 </div>
@@ -76,16 +57,10 @@ data you want to export {% endblock %} {% block content %}
                 <!-- Second column content -->
                 <h6 class="card-title">Select Fields:</h6>
                 <div id="export-data-list">
-                  <ul class="list-unstyled" id="column-list">
+                  <ul class="list-unstyled" id="field-list">
                     {% for field in fields %}
                     <li>
-                      <input
-                        type="checkbox"
-                        name="data-item"
-                        id="{{ field }}"
-                        value="{{ field }}"
-                        class="checkbox"
-                      />
+                      <input type="checkbox" name="data-item" id="{{ field }}" value="{{ field }}" class="checkbox" />
                       <label for="{{ field }}">
                         {{ field }}
                       </label>
@@ -94,12 +69,8 @@ data you want to export {% endblock %} {% block content %}
                   </ul>
                 </div>
                 <div class="row justify-content-center">
-                  <button
-                    type="button"
-                    class="btn btn-secondary selectAll"
-                    id="data-selectAll-Btn"
-                    onclick="selectAllColumns()"
-                  >
+                  <button type="button" class="btn btn-secondary selectAll" id="field-selectAll-Btn"
+                    onclick="selectAllData(this)">
                     Select All
                   </button>
                 </div>
@@ -114,42 +85,17 @@ data you want to export {% endblock %} {% block content %}
       <div class="col-md-6">
         <div class="card content-card">
           <div class="card-body">
-            <div class="row">
+            <div class="row pl-3">
               <h6 class="card-title">Data Type:</h6>
               <ul id="data-type-list">
                 <li>
-                  <input
-                    type="radio"
-                    id="realtime-data"
-                    name="data-type"
-                    value="realtime"
-                    checked
-                    {%
-                    if
-                    realtime_disabled
-                    %}
-                    disabled
-                    {%
-                    endif
-                    %}
-                  />
+                  <input type="radio" id="realtime-data" name="data-type" value="realtime" checked {% if
+                    realtime_disabled %} disabled {% endif %} />
                   <label for="realtime-data">Realtime Data</label>
                 </li>
                 <li>
-                  <input
-                    type="radio"
-                    id="historical-data"
-                    name="data-type"
-                    value="historical"
-                    {%
-                    if
-                    realtime_disabled
-                    %}
-                    disabled
-                    {%
-                    endif
-                    %}
-                  />
+                  <input type="radio" id="historical-data" name="data-type" value="historical" {% if realtime_disabled
+                    %} disabled {% endif %} />
                   <label for="historical-data">Historical Data</label>
                 </li>
               </ul>
@@ -161,14 +107,10 @@ data you want to export {% endblock %} {% block content %}
         <div class="card content-card">
           <div class="card-body">
             <!-- Your content here -->
-            <div class="row">
-              <div class="col-sm-4">
-                <h6>Date Range:</h6>
-              </div>
-              <div class="col-md-8">
-                <div class="input-group input-daterange">
-                  <input type="text" name="daterange" value="" />
-                </div>
+            <div class="row pl-3">
+              <h6>Date Range:</h6>
+              <div class="input-group input-daterange">
+                <input type="text" name="daterange" value="" />
               </div>
             </div>
           </div>
@@ -178,19 +120,10 @@ data you want to export {% endblock %} {% block content %}
     <!-- Third Row -->
     <div class="row">
       <div class="col d-flex justify-content-end">
-        <button
-          type="button"
-          class="btn btn-secondary"
-          id="reset-all-btn"
-          onclick="resetAll()"
-        >
+        <button type="button" class="btn btn-secondary" id="reset-all-btn" onclick="resetAll()">
           Reset All
         </button>
-        <button
-          type="submit"
-          class="btn btn-secondary ml-2"
-          id="export-file-btn"
-        >
+        <button type="submit" class="btn btn-secondary ml-2" id="export-file-btn">
           Export File
         </button>
       </div>

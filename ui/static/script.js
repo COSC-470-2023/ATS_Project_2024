@@ -7,22 +7,6 @@ hamburger.addEventListener("click", function () {
   document.querySelector("#sidebar").classList.toggle("expand");
 });
 
-var stockItems = ["Stock 1", "Stock 2", "Stock 3", "Stock 4", "Stock 5"];
-var constituentItems = [
-  "Constituent 1",
-  "Constituent 2",
-  "Constituent 3",
-  "Constituent 4",
-  "Constituent 5",
-];
-var dataSourceItems = [
-  "Data Source 1",
-  "Data Source 2",
-  "Data Source 3",
-  "Data Source 4",
-  "Data Source 5",
-];
-
 // --------------------------- CHANGE CONFIGURTAION PAGE ---------------------------------------------------
 
 //modal search
@@ -94,37 +78,26 @@ function datepicker() {
   });
 }
 
-function selectAllData() {
-  var checkboxes = $("#data-list .checkbox");
+function selectAllData(button) {
+  var checkboxes;
+  if (button.id === 'data-selectAll-Btn') {
+    checkboxes = $("#data-list .checkbox");
+  } else if (button.id === 'field-selectAll-Btn') {
+    checkboxes = $("#field-list .checkbox");
+  } else {
+    return;
+  }
+
   // Check if any of the checkboxes are already checked
-  var anyChecked = checkboxes.is(":checked");
-  checkboxes.prop("checked", !anyChecked);
+  var checked = checkboxes.is(":checked");
+
+  // Toggle the checkboxes
+  checkboxes.prop("checked", !checked);
 }
 
-function selectAllColumns() {
-  var checkboxes = $("#column-list .checkbox");
-  // Check if any of the checkboxes are already checked
-  var anyChecked = checkboxes.is(":checked");
-  checkboxes.prop("checked", !anyChecked);
-}
-
-function selectAllFilter() {
-  var filterCheckboxes = $(".filter-modal-list .checkbox"); 
-  // Check if any of the checkboxes are already checked
-  var anyChecked = filterCheckboxes.is(":checked"); 
-  filterCheckboxes.prop("checked", !anyChecked); 
-}
 
 function resetAll() {
-  var dataCB = $(".modal-list .checkbox");
-  var dataTypeCB = $("#data-type-list .checkbox");
-  var selectData = $("#select-data option");
-  var dateRange = $("#datepicker");
-
-  dataCB.prop("checked", false);
-  dataTypeCB.prop("checked", false);
-  selectData.prop("selected", false);
-  datepicker();
+  location.reload();
 }
 
 // Function to handle when data type is changed (historical or realtime)
@@ -187,5 +160,3 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 datepicker();
-//selectAll();
-resetAll();

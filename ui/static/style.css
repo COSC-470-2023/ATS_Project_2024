@@ -154,31 +154,7 @@ a.sidebar-link:hover {
   }
 }
 
-/* Media query for mobile devices */
-@media (max-width: 767px) {
-    #sidebar {
-        width: 70px;
-        min-width: 70px;
-    }
-
-    #sidebar.expand {
-        width: 260px;
-        min-width: 260px;
-    }
-
-    #sidebar.expand .sidebar-logo,
-    #sidebar.expand a.sidebar-link span {
-        display: initial;
-    }
-
-    #sidebar:not(.expand) .sidebar-logo,
-    #sidebar:not(.expand) .sidebar-item, 
-    #sidebar:not(.expand) .sidebar-footer {
-        display: none; /* Hide text when sidebar is collapsed */
-    }
-}
-
-/* Main Container */
+/* Base Container */
 
 .main {
   min-height: 100vh;
@@ -198,74 +174,51 @@ a.sidebar-link:hover {
   width: 80%;
 }
 
-#content2 {
-  width: 80%;
+.content-card {
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  border: none;
+  box-shadow: none;
 }
 
 /* Change Configuration Page - configuration.html*/
 
-#change-config-section {
-  background: #f7f7f7;
-  border-radius: 10px;
+#config-stock-list {
+  height: 200px;
 }
 
-#change-config-box {
-  border-radius: 10px;
-}
-
-.config-list {
-  height: 150px;
-  width: 100%;
-  overflow: hidden;
-  overflow-y: scroll;
-}
-
-.config-list ul {
-  height: 150px;
-  width: 100%;
-  overflow: hidden;
-}
-
-#config-buttons {
-  text-align: center;
-}
-
-#config-buttons .btn {
-  margin-right: 10px;
+.modal-body {
+  height: 200px;
+  border: none;
 }
 
 #searchInput {
-  width: 50%;
-  font-size: 16px;
-  padding: 12px 20px 12px 40px;
-  border: 1px solid #ddd;
-  margin-bottom: 12px;
+  background-color: #f7f7f7;
+  color:#000;
+  margin: 20px;
 }
 
-#stock-list li {
-  list-style-type: none;
+.content-btn {
+  display: flex;
+  justify-content: flex-end;
 }
 
-#stock-list li a {
-  text-decoration: none;
-  font-size: 18px;
-  color: black;
+.content-btn .btn {
+  margin-left: 5px;
 }
 
-#stock-list li a:hover:not(.header) {
-  background-color: #eee;
-  /* Add a hover effect to all links, except for headers */
-}
+/* Media query for mobile devices */
+@media (max-width: 767px) {
+  .content-btn {
+    display: block;
+    justify-content: center;
+    margin: 10px;
+  }
 
-#change-data-section {
-  background: #f7f7f7;
-  border-radius: 10px;
-  padding: 10px;
-}
-
-#change-data-list {
-  background: #d9d9d9;
-  border-radius: 10px;
+  .content-btn .btn {
+    width: 100%;
+    margin-left: 0px;
+  }
 }
 
 /* Job Scheduling Page */
@@ -319,20 +272,7 @@ a.sidebar-link:hover {
   width: 100%;
 }
 
-.content-card {
-  background-color: #f7f7f7;
-  border-radius: 10px;
-  border: none;
-  box-shadow: none;
-  margin-bottom: 15px;
-}
-
-.card-body {
-    padding: 20px;
-}
-
 #export-data-list {
-  max-height: 100%;
   width: 100%;
   overflow: hidden;
   margin-bottom: 15px;
@@ -342,8 +282,7 @@ a.sidebar-link:hover {
 }
 
 #export-data-list ul {
-  max-height: 200px;
-  min-height: 150px;
+  height: 200px;
   width: 100%;
   margin: 0;
   overflow-y: scroll;
@@ -351,19 +290,6 @@ a.sidebar-link:hover {
 
 #export-data-list label {
   margin-left: 1rem;
-}
-
-#export-col {
-  background-color: #f7f7f7;
-  border-radius: 10px;
-}
-
-#data-type-list {
-    margin: 0 0 0 40px;
-}
-
-#data-type-list label {
-  margin-left: 20px;
 }
 
 .input-daterange input {
@@ -429,4 +355,20 @@ tbody tr td {
 
 .drp-buttons {
   display: none !important;
+}
+
+/* Media query for mobile devices */
+@media (max-width: 950px) {
+  .input-daterange input {
+    padding: 10px 15px !important;
+    border: 1px solid #cfd8dc !important;
+    border-radius: 4px !important;
+    box-sizing: border-box;
+    background-color: #fff !important;
+    color: #000 !important;
+    font-size: 16px !important;
+    letter-spacing: 1px;
+    position: relative;
+    width: 150px;
+  }
 }
