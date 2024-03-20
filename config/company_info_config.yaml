@@ -1,4 +1,3 @@
-# Represents fields that are expected to be returned by the API output
 api_fields:
   address: _company_address
   beta: _company_beta
@@ -36,7 +35,6 @@ api_fields:
   volAvg: _company_volAvg
   website: null
   zip: _company_zip
-# Represents fields that may not be returned by the API, but should be included in query output
 non_api_fields:
   date: null
   input_type: null
@@ -44,8 +42,11 @@ non_api_fields:
   output_type: null
   src: null
 rate_limit_per_min: 300
-# Stocks to be collected (Auto populated by constituent_api_query)
 stocks:
+- name: Supermicro
+  symbol: SMCI
+- name: Deckers Brands
+  symbol: DECK
 - name: Builders FirstSource
   symbol: BLDR
 - name: Jabil
@@ -537,7 +538,7 @@ stocks:
 - name: Intuitive Surgical
   symbol: ISRG
 - name: Healthpeak
-  symbol: PEAK
+  symbol: DOC
 - name: Philip Morris International
   symbol: PM
 - name: American Tower
@@ -658,8 +659,6 @@ stocks:
   symbol: COR
 - name: Zimmer Biomet
   symbol: ZBH
-- name: Zions Bancorporation
-  symbol: ZION
 - name: Fiserv
   symbol: FI
 - name: Texas Instruments
@@ -838,7 +837,7 @@ stocks:
   symbol: TJX
 - name: CenterPoint Energy
   symbol: CNP
-- name: Revvity (Previously PerkinElmer)
+- name: Revvity
   symbol: RVTY
 - name: Air Products and Chemicals
   symbol: APD
@@ -942,8 +941,6 @@ stocks:
   symbol: EMR
 - name: Sherwin-Williams
   symbol: SHW
-- name: Whirlpool Corporation
-  symbol: WHR
 - name: Abbott
   symbol: ABT
 - name: Archer-Daniels-Midland
@@ -1012,6 +1009,8 @@ stocks:
   symbol: KR
 - name: Lockheed Martin
   symbol: LMT
+- name: 3M
+  symbol: MMM
 - name: Altria
   symbol: MO
 - name: Merck & Co.

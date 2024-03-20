@@ -1,4 +1,3 @@
-# Represents fields that are expected to be returned by the API output
 api_fields:
   avgVolume: _realtime_volAvg
   change: _realtime_change
@@ -22,7 +21,6 @@ api_fields:
   volume: _realtime_volume
   yearHigh: _realtime_yearHigh
   yearLow: _realtime_yearLow
-# Commodities to be collected
 commodities:
 - name: Copper
   symbol: HGUSD
@@ -34,7 +32,6 @@ commodities:
   symbol: SIUSD
 - name: Natural Gas
   symbol: NGUSD
-# Indexes to be collected
 index_composites:
 - name: S&P 500
   symbol: ^GSPC
@@ -46,17 +43,18 @@ index_composites:
   symbol: ^RUA
 - name: FTSE 100
   symbol: ^FTSE
-# Represents fields that may not be returned by the API, but should be included in query output
 non_api_fields:
-  # Field to map unix time to date time
   date:
     input_type: _unix_time
     mapping: _realtime_date
     output_type: _date_time
     src: timestamp
 rate_limit_per_min: 300
-# Stocks to be collected (Auto populated by constituent_api_query)
 stocks:
+- name: Supermicro
+  symbol: SMCI
+- name: Deckers Brands
+  symbol: DECK
 - name: Builders FirstSource
   symbol: BLDR
 - name: Jabil
@@ -548,7 +546,7 @@ stocks:
 - name: Intuitive Surgical
   symbol: ISRG
 - name: Healthpeak
-  symbol: PEAK
+  symbol: DOC
 - name: Philip Morris International
   symbol: PM
 - name: American Tower
@@ -669,8 +667,6 @@ stocks:
   symbol: COR
 - name: Zimmer Biomet
   symbol: ZBH
-- name: Zions Bancorporation
-  symbol: ZION
 - name: Fiserv
   symbol: FI
 - name: Texas Instruments
@@ -849,7 +845,7 @@ stocks:
   symbol: TJX
 - name: CenterPoint Energy
   symbol: CNP
-- name: Revvity (Previously PerkinElmer)
+- name: Revvity
   symbol: RVTY
 - name: Air Products and Chemicals
   symbol: APD
@@ -953,8 +949,6 @@ stocks:
   symbol: EMR
 - name: Sherwin-Williams
   symbol: SHW
-- name: Whirlpool Corporation
-  symbol: WHR
 - name: Abbott
   symbol: ABT
 - name: Archer-Daniels-Midland
@@ -1023,6 +1017,8 @@ stocks:
   symbol: KR
 - name: Lockheed Martin
   symbol: LMT
+- name: 3M
+  symbol: MMM
 - name: Altria
   symbol: MO
 - name: Merck & Co.

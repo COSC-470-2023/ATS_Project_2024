@@ -11,7 +11,6 @@ from ats.util import yaml_handler
 # Loguru init
 logger = loguru_init.initialize()
 
-
 def create_date_window(days_queried):
     """
     Takes the inputted number of days and returns a window of dates

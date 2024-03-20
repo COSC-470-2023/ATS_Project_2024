@@ -1,4 +1,3 @@
-# Represents fields that are expected to be returned by the API output
 api_fields:
   adjClose: _historical_adjClose
   change: _historical_change
@@ -14,7 +13,6 @@ api_fields:
   unadjustedVolume: _historical_unadjustedVolume
   volume: _historical_volume
   vwap: _historical_vwap
-# Stocks to be collected (Auto populated by constituent_api_query)
 commodities:
 - end_date: '2023-11-27'
   name: Copper
@@ -36,7 +34,6 @@ commodities:
   name: Natural Gas
   start_date: '2023-11-20'
   symbol: NGUSD
-# Indexes to be collected
 index_composites:
 - end_date: '2023-11-27'
   name: S&P 500
@@ -58,7 +55,6 @@ index_composites:
   name: FTSE 100
   start_date: '2023-11-20'
   symbol: ^FTSE
-# Represents fields that may not be returned by the API, but should be included in query output
 non_api_fields:
   name:
     input_type: _string
@@ -66,2014 +62,2017 @@ non_api_fields:
     output_type: _string
     src: _config_name
 rate_limit: 300
-# Stocks to be collected (Auto populated by constituent_api_query)
 stocks:
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
+  name: Supermicro
+  start_date: '2021-03-19'
+  symbol: SMCI
+- end_date: '2024-03-18'
+  name: Deckers Brands
+  start_date: '2021-03-19'
+  symbol: DECK
+- end_date: '2024-03-18'
   name: Builders FirstSource
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: BLDR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Jabil
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: JBL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Uber
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: UBER
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Hubbell Incorporated
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: HUBB
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Lululemon Athletica
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: LULU
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Veralto
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: VLTO
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Airbnb
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ABNB
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Blackstone
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: BX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Kenvue
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: KVUE
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Palo Alto Networks
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PANW
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Axon Enterprise
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: AXON
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Fair Isaac
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: FICO
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Bunge Global SA
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: BG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Insulet
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PODD
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: GE HealthCare
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: GEHC
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Steel Dynamics
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: STLD
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: First Solar
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: FSLR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Arch Capital Group
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ACGL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Targa Resources
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: TRGP
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: EQT
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: EQT
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: PG&E Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PCG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: CoStar Group
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CSGP
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Invitation Homes
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: INVH
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Keurig Dr Pepper
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: KDP
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: ON Semiconductor
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: 'ON'
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Vici Properties
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: VICI
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Warner Bros. Discovery
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: WBD
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Camden Property Trust
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CPT
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Molina Healthcare
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MOH
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Nordson Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: NDSN
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Constellation Energy
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CEG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: FactSet
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: FDS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: EPAM Systems
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: EPAM
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Brown & Brown
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: BRO
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Dayforce
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: DAY
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Match Group
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MTCH
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Bio-Techne
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: TECH
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Moderna
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MRNA
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Charles River Laboratories
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CRL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: PTC
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PTC
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Caesars Entertainment
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CZR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Generac
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: GNRC
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: NXP Semiconductors
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: NXPI
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Monolithic Power Systems
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MPWR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Trimble Inc.
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: TRMB
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Enphase
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ENPH
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Tesla, Inc.
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: TSLA
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Pool Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: POOL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Catalent
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CTLT
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Etsy
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ETSY
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Teradyne
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: TER
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Bio-Rad
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: BIO
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Teledyne Technologies
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: TDY
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Tyler Technologies
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: TYL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: West Pharmaceutical Services
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: WST
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Domino's
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: DPZ
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Dexcom
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: DXCM
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Carrier Global
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CARR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Otis Worldwide
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: OTIS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Ingersoll Rand
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: IR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Paycom
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PAYC
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Live Nation Entertainment
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: LYV
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Steris
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: STE
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Zebra Technologies
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ZBRA
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Old Dominion
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ODFL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Berkley
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: WRB
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: ServiceNow
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: NOW
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Las Vegas Sands
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: LVS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: NVR, Inc.
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: NVR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: CDW
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CDW
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: IDEX Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: IEX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Leidos
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: LDOS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: T. Rowe Price
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: TROW
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: T-Mobile US
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: TMUS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: MarketAxess
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MKTX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Amcor
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: AMCR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Corteva
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CTVA
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: DuPont
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: DD
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Dow Inc.
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: DOW
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Fox Corporation (Class B)
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: FOX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Fox Corporation (Class A)
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: FOXA
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Wabtec
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: WAB
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Atmos Energy
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ATO
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Teleflex
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: TFX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Celanese
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CE
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Diamondback Energy
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: FANG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Lamb Weston
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: LW
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Jack Henry & Associates
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: JKHY
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Keysight
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: KEYS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Fortinet
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: FTNT
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Rollins, Inc.
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ROL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Arista Networks
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ANET
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Copart
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CPRT
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Fleetcor
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: FLT
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Broadridge Financial Solutions
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: BR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Evergy
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: EVRG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: MSCI
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MSCI
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Take-Two Interactive
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: TTWO
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Huntington Ingalls Industries
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: HII
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Norwegian Cruise Line Holdings
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: NCLH
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Cadence Design Systems
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CDNS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: SBA Communications
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: SBAC
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: IQVIA
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: IQV
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: A. O. Smith
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: AOS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: MGM Resorts
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MGM
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Packaging Corporation of America
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PKG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: ResMed
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: RMD
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Baker Hughes
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: BKR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Align Technology
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ALGN
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Ansys
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ANSS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Everest Re
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: EG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Hilton Worldwide
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: HLT
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Gartner
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: IT
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Advanced Micro Devices
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: AMD
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Alexandria Real Estate Equities
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ARE
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Raymond James
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: RJF
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Sempra Energy
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: SRE
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Synopsys
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: SNPS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Regency Centers
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: REG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Cboe Global Markets
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CBOE
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Incyte
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: INCY
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Idexx Laboratories
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: IDXX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Mid-America Apartment Communities
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MAA
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Dominion Energy
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: D
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Howmet Aerospace
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: HWM
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: CooperCompanies
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: COO
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Charter Communications
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CHTR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Mettler Toledo
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MTD
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Albemarle Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ALB
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Fortive
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: FTV
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Alliant Energy
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: LNT
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: TransDigm Group
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: TDG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Arthur J. Gallagher & Co.
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: AJG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: LKQ Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: LKQ
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Digital Realty
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: DLR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Global Payments
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: GPN
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Ulta Beauty
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ULTA
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Centene Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CNC
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Hologic
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: HOLX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: UDR, Inc.
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: UDR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: American Water Works
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: AWK
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Federal Realty
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: FRT
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Citizens Financial Group
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CFG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Extra Space Storage
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: EXR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Willis Towers Watson
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: WTW
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Church & Dwight
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CHD
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Illumina
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ILMN
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Synchrony Financial
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: SYF
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Hewlett Packard Enterprise
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: HPE
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Verisk
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: VRSK
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: News Corp (Class B)
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: NWS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: United Airlines Holdings
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: UAL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: PayPal
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PYPL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Kraft Heinz
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: KHC
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: J.B. Hunt
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: JBHT
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: WestRock
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: WRK
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Qorvo
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: QRVO
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Realty Income
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: O
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: American Airlines Group
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: AAL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Equinix
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: EQIX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Henry Schein
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: HSIC
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Skyworks Solutions
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: SWKS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: HCA Healthcare
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: HCA
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Royal Caribbean Group
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: RCL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Universal Health Services
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: UHS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: United Rentals
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: URI
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Martin Marietta Materials
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MLM
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Broadcom Inc.
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: AVGO
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Alphabet Inc. (Class A)
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: GOOGL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Essex Property Trust
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ESS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Tractor Supply
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: TSCO
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Meta Platforms
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: META
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Mohawk Industries
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MHK
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Allegion
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ALLE
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Ametek
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: AME
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Vertex Pharmaceuticals
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: VRTX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Delta Air Lines
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: DAL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: News Corp (Class A)
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: NWSA
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Zoetis
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ZTS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: General Motors
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: GM
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Regeneron
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: REGN
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: AbbVie
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ABBV
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Aptiv
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: APTV
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Garmin
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: GRMN
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Humana
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: HUM
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Dollar General
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: DG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Mondelez International
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MDLZ
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Pentair
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PNR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: LyondellBasell
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: LYB
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Seagate Technology
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: STX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Lam Research
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: LRCX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Monster Beverage
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MNST
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Kinder Morgan
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: KMI
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Phillips 66
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PSX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Crown Castle
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CCI
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: BorgWarner
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: BWA
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Dollar Tree
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: DLTR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Xylem Inc.
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: XYL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: TE Connectivity
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: TEL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Mosaic Company (The)
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MOS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Accenture
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ACN
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Freeport-McMoRan
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: FCX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Marathon Petroleum
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MPC
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Chipotle Mexican Grill
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CMG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: BlackRock
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: BLK
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Edwards Lifesciences
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: EW
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: F5, Inc.
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: FFIV
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Netflix
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: NFLX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Trane Technologies
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: TT
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Johnson Controls
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: JCI
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Chubb Limited
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CB
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: CarMax
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: KMX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: ONEOK
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: OKE
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Berkshire Hathaway
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: BRK-B
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: NRG Energy
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: NRG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Roper Technologies
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ROP
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Ross Stores
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ROST
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Visa Inc.
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: V
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Booking Holdings
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: BKNG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: FMC Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: FMC
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Eversource
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ES
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Quanta Services
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PWR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Western Digital
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: WDC
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: O'Reilly Auto Parts
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ORLY
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Hormel Foods
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: HRL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Ventas
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: VTR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Welltower
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: WELL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Iron Mountain
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: IRM
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Republic Services
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: RSG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Wynn Resorts
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: WYNN
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Dentsply Sirona
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: XRAY
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: J.M. Smucker Company (The)
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: SJM
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: WEC Energy Group
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: WEC
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Nasdaq, Inc.
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: NDAQ
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Amphenol
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: APH
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Pioneer Natural Resources
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PXD
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: L3Harris
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: LHX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Salesforce
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CRM
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Fastenal
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: FAST
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: CF Industries
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CF
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Invesco
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: IVZ
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: DaVita Inc.
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: DVA
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Mastercard
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MA
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Coterra
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CTRA
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Intuitive Surgical
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ISRG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Healthpeak
-  start_date: '2021-02-05'
-  symbol: PEAK
-- end_date: '2024-02-05'
+  start_date: '2021-03-19'
+  symbol: DOC
+- end_date: '2024-03-18'
   name: Philip Morris International
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PM
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: American Tower
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: AMT
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Jacobs Solutions
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: J
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Expeditors International
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: EXPD
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Expedia Group
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: EXPE
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Intercontinental Exchange
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ICE
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Microchip Technology
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MCHP
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Akamai
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: AKAM
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Discover Financial
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: DFS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Assurant
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: AIZ
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Host Hotels & Resorts
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: HST
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: CH Robinson
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CHRW
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Ralph Lauren Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: RL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: AvalonBay Communities
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: AVB
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Cognizant
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CTSH
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: CBRE Group
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CBRE
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Fidelity National Information Services
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: FIS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: CME Group
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CME
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Juniper Networks
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: JNPR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Kimco Realty
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: KIM
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Boston Properties
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: BXP
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Alphabet Inc. (Class C)
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: GOOG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Verisign
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: VRSN
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: "Est\xE9e Lauder Companies (The)"
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: EL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Amazon
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: AMZN
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Lennar
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: LEN
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Ameriprise Financial
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: AMP
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Public Storage
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PSA
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Tyson Foods
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: TSN
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Constellation Brands
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: STZ
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: DR Horton
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: DHI
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: LabCorp
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: LH
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Tapestry, Inc.
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: TPR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Thermo Fisher Scientific
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: TMO
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Gilead Sciences
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: GILD
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Viatris
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: VTRS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: M&T Bank
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MTB
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Biogen
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: BIIB
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Prologis
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PLD
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Gen Digital
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: GEN
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: McCormick & Company
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MKC
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: State Street Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: STT
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Valero Energy
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: VLO
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Quest Diagnostics
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: DGX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Comcast
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CMCSA
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Travelers Companies (The)
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: TRV
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Elevance Health
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ELV
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Electronic Arts
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: EA
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: eBay
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: EBAY
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Goldman Sachs
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: GS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Principal Financial Group
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PFG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Prudential Financial
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PRU
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: United Parcel Service
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: UPS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Simon Property Group
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: SPG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Waters Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: WAT
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Equity Residential
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: EQR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Nvidia
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: NVDA
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: PPL Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PPL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Cencora
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: COR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Zimmer Biomet
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ZBH
-- end_date: '2024-02-05'
-  name: Zions Bancorporation
-  start_date: '2021-02-05'
-  symbol: ZION
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Fiserv
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: FI
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Texas Instruments
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: TXN
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Cintas
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CTAS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Stryker Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: SYK
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: MetLife
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MET
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Intuit
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: INTU
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Robert Half
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: RHI
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: EOG Resources
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: EOG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: NiSource
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: NI
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Devon Energy
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: DVN
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Starbucks
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: SBUX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Agilent Technologies
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: A
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Rockwell Automation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ROK
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: U.S. Bank
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: USB
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Analog Devices
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ADI
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Pinnacle West
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PNW
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Qualcomm
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: QCOM
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Vulcan Materials Company
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: VMC
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Best Buy
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: BBY
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: NetApp
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: NTAP
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Aflac
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: AFL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: McKesson
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MCK
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Carnival
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CCL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Danaher Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: DHR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: AES Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: AES
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Paychex
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PAYX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Waste Management
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: WM
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Regions Financial Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: RF
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Capital One
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: COF
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Moody's Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MCO
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Marriott International
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MAR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Franklin Templeton
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: BEN
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Northern Trust
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: NTRS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Omnicom Group
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: OMC
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Cincinnati Financial
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CINF
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Truist
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: TFC
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: FirstEnergy
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: FE
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Yum! Brands
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: YUM
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: KLA Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: KLAC
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Huntington Bancshares
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: HBAN
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Progressive Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PGR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: APA Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: APA
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Equifax
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: EFX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Charles Schwab Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: SCHW
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Cardinal Health
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CAH
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Adobe Inc.
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ADBE
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: AutoZone
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: AZO
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Aon
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: AON
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Fifth Third Bank
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: FITB
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Comerica
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CMA
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Allstate
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ALL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Darden Restaurants
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: DRI
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Loews Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: L
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Bank of New York Mellon
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: BK
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Applied Materials
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: AMAT
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Corning Inc.
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: GLW
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Boston Scientific
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: BSX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Paramount Global
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PARA
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Micron Technology
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MU
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Southwest Airlines
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: LUV
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: UnitedHealth Group
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: UNH
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Microsoft
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MSFT
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: KeyCorp
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: KEY
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Eastman Chemical Company
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: EMN
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Cisco
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CSCO
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Costco
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: COST
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Morgan Stanley
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Interpublic Group of Companies (The)
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: IPG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Linde plc
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: LIN
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Amgen
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: AMGN
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Ameren
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: AEE
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Autodesk
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ADSK
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Kellanova
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: K
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Oracle Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ORCL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Globe Life
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: GL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Ecolab
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ECL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Nike, Inc.
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: NKE
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Citigroup
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: C
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: PNC Financial Services
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PNC
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Home Depot (The)
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: HD
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Avery Dennison
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: AVY
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Marsh McLennan
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MMC
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Sysco
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: SYY
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Medtronic
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MDT
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Illinois Tool Works
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ITW
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Parker Hannifin
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PH
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Dover Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: DOV
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: TJX Companies
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: TJX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: CenterPoint Energy
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CNP
-- end_date: '2024-02-05'
-  name: Revvity (Previously PerkinElmer)
-  start_date: '2021-02-05'
+- end_date: '2024-03-18'
+  name: Revvity
+  start_date: '2021-03-19'
   symbol: RVTY
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Air Products and Chemicals
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: APD
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Nucor
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: NUE
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Ball Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: BALL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Hasbro
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: HAS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Hess Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: HES
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: PulteGroup
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PHM
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Lowe's
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: LOW
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: AT&T
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: T
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Verizon
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: VZ
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Bath & Body Works, Inc.
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: BBWI
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Conagra Brands
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CAG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Apple Inc.
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: AAPL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: "Brown\u2013Forman"
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: BF-B
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Snap-on
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: SNA
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Stanley Black & Decker
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: SWK
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Walmart
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: WMT
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: W. W. Grainger
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: GWW
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Masco
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MAS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Automated Data Processing
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ADP
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: FedEx
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: FDX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Paccar
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PCAR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: American International Group
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: AIG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Walgreens Boots Alliance
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: WBA
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Weyerhaeuser
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: WY
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: VF Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: VFC
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Textron
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: TXT
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Intel
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: INTC
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Target Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: TGT
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: American Express
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: AXP
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Bank of America
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: BAC
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Cigna
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CI
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Walt Disney
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: DIS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Duke Energy
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: DUK
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: NextEra Energy
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: NEE
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Molson Coors Beverage Company
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: TAP
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Wells Fargo
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: WFC
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: International Flavors & Fragrances
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: IFF
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: JPMorgan Chase
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: JPM
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Williams Companies
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: WMB
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: HP Inc.
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: HPQ
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Genuine Parts Company
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: GPC
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Johnson & Johnson
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: JNJ
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Baxter International
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: BAX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Becton Dickinson
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: BDX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Eli Lilly and Company
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: LLY
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: McDonald's
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MCD
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Newmont
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: NEM
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Clorox
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CLX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Cummins
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CMI
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Emerson Electric
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: EMR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Sherwin-Williams
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: SHW
-- end_date: '2024-02-05'
-  name: Whirlpool Corporation
-  start_date: '2021-02-05'
-  symbol: WHR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Abbott
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ABT
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Archer-Daniels-Midland
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ADM
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: American Electric Power
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: AEP
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Boeing
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: BA
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Bristol Myers Squibb
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: BMY
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Caterpillar Inc.
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CAT
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Colgate-Palmolive
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: CMS Energy
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CMS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: ConocoPhillips
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: COP
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Campbell Soup Company
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CPB
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: CSX
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CSX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: CVS Health
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CVS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Chevron Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: CVX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: John Deere
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: DE
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: DTE Energy
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: DTE
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Consolidated Edison
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ED
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Edison International
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: EIX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Eaton Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ETN
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Entergy
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: ETR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Exelon
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: EXC
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Ford Motor Company
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: F
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: General Dynamics
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: GD
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: General Electric
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: GE
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: General Mills
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: GIS
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Halliburton
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: HAL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Hartford (The)
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: HIG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Honeywell
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: HON
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Hershey's
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: HSY
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: IBM
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: IBM
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: International Paper
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: IP
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Kimberly-Clark
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: KMB
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Coca-Cola Company (The)
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: KO
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Kroger
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: KR
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Lockheed Martin
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: LMT
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
+  name: 3M
+  start_date: '2021-03-19'
+  symbol: MMM
+- end_date: '2024-03-18'
   name: Altria
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MO
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Merck & Co.
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MRK
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Marathon Oil
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MRO
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Motorola Solutions
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: MSI
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Northrop Grumman
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: NOC
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Norfolk Southern Railway
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: NSC
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Occidental Petroleum
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: OXY
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Public Service Enterprise Group
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PEG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: PepsiCo
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PEP
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Pfizer
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PFE
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Procter & Gamble
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: PPG Industries
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: PPG
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: RTX Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: RTX
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Schlumberger
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: SLB
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Southern Company
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: SO
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: S&P Global
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: SPGI
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Union Pacific Corporation
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: UNP
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: Xcel Energy
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: XEL
-- end_date: '2024-02-05'
+- end_date: '2024-03-18'
   name: ExxonMobil
-  start_date: '2021-02-05'
+  start_date: '2021-03-19'
   symbol: XOM
 url: https://financialmodelingprep.com/api/v3/historical-price-full/{QUERY_PARAMS}?from={START_DATE}&to={END_DATE}&apikey={API_KEY}
