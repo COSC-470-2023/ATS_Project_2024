@@ -29,83 +29,49 @@
 
 <form action="/job-scheduling/job-scheduling" method="POST">
     <div class="container">
-        <!-- First Row -->
-        <div class="row justify-content-between">
-            <div class="card content-card p-0 mb-3">
-                <div class="card-body">
-                    <div class="row justify-content-between">
-                        <div class="col-md-6">
-                            <!-- First column content -->
-                            <label class="sched-settings">
-                                <input type="checkbox" id="default-checkbox" />
-                                <h5> Default </h5>
-                                <br /> Recommended. The default job scheduling of the service
-                            </label>
-                        </div>
-                        <div class="col-md-6">
-                            <!-- Second column content -->
-                            <label class="sched-settings">
-                                <input type="checkbox" id="sched-checkbox" />
-                                <h5> Custom </h5>
-                                <br /> Best suited for use of specific time and dates for the service
-                            </label>
-                        </div>
-                    </div>
-                </div>
+        <div class="row" id="data-section">
+            <div class="form-group">
+                <label for="jobType">Select Job Type:</label>
+                <select class="form-control" id="jobType" name="jobType">
+                    <option value="SymbolChanges">Symbol Changes</option>
+                    <option value="RealtimeData">Realtime Data</option>
+                    <option value="Bonds">Bonds</option>
+                    <option value="CompanyStatements">Company Statements</option>
+                </select>
             </div>
         </div>
-        <!-- Second Row -->
-        <div class="row justify-content-between">
-            <div class="col-md-4 content-card">
-                <!-- First column content -->
-                <div class="card-body">
-                    <!-- Your content here -->
-                    <div class="form-group">
-                        <label for="jobType">Select Job Type:</label>
-                        <select class="form-control" id="jobType" name="jobType">
-                            <option value="SymbolChanges">Symbol Changes</option>
-                            <option value="RealtimeData">Realtime Data</option>
-                            <option value="Bonds">Bonds</option>
-                            <option value="CompanyStatements">Company Statements</option>
-                        </select>
-                    </div>
-                </div>
+        <div class="row pt-3 mt-3" id="settings-section">
+            <div class="form-group">
+                <label for="time">Time (HH:MM):</label>
+                <input type="time" class="form-control" id="time" name="time">
             </div>
-            <div class="col-md-4 content-card">
-                <!-- Second column content -->
-                <div class="card-body">
-                    <!-- Your content here -->
-                    <div class="form-group">
-                        <label for="time">Time (HH:MM):</label>
-                        <input type="time" class="form-control" id="time" name="time">
-                    </div>
-                </div>
+            <div class="col-md-5" id="custom-setting">
+                
             </div>
-            <div class="col-md-4 content-card">
-                <!-- Third column content -->
-                <div class="card-body">
-                    <!-- Your content here -->
-                    <div class="form-group">
-                        <label for="dayOfWeekStart">Day of the Week Start:</label>
-                        <select class="form-control" id="dayOfWeekStart" name="dayOfWeekStart">
-                            <option value="">Select Start Day</option>
-                            <option value="SUN">Sunday</option>
-                            <option value="MON">Monday</option>
-                            <option value="TUE">Tuesday</option>
-                            <option value="WED">Wednesday</option>
-                            <option value="THU">Thursday</option>
-                            <option value="FRI">Friday</option>
-                            <option value="SAT">Saturday</option>
-                        </select>
-                    </div>
-                </div>
+            <div class="col"></div>
+        </div>
+        <div class="row pt-3 mt-3" id="days-section">
+            <div class="form-group">
+                <label for="dayOfWeekStart">Day of the Week Start:</label>
+                <select class="form-control" id="dayOfWeekStart" name="dayOfWeekStart">
+                    <option value="">Select Start Day</option>
+                    <option value="SUN">Sunday</option>
+                    <option value="MON">Monday</option>
+                    <option value="TUE">Tuesday</option>
+                    <option value="WED">Wednesday</option>
+                    <option value="THU">Thursday</option>
+                    <option value="FRI">Friday</option>
+                    <option value="SAT">Saturday</option>
+                </select>
             </div>
         </div>
-        <!-- Third Row -->
-        <div class="row mt-2">
-            <div class="col d-flex justify-content-end">
-                <button type="button" class="btn btn-secondary"> Cancel </button>
-                <button type="submit" class="btn btn-secondary ml-2"> Apply Changes </button>
+        <div class="row pt-3 mt-3" id="buttons-section">
+            <div class="col"></div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-secondary cancel"> Cancel </button>
+            </div>
+            <div class="col-md-3">
+                <button type="button" class="btn btn-secondary applyChanges"> Apply Changes </button>
             </div>
         </div>
     </div>

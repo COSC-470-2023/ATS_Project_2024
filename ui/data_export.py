@@ -17,44 +17,90 @@ from .models import *
 
 data_export = Blueprint("data_export", __name__)
 
-# TODO: CHANGE THE IMPORT FROM WITH OPEN TO ALANS VERSION OF IMPORT
-
 # Maps string representation of tabels so that they can be used from the form
-entity_map = {
+entity_table_map = {
     "Companies": Companies,
     "Commodities": Commodities,
     "Indexes": Indexes,
     "Bonds": Bonds,
+    "company-info": Companies,
 }
 
+# Mapping prefix combined with table name to Models
+value_table_map = {
+    "CompanyStatements": CompanyStatements,
+    "realtimeStockValues": RealtimeStockValues,
+    "historicalStockValues": HistoricalStockValues,
+    "realtimeIndexValues": RealtimeIndexValues,
+    "historicalIndexValues": HistoricalIndexValues,
+    "realtimeCommodityValues": RealtimeCommodityValues,
+    "historicalCommodityValues": HistoricalCommodityValues,
+    "BondValues": BondValues,
+}
 
-@data_export.route("", methods=["GET"])
+# Map to handle different cases based on entity type
+id_table_map = {
+    "Companies": ("company_id", "StockValues"),
+    "company-info": ("company_id", "CompanyStatements"),
+    "Bonds": ("bond_id", "BondValues"),
+    "Indexes": ("index_id", "IndexValues"),
+    "Commodities": ("commodity_id", "CommodityValues"),
+}
+
+# Get default data to populate page on initial load.
+default_items = Companies.query.all()
+default_fields = (
+    Companies.__table__.columns.keys() + RealtimeStockValues.__table__.columns.keys()
+)
+name_field = "companyName"
+
+
+@data_export.route("/", methods=["GET", "POST"])
 @login_required
-def load_stocks():
-    if request.method == "GET":
-        entity = request.args.get("dataValue")
+def home():
+    return render_template(
+        "data_export.html",
+        items=default_items,
+        fields=default_fields,
+        name_field=name_field,
+    )
 
-        # Retrieve query params to pass to front-end
-        realtime_disabled = request.args.get("realtimeDisabled", "false") == "true"
-        historical_disabled = request.args.get("historicalDisabled", "false") == "true"
 
-        if entity == "company-info" or entity == None:
-            checklist_items = Companies.query.all()
-        else:
-            checklist_items = entity_map[entity].query.all()
+@data_export.route("/get-data-list", methods=["POST"])
+@login_required
+def get_data_list():
+    selected_entity = request.form["selected_entity"]
+    table = entity_table_map[selected_entity]
 
-        return render_template(
-            "data_export.html",
-            entity=entity,
-            items=checklist_items,
-            realtime_disabled=realtime_disabled,
-            historical_disabled=historical_disabled,
-        )
+    # Serialize items from query to be passed as json
+    items = [item.serialize() for item in table.query.all()]
+    return jsonify({"items": items})
+
+
+@data_export.route("/get-field-list", methods=["POST"])
+@login_required
+def get_field_list():
+    selected_entity = request.form["selected_entity"]
+    table_prefix = request.form["selected_data_type"]
+    table_suffix = id_table_map[selected_entity][1]
+
+    if selected_entity == "Bonds" or selected_entity == "company-info":
+        table_name = table_suffix
+    else:
+        table_name = table_prefix + table_suffix
+
+    lookup_table = entity_table_map[selected_entity]
+    values_table = value_table_map[table_name]
+
+    lookup_fields = lookup_table.__table__.columns.keys()
+    value_fields = values_table.__table__.columns.keys()
+
+    return jsonify({"lookup_fields": lookup_fields, "value_fields": value_fields})
 
 
 @data_export.route("/export-data", methods=["GET", "POST"])
 @login_required
-def export_data():
+def handle_export():
     if request.method == "POST":
         selected = request.form.getlist("data-item")
         table_prefix = request.form.get("data-type")
@@ -134,3 +180,27 @@ def export_data():
             mimetype="text/csv",
             as_attachment=True,
         )
+
+
+# @data_export.route("", methods=["GET"])
+# @login_required
+# def load_stocks():
+#     if request.method == "GET":
+#         entity = request.args.get("dataValue")
+
+#         # Retrieve query params to pass to front-end
+#         realtime_disabled = request.args.get("realtimeDisabled", "false") == "true"
+#         historical_disabled = request.args.get("historicalDisabled", "false") == "true"
+
+#         if entity == "company-info" or entity == None:
+#             checklist_items = Companies.query.all()
+#         else:
+#             checklist_items = entity_map[entity].query.all()
+
+#         return render_template(
+#             "data_export.html",
+#             entity=entity,
+#             items=checklist_items,
+#             realtime_disabled=realtime_disabled,
+#             historical_disabled=historical_disabled,
+#         )

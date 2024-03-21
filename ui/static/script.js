@@ -1,13 +1,15 @@
 console.log("Script loaded!");
 
-// Sidebar
+// SIDEBAR
 const hamburger = document.querySelector("#toggle-btn");
 
 hamburger.addEventListener("click", function () {
   document.querySelector("#sidebar").classList.toggle("expand");
 });
 
-//change config - modal search
+// --------------------------- CHANGE CONFIGURTAION PAGE ---------------------------------------------------
+
+//modal search
 function searchList() {
   // Declare variables
   var input, filter, ul, li, i, txtValue;
@@ -27,7 +29,9 @@ function searchList() {
   }
 }
 
-// job scheduling - data file drop down
+// --------------------------- JOB SCHEDULING PAGE ---------------------------------------------------
+
+// job scheduling - data file  drop down
 function selectItem(item) {
   var selectedText = item.textContent;
   document.getElementById("dropdownMenuButton").textContent = selectedText;
@@ -46,7 +50,6 @@ function defaultBorder() {
   }
 }
 
-// job scheduling - default setting or custom setting checkbox - border on or off
 function customBorder() {
   var checkbox = document.getElementById("custom-checkbox");
   var defaultSetting = document.getElementById("custom-setting");
@@ -59,26 +62,27 @@ function customBorder() {
   }
 }
 
-// data export - datepicker
+// --------------------------- DOWNLOAD DATA PAGE ---------------------------------------------------
+
 function datepicker() {
-  $(function() {
+  $(function () {
     $('input[name="daterange"]').daterangepicker({
       startDate: new Date(),
       endDate: new Date(),
       minDate: new Date(new Date().getFullYear() - 3, 0, 1),
-      opens: 'center',
+      opens: "center",
       locale: {
-        format: 'DD/MM/YYYY'
-      }
+        format: "DD/MM/YYYY",
+      },
     });
   });
 }
 
 function selectAllData(button) {
   var checkboxes;
-  if (button.id === 'data-selectAll-Btn') {
+  if (button.id === "data-selectAll-Btn") {
     checkboxes = $("#data-list .checkbox");
-  } else if (button.id === 'field-selectAll-Btn') {
+  } else if (button.id === "field-selectAll-Btn") {
     checkboxes = $("#field-list .checkbox");
   } else {
     return;
@@ -95,63 +99,134 @@ function resetAll() {
   location.reload();
 }
 
-// Function to handle when data type is changed (historical or realtime)
-function onDataTypeChange(event) {
-  if (event.target.checked) {
-    localStorage.setItem('selectedDataType', event.target.value);
-    location.reload();
-  }
-}
-
-const dataTypeRadios = document.querySelectorAll('input[name="data-type"]')
-
-dataTypeRadios.forEach(radio => {
-  radio.addEventListener('change', onDataTypeChange);
-});
-
-// changes the state of "Data Type" radio button based on the data selection
-function onDataChange() {
-  const dataSelect = document.getElementById("select-data");
-  const realtime = document.getElementById("realtime-data");
-  const historical = document.getElementById("historical-data");
-  const dataValue = dataSelect.value;
-  
-  if (dataSelect.value === "Bonds" || dataSelect.value === "company-info") {
-    realtime.disabled = true;
-    historical.disabled = true;
-  } else {
-    realtime.disabled = false;
-    historical.disabled = false;
-  }
-
-  // Set query params (dataValue needs to be saved to session storage)
-  const params = new URLSearchParams(window.location.search);
-  params.set("realtimeDisabled", realtime.disabled);
-  params.set("historicalDisabled", historical.disabled);
-  params.set("dataValue", dataValue);
-  sessionStorage.setItem("selectedValue", dataValue);
-
-  window.location.href = "/data-export?" + params.toString();
-}
-
 document.addEventListener("DOMContentLoaded", function () {
-  const storedValue = sessionStorage.getItem("selectedValue");
-  const dataType = localStorage.getItem('selectedDataType');
-  const radio = document.querySelector(`input[value="${dataType}"]`)
-  if (storedValue) {
-    const dataSelect = document.getElementById("select-data");
-    dataSelect.value = storedValue;
+  // Can functions to populate lists on initial page load
+  onDataChange();
+  onDataTypeChange();
+  // Add event listener to the select dropdown
+  const selectData = document.getElementById("select-data");
+  selectData.addEventListener("change", onDataChange);
 
-    // Clear the stored value
-    sessionStorage.removeItem("selectedValue");
-  }
-  if (dataType) {
-    if (radio.disabled) {
-      radio.checked = false;
-    } else {
-      radio.checked = true;
-    }
-  }
+  // Add event listener to the radio buttons
+  const radioButtons = document.querySelectorAll('input[name="data-type"]');
+  radioButtons.forEach((radioButton) => {
+    radioButton.addEventListener("change", onDataTypeChange);
+  });
 });
 
+function onDataChange() {
+  // Update field list based on data selection
+  onDataTypeChange();
+
+  const selected_entity = document.getElementById("select-data").value;
+  const entity_identifier =
+    selected_entity === "Bonds" ? "treasuryName" : "symbol";
+  let item_field_name = "";
+
+  // Disable radio buttons if selected entity is "Bonds" or "company-info"
+  const radioButtonElements = document.querySelectorAll('input[name="data-type"]');
+  radioButtonElements.forEach(radioButton => {
+    radioButton.disabled = selected_entity === "Bonds" || selected_entity === "company-info";
+  });
+
+  // Determine name field
+  switch (selected_entity) {
+    case "Companies":
+      item_field_name = "companyName";
+      break;
+    case "company-info":
+      item_field_name = "companyName";
+      break;
+    case "Indexes":
+      item_field_name = "indexName";
+      break;
+    case "Commodities":
+      item_field_name = "commodityName";
+      break;
+  }
+
+  fetch("/data-export/get-data-list", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({
+      selected_entity: selected_entity,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      // Update the data list with the received items
+      const dataList = document.getElementById("data-list");
+      dataList.innerHTML = "";
+
+      data.items.forEach((item) => {
+        const li = document.createElement("li");
+
+        if (selected_entity === "Bonds") {
+          li.innerHTML = `<input type="checkbox" name="data-item" id="${
+            item[entity_identifier]
+          }" value="${item[entity_identifier]}" class="checkbox" />
+                        <label for="${item[entity_identifier]}">${
+            item[entity_identifier]
+          }</label>`;
+        } else {
+          li.innerHTML = `<input type="checkbox" name="data-item" id="${
+            item[entity_identifier]
+          }" value="${item[entity_identifier]}" class="checkbox" />
+                        <label for="${item[entity_identifier]}">${
+            item[entity_identifier]
+          } - ${item[item_field_name]}</label>`;
+        }
+
+        dataList.appendChild(li);
+      });
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
+function onDataTypeChange() {
+  const selected_data_type = document.querySelector(
+    'input[name="data-type"]:checked'
+  ).value;
+  const selected_entity = document.getElementById("select-data").value;
+
+  fetch("/data-export/get-field-list", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({
+      selected_data_type: selected_data_type,
+      selected_entity: selected_entity,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      // Update the field list with the received fields
+      const fieldList = document.getElementById("field-list");
+      fieldList.innerHTML = "";
+
+      // Add lookup table fields to list
+      data.lookup_fields.forEach((field) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<input type="checkbox" name="field-item" id="${field}" value="${field}" class="checkbox" checked/>
+                      <label for="${field}">${field}</label>`;
+        fieldList.appendChild(li);
+      });
+
+      // Add value table fields to list
+      data.value_fields.forEach((field) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<input type="checkbox" name="field-item" id="${field}" value="${field}" class="checkbox" checked/>
+                      <label for="${field}">${field}</label>`;
+        fieldList.appendChild(li);
+      });
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
 datepicker();
