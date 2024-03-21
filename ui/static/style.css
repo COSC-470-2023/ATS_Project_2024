@@ -98,6 +98,9 @@ body {
 .sidebar-nav {
   padding: 2rem 0;
   flex: 1 1 auto;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
 a.sidebar-link {
@@ -130,29 +133,12 @@ a.sidebar-link:hover {
   opacity: 1;
 }
 
-/* Media query for mobile devices */
-@media (max-width: 767px) {
-  #sidebar {
-      width: 70px;
-      min-width: 70px;
-  }
-
-  #sidebar.expand {
-      width: 260px;
-      min-width: 260px;
-  }
-
-  #sidebar.expand .sidebar-logo,
-  #sidebar.expand a.sidebar-link span {
-      display: initial;
-  }
-
-  #sidebar:not(.expand) .sidebar-logo,
-  #sidebar:not(.expand) .sidebar-item, 
-  #sidebar:not(.expand) .sidebar-footer {
-      display: none; /* Hide text when sidebar is collapsed */
-  }
+.sidebar-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
 }
+
 
 /* Base Container */
 
@@ -207,63 +193,19 @@ a.sidebar-link:hover {
   margin-left: 5px;
 }
 
-/* Media query for mobile devices */
-@media (max-width: 767px) {
-  .content-btn {
-    display: block;
-    justify-content: center;
-    margin: 10px;
-  }
-
-  .content-btn .btn {
-    width: 100%;
-    margin-left: 0px;
-  }
-}
-
 /* Job Scheduling Page */
 
-#data-section {
-  background-color: #f7f7f7;
-  padding: 20px;
+.sched-settings {
+  display: block;
+  border-style: solid;
+  border-width: 1px;
   border-radius: 10px;
+  padding: 10px;
 }
 
-#settings-section {
-  background-color: #f7f7f7;
-  padding: 20px;
-  border-radius: 10px;
-}
-
-#default-setting {
-  background-color: #d9d9d9;
-  padding: 20px;
-  border-radius: 10px;
-}
-
-#custom-setting {
-  background-color: #d9d9d9;
-  padding: 20px;
-  border-radius: 10px;
-  margin: 0px 10px;
-}
-
-.border-on-checkbox {
-  border: 3px solid #000;
-  border-radius: 10px;
-}
-
-#days-section {
-  background-color: #f7f7f7;
-  padding: 20px;
-  border-radius: 10px;
-}
-
-#buttons-section {
-  padding: 20px;
-  border-radius: 10px;
-  align-items: end;
-  justify-content: end;
+.sched-settings input,h5 {
+  display: inline-block;
+  vertical-align: middle;
 }
 
 /* Download Data Page */
@@ -358,7 +300,48 @@ tbody tr td {
 }
 
 /* Media query for mobile devices */
+
+@media (max-width: 767px) {
+  /* Sidebar */
+  #sidebar {
+      width: 70px;
+      min-width: 70px;
+  }
+
+  #sidebar.expand {
+      width: 260px;
+      min-width: 260px;
+  }
+
+  .sidebar-logo {
+    margin: 10px 15px 0px;
+  }
+
+  #sidebar:not(.expand) #toggle-btn,
+  #sidebar:not(.expand) a.sidebar-link span {
+    display: none;
+  }
+
+  /* Change Configuration Page */
+  .content-btn {
+    display: block;
+    justify-content: center;
+    margin: 10px;
+  }
+
+  .content-btn .btn {
+    width: 100%;
+    margin-left: 0px;
+    margin-top: 10px;
+  }
+
+  .card-title {
+    padding-top: 10px;
+  }
+}
+
 @media (max-width: 950px) {
+  /* Date Range - Download Data */
   .input-daterange input {
     padding: 10px 15px !important;
     border: 1px solid #cfd8dc !important;

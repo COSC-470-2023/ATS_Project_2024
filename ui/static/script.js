@@ -1,15 +1,13 @@
 console.log("Script loaded!");
 
-// SIDEBAR
+// Sidebar
 const hamburger = document.querySelector("#toggle-btn");
 
 hamburger.addEventListener("click", function () {
   document.querySelector("#sidebar").classList.toggle("expand");
 });
 
-// --------------------------- CHANGE CONFIGURTAION PAGE ---------------------------------------------------
-
-//modal search
+//change config - modal search
 function searchList() {
   // Declare variables
   var input, filter, ul, li, i, txtValue;
@@ -29,9 +27,7 @@ function searchList() {
   }
 }
 
-// --------------------------- JOB SCHEDULING PAGE ---------------------------------------------------
-
-// job scheduling - data file  drop down
+// job scheduling - data file drop down
 function selectItem(item) {
   var selectedText = item.textContent;
   document.getElementById("dropdownMenuButton").textContent = selectedText;
@@ -50,6 +46,7 @@ function defaultBorder() {
   }
 }
 
+// job scheduling - default setting or custom setting checkbox - border on or off
 function customBorder() {
   var checkbox = document.getElementById("custom-checkbox");
   var defaultSetting = document.getElementById("custom-setting");
@@ -62,8 +59,7 @@ function customBorder() {
   }
 }
 
-// --------------------------- DOWNLOAD DATA PAGE ---------------------------------------------------
-
+// data export - datepicker
 function datepicker() {
   $(function() {
     $('input[name="daterange"]').daterangepicker({
@@ -94,7 +90,6 @@ function selectAllData(button) {
   // Toggle the checkboxes
   checkboxes.prop("checked", !checked);
 }
-
 
 function resetAll() {
   location.reload();

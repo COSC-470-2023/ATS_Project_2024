@@ -1,6 +1,7 @@
 {% extends "base.html" %} {% block title %} Export Data {% endblock %} {% block
 mainTitle %} Export Data {% endblock %} {% block mainDescription %} Choose the
 data you want to export {% endblock %} {% block content %}
+
 <form class="export-content" action="/data-export/export-data" method="POST">
   <select class="form-select dropdown p-1 mb-3" id="select-data" name="select-data" onchange="onDataChange()">
     <option name="entity" value="Companies">Stocks</option>
@@ -118,7 +119,7 @@ data you want to export {% endblock %} {% block content %}
       </div>
     </div>
     <!-- Third Row -->
-    <div class="row">
+    <div class="row mt-2">
       <div class="col d-flex justify-content-end">
         <button type="button" class="btn btn-secondary" id="reset-all-btn" onclick="resetAll()">
           Reset All
