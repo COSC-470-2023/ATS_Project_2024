@@ -1,4 +1,5 @@
 from flask_login import UserMixin
+from sqlalchemy.orm import relationship
 from . import db
 
 db.Model.metadata.reflect(db.engine)
@@ -52,18 +53,32 @@ class HistoricalCommodityValues(BaseModel):
 
 class Companies(BaseModel):
     __table__ = db.Model.metadata.tables["companies"]
+    # Define relationships
+    company_statements = relationship("CompanyStatements", back_populates="company")
+    realtime_stock_values = relationship(
+        "RealtimeStockValues", back_populates="company"
+    )
+    historical_stock_values = relationship(
+        "HistoricalStockValues", back_populates="company"
+    )
 
 
 class CompanyStatements(BaseModel):
     __table__ = db.Model.metadata.tables["company_statements"]
+    # Define relationships
+    company = relationship("Companies", back_populates="company_statements")
 
 
 class RealtimeStockValues(BaseModel):
     __table__ = db.Model.metadata.tables["realtime_stock_values"]
+    # Define relationships
+    company = relationship("Companies", back_populates="realtime_stock_values")
 
 
 class HistoricalStockValues(BaseModel):
     __table__ = db.Model.metadata.tables["historical_stock_values"]
+    # Define relationships
+    company = relationship("Companies", back_populates="historical_stock_values")
 
 
 ## Index Tables ##

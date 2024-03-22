@@ -12,6 +12,9 @@ from flask_login import login_required
 from sqlalchemy import inspect
 import csv
 
+from ats.globals import DIR_UI_OUPUT
+from . import db
+
 # import models
 from .models import *
 
@@ -55,6 +58,7 @@ default_fields = (
 name_field = "companyName"
 
 
+# Default route (Hit when page first loads)
 @data_export.route("/", methods=["GET", "POST"])
 @login_required
 def home():
@@ -66,6 +70,7 @@ def home():
     )
 
 
+# Route for populating the data list base on form state
 @data_export.route("/get-data-list", methods=["POST"])
 @login_required
 def get_data_list():
@@ -77,6 +82,7 @@ def get_data_list():
     return jsonify({"items": items})
 
 
+# Route for populating the field list based on form state
 @data_export.route("/get-field-list", methods=["POST"])
 @login_required
 def get_field_list():
@@ -84,123 +90,92 @@ def get_field_list():
     table_prefix = request.form["selected_data_type"]
     table_suffix = id_table_map[selected_entity][1]
 
+    # Bonds and company-info have no 'realtime' or 'historical' prefix
     if selected_entity == "Bonds" or selected_entity == "company-info":
         table_name = table_suffix
     else:
         table_name = table_prefix + table_suffix
 
+    # Determine tables base on mapped keys
     lookup_table = entity_table_map[selected_entity]
     values_table = value_table_map[table_name]
 
+    # Get table fields
     lookup_fields = lookup_table.__table__.columns.keys()
     value_fields = values_table.__table__.columns.keys()
 
     return jsonify({"lookup_fields": lookup_fields, "value_fields": value_fields})
 
 
-@data_export.route("/export-data", methods=["GET", "POST"])
+# Route for downloading data based on data selected in the form.
+@data_export.route(
+    "/export-data", methods=["GET", "POST"]
+)  # TODO: Fix functionality to work with date range and selected fields
 @login_required
-def handle_export():
+def export_data():
     if request.method == "POST":
-        selected = request.form.getlist("data-item")
+        # Collect form data
+        selected_data = request.form.getlist("data-item")
+        selected_lookup_fields = request.form.getlist("lookup-field-item")
+        selected_value_fields = request.form.getlist("value-field-item")
         table_prefix = request.form.get("data-type")
-        entity = request.form.get("select-data")
-        data_table_name = ""
-        id_specifier = ""
+        entity_type = request.form.get("select-data")
 
-        # Dynamic query for getting all entities tracked in database (stocks, bonds, index, commodities)
-        # Logic for dynamic table names (Will need to revist later for a better solution)
-        if entity == "Companies" or entity == "None":
-            id_specifier = "company_id"
-            data_table_name = "StockValues"
-            entity_query = Companies.query.filter(Companies.symbol.in_(selected))
-        elif entity == "company-info":
-            table_prefix = ""
-            id_specifier = "company_id"
-            data_table_name = "CompanyStatements"
-            entity_query = Companies.query.filter(Companies.symbol.in_(selected))
-        elif entity == "Bonds":
-            table_prefix = ""
-            id_specifier = "bond_id"
-            data_table_name = "BondValues"
-            entity_query = entity_map[entity].query.filter(
-                entity_map[entity].treasuryName.in_(selected)
+        # Assign mapped values
+        id_specifier = id_table_map[entity_type][0]
+        data_table_name = id_table_map[entity_type][1]
+
+        # Dynamic query for getting all entitites tracked in database based on the form data given (stocks, bonds, index, commodities)
+        if entity_type == "Bonds":
+            entity_query = entity_table_map[entity_type].query.filter(
+                entity_table_map[entity_type].treasuryName.in_(selected_data)
             )
-        elif entity == "Indexes":
-            id_specifier = "index_id"
-            data_table_name = "IndexValues"
-            entity_query = entity_map[entity].query.filter(
-                entity_map[entity].symbol.in_(selected)
-            )
-        elif entity == "Commodities":
-            id_specifier = "commodity_id"
-            data_table_name = "CommodityValues"
-            entity_query = entity_map[entity].query.filter(
-                entity_map[entity].symbol.in_(selected)
+        else:
+            entity_query = entity_table_map[entity_type].query.filter(
+                entity_table_map[entity_type].symbol.in_(selected)
             )
 
+        # Store ids to be used for further queries
         ids = []
-        # grabbing ids for all queried rows
         for entity in entity_query:
             ids.append(entity.id)
 
-        print(data_table_name)
-
         table = table_prefix + data_table_name
 
-        # table mapping instead of if hell, had to rewrite to work with getting the column headers
-        table_mapping = {
-            "CompanyStatements": CompanyStatements,
-            "realtimeStockValues": RealtimeStockValues,
-            "historicalStockValues": HistoricalStockValues,
-            "realtimeIndexValues": RealtimeIndexValues,
-            "historicalIndexValues": HistoricalIndexValues,
-            "realtimeCommodityValues": RealtimeCommodityValues,
-            "historicalCommodityValues": HistoricalCommodityValues,
-            "BondValues": BondValues,
-        }
-
         # dynamic query that selects the current table and queries it with the company ids
-        query = table_mapping[table].query.filter(
-            getattr(table_mapping[table], id_specifier).in_(ids)
+        query = value_table_map[table].query.filter(
+            getattr(value_table_map[table], id_specifier).in_(ids)
         )
 
-        # sqlalch->inspect to retrieve all columns headers (yes .c as columns seems shady as hell, but it seems to work ¯\_(ツ)_/¯)
-        columnNames = [column.name for column in inspect(table_mapping[table]).c]
+        column_names = get_fields(value_table_map[table])
 
-        with open("user_interface\output\data.csv", "w", newline="") as csvfile:
+        output_file_name = "data.csv"
+
+        output_file_path = os.path.join(DIR_UI_OUPUT, output_file_name)
+
+        with open(output_file_path, "w", newline="") as csvfile:
             csvwriter = csv.writer(csvfile, delimiter=",")
-            csvwriter.writerow(columnNames)  # adds first row as columns headers
+            csvwriter.writerow(column_names)  # adds first row as columns headers
             for row in query:  # writing the data from the query
-                csvwriter.writerow([getattr(row, column) for column in columnNames])
+                csvwriter.writerow([getattr(row, column) for column in column_names])
                 # gets the columns from the query and writes each cell one at a time based on the columns
 
         return send_file(
-            "output\data.csv",
+            "../" + output_file_path,
             mimetype="text/csv",
             as_attachment=True,
         )
 
 
-# @data_export.route("", methods=["GET"])
-# @login_required
-# def load_stocks():
-#     if request.method == "GET":
-#         entity = request.args.get("dataValue")
+def get_fields(table):
+    return table.__table__.columns.keys()
 
-#         # Retrieve query params to pass to front-end
-#         realtime_disabled = request.args.get("realtimeDisabled", "false") == "true"
-#         historical_disabled = request.args.get("historicalDisabled", "false") == "true"
 
-#         if entity == "company-info" or entity == None:
-#             checklist_items = Companies.query.all()
-#         else:
-#             checklist_items = entity_map[entity].query.all()
+def build_table_name(entity_type, table_prefix):
+    data_table_name = id_table_map[entity_type][1]
+    if entity_type == "Bonds" or entity_type == "company-info":
+        table_prefix = ""
 
-#         return render_template(
-#             "data_export.html",
-#             entity=entity,
-#             items=checklist_items,
-#             realtime_disabled=realtime_disabled,
-#             historical_disabled=historical_disabled,
-#         )
+    table = table_prefix + data_table_name
+
+    return table

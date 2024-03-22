@@ -15,15 +15,13 @@ data you want to export {% endblock %} {% block content %}
     <option name="entity" value="company-info">Company Info</option>
   </select>
   <div class="container p-0">
-    <!-- First Row -->
     <div class="row">
       <div class="col">
         <div class="card content-card p-0 mb-3">
           <div class="card-body">
-            <!-- Your content here -->
             <div class="row justify-content-between">
               <div class="col-md-7">
-                <!-- First column content -->
+                <!-- Data List (Stocks, Indexes, Bonds, etc...) -->
                 <h6 class="card-title">Select Data:</h6>
                 <div id="export-data-list">
                   <ul class="list-unstyled" id="data-list"></ul>
@@ -40,10 +38,11 @@ data you want to export {% endblock %} {% block content %}
                 </div>
               </div>
               <div class="col-md-4">
-                <!-- Second column content -->
+                <!-- Field List -->
                 <h6 class="card-title">Select Fields:</h6>
                 <div id="export-data-list">
-                  <ul class="list-unstyled" id="field-list"></ul>
+                  <ul class="list-unstyled" id="lookup-field-list"></ul>
+                  <ul class="list-unstyled" id="value-field-list"></ul>
                 </div>
                 <div class="row justify-content-center">
                   <button
@@ -61,10 +60,10 @@ data you want to export {% endblock %} {% block content %}
         </div>
       </div>
     </div>
-    <!-- Second Row -->
     <div class="row justify-content-between">
+      <!-- Data Type Selector -->
       <div class="col-md-6">
-        <div class="card content-card">
+        <div class="card content-card mb-3">
           <div class="card-body">
             <div class="row pl-3">
               <h6 class="card-title">Data Type:</h6>
@@ -76,14 +75,6 @@ data you want to export {% endblock %} {% block content %}
                     name="data-type"
                     value="realtime"
                     checked
-                    {%
-                    if
-                    realtime_disabled
-                    %}
-                    disabled
-                    {%
-                    endif
-                    %}
                   />
                   <label for="realtime-data">Realtime Data</label>
                 </li>
@@ -93,14 +84,6 @@ data you want to export {% endblock %} {% block content %}
                     id="historical-data"
                     name="data-type"
                     value="historical"
-                    {%
-                    if
-                    realtime_disabled
-                    %}
-                    disabled
-                    {%
-                    endif
-                    %}
                   />
                   <label for="historical-data">Historical Data</label>
                 </li>
@@ -109,10 +92,10 @@ data you want to export {% endblock %} {% block content %}
           </div>
         </div>
       </div>
+      <!-- Date Selector -->
       <div class="col-md-6">
-        <div class="card content-card">
+        <div class="card content-card mb-3">
           <div class="card-body">
-            <!-- Your content here -->
             <div class="row pl-3">
               <h6>Date Range:</h6>
               <div class="input-group input-daterange">
@@ -123,7 +106,7 @@ data you want to export {% endblock %} {% block content %}
         </div>
       </div>
     </div>
-    <!-- Third Row -->
+    <!-- Form submission buttons -->
     <div class="row">
       <div class="col d-flex justify-content-end">
         <button

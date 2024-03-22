@@ -80,10 +80,11 @@ function datepicker() {
 
 function selectAllData(button) {
   var checkboxes;
+
   if (button.id === "data-selectAll-Btn") {
     checkboxes = $("#data-list .checkbox");
   } else if (button.id === "field-selectAll-Btn") {
-    checkboxes = $("#field-list .checkbox");
+    checkboxes = $("#lookup-field-list .checkbox, #value-field-list .checkbox");
   } else {
     return;
   }
@@ -114,6 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
+// Function to dynamically update data item list (Stock, Index, Bonds, etc...) based on selection.
 function onDataChange() {
   // Update field list based on data selection
   onDataTypeChange();
@@ -187,6 +189,7 @@ function onDataChange() {
     });
 }
 
+// Function to handle the dynamic loading of fields based on data type selection (Realtime or Historical)
 function onDataTypeChange() {
   const selected_data_type = document.querySelector(
     'input[name="data-type"]:checked'
@@ -205,24 +208,37 @@ function onDataTypeChange() {
   })
     .then((response) => response.json())
     .then((data) => {
-      // Update the field list with the received fields
-      const fieldList = document.getElementById("field-list");
-      fieldList.innerHTML = "";
-
+      // Update the field list with the received fields from the lookup table
+      const lookupFieldList = document.getElementById("lookup-field-list");
+      lookupFieldList.innerHTML = "";
+      
       // Add lookup table fields to list
+      const lookupHeader = document.createElement("h6");
+      const lookupHeaderText = document.createTextNode("Lookup Fields:");
+      lookupHeader.appendChild(lookupHeaderText);
+      lookupFieldList.appendChild(lookupHeader);
+
       data.lookup_fields.forEach((field) => {
         const li = document.createElement("li");
-        li.innerHTML = `<input type="checkbox" name="field-item" id="${field}" value="${field}" class="checkbox" checked/>
+        li.innerHTML = `<input type="checkbox" name="lookup-field-item" id="${field}" value="${field}" class="checkbox" checked/>
                       <label for="${field}">${field}</label>`;
-        fieldList.appendChild(li);
+        lookupFieldList.appendChild(li);
       });
 
-      // Add value table fields to list
+      // Update the field list with the received fields from the lookup table
+      const valueFieldList = document.getElementById("value-field-list");
+      valueFieldList.innerHTML = "";
+
+      const valueHeader = document.createElement("h6");
+      const valueHeaderText = document.createTextNode("Value Fields:");
+      valueHeader.appendChild(valueHeaderText);
+      valueFieldList.appendChild(valueHeader);
+
       data.value_fields.forEach((field) => {
         const li = document.createElement("li");
-        li.innerHTML = `<input type="checkbox" name="field-item" id="${field}" value="${field}" class="checkbox" checked/>
+        li.innerHTML = `<input type="checkbox" name="value-field-item" id="${field}" value="${field}" class="checkbox" checked/>
                       <label for="${field}">${field}</label>`;
-        fieldList.appendChild(li);
+        valueFieldList.appendChild(li);
       });
     })
     .catch((error) => {
