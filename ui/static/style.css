@@ -320,6 +320,12 @@ a.sidebar-link:hover {
   padding: 0 !important;
 }
 
+@media (max-width: 767px) {
+  #data-selectAll-Btn {
+    margin-bottom: 20px;
+  }
+}
+
 /*Weekday Heading*/
 thead tr:nth-child(2) {
   color: #bdbdbd !important;

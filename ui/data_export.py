@@ -1,3 +1,4 @@
+import os
 from flask import (
     Blueprint,
     render_template,
@@ -10,6 +11,7 @@ from flask import (
 )
 from flask_login import login_required
 from sqlalchemy import inspect
+from datetime import datetime
 import csv
 
 from ats.globals import DIR_UI_OUPUT
@@ -107,7 +109,6 @@ def get_field_list():
     return jsonify({"lookup_fields": lookup_fields, "value_fields": value_fields})
 
 
-# Route for downloading data based on data selected in the form.
 @data_export.route(
     "/export-data", methods=["GET", "POST"]
 )  # TODO: Fix functionality to work with date range and selected fields
@@ -118,47 +119,49 @@ def export_data():
         selected_data = request.form.getlist("data-item")
         selected_lookup_fields = request.form.getlist("lookup-field-item")
         selected_value_fields = request.form.getlist("value-field-item")
-        table_prefix = request.form.get("data-type")
+        all_selected_fields = selected_lookup_fields + selected_value_fields
         entity_type = request.form.get("select-data")
-
-        # Assign mapped values
-        id_specifier = id_table_map[entity_type][0]
-        data_table_name = id_table_map[entity_type][1]
-
-        # Dynamic query for getting all entitites tracked in database based on the form data given (stocks, bonds, index, commodities)
-        if entity_type == "Bonds":
-            entity_query = entity_table_map[entity_type].query.filter(
-                entity_table_map[entity_type].treasuryName.in_(selected_data)
-            )
-        else:
-            entity_query = entity_table_map[entity_type].query.filter(
-                entity_table_map[entity_type].symbol.in_(selected)
-            )
-
-        # Store ids to be used for further queries
-        ids = []
-        for entity in entity_query:
-            ids.append(entity.id)
-
-        table = table_prefix + data_table_name
-
-        # dynamic query that selects the current table and queries it with the company ids
-        query = value_table_map[table].query.filter(
-            getattr(value_table_map[table], id_specifier).in_(ids)
+        table_prefix = (
+            ""
+            if entity_type == "Bonds" or entity_type == "company-info"
+            else request.form.get("data-type")
         )
 
-        column_names = get_fields(value_table_map[table])
+        date_range = request.form.get("daterange")
+        start_date, end_date = date_range.split(" - ")
 
-        output_file_name = "data.csv"
+        # Convert dates to datetime objects
+        start_date = datetime.strptime(start_date, "%Y-%m-%d")
+        end_date = datetime.strptime(end_date, "%Y-%m-%d")
+
+        # Assign mapped values
+        value_table_suffix = id_table_map[entity_type][1]
+        value_table = value_table_map.get(table_prefix + value_table_suffix)
+        lookup_table = entity_table_map[entity_type]
+
+        # Quries database based on form selections
+        query = build_query(
+            entity_type,
+            lookup_table,
+            value_table,
+            selected_data,
+            selected_lookup_fields,
+            selected_value_fields,
+            start_date,
+            end_date,
+        )
+
+        output_file_name = entity_type + "-data.csv"
 
         output_file_path = os.path.join(DIR_UI_OUPUT, output_file_name)
 
         with open(output_file_path, "w", newline="") as csvfile:
             csvwriter = csv.writer(csvfile, delimiter=",")
-            csvwriter.writerow(column_names)  # adds first row as columns headers
-            for row in query:  # writing the data from the query
-                csvwriter.writerow([getattr(row, column) for column in column_names])
-                # gets the columns from the query and writes each cell one at a time based on the columns
+            # add first row as columns headers
+            csvwriter.writerow(all_selected_fields)
+            # write query rows to file
+            for row in query:
+                csvwriter.writerow(row)
 
         return send_file(
             "../" + output_file_path,
@@ -167,15 +170,39 @@ def export_data():
         )
 
 
-def get_fields(table):
-    return table.__table__.columns.keys()
-
-
-def build_table_name(entity_type, table_prefix):
-    data_table_name = id_table_map[entity_type][1]
-    if entity_type == "Bonds" or entity_type == "company-info":
-        table_prefix = ""
-
-    table = table_prefix + data_table_name
-
-    return table
+# Funciton that builds query based on the provided tables, table entities, fields, and date range
+def build_query(
+    entity_type,
+    lookup_table,
+    value_table,
+    selected_data,
+    lookup_fields,
+    value_fields,
+    start_date,
+    end_date,
+):
+    if entity_type == "Bonds":
+        query = (
+            db.session.query(lookup_table, value_table)
+            .join(value_table)
+            .filter(lookup_table.treasuryName.in_(selected_data))
+            .filter(value_table.date >= start_date, value_table.date <= end_date)
+            .with_entities(
+                *[getattr(lookup_table, column) for column in lookup_fields]
+                + [getattr(value_table, column) for column in value_fields]
+            )
+            .all()
+        )
+    else:
+        query = (
+            db.session.query(lookup_table, value_table)
+            .join(value_table)
+            .filter(lookup_table.symbol.in_(selected_data))
+            .filter(value_table.date >= start_date, value_table.date <= end_date)
+            .with_entities(
+                *[getattr(lookup_table, column) for column in lookup_fields]
+                + [getattr(value_table, column) for column in value_fields]
+            )
+            .all()
+        )
+    return query

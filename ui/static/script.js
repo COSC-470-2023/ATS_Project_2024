@@ -67,12 +67,12 @@ function customBorder() {
 function datepicker() {
   $(function () {
     $('input[name="daterange"]').daterangepicker({
-      startDate: new Date(),
+      startDate: new Date(new Date().getFullYear() - 3, 0, 1),
       endDate: new Date(),
       minDate: new Date(new Date().getFullYear() - 3, 0, 1),
       opens: "center",
       locale: {
-        format: "DD/MM/YYYY",
+        format: "YYYY-MM-DD",
       },
     });
   });
@@ -224,6 +224,9 @@ function onDataTypeChange() {
                       <label for="${field}">${field}</label>`;
         lookupFieldList.appendChild(li);
       });
+      
+      const br = document.createElement("br");
+      lookupFieldList.appendChild(br);
 
       // Update the field list with the received fields from the lookup table
       const valueFieldList = document.getElementById("value-field-list");
