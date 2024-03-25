@@ -42,7 +42,7 @@ body {
 }
 
 .form-control {
-  background-color: #d9d9d9;
+  background-color: #fff;
 }
 
 .btn-login {
@@ -207,6 +207,14 @@ a.sidebar-link:hover {
 .sched-settings input,h5 {
   display: inline-block;
   vertical-align: middle;
+}
+
+.sched-box {
+  height: 100%;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 5px;
 }
 
 /* Download Data Page */
