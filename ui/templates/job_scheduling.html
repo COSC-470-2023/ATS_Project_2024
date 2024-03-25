@@ -29,37 +29,12 @@
 
 <form action="/job-scheduling/job-scheduling" method="POST">
     <div class="container">
-        <!-- First Row -->
-        <div class="row justify-content-between">
-            <div class="card content-card p-0 mb-3">
+        <!-- Current Scheduling Row -->
+        <h5> Change Scheduling: </h5>
+        <div class="row justify-content-between content-card">
+            <div class="col-md-3">
+                <!-- Current Job Type Column -->
                 <div class="card-body">
-                    <div class="row justify-content-between">
-                        <div class="col-md-6">
-                            <!-- First column content -->
-                            <label class="sched-settings">
-                                <input type="checkbox" id="default-checkbox" />
-                                <h5> Default </h5>
-                                <br /> Recommended. The default job scheduling of the service
-                            </label>
-                        </div>
-                        <div class="col-md-6">
-                            <!-- Second column content -->
-                            <label class="sched-settings">
-                                <input type="checkbox" id="sched-checkbox" />
-                                <h5> Custom </h5>
-                                <br /> Best suited for use of specific time and dates for the service
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Second Row -->
-        <div class="row justify-content-between">
-            <div class="col-md-4 content-card">
-                <!-- First column content -->
-                <div class="card-body">
-                    <!-- Your content here -->
                     <div class="form-group">
                         <label for="jobType">Select Job Type:</label>
                         <select class="form-control" id="jobType" name="jobType">
@@ -71,22 +46,90 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 content-card">
-                <!-- Second column content -->
+            <div class="col-md-3">
+                <!-- Current Time Column -->
                 <div class="card-body">
-                    <!-- Your content here -->
+                    <div class="form-group">
+                        <label for="time">Time (HH:MM):</label>
+                        <label class="sched-box"> &nbsp; </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <!-- Current Day of the Week -->
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="dayOfWeekStart">Day of the Week:</label>
+                        <label class="sched-box"> &nbsp; </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <!-- Current Day of the Month -->
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="dayOfMonth">Day of the Month:</label>
+                        <label class="sched-box"> &nbsp; </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Settings (Default/Custom) Row -->
+        <div class="row justify-content-between">
+            <div class="card content-card p-0 mb-3">
+                <div class="card-body">
+                    <div class="row justify-content-between">
+                        <div class="col-md-6">
+                            <!-- Default Column -->
+                            <label class="sched-settings">
+                                <input type="checkbox" id="default-checkbox" checked/>
+                                <h5> Default </h5>
+                                <br /> Recommended. The default job scheduling of the service
+                            </label>
+                        </div>
+                        <div class="col-md-6">
+                            <!-- Custom column -->
+                            <label class="sched-settings">
+                                <input type="checkbox" id="sched-checkbox" />
+                                <h5> Custom </h5>
+                                <br /> Best suited for use of specific time and dates for the service
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Change Scheduling Row -->
+        <h5> Change Scheduling: </h5>
+        <div class="row justify-content-between content-card">
+            <div class="col-md-3">
+                <!-- Change Job Type Column -->
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="jobType">Select Job Type:</label>
+                        <select class="form-control" id="jobType" name="jobType">
+                            <option value="SymbolChanges">Symbol Changes</option>
+                            <option value="RealtimeData">Realtime Data</option>
+                            <option value="Bonds">Bonds</option>
+                            <option value="CompanyStatements">Company Statements</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <!-- Change Time Column -->
+                <div class="card-body">
                     <div class="form-group">
                         <label for="time">Time (HH:MM):</label>
                         <input type="time" class="form-control" id="time" name="time">
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 content-card">
-                <!-- Third column content -->
+            <div class="col-md-3">
+                <!-- Change Day of the Week -->
                 <div class="card-body">
-                    <!-- Your content here -->
                     <div class="form-group">
-                        <label for="dayOfWeekStart">Day of the Week Start:</label>
+                        <label for="dayOfWeekStart">Day of the Week:</label>
                         <select class="form-control" id="dayOfWeekStart" name="dayOfWeekStart">
                             <option value="">Select Start Day</option>
                             <option value="SUN">Sunday</option>
@@ -100,8 +143,22 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-3">
+                <!-- Change Day of the Month -->
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="dayOfMonth">Day of the Month:</label>
+                        <select class="form-control" id="dayOfMonth" name="dayOfMonth">
+                            <option value="">Select Day</option>
+                            {% for day in range(1, 32) %}
+                            <option value="{{ day }}">{{ day }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- Third Row -->
+        <!-- Form submission buttons -->
         <div class="row mt-2">
             <div class="col d-flex justify-content-end">
                 <button type="button" class="btn btn-secondary"> Cancel </button>
