@@ -101,9 +101,9 @@ function resetAll() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  // Can functions to populate lists on initial page load
+  // Call function to populate lists on initial page load
   onDataChange();
-  onDataTypeChange();
+  
   // Add event listener to the select dropdown
   const selectData = document.getElementById("select-data");
   selectData.addEventListener("change", onDataChange);

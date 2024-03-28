@@ -52,24 +52,12 @@ id_table_map = {
     "Commodities": ("commodity_id", "CommodityValues"),
 }
 
-# Get default data to populate page on initial load.
-default_items = Companies.query.all()
-default_fields = (
-    Companies.__table__.columns.keys() + RealtimeStockValues.__table__.columns.keys()
-)
-name_field = "companyName"
-
 
 # Default route (Hit when page first loads)
 @data_export.route("/", methods=["GET", "POST"])
 @login_required
 def home():
-    return render_template(
-        "data_export.html",
-        items=default_items,
-        fields=default_fields,
-        name_field=name_field,
-    )
+    return render_template("data_export.html")
 
 
 # Route for populating the data list base on form state
@@ -109,9 +97,7 @@ def get_field_list():
     return jsonify({"lookup_fields": lookup_fields, "value_fields": value_fields})
 
 
-@data_export.route(
-    "/export-data", methods=["GET", "POST"]
-)  # TODO: Fix functionality to work with date range and selected fields
+@data_export.route("/export-data", methods=["GET", "POST"])
 @login_required
 def export_data():
     if request.method == "POST":
