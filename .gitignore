@@ -6,6 +6,7 @@
 
 # Script execution output
 output/
+ui_ouput/
 
 # Cache
 *.pyc
