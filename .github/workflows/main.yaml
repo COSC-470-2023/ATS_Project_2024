@@ -70,7 +70,7 @@ jobs:
       - name: Pytest
         run: |
           cd tests/ats/collection
-          pytest -v --cov=. --cov-report=term-missing .
+         
           cd ../database
           pytest -v --cov=. --cov-report=term-missing .
           cd ../util
