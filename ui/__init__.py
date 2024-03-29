@@ -33,12 +33,12 @@ def create_app():
 
     # Import blueprints
     from .auth import auth
-    from .views import views
+    from .configuration import configuration
     from .data_export import data_export
     from .job_scheduling import job_scheduling
 
     app.register_blueprint(auth, url_prefix="/")
-    app.register_blueprint(views, url_prefix="/")
+    app.register_blueprint(configuration, url_prefix="/configuration")
     app.register_blueprint(data_export, url_prefix="/data-export")
     app.register_blueprint(job_scheduling, url_prefix="/job-scheduling")
 

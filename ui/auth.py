@@ -7,6 +7,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 auth = Blueprint("auth", __name__)
 
 
+@auth.route("/")
+def home():
+    return redirect(url_for("auth.login"))
+
+
 # TODO: Need to change error and success messages to be meaningful
 @auth.route("/login", methods=["GET", "POST"])
 def login():
@@ -21,7 +26,7 @@ def login():
             if user.password == password:
                 flash("Login successful", category="success")
                 login_user(user, remember=True)
-                return redirect(url_for("views.configuration"))
+                return redirect(url_for("configuration.home"))
             else:
                 flash("error", category="error")
         else:
