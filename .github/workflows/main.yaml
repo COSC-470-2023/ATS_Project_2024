@@ -1,8 +1,7 @@
 on:
   push:
     branches: 
-      - feature/refactoring
-  
+      - feature/refactoringa
 
 jobs:
   format:
@@ -51,16 +50,10 @@ jobs:
         with:
           python-version: 3.11
 
-      - name: Display Python version
-        run: python -c "import sys; print(sys.version)"  
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pytest pytest-cov
+      - name: Running setup script
+        run: ./setup
           
-      - name: Build system
+      - name: Build mysql database
         run: |
           sudo apt -y update
           sudo systemctl start mysql
@@ -69,9 +62,11 @@ jobs:
 
       - name: Pytest
         run: |
+          source .venv/bin/activate
           cd tests/ats/collection
-         
+          pytest -v --cov=. --cov-report=term-missing .
           cd ../database
           pytest -v --cov=. --cov-report=term-missing .
           cd ../util
           pytest -v --cov=. --cov-report=term-missing .
+
