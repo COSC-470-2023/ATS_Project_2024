@@ -1,2 +1,14 @@
 ---
+# URL endpoint for query
 url: https://financialmodelingprep.com/api/v4/symbol_change?apikey={API_KEY}
+# Data fields to transform and add to output
+# input_field_name: output_field_name
+api_fields:
+  date: _change_date
+  name: _change_newName
+  newSymbol: _change_newSymbol
+  oldSymbol: _change_oldSymbol
+# Custom fields to add to output
+# Requires a mapping function in the script
+non_api_fields:
+  _change_oldName

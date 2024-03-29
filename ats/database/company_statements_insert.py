@@ -1,14 +1,12 @@
-import json
 import traceback
 
 import sqlalchemy
 
-from ats import loguru_init
-from ats.globals import DIR_OUTPUT, OUTPUT_COMPANY_INFO
-from ats.util import connect, json_handler
+from ats import globals
+from ats.logger import Logger
+from ats.util import db_handler, file_handler
 
-# Loguru init
-logger = loguru_init.initialize()
+logger = Logger.instance()
 
 
 def check_keys(entry):
@@ -96,12 +94,12 @@ def get_company_id(entry, conn):
 
 def main():
     # Load json data
-    company_data = json_handler.load_output(DIR_OUTPUT + OUTPUT_COMPANY_INFO)
+    data = file_handler.read_json(globals.FN_OUT_COMPANIES)
     try:
         # create with context manager, implicit commit on close
-        with connect.connect() as conn:
+        with db_handler.connect() as conn:
             with conn.begin():
-                for entry in company_data:
+                for entry in data:
                     if isinstance(entry, dict):
                         company_id = get_company_id(entry, conn)
                         try:

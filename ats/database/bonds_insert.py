@@ -1,27 +1,12 @@
-import json
 import traceback
 
 import sqlalchemy
 
-from ats import loguru_init
-from ats.globals import DIR_OUTPUT, OUTPUT_BONDS
-from ats.util import connect
+from ats import globals
+from ats.logger import Logger
+from ats.util import db_handler, file_handler
 
-# Loguru init
-logger = loguru_init.initialize()
-
-
-def load_output_file(path):
-    try:
-        with open(path, "r") as output_file:
-            output_data = json.load(output_file)
-        return output_data
-    except FileNotFoundError:
-        print(f"Output file '{path}' not found.")
-        exit(1)
-    except json.JSONDecodeError:
-        print(f"Error decoding JSON in '{path}'")
-        exit(1)
+logger = Logger.instance()
 
 
 def execute_insert(connection, entry, bond_id):
@@ -76,10 +61,10 @@ def get_bond_id(entry, connection):
 
 def main():
     # load output
-    bonds_data = load_output_file(DIR_OUTPUT + OUTPUT_BONDS)
+    bonds_data = file_handler.read_json(globals.FN_OUT_BONDS)
     try:
         # create with context manager, implicit commit on close
-        with connect.connect() as conn:
+        with db_handler.connect() as conn:
             for entry in bonds_data:
                 if bool(entry):
                     bond_id = get_bond_id(entry, conn)

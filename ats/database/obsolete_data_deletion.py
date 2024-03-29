@@ -2,10 +2,10 @@ import traceback
 
 import sqlalchemy
 
-from ats import loguru_init
-from ats.util import connect
+from ats.logger import Logger
+from ats.util import db_handler
 
-logger = loguru_init.initialize()
+logger = Logger.instance()
 
 deletion_list = [
     'bond_values',
@@ -28,7 +28,7 @@ def data_deletion(table, conn):
 def main():
     try:
         # create with context manager, conn is created only for this script, commit the conn will not affect others
-        with connect.connect() as conn:
+        with db_handler.connect() as conn:
             # Iterate through all the tables in the database and fetch the table name for delete operation
             for table in deletion_list:
                 # Avoid delete data in the company_changelogs

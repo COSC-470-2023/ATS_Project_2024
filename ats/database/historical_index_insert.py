@@ -1,13 +1,12 @@
-import json
 import traceback
 
 import sqlalchemy
 
-from ats import loguru_init
-from ats.globals import DIR_OUTPUT, OUTPUT_HISTORICAL_INDEX
-from ats.util import connect, json_handler
+from ats import globals
+from ats.logger import Logger
+from ats.util import db_handler, file_handler
 
-logger = loguru_init.initialize()
+logger = Logger.instance()
 
 
 def check_keys(entry):
@@ -76,10 +75,10 @@ def get_index_id(entry, connection):
 
 def main():
     # Load json data
-    historical_data = json_handler.load_output(DIR_OUTPUT + OUTPUT_HISTORICAL_INDEX)
+    historical_data = file_handler.read_json(globals.FN_OUT_HISTORICAL_INDEX)
     try:
         # create with context manager
-        with connect.connect() as conn:
+        with db_handler.connect() as conn:
             # begin transaction with context manager, implicit commit on exit or rollback on exception
             with conn.begin():
                 for entry in historical_data:

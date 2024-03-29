@@ -2,11 +2,11 @@ import traceback
 
 import sqlalchemy
 
-from ats import loguru_init
-from ats.globals import DIR_OUTPUT, OUTPUT_REALTIME_INDEX
-from ats.util import connect, json_handler
+from ats import globals
+from ats.logger import Logger
+from ats.util import db_handler, file_handler
 
-logger = loguru_init.initialize()
+logger = Logger.instance()
 
 
 def check_keys(entry):
@@ -77,11 +77,11 @@ def get_index_id(entry, connection):
 
 def main():
     # Load json data
-    realtime_data = json_handler.load_output(DIR_OUTPUT + OUTPUT_REALTIME_INDEX)
+    realtime_data = file_handler.read_json(globals.FN_OUT_REALTIME_INDEX)
 
     try:
         # create connection with context manager, connection closed on exit
-        with connect.connect() as conn:
+        with db_handler.connect() as conn:
             # begin transaction with context manager, implicit commit on exit or rollback on exception
             with conn.begin():
                 for entry in realtime_data:

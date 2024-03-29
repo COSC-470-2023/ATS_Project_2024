@@ -1,4 +1,8 @@
-# Represents fields that are expected to be returned by the API output
+---
+# URL endpoint for query
+url: https://financialmodelingprep.com/api/v3/quote/{SYMBOL}?apikey={API_KEY}
+# Data fields to transform and add to output
+# input_field_name: output_field_name
 api_fields:
   avgVolume: _realtime_volAvg
   change: _realtime_change
@@ -14,15 +18,16 @@ api_fields:
   pe: _realtime_pe
   previousClose: _realtime_prevClose
   price: _realtime_price
-  priceAvg200: null
-  priceAvg50: null
   sharesOutstanding: _realtime_sharesOutstanding
   symbol: _realtime_symbol
-  timestamp: null
   volume: _realtime_volume
   yearHigh: _realtime_yearHigh
   yearLow: _realtime_yearLow
-# Commodities to be collected
+# Custom fields to add to output
+# Requires a mapping function in the script
+non_api_fields:
+  - _realtime_date
+# Commodities to include in query
 commodities:
 - name: Copper
   symbol: HGUSD
@@ -34,7 +39,7 @@ commodities:
   symbol: SIUSD
 - name: Natural Gas
   symbol: NGUSD
-# Indexes to be collected
+# Index composites to include in query
 index_composites:
 - name: S&P 500
   symbol: ^GSPC
@@ -46,16 +51,10 @@ index_composites:
   symbol: ^RUA
 - name: FTSE 100
   symbol: ^FTSE
-# Represents fields that may not be returned by the API, but should be included in query output
-non_api_fields:
-  # Field to map unix time to date time
-  date:
-    input_type: _unix_time
-    mapping: _realtime_date
-    output_type: _date_time
-    src: timestamp
-rate_limit_per_min: 300
-# Stocks to be collected (Auto populated by constituent_api_query)
+###############################
+### Automatically populated ###
+###############################
+# Stocks to include in query
 stocks:
 - name: Builders FirstSource
   symbol: BLDR
@@ -1061,4 +1060,3 @@ stocks:
   symbol: XEL
 - name: ExxonMobil
   symbol: XOM
-url: https://financialmodelingprep.com/api/v3/quote/{QUERY_PARAMS}?apikey={API_KEY}

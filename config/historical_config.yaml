@@ -1,4 +1,8 @@
-# Represents fields that are expected to be returned by the API output
+---
+# URL endpoint for query
+url: https://financialmodelingprep.com/api/v3/historical-price-full/{SYMBOL}?apikey={API_KEY}&from={START_DATE}&to={END_DATE}
+# Data fields to transform and add to output
+# input_field_name: output_field_name
 api_fields:
   adjClose: _historical_adjClose
   change: _historical_change
@@ -7,66 +11,44 @@ api_fields:
   close: _historical_close
   date: _historical_date
   high: _historical_high
-  label: null
   low: _historical_low
   open: _historical_open
   symbol: _historical_symbol
   unadjustedVolume: _historical_unadjustedVolume
   volume: _historical_volume
   vwap: _historical_vwap
-# Stocks to be collected (Auto populated by constituent_api_query)
-commodities:
-- end_date: '2023-11-27'
-  name: Copper
-  start_date: '2023-11-20'
-  symbol: HGUSD
-- end_date: '2023-11-27'
-  name: Crude Oil
-  start_date: '2023-11-20'
-  symbol: CLUSD
-- end_date: '2023-11-27'
-  name: Gold Futures
-  start_date: '2023-11-20'
-  symbol: GCUSD
-- end_date: '2023-11-27'
-  name: Silver Futures
-  start_date: '2023-11-20'
-  symbol: SIUSD
-- end_date: '2023-11-27'
-  name: Natural Gas
-  start_date: '2023-11-20'
-  symbol: NGUSD
-# Indexes to be collected
-index_composites:
-- end_date: '2023-11-27'
-  name: S&P 500
-  start_date: '2023-11-20'
-  symbol: ^GSPC
-- end_date: '2023-11-27'
-  name: NASDAQ Composite
-  start_date: '2023-11-20'
-  symbol: ^IXIC
-- end_date: '2023-11-27'
-  name: Dow Jones Industrial Average
-  start_date: '2023-11-20'
-  symbol: ^DJI
-- end_date: '2023-11-27'
-  name: Russell 3000
-  start_date: '2023-11-20'
-  symbol: ^RUA
-- end_date: '2023-11-27'
-  name: FTSE 100
-  start_date: '2023-11-20'
-  symbol: ^FTSE
-# Represents fields that may not be returned by the API, but should be included in query output
+# Custom fields to add to output
+# Requires a mapping function in the script
 non_api_fields:
-  name:
-    input_type: _string
-    mapping: _historical_name
-    output_type: _string
-    src: _config_name
-rate_limit: 300
-# Stocks to be collected (Auto populated by constituent_api_query)
+  - _historical_name
+# Commodities to include in query
+commodities:
+- name: Copper
+  symbol: HGUSD
+- name: Crude Oil
+  symbol: CLUSD
+- name: Gold Futures
+  symbol: GCUSD
+- name: Silver Futures
+  symbol: SIUSD
+- name: Natural Gas
+  symbol: NGUSD
+# Index composites to include in query
+index_composites:
+- name: S&P 500
+  symbol: ^GSPC
+- name: NASDAQ Composite
+  symbol: ^IXIC
+- name: Dow Jones Industrial Average
+  symbol: ^DJI
+- name: Russell 3000
+  symbol: ^RUA
+- name: FTSE 100
+  symbol: ^FTSE
+###############################
+### Automatically populated ###
+###############################
+# Stocks to include in query
 stocks:
 - end_date: '2024-02-05'
   name: Builders FirstSource
@@ -2076,4 +2058,3 @@ stocks:
   name: ExxonMobil
   start_date: '2021-02-05'
   symbol: XOM
-url: https://financialmodelingprep.com/api/v3/historical-price-full/{QUERY_PARAMS}?from={START_DATE}&to={END_DATE}&apikey={API_KEY}

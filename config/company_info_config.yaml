@@ -1,4 +1,8 @@
-# Represents fields that are expected to be returned by the API output
+---
+# URL endpoint for query
+url: https://financialmodelingprep.com/api/v3/profile/{SYMBOL}?apikey={API_KEY}
+# Data fields to transform and add to output
+# input_field_name: output_field_name
 api_fields:
   address: _company_address
   beta: _company_beta
@@ -12,12 +16,9 @@ api_fields:
   cusip: _company_cusip
   dcf: _company_dcf
   dcfDiff: _company_dcfDiff
-  defaultImage: null
-  description: null
   exchange: _company_exchangeFullName
   exchangeShortName: _company_exchange
   fullTimeEmployees: _company_fullTimeEmployees
-  image: null
   industry: _company_industry
   ipoDate: _company_ipoDate
   isActivelyTrading: _company_isActivelyTrading
@@ -29,22 +30,19 @@ api_fields:
   mktCap: _company_mktCap
   phone: _company_phone
   price: _company_price
-  range: null
   sector: _company_sector
   state: _company_state
   symbol: _company_symbol
   volAvg: _company_volAvg
-  website: null
   zip: _company_zip
-# Represents fields that may not be returned by the API, but should be included in query output
+# Custom fields to be added to output
+# Requires a mapping function in the script
 non_api_fields:
-  date: null
-  input_type: null
-  mapping: _company_date
-  output_type: null
-  src: null
-rate_limit_per_min: 300
-# Stocks to be collected (Auto populated by constituent_api_query)
+  - _company_date
+###############################
+### Automatically populated ###
+###############################
+# Stocks to include in query
 stocks:
 - name: Builders FirstSource
   symbol: BLDR
@@ -1050,4 +1048,3 @@ stocks:
   symbol: XEL
 - name: ExxonMobil
   symbol: XOM
-url: https://financialmodelingprep.com/api/v3/profile/{QUERY_PARAMS}?apikey={API_KEY}
