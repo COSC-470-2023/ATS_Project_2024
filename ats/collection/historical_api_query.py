@@ -78,7 +78,7 @@ def remap_entries(response_data, query_item, api_fields, non_api_fields):
                     try:
                         del remapped_entry[field]  # API field has a mapping value, rename it.
                     except KeyError as e:
-                        logger.debug(f"KeyError, {field} does not exist in remapped_entry\n{e}")
+                        logger.warning(f"KeyError, {field} does not exist in remapped_entry\n{e}")
                 else:
                     del remapped_entry[field]
                     # dump it as cfg doesn't care to keep.

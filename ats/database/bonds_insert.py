@@ -52,7 +52,7 @@ def execute_insert(connection, entry, bond_id):
 def get_bond_id(entry, connection):
     # Declare and initialize variables
     name = entry["_bond_name"]
-    id_query = f"SELECT bond_id FROM `bonds` WHERE treasuryName = '{name}'"
+    id_query = f"SELECT id FROM `bonds` WHERE treasuryName = '{name}'"
 
     # Check if bond exists in bonds table
     result = connection.execute(sqlalchemy.text(id_query))

@@ -53,7 +53,7 @@ def remap_entries(response_data, non_api_fields, api_fields):
                     if input_type == "_unix_time":
                         if output_type == "_date_time":
                             try:
-                                entry[map_to] = str(datetime.fromtimestamp(entry[src]))
+                                entry[map_to] = str(datetime.datetime.timestamp(entry[src]))
                             except TypeError as e:
                                 logger.error(e)
                                 continue
