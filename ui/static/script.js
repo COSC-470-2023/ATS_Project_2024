@@ -62,6 +62,38 @@ function customBorder() {
   }
 }
 
+function jobSelectorOnChange() {
+  const jobSelector = document.getElementById("jobType");
+  const currentSchedule = JSON.parse(document.getElementById("currentSchedule").textContent) ;
+  const updateValues = event => {
+    let jobValues = currentSchedule.find(job=>job.name==jobSelector.value)
+    if (jobValues.hour != null) {
+      document.getElementById("currentTime").innerHTML = jobValues.hour + ":" + jobValues.minute.toString().padStart(2, '0');
+    } else {
+      document.getElementById("currentTime").innerHTML = "hourly";
+    }
+    document.getElementById("currentDOW").innerHTML = jobValues.day ?? '*';
+    document.getElementById("currentDOM").innerHTML = jobValues.month ?? '*';
+  };
+  jobSelector.onchange = updateValues;
+  updateValues();
+}
+
+function repeatSelectorOnChange() {
+  const repeatSelectors = document.getElementById("JobSchedulingForm").RepeatMethod; //dont worry about it...
+  console.log(repeatSelectors);
+
+  let repeatContainer = document.getElementById("repeatContainer");
+  
+  const updateValues = event => {
+    repeatContainer.classList.add(event.target.dataset.show);
+    repeatContainer.classList.remove(event.target.dataset.hide);
+  };
+  for (radio of repeatSelectors){
+    radio.onchange = updateValues;
+  }
+}
+
 // --------------------------- DOWNLOAD DATA PAGE ---------------------------------------------------
 
 function datepicker() {
@@ -101,9 +133,19 @@ function resetAll() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+  //Finds out what page it's on and runs that page's logic
+  if(window.location.href.indexOf("data-export") != -1){
+    exportpage()
+  } else if (window.location.href.indexOf("job-scheduling") != -1){
+    jobSelectorOnChange();
+    repeatSelectorOnChange();
+  }
+});
+
+//moved the functionality out of main
+function exportpage(){
   // Call function to populate lists on initial page load
   onDataChange();
-  
   // Add event listener to the select dropdown
   const selectData = document.getElementById("select-data");
   selectData.addEventListener("change", onDataChange);
@@ -113,7 +155,8 @@ document.addEventListener("DOMContentLoaded", function () {
   radioButtons.forEach((radioButton) => {
     radioButton.addEventListener("change", onDataTypeChange);
   });
-});
+}
+
 
 // Function to dynamically update data item list (Stock, Index, Bonds, etc...) based on selection.
 function onDataChange() {

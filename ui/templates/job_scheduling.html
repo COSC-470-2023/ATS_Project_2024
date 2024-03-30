@@ -27,7 +27,8 @@
 {% endif %}
 {% endwith %}
 
-<form action="/job-scheduling/job-scheduling" method="POST">
+<form action="/job-scheduling" method="POST" id="JobSchedulingForm">
+    <script id="currentSchedule" type="application/json">{{ jobschedule|safe }}</script>
     <div class="container">
         <!-- Current Scheduling Row -->
         <h5> Current Scheduling: </h5>
@@ -50,8 +51,8 @@
                 <!-- Current Time Column -->
                 <div class="card-body">
                     <div class="form-group">
-                        <label for="time">Time (HH:MM):</label>
-                        <label class="sched-box"> &nbsp; </label>
+                        <label>Time (HH:MM):</label>
+                        <label class="sched-box" id="currentTime"> &nbsp; </label>
                     </div>
                 </div>
             </div>
@@ -59,8 +60,8 @@
                 <!-- Current Day of the Week -->
                 <div class="card-body">
                     <div class="form-group">
-                        <label for="dayOfWeekStart">Day of the Week:</label>
-                        <label class="sched-box"> &nbsp; </label>
+                        <label>Day of the Week:</label>
+                        <label class="sched-box" id="currentDOW"> &nbsp; </label>
                     </div>
                 </div>
             </div>
@@ -68,8 +69,8 @@
                 <!-- Current Day of the Month -->
                 <div class="card-body">
                     <div class="form-group">
-                        <label for="dayOfMonth">Day of the Month:</label>
-                        <label class="sched-box"> &nbsp; </label>
+                        <label>Day of the Month:</label>
+                        <label class="sched-box" id="currentDOM"> &nbsp; </label>
                     </div>
                 </div>
             </div>
@@ -82,7 +83,7 @@
                         <div class="col-md-6">
                             <!-- Default Column -->
                             <label class="sched-settings">
-                                <input type="radio" id="default-checkbox" checked/>
+                                <input type="radio" id="default-checkbox" checked />
                                 <h5> Default </h5>
                                 <br /> Recommended. The default job scheduling of the service
                             </label>
@@ -126,30 +127,36 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <!-- Change Day of the Week -->
                 <div class="card-body">
                     <div class="form-group">
-                        <label for="dayOfWeekStart">Day of the Week:</label>
-                        <select class="form-control" id="dayOfWeekStart" name="dayOfWeekStart">
-                            <option value="">Select Start Day</option>
-                            <option value="SUN">Sunday</option>
-                            <option value="MON">Monday</option>
-                            <option value="TUE">Tuesday</option>
-                            <option value="WED">Wednesday</option>
-                            <option value="THU">Thursday</option>
-                            <option value="FRI">Friday</option>
-                            <option value="SAT">Saturday</option>
-                        </select>
+                        <input type="radio" id="DOWbutton" name="RepeatMethod" value="DOW" data-show="showWeekRepeator" data-hide="showMonthRepeator" checked />
+                        <label for="DOWbutton">Days of the week</label>
+                        <input type="radio" id="DOMbutton" name="RepeatMethod" value="DOM" data-show="showMonthRepeator" data-hide="showWeekRepeator" />
+                        <label for="DOMbutton">Days of the month</label>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 showWeekRepeator" id="repeatContainer">
+                <!-- Change Day of the Week -->
+                <div class="card-body" id="weekRepeator">
+                    <div class="form-group">
+                        <label for="dayOfWeekStart">Day of the Week:</label>
+                        <select class="form-control" id="dayOfWeekStart" name="dayOfWeekStart" multiple>
+                            <option value=0>Sunday</option>
+                            <option value=1>Monday</option>
+                            <option value=2>Tuesday</option>
+                            <option value=3>Wednesday</option>
+                            <option value=4>Thursday</option>
+                            <option value=5>Friday</option>
+                            <option value=6>Saturday</option>
+                        </select>
+                    </div>
+                </div>
                 <!-- Change Day of the Month -->
-                <div class="card-body">
+                <div class="card-body" id="monthRepeator">
                     <div class="form-group">
                         <label for="dayOfMonth">Day of the Month:</label>
-                        <select class="form-control" id="dayOfMonth" name="dayOfMonth">
-                            <option value="">Select Day</option>
+                        <select class="form-control" id="dayOfMonth" name="dayOfMonth" multiple>
                             {% for day in range(1, 32) %}
                             <option value="{{ day }}">{{ day }}</option>
                             {% endfor %}

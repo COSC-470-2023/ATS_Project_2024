@@ -353,6 +353,19 @@ tbody tr td {
   }
 }
 
+#repeatContainer .card-body {
+  display: none;
+}
+
+#repeatContainer.showWeekRepeator #weekRepeator.card-body {
+  display: block;
+}
+
+#repeatContainer.showMonthRepeator #monthRepeator.card-body {
+  display: block;
+}
+
+
 @media (max-width: 950px) {
   /* Date Range - Download Data */
   .input-daterange input {
@@ -368,3 +381,4 @@ tbody tr td {
     width: 150px;
   }
 }
+
