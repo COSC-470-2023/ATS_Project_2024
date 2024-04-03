@@ -171,6 +171,7 @@ document.addEventListener("DOMContentLoaded", function () {
   } else if (window.location.href.indexOf("job-scheduling") != -1){
     jobSelectorOnChange();
     repeatSelectorOnChange();
+    inputJobSelectorOnChange();
   }
 });
 
