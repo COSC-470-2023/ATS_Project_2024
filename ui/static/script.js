@@ -79,6 +79,38 @@ function jobSelectorOnChange() {
   updateValues();
 }
 
+function selectOptions(selectElementId, value, isWildcard) {
+  let selectElement = document.getElementById(selectElementId);
+  Array.from(selectElement.options).forEach(option => {
+      if (isWildcard) {
+          option.selected = true;
+          // Select all options if wildcard is true (*)
+      } else {
+          option.selected = option.value === value;
+          // Select option if value matches
+      }
+  });
+}
+
+function inputJobSelectorOnChange() {
+  const jobSelector = document.getElementById("inputJobType");
+  const currentSchedule = JSON.parse(document.getElementById("currentSchedule").textContent) ;
+
+  const updateValues = event => {
+    let jobValues = currentSchedule.find(job=>job.name==jobSelector.value)
+    let defaultValues = jobValues.default.split()
+    document.getElementById("time").innerHTML = defaultValues[1] + ":" + defaultValues[0].toString().padStart(2, '0');
+    
+    let dayOfWeekWildcard = defaultValues[4] === '*';//if a * is present then deal with it
+    selectOptions('dayOfWeek', defaultValues[4], dayOfWeekWildcard);
+
+    let dayOfMonthWildcard = defaultValues[2] === '*';//if a * is present then deal with it
+    selectOptions('dayOfMonth', defaultValues[2], dayOfMonthWildcard);
+  };
+  jobSelector.onchange = updateValues;
+  updateValues();
+}
+
 function repeatSelectorOnChange() {
   const repeatSelectors = document.getElementById("JobSchedulingForm").RepeatMethod; //dont worry about it...
   console.log(repeatSelectors);

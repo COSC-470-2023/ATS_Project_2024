@@ -83,7 +83,7 @@
                         <div class="col-md-6">
                             <!-- Default Column -->
                             <label class="sched-settings">
-                                <input type="radio" id="default-checkbox" checked />
+                                <input type="radio" name="sched-option" id="default-checkbox" checked />
                                 <h5> Default </h5>
                                 <br /> Recommended. The default job scheduling of the service
                             </label>
@@ -91,7 +91,7 @@
                         <div class="col-md-6">
                             <!-- Custom column -->
                             <label class="sched-settings">
-                                <input type="radio" id="sched-checkbox" />
+                                <input type="radio" name="sched-option" id="sched-checkbox" />
                                 <h5> Custom </h5>
                                 <br /> Best suited for use of specific time and dates for the service
                             </label>
@@ -107,8 +107,8 @@
                 <!-- Change Job Type Column -->
                 <div class="card-body">
                     <div class="form-group">
-                        <label for="jobType">Select Job Type:</label>
-                        <select class="form-control" id="jobType" name="jobType">
+                        <label for="inputJobType">Select Job Type:</label>
+                        <select class="form-control" id="inputJobType" name="inputJobType">
                             <option value="SymbolChanges">Symbol Changes</option>
                             <option value="RealtimeData">Realtime Data</option>
                             <option value="Bonds">Bonds</option>
@@ -140,8 +140,8 @@
                 <!-- Change Day of the Week -->
                 <div class="card-body" id="weekRepeator">
                     <div class="form-group">
-                        <label for="dayOfWeekStart">Day of the Week:</label>
-                        <select class="form-control" id="dayOfWeekStart" name="dayOfWeekStart" multiple>
+                        <label for="dayOfWeek">Day of the Week:</label>
+                        <select class="form-control" id="dayOfWeek" name="dayOfWeek" multiple>
                             <option value=0>Sunday</option>
                             <option value=1>Monday</option>
                             <option value=2>Tuesday</option>
