@@ -18,7 +18,7 @@ class BaseModel(db.Model):
 ## User Table ##
 
 
-class Users(BaseModel, UserMixin):
+class User(BaseModel, UserMixin):
     __table__ = db.Model.metadata.tables["users"]
 
 

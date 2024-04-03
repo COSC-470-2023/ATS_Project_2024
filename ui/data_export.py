@@ -8,8 +8,9 @@ from flask import (
     send_file,
     jsonify,
     session,
+    flash,
 )
-from flask_login import login_required
+from flask_login import login_required, current_user
 from sqlalchemy import inspect
 from datetime import datetime
 import csv
@@ -57,7 +58,7 @@ id_table_map = {
 @data_export.route("/", methods=["GET", "POST"])
 @login_required
 def home():
-    return render_template("data_export.html")
+    return render_template("data_export.html", user=current_user)
 
 
 # Route for populating the data list base on form state
@@ -100,60 +101,71 @@ def get_field_list():
 @data_export.route("/export-data", methods=["GET", "POST"])
 @login_required
 def export_data():
-    if request.method == "POST":
-        # Collect form data
-        selected_data = request.form.getlist("data-item")
-        selected_lookup_fields = request.form.getlist("lookup-field-item")
-        selected_value_fields = request.form.getlist("value-field-item")
-        all_selected_fields = selected_lookup_fields + selected_value_fields
-        entity_type = request.form.get("select-data")
-        table_prefix = (
-            ""
-            if entity_type == "Bonds" or entity_type == "company-info"
-            else request.form.get("data-type")
+    try:
+        if request.method == "POST":
+            # Collect form data
+            selected_data = request.form.getlist("data-item")
+            selected_lookup_fields = request.form.getlist("lookup-field-item")
+            selected_value_fields = request.form.getlist("value-field-item")
+            all_selected_fields = selected_lookup_fields + selected_value_fields
+            entity_type = request.form.get("select-data")
+            table_prefix = (
+                ""
+                if entity_type == "Bonds" or entity_type == "company-info"
+                else request.form.get("data-type")
+            )
+
+            date_range = request.form.get("daterange")
+            start_date, end_date = date_range.split(" - ")
+
+            # Convert dates to datetime objects
+            start_date = datetime.strptime(start_date, "%Y-%m-%d")
+            end_date = datetime.strptime(end_date, "%Y-%m-%d")
+
+            # Assign mapped values
+            value_table_suffix = id_table_map[entity_type][1]
+            value_table = value_table_map.get(table_prefix + value_table_suffix)
+            lookup_table = entity_table_map[entity_type]
+
+            # Quries database based on form selections
+            query = build_query(
+                entity_type,
+                lookup_table,
+                value_table,
+                selected_data,
+                selected_lookup_fields,
+                selected_value_fields,
+                start_date,
+                end_date,
+            )
+
+            # Build file path
+            output_file_name = entity_type + "-data.csv"
+            output_file_path = os.path.join(DIR_UI_OUPUT, output_file_name)
+            # Create ouput dir if it doesn't exist
+            os.makedirs(os.path.dirname(DIR_UI_OUPUT), exist_ok=True)
+
+            with open(output_file_path, "w", newline="") as csvfile:
+                csvwriter = csv.writer(csvfile, delimiter=",")
+                # add first row as columns headers
+                csvwriter.writerow(all_selected_fields)
+                # write query rows to file
+                for row in query:
+                    csvwriter.writerow(row)
+
+            return send_file(
+                "../" + output_file_path,
+                mimetype="text/csv",
+                as_attachment=True,
+            )
+
+    except Exception as e:
+        flash(
+            "An error occured while exporting your data. Please check the system logs, or contact the system administrator.",
+            "error",
         )
 
-        date_range = request.form.get("daterange")
-        start_date, end_date = date_range.split(" - ")
-
-        # Convert dates to datetime objects
-        start_date = datetime.strptime(start_date, "%Y-%m-%d")
-        end_date = datetime.strptime(end_date, "%Y-%m-%d")
-
-        # Assign mapped values
-        value_table_suffix = id_table_map[entity_type][1]
-        value_table = value_table_map.get(table_prefix + value_table_suffix)
-        lookup_table = entity_table_map[entity_type]
-
-        # Quries database based on form selections
-        query = build_query(
-            entity_type,
-            lookup_table,
-            value_table,
-            selected_data,
-            selected_lookup_fields,
-            selected_value_fields,
-            start_date,
-            end_date,
-        )
-
-        output_file_name = entity_type + "-data.csv"
-
-        output_file_path = os.path.join(DIR_UI_OUPUT, output_file_name)
-
-        with open(output_file_path, "w", newline="") as csvfile:
-            csvwriter = csv.writer(csvfile, delimiter=",")
-            # add first row as columns headers
-            csvwriter.writerow(all_selected_fields)
-            # write query rows to file
-            for row in query:
-                csvwriter.writerow(row)
-
-        return send_file(
-            "../" + output_file_path,
-            mimetype="text/csv",
-            as_attachment=True,
-        )
+    return redirect(request.referrer or url_for("data_export.home"))
 
 
 # Funciton that builds query based on the provided tables, table entities, fields, and date range

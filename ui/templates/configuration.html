@@ -1,7 +1,23 @@
 {% extends "base.html" %} {% block title %} Change Configuration {% endblock %}
-{% block mainTitle %} Change Configuration {% endblock %}
-{% block mainDescription %} Choose to add or remove configuration files {% endblock %}
-{% block content %}
+{% block messages %} {% with messages =
+get_flashed_messages(with_categories=true) %} {% if messages %} {% for category,
+message in messages %} {% if category == 'error' %}
+<div class="alert alert-danger alter-dismissable fade show" role="alert">
+  {{ message }}
+  <button type="button" class="close" data-dismiss="alert">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% else %}
+<div class="alert alert-success alter-dismissable fade show" role="alert">
+  {{ message }}
+  <button type="button" class="close" data-dismiss="alert">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %} {% endfor %} {% endif %} {% endwith %} {% endblock %} {% block
+mainTitle %} Change Configuration {% endblock %} {% block mainDescription %}
+Choose to add or remove configuration files {% endblock %} {% block content %}
 
 <div class="container p-0">
   <!-- First Row -->
@@ -22,12 +38,22 @@
               </div>
               <div class="row mt-3">
                 <div class="col content-btn">
-                  <button type="button" class="btn btn-secondary removeStock" data-toggle="modal"
-                    data-target="#remove-modal" data-info="removeStock">
+                  <button
+                    type="button"
+                    class="btn btn-secondary removeStock"
+                    data-toggle="modal"
+                    data-target="#remove-modal"
+                    data-info="removeStock"
+                  >
                     Remove Stock
                   </button>
-                  <button type="button" class="btn btn-secondary addStock" data-toggle="modal"
-                    data-target="#add-modal" data-info="addStock">
+                  <button
+                    type="button"
+                    class="btn btn-secondary addStock"
+                    data-toggle="modal"
+                    data-target="#add-modal"
+                    data-info="addStock"
+                  >
                     Add Stock
                   </button>
                 </div>
@@ -44,12 +70,22 @@
               </div>
               <div class="row mt-3">
                 <div class="col content-btn">
-                  <button type="button" class="btn btn-secondary removeStock" data-toggle="modal"
-                    data-target="#remove-modal" data-info="removeStock">
+                  <button
+                    type="button"
+                    class="btn btn-secondary removeStock"
+                    data-toggle="modal"
+                    data-target="#remove-modal"
+                    data-info="removeStock"
+                  >
                     Remove Constituent
                   </button>
-                  <button type="button" class="btn btn-secondary addStock" data-toggle="modal"
-                    data-target="#add-modal" data-info="addStock">
+                  <button
+                    type="button"
+                    class="btn btn-secondary addStock"
+                    data-toggle="modal"
+                    data-target="#add-modal"
+                    data-info="addStock"
+                  >
                     Add Constituent
                   </button>
                 </div>
@@ -63,7 +99,9 @@
   <!-- Second Row -->
   <div class="row-md pt-3">
     <h1 class="main-title">Change Data Sources</h1>
-    <p class="main-description">Choose to add or remove data financial source</p>
+    <p class="main-description">
+      Choose to add or remove data financial source
+    </p>
   </div>
   <!-- Third Row -->
   <div class="row justify-content-between">
@@ -83,12 +121,22 @@
               </div>
               <div class="row mt-3">
                 <div class="col content-btn">
-                  <button type="button" class="btn btn-secondary removeStock" data-toggle="modal"
-                    data-target="#remove-modal" data-info="removeStock">
+                  <button
+                    type="button"
+                    class="btn btn-secondary removeStock"
+                    data-toggle="modal"
+                    data-target="#remove-modal"
+                    data-info="removeStock"
+                  >
                     Remove Source
                   </button>
-                  <button type="button" class="btn btn-secondary addStock" data-toggle="modal"
-                    data-target="#add-modal" data-info="addStock">
+                  <button
+                    type="button"
+                    class="btn btn-secondary addStock"
+                    data-toggle="modal"
+                    data-target="#add-modal"
+                    data-info="addStock"
+                  >
                     Add Source
                   </button>
                 </div>
@@ -111,18 +159,20 @@
           <span>&times;</span>
         </button>
       </div>
-      <input type="text" id="searchInput" onkeyup="searchList()" placeholder="Search...">
+      <input
+        type="text"
+        id="searchInput"
+        onkeyup="searchList()"
+        placeholder="Search..."
+      />
       <div class="modal-body p-3">
         <!-- Your content here -->
-
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">
           Close
         </button>
-        <button type="button" class="btn btn-primary">
-          Remove
-        </button>
+        <button type="button" class="btn btn-primary">Remove</button>
       </div>
     </div>
   </div>
@@ -138,18 +188,20 @@
           <span>&times;</span>
         </button>
       </div>
-      <input type="text" id="searchInput" onkeyup="searchList()" placeholder="Search...">
+      <input
+        type="text"
+        id="searchInput"
+        onkeyup="searchList()"
+        placeholder="Search..."
+      />
       <div class="modal-body p-3">
         <!-- Your content here -->
-          
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">
           Close
         </button>
-        <button type="button" class="btn btn-primary">
-          Add
-        </button>
+        <button type="button" class="btn btn-primary">Add</button>
       </div>
     </div>
   </div>

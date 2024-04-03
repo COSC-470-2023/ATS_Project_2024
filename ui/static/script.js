@@ -291,4 +291,5 @@ function onDataTypeChange() {
       console.error("Error:", error);
     });
 }
+
 datepicker();

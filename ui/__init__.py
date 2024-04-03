@@ -25,6 +25,7 @@ def create_app():
     app.config["SQLALCHEMY_DATABASE_URI"] = (
         f"mysql+pymysql://{username}:{password}@{hostname}/{database}"
     )
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
     app.secret_key = "secret_key"  # TODO: MUST change this key to something better and store elsewhere
 
     # Create app context
@@ -42,7 +43,7 @@ def create_app():
     app.register_blueprint(data_export, url_prefix="/data-export")
     app.register_blueprint(job_scheduling, url_prefix="/job-scheduling")
 
-    from .models import Users
+    from .models import User
 
     # Setup login manager
     login_manager = LoginManager()
@@ -52,6 +53,6 @@ def create_app():
     # User loader callback. User by Flask-Login for authentaction handling
     @login_manager.user_loader
     def load_user(id):
-        return Users.query.get(int(id))
+        return User.query.get(int(id))
 
     return app
