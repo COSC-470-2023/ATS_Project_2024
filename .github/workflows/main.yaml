@@ -63,10 +63,7 @@ jobs:
       - name: Pytest
         run: |
           source .venv/bin/activate
-          cd tests/ats/collection
-          pytest -v --cov=. --cov-report=term-missing .
-          cd ../database
-          pytest -v --cov=. --cov-report=term-missing .
-          cd ../util
-          pytest -v --cov=. --cov-report=term-missing .
+          python -m pytest -v --cov=tests/ats/collection --cov-report=term-missing tests/ats/collection
+          python -m pytest -v --cov=tests/ats/database --cov-report=term-missing tests/ats/database
+          python -m pytest -v --cov=tests/ats/util --cov-report=term-missing tests/ats/util
 
