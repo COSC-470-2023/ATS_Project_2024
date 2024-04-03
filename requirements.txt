@@ -6,3 +6,4 @@ requests ~= 2.31
 sqlalchemy ~= 2.0
 pytest.cov
 pytest
+python-crontab
