@@ -52,8 +52,8 @@ function getStocks(context) {
       configCard.innerHTML = '';
       // Loop through each stock and create a list item for each
       stocksInfo.forEach(stock => {
-        const label = document.createElement('label');
-        label.classList.add('checkbox-label');
+        const label = document.createElement('li');
+        label.classList.add('checkbox');
 
         if (context === 'modal') {
           const checkbox = document.createElement('input');
@@ -65,7 +65,6 @@ function getStocks(context) {
 
         label.appendChild(document.createTextNode(`${stock.symbol} - ${stock.name}`));
         configCard.appendChild(label);
-        configCard.appendChild(document.createElement('br'));
       });
     })
     .catch(error => console.error('Error fetching stocks:', error));
