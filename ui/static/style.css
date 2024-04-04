@@ -194,16 +194,32 @@ a.sidebar-link:hover {
 
 /* Change Configuration Page - configuration.html*/
 
-#config-stock-list {
+.config-list ul {
   height: 200px;
+  overflow: scroll;
 }
 
 .modal-body {
   height: 200px;
   border: none;
+  overflow: scroll;
 }
 
-#searchInput {
+.modal-body li{
+  margin-bottom: 5px;
+}
+
+.modal-body input{
+  margin-right: 5px;
+}
+
+#searchInputRemove {
+  background-color: #f7f7f7;
+  color:#000;
+  margin: 20px;
+}
+
+#searchInputAdd {
   background-color: #f7f7f7;
   color:#000;
   margin: 20px;
@@ -216,6 +232,11 @@ a.sidebar-link:hover {
 
 .content-btn .btn {
   margin-left: 5px;
+}
+
+#loadingIndicator {
+  display: none;
+  text-align: center;
 }
 
 /* Job Scheduling Page */
