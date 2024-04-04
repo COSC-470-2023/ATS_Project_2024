@@ -37,6 +37,7 @@ def create_app():
     from .configuration import configuration
     from .data_export import data_export
     from .job_scheduling import job_scheduling
+    from .configuration import configuration
 
     app.register_blueprint(auth, url_prefix="/")
     app.register_blueprint(configuration, url_prefix="/configuration")

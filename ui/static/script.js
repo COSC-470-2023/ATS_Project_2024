@@ -9,24 +9,169 @@ hamburger.addEventListener("click", function () {
 
 // --------------------------- CHANGE CONFIGURTAION PAGE ---------------------------------------------------
 
-//modal search
-function searchList() {
-  // Declare variables
-  var input, filter, ul, li, i, txtValue;
-  input = document.getElementById("searchInput");
-  filter = input.value.toUpperCase();
-  ul = document.querySelector(".modal-list ul"); // Select the ul element within the modal
-  li = ul.getElementsByTagName("li");
+function dynamicModal(title, modalId) {
+  if (modalId === "remove-modal") {
+    $("#remove-modal .modal-header h5").text(title);
+    $("#remove-modal .modal-footer .btn-primary").text(title);
+  } else if (modalId === "add-modal") {
+    $("#add-modal .modal-header h5").text(title);
+    $("#add-modal .modal-footer .btn-primary").text(title);
+  }
+}
 
-  // Loop through all list items, and hide those who don't match the search query
-  for (i = 0; i < li.length; i++) {
-    txtValue = li[i].textContent || li[i].innerText;
+// Function to filter through stock list
+function searchList(context) {
+  var inputId = context === 'remove' ? 'searchInputRemove' : 'searchInputAdd';
+  var input = document.getElementById(inputId);
+  var filter = input.value.toUpperCase();
+  var ul = context === 'remove' ? document.querySelector("#remove-modal ul") : document.querySelector("#add-modal ul");
+  var li = ul.getElementsByTagName("li");
+
+  for (var i = 0; i < li.length; i++) {
+    var txtValue = li[i].textContent || li[i].innerText;
     if (txtValue.toUpperCase().indexOf(filter) > -1) {
       li[i].style.display = "";
     } else {
       li[i].style.display = "none";
     }
   }
+}
+
+// Function to query stocks from the config file
+function getStocks(context) {
+  fetch('/configuration/get_config', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => response.json())
+    .then(stocksInfo => {
+      const configCard = context === 'config' ? document.getElementById("config-stock-list") : document.getElementById('stockList')
+      //clear any existing list items
+      configCard.innerHTML = '';
+      // Loop through each stock and create a list item for each
+      stocksInfo.forEach(stock => {
+        const label = document.createElement('label');
+        label.classList.add('checkbox-label');
+
+        if (context === 'modal') {
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.name = 'stocksToRemove';
+          checkbox.value = stock.symbol;
+          label.appendChild(checkbox);
+        }
+
+        label.appendChild(document.createTextNode(`${stock.symbol} - ${stock.name}`));
+        configCard.appendChild(label);
+        configCard.appendChild(document.createElement('br'));
+      });
+    })
+    .catch(error => console.error('Error fetching stocks:', error));
+}
+
+// Function to remove selected stocks in the config file
+function removeStocks() {
+  // Get all selected checkboxes
+  var checkboxes = document.querySelectorAll('input[name="stocksToRemove"]:checked');
+  var symbols = Array.from(checkboxes).map(function (checkbox) {
+    return checkbox.value;
+  });
+
+  fetch('/configuration/remove_config', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ symbols: symbols })
+  })
+    .then(response => {
+      if (response.ok) {
+        getStocks('modal');
+        getStocks('config');
+      } else {
+        console.error('Error removing stocks');
+      }
+    })
+    .catch(error => console.error('Error removing stocks:', error));
+}
+
+// Function to display available stocks from the API
+function displayAvailableStocks() {
+  // Display loading sign
+  availableStockList.innerHTML = '';
+  document.getElementById('loadingIndicator').style.display = 'block';
+
+  fetch('/configuration/compare_stocks', {
+    method: 'GET', 
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  })
+    .then(response => {
+      // Hide loading sign regardless of response status
+      document.getElementById('loadingIndicator').style.display = 'none';
+
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Failed to fetch available stocks');
+      }
+    })
+    .then(data => {
+      if (data && Array.isArray(data.not_common_stocks)) {
+        var stockList = document.getElementById('availableStockList');
+        stockList.innerHTML = '';
+
+        // Populate stock list with checkboxes
+        data.not_common_stocks.forEach(stock => {
+          var listItem = document.createElement('li');
+          var checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.value = stock.symbol;
+          listItem.appendChild(checkbox);
+          listItem.appendChild(document.createTextNode(`${stock.symbol} - ${stock.name}`));
+          stockList.appendChild(listItem);
+        });
+      } else {
+        throw new Error('Available stocks not found in response data');
+      }
+    })
+    .catch(error => console.error('Error fetching available stocks:', error));
+}
+
+// Function to add selected stocks in the config file
+function addSelectedStocks() {
+  var selectedStocks = [];
+  var checkboxes = document.querySelectorAll('#availableStockList input[type="checkbox"]:checked');
+  checkboxes.forEach(checkbox => {
+    var symbol = checkbox.value;
+    var name = checkbox.nextSibling.textContent.trim().split(' - ')[1]; // Extract name from text
+    selectedStocks.push({ symbol: symbol, name: name });
+  });
+
+  // Send selected stocks to the server
+  fetch('/configuration/add_stocks', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ selected_stocks: selectedStocks })
+  })
+  .then(response => {
+    if (response.ok) {
+      return response.json();
+      getStocks('config');
+    } else {
+      throw new Error('Failed to add selected stocks');
+    }
+  })
+  .then(data => {
+    console.log('Selected stocks added successfully:', data);
+    getStocks('config');
+  })
+  .catch(error => console.error('Error adding selected stocks:', error));
 }
 
 // --------------------------- JOB SCHEDULING PAGE ---------------------------------------------------
@@ -64,9 +209,9 @@ function customBorder() {
 
 function jobSelectorOnChange() {
   const jobSelector = document.getElementById("jobType");
-  const currentSchedule = JSON.parse(document.getElementById("currentSchedule").textContent) ;
+  const currentSchedule = JSON.parse(document.getElementById("currentSchedule").textContent);
   const updateValues = event => {
-    let jobValues = currentSchedule.find(job=>job.name==jobSelector.value)
+    let jobValues = currentSchedule.find(job => job.name == jobSelector.value)
     if (jobValues.hour != null) {
       document.getElementById("currentTime").innerHTML = jobValues.hour + ":" + jobValues.minute.toString().padStart(2, '0');
     } else {
@@ -116,12 +261,12 @@ function repeatSelectorOnChange() {
   console.log(repeatSelectors);
 
   let repeatContainer = document.getElementById("repeatContainer");
-  
+
   const updateValues = event => {
     repeatContainer.classList.add(event.target.dataset.show);
     repeatContainer.classList.remove(event.target.dataset.hide);
   };
-  for (radio of repeatSelectors){
+  for (radio of repeatSelectors) {
     radio.onchange = updateValues;
   }
 }
@@ -166,17 +311,18 @@ function resetAll() {
 
 document.addEventListener("DOMContentLoaded", function () {
   //Finds out what page it's on and runs that page's logic
-  if(window.location.href.indexOf("data-export") != -1){
+  if (window.location.href.indexOf("data-export") != -1) {
     exportpage()
-  } else if (window.location.href.indexOf("job-scheduling") != -1){
+  } else if (window.location.href.indexOf("job-scheduling") != -1) {
     jobSelectorOnChange();
     repeatSelectorOnChange();
-    inputJobSelectorOnChange();
+  } else if (window.location.href.indexOf("configuration") != -1) {
+    getStocks('config');
   }
 });
 
 //moved the functionality out of main
-function exportpage(){
+function exportpage() {
   // Call function to populate lists on initial page load
   onDataChange();
   // Add event listener to the select dropdown
@@ -242,19 +388,15 @@ function onDataChange() {
         const li = document.createElement("li");
 
         if (selected_entity === "Bonds") {
-          li.innerHTML = `<input type="checkbox" name="data-item" id="${
-            item[entity_identifier]
-          }" value="${item[entity_identifier]}" class="checkbox" />
-                        <label for="${item[entity_identifier]}">${
-            item[entity_identifier]
-          }</label>`;
+          li.innerHTML = `<input type="checkbox" name="data-item" id="${item[entity_identifier]
+            }" value="${item[entity_identifier]}" class="checkbox" />
+                        <label for="${item[entity_identifier]}">${item[entity_identifier]
+            }</label>`;
         } else {
-          li.innerHTML = `<input type="checkbox" name="data-item" id="${
-            item[entity_identifier]
-          }" value="${item[entity_identifier]}" class="checkbox" />
-                        <label for="${item[entity_identifier]}">${
-            item[entity_identifier]
-          } - ${item[item_field_name]}</label>`;
+          li.innerHTML = `<input type="checkbox" name="data-item" id="${item[entity_identifier]
+            }" value="${item[entity_identifier]}" class="checkbox" />
+                        <label for="${item[entity_identifier]}">${item[entity_identifier]
+            } - ${item[item_field_name]}</label>`;
         }
 
         dataList.appendChild(li);
@@ -287,7 +429,7 @@ function onDataTypeChange() {
       // Update the field list with the received fields from the lookup table
       const lookupFieldList = document.getElementById("lookup-field-list");
       lookupFieldList.innerHTML = "";
-      
+
       // Add lookup table fields to list
       const lookupHeader = document.createElement("h6");
       const lookupHeaderText = document.createTextNode("Lookup Fields:");
@@ -300,7 +442,7 @@ function onDataTypeChange() {
                       <label for="${field}">${field}</label>`;
         lookupFieldList.appendChild(li);
       });
-      
+
       const br = document.createElement("br");
       lookupFieldList.appendChild(br);
 
