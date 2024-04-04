@@ -239,17 +239,23 @@ function selectOptions(selectElementId, value, isWildcard) {
 function inputJobSelectorOnChange() {
   const jobSelector = document.getElementById("inputJobType");
   const currentSchedule = JSON.parse(document.getElementById("currentSchedule").textContent) ;
-
   const updateValues = event => {
-    let jobValues = currentSchedule.find(job=>job.name==jobSelector.value)
-    let defaultValues = jobValues.default.split()
-    document.getElementById("time").innerHTML = defaultValues[1] + ":" + defaultValues[0].toString().padStart(2, '0');
-    
-    let dayOfWeekWildcard = defaultValues[4] === '*';//if a * is present then deal with it
-    selectOptions('dayOfWeek', defaultValues[4], dayOfWeekWildcard);
+    let defaultButtonSelected = document.getElementById("default-checkbox");
+    if (defaultButtonSelected.checked) {
+      let jobValues = currentSchedule.find(job=>job.name==jobSelector.value);
+      let defaultValues = jobValues.default.split(" ");
 
-    let dayOfMonthWildcard = defaultValues[2] === '*';//if a * is present then deal with it
-    selectOptions('dayOfMonth', defaultValues[2], dayOfMonthWildcard);
+      //time string processing and setting
+      document.getElementById("time").value = defaultValues[1].toString().padStart(2, '0') + ":" + defaultValues[0].toString().padStart(2, '0');
+      
+      let dayOfWeekWildcard = defaultValues[4] === '*';
+      //if a * is present then deal with it
+      selectOptions('dayOfWeek', defaultValues[4], dayOfWeekWildcard);
+
+      let dayOfMonthWildcard = defaultValues[2] === '*';
+      //if a * is present then deal with it
+      selectOptions('dayOfMonth', defaultValues[2], dayOfMonthWildcard);
+    }
   };
   jobSelector.onchange = updateValues;
   updateValues();
@@ -315,6 +321,7 @@ document.addEventListener("DOMContentLoaded", function () {
   } else if (window.location.href.indexOf("job-scheduling") != -1) {
     jobSelectorOnChange();
     repeatSelectorOnChange();
+    inputJobSelectorOnChange();
   } else if (window.location.href.indexOf("configuration") != -1) {
     getStocks('config');
   }
