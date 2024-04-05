@@ -45,7 +45,7 @@ def make_mapping(treasury: str) -> data_handler.Mapping:
 def main():
     try:
         logger.info('Starting bonds collection')
-        config = file_handler.read_yaml(globals.DIR_CFG + globals.FN_CFG_BONDS)
+        config = file_handler.read_yaml(globals.FN_CFG_BONDS)
 
         logger.info('Fetching raw data from API')
         endpoint = config[globals.FIELD_CFG_URL]
