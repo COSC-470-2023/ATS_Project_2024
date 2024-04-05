@@ -66,11 +66,11 @@ def main():
                                              non_api_fields,
                                              mapping)
 
-        logger.inf('Writing processed data to output')
+        logger.info('Writing processed data to output')
         file_handler.write_json(data, globals.FN_OUT_BONDS)
         logger.info('Bonds collection complete')
     except Exception as e:
-        logger.debug(e)
+        logger.error(e)
         raise
 
 
