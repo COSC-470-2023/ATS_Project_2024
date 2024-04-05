@@ -261,6 +261,16 @@ function inputJobSelectorOnChange() {
   updateValues();
 }
 
+function defaultButtonReset(){
+  document.getElementById("default-checkbox").addEventListener("change", function(){
+    if (this.checked){
+      inputJobSelectorOnChange();
+    }
+  });
+  ;
+  
+}
+
 function repeatSelectorOnChange() {
   const repeatSelectors = document.getElementById("JobSchedulingForm").RepeatMethod; //dont worry about it...
   console.log(repeatSelectors);
@@ -322,6 +332,7 @@ document.addEventListener("DOMContentLoaded", function () {
     jobSelectorOnChange();
     repeatSelectorOnChange();
     inputJobSelectorOnChange();
+    defaultButtonReset()
   } else if (window.location.href.indexOf("configuration") != -1) {
     getStocks('config');
   }
