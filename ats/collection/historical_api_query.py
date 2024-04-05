@@ -90,7 +90,7 @@ def main():
                                 globals.FN_OUT_HISTORICAL_STOCKS)
         logger.info('Historical collection complete')
     except Exception as e:
-        logger.debug(e)
+        logger.error(e)
         raise
 
 
