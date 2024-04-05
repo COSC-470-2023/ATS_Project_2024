@@ -51,6 +51,7 @@ def main():
         endpoint = config[globals.FIELD_CFG_URL]
         api_key = os.getenv(globals.ENV_API_KEY)
         days = os.getenv(globals.ENV_DAYS_QUERIED)
+        days = int(days)
         date = datetime.date.today()
         fetcher = api_handler.Fetcher(endpoint, api_key, build_queries)
         raw_data = fetcher.fetch(days, date)
