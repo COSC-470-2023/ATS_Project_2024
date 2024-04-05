@@ -206,6 +206,7 @@ function customBorder() {
   }
 }
 
+//changes the current jobscheduling on change of option in the dropdown
 function jobSelectorOnChange() {
   const jobSelector = document.getElementById("jobType");
   const currentSchedule = JSON.parse(document.getElementById("currentSchedule").textContent);
@@ -223,6 +224,7 @@ function jobSelectorOnChange() {
   updateValues();
 }
 
+//logic for the input selector to check if "*" is in the crontab
 function selectOptions(selectElementId, value, isWildcard) {
   let selectElement = document.getElementById(selectElementId);
   Array.from(selectElement.options).forEach(option => {
@@ -236,6 +238,7 @@ function selectOptions(selectElementId, value, isWildcard) {
   });
 }
 
+//updates the custom job fields with the defaults if default is selected.
 function inputJobSelectorOnChange() {
   const jobSelector = document.getElementById("inputJobType");
   const currentSchedule = JSON.parse(document.getElementById("currentSchedule").textContent) ;
@@ -261,6 +264,7 @@ function inputJobSelectorOnChange() {
   updateValues();
 }
 
+//when the default button is checked again it resets the input fields
 function defaultButtonReset(){
   document.getElementById("default-checkbox").addEventListener("change", function(){
     if (this.checked){

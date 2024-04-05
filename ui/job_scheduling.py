@@ -48,6 +48,7 @@ def load_page():
     return render_template("job_scheduling.html", jobschedule=json.dumps(listOfJobs))
 
 
+#form submission
 @job_scheduling.route("/", methods=["POST"])
 @admin_required
 def change_schedule():
@@ -85,6 +86,7 @@ def change_schedule():
     cronjob.setall(cron_time_input)
     cron.write()
 
+    #get the current cron jobs and rerender the template with the updated values.
     for job in listOfJobs:
         cronjob = next(cron.find_comment(job["name"]), None)
         if cronjob == None: #if the job doesn't exist currently then use defaults
