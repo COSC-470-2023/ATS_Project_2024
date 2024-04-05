@@ -59,7 +59,7 @@ def main():
         file_handler.write_json(data, globals.FN_OUT_COMPANIES)
         logger.info('Companies collection complete')
     except Exception as e:
-        logger.debug(e)
+        logger.error(e)
         raise
 
 
