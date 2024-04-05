@@ -25,7 +25,7 @@ def test_query_manager():
 @patch('ats.util.api_handler.requests')
 def test_fetcher(mock_requests):
     mock_response = MagicMock()
-    mock_response.json.return_value = 'Success'
+    mock_response.json.return_value = ['Success']
     mock_requests.get.return_value = mock_response
     fetcher = api_handler.Fetcher(endpoint, api_key)
     assert fetcher.endpoint == endpoint
