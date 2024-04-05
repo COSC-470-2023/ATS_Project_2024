@@ -208,6 +208,15 @@ function customBorder() {
 
 //changes the current jobscheduling on change of option in the dropdown
 function jobSelectorOnChange() {
+  const DOWMap = {
+    "0": "SUN",
+    "1": "MON",
+    "2": "TUE",
+    "3": "WED",
+    "4": "THU",
+    "5": "FRI",
+    "6": "SAT",
+  }
   const jobSelector = document.getElementById("jobType");
   const currentSchedule = JSON.parse(document.getElementById("currentSchedule").textContent);
   const updateValues = event => {
@@ -217,7 +226,15 @@ function jobSelectorOnChange() {
     } else {
       document.getElementById("currentTime").innerHTML = "hourly";
     }
-    document.getElementById("currentDOW").innerHTML = jobValues.day ?? '*';
+
+    let weekDays = jobValues.day ?? '*';
+    console.log(weekDays)
+    if (weekDays != '*'){
+      weekDays = weekDays.map(x => DOWMap[String(x).trim()]);
+      weekDays = weekDays.join(",");
+    }
+
+    document.getElementById("currentDOW").innerHTML = weekDays;
     document.getElementById("currentDOM").innerHTML = jobValues.month ?? '*';
   };
   jobSelector.onchange = updateValues;

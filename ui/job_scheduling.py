@@ -114,7 +114,7 @@ def change_schedule():
     return render_template("job_scheduling.html", jobschedule=json.dumps(listOfJobs))
 
 
-
+#change the commands with the full paths when you have everything setup
 listOfJobs = [
         {
             "name": "SymbolChanges",
