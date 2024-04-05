@@ -32,7 +32,7 @@ def main():
         file_handler.write_json(data, globals.FN_OUT_SYMBOL_CHANGE)
         logger.info('Symbol change collection complete')
     except Exception as e:
-        logger.debug(e)
+        logger.error(e)
         raise
 
 
