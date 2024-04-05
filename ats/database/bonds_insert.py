@@ -81,7 +81,7 @@ def main():
     except Exception as e:
         print(traceback.format_exc())
         print(f"SQL connection error: {e}")
-        logger.critical(f"Error when connecting to remote database: {e}")
+        logger.error(f"Error when connecting to remote database: {e}")
 
     logger.success("bonds_insert ran successfully.")
 
