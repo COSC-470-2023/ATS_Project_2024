@@ -57,6 +57,7 @@ def main():
         indexes = historical_config[INDEXES]
         stocks = historical_config[STOCKS]
         days = os.getenv(globals.ENV_DAYS_QUERIED)
+        days = int(days)
         date = datetime.date.today()
         raw_commodities_data = fetcher.fetch(commodities, days, date)
         raw_indexes_data = fetcher.fetch(indexes, days, date)
