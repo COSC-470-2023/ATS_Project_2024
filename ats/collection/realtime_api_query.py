@@ -81,7 +81,7 @@ def main():
                                 globals.FN_OUT_REALTIME_STOCKS)
         logger.info('Realtime collection complete')
     except Exception as e:
-        logger.debug(e)
+        logger.error(e)
         raise
 
 
