@@ -56,8 +56,8 @@ class Fetcher:
         try:
             for query in queries.get():
                 response = requests.get(query)
-                json = response.json()
-                raw_data.append(json)
+                for entry in response.json():
+                    raw_data.append(entry)
         except requests.RequestException as e:
             logger.debug(f"api_error {e}")
 
