@@ -115,7 +115,7 @@ def main():
 
     except Exception as e:
         print(traceback.format_exc())
-        logger.critical(f"Error when connecting to remote database: {e}")
+        logger.error(f"Error when connecting to remote database: {e}")
 
     logger.success("company_statements_insertion ran successfully.")
 
