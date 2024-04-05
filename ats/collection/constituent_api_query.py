@@ -27,7 +27,7 @@ def main():
         api_fields = constituent_config[globals.FIELD_CFG_API]
         data = data_handler.process_raw_data(raw_data, api_fields)
 
-        logger.inf('Writing processed data to output')
+        logger.info('Writing processed data to output')
         config_filenames = [
             globals.FN_CFG_COMPANIES,
             globals.FN_CFG_REALTIME,

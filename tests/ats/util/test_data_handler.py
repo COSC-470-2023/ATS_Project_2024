@@ -35,3 +35,5 @@ def test_process_raw_data():
                                          non_api_fields,
                                          mock_mapping)
     assert data == [{'new': 'foo', 'baz': 'qux'}, {'new': 'bar', 'baz': 'qux'}]
+
+# TODO: process raw data with sub-entries

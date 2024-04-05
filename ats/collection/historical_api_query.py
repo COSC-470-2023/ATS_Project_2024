@@ -11,6 +11,7 @@ logger = Logger.instance()
 COMMODITIES = 'commodities'
 INDEXES = 'index_composites'
 STOCKS = 'stocks'
+HISTORICAL = 'historical'
 HISTORICAL_NAME = '_historical_name'
 NAME = 'name'
 SYMBOL = 'symbol'
@@ -72,17 +73,20 @@ def main():
         commodities_data = data_handler.process_raw_data(raw_commodities_data,
                                                          api_fields,
                                                          non_api_fields,
-                                                         commodities_mapping)
+                                                         commodities_mapping,
+                                                         HISTORICAL)
         indexes_data = data_handler.process_raw_data(raw_indexes_data,
                                                      api_fields,
                                                      non_api_fields,
-                                                     indexes_mapping)
+                                                     indexes_mapping,
+                                                     HISTORICAL)
         stocks_data = data_handler.process_raw_data(raw_stocks_data,
                                                     api_fields,
                                                     non_api_fields,
-                                                    stocks_mapping)
+                                                    stocks_mapping,
+                                                    HISTORICAL)
 
-        logger.inf('Writing processed data to output')
+        logger.info('Writing processed data to output')
         file_handler.write_json(commodities_data,
                                 globals.FN_OUT_HISTORICAL_COMMODITY)
         file_handler.write_json(indexes_data,

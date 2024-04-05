@@ -72,7 +72,7 @@ def main():
                                                     non_api_fields,
                                                     mapping)
 
-        logger.inf('Writing processed data to output')
+        logger.info('Writing processed data to output')
         file_handler.write_json(commodities_data,
                                 globals.FN_OUT_REALTIME_COMMODITIES)
         file_handler.write_json(indexes_data,

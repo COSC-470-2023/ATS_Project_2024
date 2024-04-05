@@ -55,7 +55,7 @@ def main():
                                              non_api_fields,
                                              mapping)
 
-        logger.inf('Writing processed data to output')
+        logger.info('Writing processed data to output')
         file_handler.write_json(data, globals.FN_OUT_COMPANIES)
         logger.info('Companies collection complete')
     except Exception as e:
