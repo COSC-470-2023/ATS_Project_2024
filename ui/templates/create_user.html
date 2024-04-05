@@ -1,0 +1,75 @@
+{% extends "base.html" %} {% block title %} Create Users {% endblock %} {% block
+messages %} {% with messages = get_flashed_messages(with_categories=true) %} {%
+if messages %} {% for category, message in messages %} {% if category == 'error'
+%}
+<div class="alert alert-danger alter-dismissable fade show" role="alert">
+  {{ message }}
+  <button type="button" class="close" data-dismiss="alert">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% else %}
+<div class="alert alert-success alter-dismissable fade show" role="alert">
+  {{ message }}
+  <button type="button" class="close" data-dismiss="alert">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %} {% endfor %} {% endif %} {% endwith %} {% endblock %} {% block
+mainTitle %} Create New Users {% endblock %} {% block mainDescription %} Create
+new basic or admin users {% endblock %} {% block content %}
+<div class="container-fluid create-user-container">
+  <form id="create-user-form" method="POST">
+    <label for="first-name" class="form-label">First Name</label>
+    <input
+      type="text"
+      class="form-control mb-3"
+      id="first-name"
+      name="first-name"
+      required
+    />
+    <label for="last-name" class="form-label">Last Name</label>
+    <input
+      type="text"
+      class="form-control mb-3"
+      id="last-name"
+      name="last-name"
+      required
+    />
+    <label for="username" class="form-label">Username</label>
+    <input
+      type="text"
+      class="form-control mb-3"
+      id="username"
+      name="username"
+      required
+    />
+    <label for="password1" class="form-label">Password</label>
+    <input
+      type="password"
+      class="form-control mb-3"
+      id="password1"
+      name="password1"
+      required
+    />
+    <label for="password2" class="form-label">Confirm Password</label>
+    <input
+      type="password"
+      class="form-control mb-3"
+      id="password2"
+      name="password2"
+      required
+    />
+    <label for="user-select" class="form-label">User Type</label>
+    <select
+      class="form-select form-select-lg mb-3"
+      id="user-select"
+      name="user-select"
+    >
+      <option name="user-type" value="Basic">Basic</option>
+      <option name="user-type" value="Admin">Admin</option>
+    </select>
+    <button type="submit" class="btn btn-secondary float-right">Create User</button>
+  </form>
+</div>
+{% endblock %}

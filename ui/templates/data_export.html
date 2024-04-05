@@ -1,9 +1,26 @@
 {% extends "base.html" %} {% block title %} Export Data {% endblock %} {% block
+messages %} {% with messages = get_flashed_messages(with_categories=true) %} {%
+if messages %} {% for category, message in messages %} {% if category == 'error'
+%}
+<div class="alert alert-danger alter-dismissable fade show" role="alert">
+  {{ message }}
+  <button type="button" class="close" data-dismiss="alert">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% else %}
+<div class="alert alert-success alter-dismissable fade show" role="alert">
+  {{ message }}
+  <button type="button" class="close" data-dismiss="alert">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %} {% endfor %} {% endif %} {% endwith %} {% endblock %}{% block
 mainTitle %} Export Data {% endblock %} {% block mainDescription %} Choose the
 data you want to export {% endblock %} {% block content %}
-<form action="/data-export/export-data" method="POST">
+<form class="export-content" action="/data-export/export-data" method="POST">
   <select
-    class="form-select dropdown p-1"
+    class="form-select dropdown p-1 mb-3"
     id="select-data"
     name="select-data"
     onchange="onDataChange()"
@@ -14,96 +31,90 @@ data you want to export {% endblock %} {% block content %}
     <option name="entity" value="Commodities">Commodities</option>
     <option name="entity" value="company-info">Company Info</option>
   </select>
-  <div class="row pt-3 justify-content-center">
-    <div class="col-md-6 pr-md-4 mt-3" id="export-col">
-      <div class="row">
-        <div class="card modal-list" id="export-data-list">
-          <ul class="list-unstyled" id="data-list">
-            {% if entity == "Bonds" %} {% for item in items %}
-            <li>
-              <input
-                type="checkbox"
-                name="data-item"
-                id="{{ item['treasuryName'] }}"
-                value="{{ item['treasuryName'] }}"
-                class="checkbox"
-              />
-              <label for="{{ item['treasuryName'] }}">
-                {{ item['treasuryName'] }}
-              </label>
-            </li>
-            {% endfor %} {% else %} {% if entity == "company-info" or entity ==
-            None or entity == "Companies" %} {% set name = "companyName" %} {% elif entity ==
-            "Commodities" %} {% set name = "commodityName" %} {% elif entity ==
-            "Indexes" %} {% set name = "indexName" %} {% endif %} {% for item in
-            items %}
-            <li>
-              <input
-                type="checkbox"
-                name="data-item"
-                id="{{ item['symbol'] }}"
-                value="{{ item['symbol'] }}"
-                class="checkbox"
-              />
-              <label for="{{ item['symbol'] }}">
-                {{ item["symbol"] }} - {{ item[name|string] }}
-              </label>
-            </li>
-            {% endfor %} {% endif %}
-          </ul>
+  <div class="container p-0">
+    <div class="row">
+      <div class="col">
+        <div class="card content-card p-0 mb-3">
+          <div class="card-body">
+            <div class="row justify-content-between">
+              <div class="col-md-7">
+                <!-- Data List (Stocks, Indexes, Bonds, etc...) -->
+                <h6 class="card-title">Select Data:</h6>
+                <div id="export-data-list">
+                  <ul class="list-unstyled" id="data-list"></ul>
+                </div>
+                <div class="row justify-content-center">
+                  <button
+                    type="button"
+                    class="btn btn-secondary selectAll"
+                    id="data-selectAll-Btn"
+                    onclick="selectAllData(this)"
+                  >
+                    Select All
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <!-- Field List -->
+                <h6 class="card-title">Select Fields:</h6>
+                <div id="export-data-list">
+                  <ul class="list-unstyled" id="lookup-field-list"></ul>
+                  <ul class="list-unstyled" id="value-field-list"></ul>
+                </div>
+                <div class="row justify-content-center">
+                  <button
+                    type="button"
+                    class="btn btn-secondary selectAll"
+                    id="field-selectAll-Btn"
+                    onclick="selectAllData(this)"
+                  >
+                    Select All
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="row pb-3 justify-content-center">
-        <button
-          type="button"
-          class="btn btn-secondary selectAll"
-          id="data-selectAll-Btn"
-          onclick="selectAll()"
-        >
-          Select All
-        </button>
       </div>
     </div>
-
-    <div class="col-md-6 pl-md-4">
-      <div class="row pt-3 mt-3" id="export-data-type">
-        <div class="col-4">
-          <h6>Data Type:</h6>
-        </div>
-        <div class="col">
-          <ul id="data-type-list">
-            <li>
-              <input
-                type="radio"
-                id="realtime-data"
-                name="data-type"
-                value="realtime"
-                {% if realtime_disabled %} disabled {% endif %}
-
-              />
-              <label for="realtime-data">Realtime Data</label>
-            </li>
-            <li>
-              <input
-                type="radio"
-                id="historical-data"
-                name="data-type"
-                value="historical"
-                {% if realtime_disabled %} disabled {% endif %}
-              />
-              <label for="historical-data">Historical Data</label>
-            </li>
-          </ul>
+    <div class="row justify-content-between">
+      <!-- Data Type Selector -->
+      <div class="col-md-6">
+        <div class="card content-card mb-3">
+          <div class="card-body">
+            <div class="row pl-3">
+              <h6 class="card-title">Data Type:</h6>
+              <ul id="data-type-list">
+                <li>
+                  <input
+                    type="radio"
+                    id="realtime-data"
+                    name="data-type"
+                    value="realtime"
+                    checked
+                  />
+                  <label for="realtime-data">Realtime Data</label>
+                </li>
+                <li>
+                  <input
+                    type="radio"
+                    id="historical-data"
+                    name="data-type"
+                    value="historical"
+                  />
+                  <label for="historical-data">Historical Data</label>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div class="row pt-3 mt-3" id="export-date-range">
-        <div class="col">
-          <h6>Date Range:</h6>
-        </div>
-        <div class="col">
-          <div class="flex-row d-flex justify-content-center">
-            <div class="col">
+      <!-- Date Selector -->
+      <div class="col-md-6">
+        <div class="card content-card mb-3">
+          <div class="card-body">
+            <div class="row pl-3">
+              <h6>Date Range:</h6>
               <div class="input-group input-daterange">
                 <input type="text" name="daterange" value="" />
               </div>
@@ -111,45 +122,26 @@ data you want to export {% endblock %} {% block content %}
           </div>
         </div>
       </div>
-
-      <div class="row pt-3 mt-3" id="export-data-format">
-        <div class="col">
-          <h6>Data Format:</h6>
-        </div>
-        <div class="col">
-          <div class="dropdown">
-            <button
-              class="btn btn-secondary dropdown-toggle"
-              type="button"
-              id="dropdownButton"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Select Data
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownButton">
-              <ul class="list-unstyled">
-                <li>test</li>
-              </ul>
-            </div>
-          </div>
-        </div>
+    </div>
+    <!-- Form submission buttons -->
+    <div class="row">
+      <div class="col d-flex justify-content-end">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          id="reset-all-btn"
+          onclick="resetAll()"
+        >
+          Reset All
+        </button>
+        <button
+          type="submit"
+          class="btn btn-secondary ml-2"
+          id="export-file-btn"
+        >
+          Export File
+        </button>
       </div>
-    </div>
-  </div>
-
-  <div class="row mt-3">
-    <div class="col"></div>
-    <div class="col-md-2">
-      <button type="button" class="btn btn-secondary resetAll" onclick="resetAll()">
-        Reset All
-      </button>
-    </div>
-    <div class="col-md-3">
-      <button type="submit" class="btn btn-secondary exportFile">
-        Export File
-      </button>
     </div>
   </div>
 </form>

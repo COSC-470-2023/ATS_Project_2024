@@ -14,10 +14,10 @@ def login():
     return render_template("login.html")
 
 
-@views.route("/configuration")
-@login_required
-def configuration():
-    return render_template("configuration.html", user=current_user)
+# @views.route("/configuration")
+# @login_required
+# def configuration():
+#     return render_template("configuration.html", user=current_user)
 
 
 # @views.route('/data-export')

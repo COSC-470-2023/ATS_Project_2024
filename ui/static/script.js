@@ -3,160 +3,174 @@ console.log("Script loaded!");
 // SIDEBAR
 const hamburger = document.querySelector("#toggle-btn");
 
-// hamburger.addEventListener("click", function () {
-//   document.querySelector("#sidebar").classList.toggle("expand");
-// });
-
-var stockItems = ["Stock 1", "Stock 2", "Stock 3", "Stock 4", "Stock 5"];
-var constituentItems = [
-  "Constituent 1",
-  "Constituent 2",
-  "Constituent 3",
-  "Constituent 4",
-  "Constituent 5",
-];
-var dataSourceItems = [
-  "Data Source 1",
-  "Data Source 2",
-  "Data Source 3",
-  "Data Source 4",
-  "Data Source 5",
-];
+hamburger.addEventListener("click", function () {
+  document.querySelector("#sidebar").classList.toggle("expand");
+});
 
 // --------------------------- CHANGE CONFIGURTAION PAGE ---------------------------------------------------
 
-// ADD FUNCTIONALITY
-// Function to update modal title and button dynamically
-function addModal(buttonClass, configList, targetListId) {
-  $(document).on("click", buttonClass, function () {
-    var button = $(this);
-    var title = button.text(); // Get the text of the button
-    $("#add-modal .modal-title").text(title); // Set the modal title
-    $(".modal-footer .btn-primary").text(title); // Set the button text
-    updateAddModalBody(configList.slice()); // Update modal body with the config list
-
-    //Event Listener for adding selected items to the targetList
-    $("#addBtnModal").on("click", function () {
-      addSelectedItemsToConfigList(targetListId);
-      $("#add-modal").modal("hide");
-    });
-  });
+function dynamicModal(title, modalId) {
+  if (modalId === "remove-modal") {
+    $("#remove-modal .modal-header h5").text(title);
+    $("#remove-modal .modal-footer .btn-primary").text(title);
+  } else if (modalId === "add-modal") {
+    $("#add-modal .modal-header h5").text(title);
+    $("#add-modal .modal-footer .btn-primary").text(title);
+  }
 }
 
-// Function to update the modal body with the config list
-function updateAddModalBody(list) {
-  var configListContainer = $("#add-modal").find(".modal-body .modal-list ul"); // Get the config list container inside the modal
-  configListContainer.empty(); // Clear the previous content
+// Function to filter through stock list
+function searchList(context) {
+  var inputId = context === 'remove' ? 'searchInputRemove' : 'searchInputAdd';
+  var input = document.getElementById(inputId);
+  var filter = input.value.toUpperCase();
+  var ul = context === 'remove' ? document.querySelector("#remove-modal ul") : document.querySelector("#add-modal ul");
+  var li = ul.getElementsByTagName("li");
 
-  // Iterate over the list and create list items with checkboxes
-  list.forEach(function (item) {
-    var listItem = $("<li>"); // Create list item
-    var checkbox = $("<input>")
-      .attr("type", "checkbox")
-      .addClass("config-item-checkbox"); // Create checkbox
-    listItem.append(checkbox); // Append checkbox to list item
-    listItem.append(item); // Append list item text
-    configListContainer.append(listItem); // Append list item to the container
-  });
-}
-
-// Function to add selected items to the target list based on the provided targetListId
-function addSelectedItemsToConfigList(targetListId) {
-  var checkedItems = $(
-    ".modal-body .modal-list ul .config-item-checkbox:checked"
-  ).closest("li"); // Get checked items
-  var targetList = $("#" + targetListId); // Get the target list
-
-  // Append checked items to the target list
-  checkedItems.each(function () {
-    var itemText = $(this).text().trim(); // Get the text content of the list item
-    targetList.append("<li>" + itemText + "</li>"); // Append text content to the target list
-  });
-}
-
-// Call the addModal function with the desired button class, config list, and target list ID
-addModal(".addStock", stockItems, "config-stock-list");
-addModal(".addConstituent", constituentItems, "config-constituent-list");
-addModal(".addDataSource", dataSourceItems, "config-data-source-list");
-
-//REMOVE FUNCTIONALITY
-// Function to update modal title and button dynamically
-function removeModal(buttonClass, configList, targetListId) {
-  $(document).on("click", buttonClass, function () {
-    var button = $(this);
-    var title = button.text(); // Get the text of the button
-    $("#remove-modal .modal-title").text(title); // Set the modal title
-    $(".modal-footer .btn-primary").text(title); // Set the button text
-    $("#remove-modal").data("targetListId", targetListId); // Set the targetListId as a data attribute in the Remove modal
-
-    updateRemoveModalBody(targetListId); // Update modal body with the items from the target list
-  });
-}
-
-// Function to handle removal of selected items from the target list
-function removeSelectedItemsFromList(targetListId) {
-  var targetList = $("#" + targetListId); // Get the target list
-
-  // Find all checked checkboxes in the Remove modal and remove their corresponding list items from the target list
-  $("#remove-modal-list .remove-item-checkbox:checked").each(function () {
-    var listItemText = $(this).parent().text().trim(); // Get the text content of the parent element (list item)
-    targetList.find('li:contains("' + listItemText + '")').remove(); // Remove the corresponding list item from the target list
-  });
-}
-
-// Function to update the content of the Remove modal with items from the target list
-function updateRemoveModalBody(targetListId) {
-  var targetList = $("#" + targetListId); // Get the target list
-  var removeModalList = $("#remove-modal-list"); // Get the list container in the Remove modal
-  removeModalList.empty(); // Clear previous content
-
-  // Iterate over the items in the target list and add them to the Remove modal
-  targetList.find("li").each(function (index) {
-    // Skip adding a checkbox for the first list item
-    if (index !== 0) {
-      var listItemText = $(this).text().trim(); // Get the text content of the list item
-      var listItem = $("<li>"); // Create a list item element
-      var checkbox = $("<input>")
-        .attr("type", "checkbox")
-        .addClass("remove-item-checkbox"); // Create a checkbox
-      listItem.append(checkbox); // Append the checkbox to the list item
-      listItem.append(listItemText); // Append the list item text
-      sort.listItem();
-      removeModalList.append(listItem); // Append the list item to the Remove modal list
-    }
-  });
-}
-
-// Call the removeModal function with the desired button class, config list, and target list ID
-removeModal(".removeStock", stockItems, "config-stock-list");
-removeModal(".removeConstituent", constituentItems, "config-constituent-list");
-removeModal(".removeDataSource", dataSourceItems, "config-data-source-list");
-
-// Event listener for the "Remove" button in the Remove modal
-$(document).on("click", "#removeBtnModal", function () {
-  var targetListId = $("#remove-modal").data("targetListId"); // Get the targetListId associated with the modal
-  removeSelectedItemsFromList(targetListId); // Remove selected items from the target list associated with the modal
-  $("#remove-modal").modal("hide");
-});
-
-//modal search
-function searchList() {
-  // Declare variables
-  var input, filter, ul, li, i, txtValue;
-  input = document.getElementById("searchInput");
-  filter = input.value.toUpperCase();
-  ul = document.querySelector(".modal-list ul"); // Select the ul element within the modal
-  li = ul.getElementsByTagName("li");
-
-  // Loop through all list items, and hide those who don't match the search query
-  for (i = 0; i < li.length; i++) {
-    txtValue = li[i].textContent || li[i].innerText;
+  for (var i = 0; i < li.length; i++) {
+    var txtValue = li[i].textContent || li[i].innerText;
     if (txtValue.toUpperCase().indexOf(filter) > -1) {
       li[i].style.display = "";
     } else {
       li[i].style.display = "none";
     }
   }
+}
+
+// Function to query stocks from the config file
+function getStocks(context) {
+  fetch('/configuration/get_config', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => response.json())
+    .then(stocksInfo => {
+      const configCard = context === 'config' ? document.getElementById("config-stock-list") : document.getElementById('stockList')
+      //clear any existing list items
+      configCard.innerHTML = '';
+      // Loop through each stock and create a list item for each
+      stocksInfo.forEach(stock => {
+        const label = document.createElement('li');
+        label.classList.add('checkbox');
+
+        if (context === 'modal') {
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.name = 'stocksToRemove';
+          checkbox.value = stock.symbol;
+          label.appendChild(checkbox);
+        }
+
+        label.appendChild(document.createTextNode(`${stock.symbol} - ${stock.name}`));
+        configCard.appendChild(label);
+      });
+    })
+    .catch(error => console.error('Error fetching stocks:', error));
+}
+
+// Function to remove selected stocks in the config file
+function removeStocks() {
+  // Get all selected checkboxes
+  var checkboxes = document.querySelectorAll('input[name="stocksToRemove"]:checked');
+  var symbols = Array.from(checkboxes).map(function (checkbox) {
+    return checkbox.value;
+  });
+
+  fetch('/configuration/remove_config', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ symbols: symbols })
+  })
+    .then(response => {
+      if (response.ok) {
+        getStocks('modal');
+        getStocks('config');
+      } else {
+        console.error('Error removing stocks');
+      }
+    })
+    .catch(error => console.error('Error removing stocks:', error));
+}
+
+// Function to display available stocks from the API
+function displayAvailableStocks() {
+  // Display loading sign
+  availableStockList.innerHTML = '';
+  document.getElementById('loadingIndicator').style.display = 'block';
+
+  fetch('/configuration/compare_stocks', {
+    method: 'GET', 
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  })
+    .then(response => {
+      // Hide loading sign regardless of response status
+      document.getElementById('loadingIndicator').style.display = 'none';
+
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Failed to fetch available stocks');
+      }
+    })
+    .then(data => {
+      if (data && Array.isArray(data.not_common_stocks)) {
+        var stockList = document.getElementById('availableStockList');
+        stockList.innerHTML = '';
+
+        // Populate stock list with checkboxes
+        data.not_common_stocks.forEach(stock => {
+          var listItem = document.createElement('li');
+          var checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.value = stock.symbol;
+          listItem.appendChild(checkbox);
+          listItem.appendChild(document.createTextNode(`${stock.symbol} - ${stock.name}`));
+          stockList.appendChild(listItem);
+        });
+      } else {
+        throw new Error('Available stocks not found in response data');
+      }
+    })
+    .catch(error => console.error('Error fetching available stocks:', error));
+}
+
+// Function to add selected stocks in the config file
+function addSelectedStocks() {
+  var selectedStocks = [];
+  var checkboxes = document.querySelectorAll('#availableStockList input[type="checkbox"]:checked');
+  checkboxes.forEach(checkbox => {
+    var symbol = checkbox.value;
+    var name = checkbox.nextSibling.textContent.trim().split(' - ')[1]; // Extract name from text
+    selectedStocks.push({ symbol: symbol, name: name });
+  });
+
+  // Send selected stocks to the server
+  fetch('/configuration/add_stocks', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ selected_stocks: selectedStocks })
+  })
+  .then(response => {
+    if (response.ok) {
+      return response.json();
+      getStocks('config');
+    } else {
+      throw new Error('Failed to add selected stocks');
+    }
+  })
+  .then(data => {
+    console.log('Selected stocks added successfully:', data);
+    getStocks('config');
+  })
+  .catch(error => console.error('Error adding selected stocks:', error));
 }
 
 // --------------------------- JOB SCHEDULING PAGE ---------------------------------------------------
@@ -192,77 +206,303 @@ function customBorder() {
   }
 }
 
+//changes the current jobscheduling on change of option in the dropdown
+function jobSelectorOnChange() {
+  const DOWMap = {
+    "0": "SUN",
+    "1": "MON",
+    "2": "TUE",
+    "3": "WED",
+    "4": "THU",
+    "5": "FRI",
+    "6": "SAT",
+  }
+  const jobSelector = document.getElementById("jobType");
+  const currentSchedule = JSON.parse(document.getElementById("currentSchedule").textContent);
+  const updateValues = event => {
+    let jobValues = currentSchedule.find(job => job.name == jobSelector.value)
+    if (jobValues.hour != null) {
+      document.getElementById("currentTime").innerHTML = jobValues.hour + ":" + jobValues.minute.toString().padStart(2, '0');
+    } else {
+      document.getElementById("currentTime").innerHTML = "hourly";
+    }
+
+    let weekDays = jobValues.day ?? '*';
+    console.log(weekDays)
+    if (weekDays != '*'){
+      weekDays = weekDays.map(x => DOWMap[String(x).trim()]);
+      weekDays = weekDays.join(",");
+    }
+
+    document.getElementById("currentDOW").innerHTML = weekDays;
+    document.getElementById("currentDOM").innerHTML = jobValues.month ?? '*';
+  };
+  jobSelector.onchange = updateValues;
+  updateValues();
+}
+
+//logic for the input selector to check if "*" is in the crontab
+function selectOptions(selectElementId, value, isWildcard) {
+  let selectElement = document.getElementById(selectElementId);
+  Array.from(selectElement.options).forEach(option => {
+      if (isWildcard) {
+          option.selected = true;
+          // Select all options if wildcard is true (*)
+      } else {
+          option.selected = option.value === value;
+          // Select option if value matches
+      }
+  });
+}
+
+//updates the custom job fields with the defaults if default is selected.
+function inputJobSelectorOnChange() {
+  const jobSelector = document.getElementById("inputJobType");
+  const currentSchedule = JSON.parse(document.getElementById("currentSchedule").textContent) ;
+  const updateValues = event => {
+    let defaultButtonSelected = document.getElementById("default-checkbox");
+    if (defaultButtonSelected.checked) {
+      let jobValues = currentSchedule.find(job=>job.name==jobSelector.value);
+      let defaultValues = jobValues.default.split(" ");
+
+      //time string processing and setting
+      document.getElementById("time").value = defaultValues[1].toString().padStart(2, '0') + ":" + defaultValues[0].toString().padStart(2, '0');
+      
+      let dayOfWeekWildcard = defaultValues[4] === '*';
+      //if a * is present then deal with it
+      selectOptions('dayOfWeek', defaultValues[4], dayOfWeekWildcard);
+
+      let dayOfMonthWildcard = defaultValues[2] === '*';
+      //if a * is present then deal with it
+      selectOptions('dayOfMonth', defaultValues[2], dayOfMonthWildcard);
+    }
+  };
+  jobSelector.onchange = updateValues;
+  updateValues();
+}
+
+//when the default button is checked again it resets the input fields
+function defaultButtonReset(){
+  document.getElementById("default-checkbox").addEventListener("change", function(){
+    if (this.checked){
+      inputJobSelectorOnChange();
+    }
+  });
+  ;
+  
+}
+
+function repeatSelectorOnChange() {
+  const repeatSelectors = document.getElementById("JobSchedulingForm").RepeatMethod; //dont worry about it...
+  console.log(repeatSelectors);
+
+  let repeatContainer = document.getElementById("repeatContainer");
+
+  const updateValues = event => {
+    repeatContainer.classList.add(event.target.dataset.show);
+    repeatContainer.classList.remove(event.target.dataset.hide);
+  };
+  for (radio of repeatSelectors) {
+    radio.onchange = updateValues;
+  }
+}
+
 // --------------------------- DOWNLOAD DATA PAGE ---------------------------------------------------
 
 function datepicker() {
-  $(function() {
+  $(function () {
     $('input[name="daterange"]').daterangepicker({
-      startDate: new Date(),
+      startDate: new Date(new Date().getFullYear() - 3, 0, 1),
       endDate: new Date(),
       minDate: new Date(new Date().getFullYear() - 3, 0, 1),
-      opens: 'center',
+      opens: "center",
       locale: {
-        format: 'DD/MM/YYYY'
-      }
+        format: "YYYY-MM-DD",
+      },
     });
   });
 }
 
-function selectAll() {
-  var checkboxes = $(".modal-list .checkbox");
+function selectAllData(button) {
+  var checkboxes;
+
+  if (button.id === "data-selectAll-Btn") {
+    checkboxes = $("#data-list .checkbox");
+  } else if (button.id === "field-selectAll-Btn") {
+    checkboxes = $("#lookup-field-list .checkbox, #value-field-list .checkbox");
+  } else {
+    return;
+  }
+
   // Check if any of the checkboxes are already checked
-  var anyChecked = checkboxes.is(":checked");
-  checkboxes.prop("checked", !anyChecked);
+  var checked = checkboxes.is(":checked");
+
+  // Toggle the checkboxes
+  checkboxes.prop("checked", !checked);
 }
 
 function resetAll() {
-  var dataCB = $(".modal-list .checkbox");
-  var dataTypeCB = $("#data-type-list .checkbox");
-  var selectData = $("#select-data option");
-  var dateRange = $("#datepicker");
-
-  dataCB.prop("checked", false);
-  dataTypeCB.prop("checked", false);
-  selectData.prop("selected", false);
-  datepicker();
-}
-
-// changes the state of "Data Type" radio button based on the data selection
-function onDataChange() {
-  const dataSelect = document.getElementById("select-data");
-  const realtime = document.getElementById("realtime-data");
-  const historical = document.getElementById("historical-data");
-  const dataValue = dataSelect.value;
-  
-  if (dataSelect.value === "Bonds" || dataSelect.value === "company-info") {
-    realtime.disabled = true;
-    historical.disabled = true;
-  } else {
-    realtime.disabled = false;
-    historical.disabled = false;
-  }
-
-  // Set query params (dataValue needs to be saved to session storage)
-  const params = new URLSearchParams(window.location.search);
-  params.set("realtimeDisabled", realtime.disabled);
-  params.set("historicalDisabled", historical.disabled);
-  params.set("dataValue", dataValue);
-  sessionStorage.setItem("selectedValue", dataValue);
-
-  window.location.href = "/data-export?" + params.toString();
+  location.reload();
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  const storedValue = sessionStorage.getItem("selectedValue");
-  if (storedValue) {
-    const dataSelect = document.getElementById("select-data");
-    dataSelect.value = storedValue;
-
-    // Clear the stored value
-    sessionStorage.removeItem("selectedValue");
+  //Finds out what page it's on and runs that page's logic
+  if (window.location.href.indexOf("data-export") != -1) {
+    exportpage()
+  } else if (window.location.href.indexOf("job-scheduling") != -1) {
+    jobSelectorOnChange();
+    repeatSelectorOnChange();
+    inputJobSelectorOnChange();
+    defaultButtonReset()
+  } else if (window.location.href.indexOf("configuration") != -1) {
+    getStocks('config');
   }
 });
 
+//moved the functionality out of main
+function exportpage() {
+  // Call function to populate lists on initial page load
+  onDataChange();
+  // Add event listener to the select dropdown
+  const selectData = document.getElementById("select-data");
+  selectData.addEventListener("change", onDataChange);
+
+  // Add event listener to the radio buttons
+  const radioButtons = document.querySelectorAll('input[name="data-type"]');
+  radioButtons.forEach((radioButton) => {
+    radioButton.addEventListener("change", onDataTypeChange);
+  });
+}
+
+
+// Function to dynamically update data item list (Stock, Index, Bonds, etc...) based on selection.
+function onDataChange() {
+  // Update field list based on data selection
+  onDataTypeChange();
+
+  const selected_entity = document.getElementById("select-data").value;
+  const entity_identifier =
+    selected_entity === "Bonds" ? "treasuryName" : "symbol";
+  let item_field_name = "";
+
+  // Disable radio buttons if selected entity is "Bonds" or "company-info"
+  const radioButtonElements = document.querySelectorAll('input[name="data-type"]');
+  radioButtonElements.forEach(radioButton => {
+    radioButton.disabled = selected_entity === "Bonds" || selected_entity === "company-info";
+  });
+
+  // Determine name field
+  switch (selected_entity) {
+    case "Companies":
+      item_field_name = "companyName";
+      break;
+    case "company-info":
+      item_field_name = "companyName";
+      break;
+    case "Indexes":
+      item_field_name = "indexName";
+      break;
+    case "Commodities":
+      item_field_name = "commodityName";
+      break;
+  }
+
+  fetch("/data-export/get-data-list", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({
+      selected_entity: selected_entity,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      // Update the data list with the received items
+      const dataList = document.getElementById("data-list");
+      dataList.innerHTML = "";
+
+      data.items.forEach((item) => {
+        const li = document.createElement("li");
+
+        if (selected_entity === "Bonds") {
+          li.innerHTML = `<input type="checkbox" name="data-item" id="${item[entity_identifier]
+            }" value="${item[entity_identifier]}" class="checkbox" />
+                        <label for="${item[entity_identifier]}">${item[entity_identifier]
+            }</label>`;
+        } else {
+          li.innerHTML = `<input type="checkbox" name="data-item" id="${item[entity_identifier]
+            }" value="${item[entity_identifier]}" class="checkbox" />
+                        <label for="${item[entity_identifier]}">${item[entity_identifier]
+            } - ${item[item_field_name]}</label>`;
+        }
+
+        dataList.appendChild(li);
+      });
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
+// Function to handle the dynamic loading of fields based on data type selection (Realtime or Historical)
+function onDataTypeChange() {
+  const selected_data_type = document.querySelector(
+    'input[name="data-type"]:checked'
+  ).value;
+  const selected_entity = document.getElementById("select-data").value;
+
+  fetch("/data-export/get-field-list", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({
+      selected_data_type: selected_data_type,
+      selected_entity: selected_entity,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      // Update the field list with the received fields from the lookup table
+      const lookupFieldList = document.getElementById("lookup-field-list");
+      lookupFieldList.innerHTML = "";
+
+      // Add lookup table fields to list
+      const lookupHeader = document.createElement("h6");
+      const lookupHeaderText = document.createTextNode("Lookup Fields:");
+      lookupHeader.appendChild(lookupHeaderText);
+      lookupFieldList.appendChild(lookupHeader);
+
+      data.lookup_fields.forEach((field) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<input type="checkbox" name="lookup-field-item" id="${field}" value="${field}" class="checkbox" checked/>
+                      <label for="${field}">${field}</label>`;
+        lookupFieldList.appendChild(li);
+      });
+
+      const br = document.createElement("br");
+      lookupFieldList.appendChild(br);
+
+      // Update the field list with the received fields from the lookup table
+      const valueFieldList = document.getElementById("value-field-list");
+      valueFieldList.innerHTML = "";
+
+      const valueHeader = document.createElement("h6");
+      const valueHeaderText = document.createTextNode("Value Fields:");
+      valueHeader.appendChild(valueHeaderText);
+      valueFieldList.appendChild(valueHeader);
+
+      data.value_fields.forEach((field) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<input type="checkbox" name="value-field-item" id="${field}" value="${field}" class="checkbox" checked/>
+                      <label for="${field}">${field}</label>`;
+        valueFieldList.appendChild(li);
+      });
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
 datepicker();
-//selectAll();
-resetAll();

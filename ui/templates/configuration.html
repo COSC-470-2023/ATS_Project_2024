@@ -1,214 +1,187 @@
 {% extends "base.html" %} {% block title %} Change Configuration {% endblock %}
-{% block mainTitle %} Change Configuration {% endblock %} 
-{% block mainDescription %} Choose to add or remove configuration files {% endblock %} 
-{% block content %}
+{% block messages %} {% with messages =
+get_flashed_messages(with_categories=true) %} {% if messages %} {% for category,
+message in messages %} {% if category == 'error' %}
+<div class="alert alert-danger alter-dismissable fade show" role="alert">
+  {{ message }}
+  <button type="button" class="close" data-dismiss="alert">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% else %}
+<div class="alert alert-success alter-dismissable fade show" role="alert">
+  {{ message }}
+  <button type="button" class="close" data-dismiss="alert">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %} {% endfor %} {% endif %} {% endwith %} {% endblock %} {% block
+mainTitle %} Change Configuration {% endblock %} {% block mainDescription %}
+Choose to add or remove configuration files {% endblock %} {% block content %}
 
-<div class="row pt-3" id="change-config-section">
-  <div class="col-md-6">
-    <div class="container" id="change-config-box">
-      <div class="row pt-3">
-        <div class="col">
-          <h3>Stocks</h3>
-          <p>Current Config:</p>
-          <div class="card config-list">
-            <ul id="config-stock-list">
-              <li></li>
-            </ul>
-          </div>
-          <!-- Button trigger modal -->
-          <div class="row pt-3 pb-3" id="config-buttons">
-            <div class="col-sm-6 mb-2 mb-sm-0">
-              <button
-                type="button"
-                class="btn btn-secondary mr-sm-3 removeStock"
-                data-toggle="modal"
-                data-target="#remove-modal"
-                data-info="removeStock"
-              >
-                Remove Stock
-              </button>
+<form action="/configuration/configuration" method="POST">
+  <div class="container p-0">
+    <!-- First Row -->
+    <div class="row">
+      <div class="col">
+        <div class="card content-card p-0 mb-3">
+          <div class="card-body">
+            <!-- Your content here -->
+            <div class="row justify-content-between">
+              <div class="col-md-6">
+                <!-- First column content -->
+                <h4>Stocks</h4>
+                <p>Current Config:</p>
+                <div class="card config-list">
+                  <ul id="config-stock-list">
+                    <li id="stock-item"> </li>
+                  </ul>
+                </div>
+                <div class="row mt-3">
+                  <div class="col content-btn">
+                    <button type="button" class="btn btn-secondary" id="removeStock" data-toggle="modal"
+                      data-target="#remove-modal" data-info="Remove Stock"
+                      onclick="dynamicModal(this.dataset.info, 'remove-modal'); getStocks('modal');">
+                      Remove Stock
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="addStock" data-toggle="modal"
+                      data-target="#add-modal" data-info="Add Stock"
+                      onclick="dynamicModal(this.dataset.info, 'add-modal'); displayAvailableStocks();">
+                      Add Stock
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <!-- Second column content -->
+                <h4>Constituents</h4>
+                <p>Current Config:</p>
+                <div class="card config-list">
+                  <ul id="config-const-list">
+                    <li></li>
+                  </ul>
+                </div>
+                <div class="row mt-3">
+                  <div class="col content-btn">
+                    <button type="button" class="btn btn-secondary" id="removeConstituent" data-toggle="modal"
+                      data-target="#remove-modal" data-info="Remove Constituent"
+                      onclick="dynamicModal(this.dataset.info, 'remove-modal')">
+                      Remove Constituent
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="addConstituent" data-toggle="modal"
+                      data-target="#add-modal" data-info="Add Constituent"
+                      onclick="dynamicModal(this.dataset.info, 'add-modal')">
+                      Add Constituent
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="col-sm-6">
-              <button
-                type="button"
-                class="btn btn-secondary addStock"
-                data-toggle="modal"
-                data-target="#add-modal"
-              >
-                Add Stock
-              </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Second Row -->
+    <div class="row-md pt-3">
+      <h1 class="main-title">Change Data Sources</h1>
+      <p class="main-description">Choose to add or remove data financial source</p>
+    </div>
+    <!-- Third Row -->
+    <div class="row justify-content-between">
+      <div class="col-md-12">
+        <div class="card content-card">
+          <div class="card-body">
+            <!-- Your content here -->
+            <div class="row justify-content-between">
+              <div class="col-md-6">
+                <!-- First column content -->
+                <h4>Data Sources</h4>
+                <p>Current Config:</p>
+                <div class="card config-list">
+                  <ul id="config-data-list">
+                    <li></li>
+                  </ul>
+                </div>
+                <div class="row mt-3">
+                  <div class="col content-btn">
+                    <button type="button" class="btn btn-secondary" id="removeSource" data-toggle="modal"
+                      data-target="#remove-modal" data-info="Remove Source"
+                      onclick="dynamicModal(this.dataset.info, 'remove-modal')">
+                      Remove Source
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="addSource" data-toggle="modal"
+                      data-target="#add-modal" data-info="Add Source"
+                      onclick="dynamicModal(this.dataset.info, 'add-modal')">
+                      Add Source
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="col-md-6">
-    <div class="container" id="change-config-box">
-      <div class="row pt-3">
-        <div class="col">
-          <h3>Constituents</h3>
-          <p>Current Config:</p>
-          <div class="card config-list">
-            <ul id="config-constituent-list">
-              <li></li>
-            </ul>
-          </div>
-          <!-- Button trigger modal -->
-          <div class="row pt-3 pb-3" id="config-buttons">
-            <div class="col-sm-6 mb-2 mb-sm-0">
-              <button
-                type="button"
-                class="btn btn-secondary mr-sm-3 removeConstituent"
-                data-toggle="modal"
-                data-target="#remove-modal"
-                data-info="removeConstituent"
-              >
-                Remove Constituents
-              </button>
-            </div>
-            <div class="col-sm-6">
-              <button
-                type="button"
-                class="btn btn-secondary addConstituent"
-                data-toggle="modal"
-                data-target="#add-modal"
-              >
-                Add Constituents
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="row-md pt-3">
-  <h1 class="main-title">Change Data Sources</h1>
-  <p class="main-description">Choose to add or remove data financial source</p>
-</div>
-<div class="row" id="change-data-section">
-  <div class="col-md-6">
-    <div class="container" id="change-config-box">
-      <div class="row pt-3">
-        <div class="col">
-          <p>Current Source:</p>
-          <div class="card config-list">
-            <ul id="config-data-source-list">
-              <li></li>
-            </ul>
-          </div>
-          <!-- Button trigger modal -->
-          <div class="row pt-3 pb-3" id="config-buttons">
-            <div class="col-sm-6 mb-2 mb-sm-0">
-              <button
-                type="button"
-                class="btn btn-secondary mr-sm-3 removeDataSource"
-                data-toggle="modal"
-                data-target="#remove-modal"
-                data-info="removeDataSource"
-              >
-                Remove Data
-              </button>
-            </div>
-            <div class="col-sm-6">
-              <button
-                type="button"
-                class="btn btn-secondary addDataSource"
-                data-toggle="modal"
-                data-target="#add-modal"
-              >
-                Add Data
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-6"></div>
-</div>
 
-<!-- Remove Modal -->
-<div
-  class="modal fade"
-  id="remove-modal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="removeModal"
-  aria-hidden="true"
->
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="removeModalLabel">Remove</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="card modal-list">
-          <ul id="remove-modal-list">
-            <li>List</li>
+  <!-- Remove Modal -->
+  <div class="modal fade" id="remove-modal" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5>Remove</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+        </div>
+        <input type="text" id="searchInputRemove" onkeyup="searchList('remove')" placeholder="Search...">
+        <div class="modal-body p-3">
+          <ul id="stockList">
+
           </ul>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-          Close
-        </button>
-        <button type="button" class="btn btn-primary" id="removeBtnModal">
-          Remove
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Add Modal -->
-<div
-  class="modal fade"
-  id="add-modal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="addModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addModalLabel">Add</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="card modal-list">
-          <ul id="add-modal-list">
-            <li></li>
-          </ul>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-primary" onclick="removeStocks()">
+            Remove
+          </button>
         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-          Close
-        </button>
-        <button type="button" class="btn btn-primary" id="addBtnModal">
-          Add
-        </button>
+    </div>
+  </div>
+
+  <!-- Add Modal -->
+  <div class="modal fade" id="add-modal" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5>Add</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+        </div>
+        <input type="text" id="searchInputAdd" onkeyup="searchList('add')" placeholder="Search...">
+        <div class="modal-body p-3">
+          <!-- Loading indicator -->
+          <div id="loadingIndicator">
+            <p>Loading...</p>
+          </div>
+          <ul id="availableStockList">
+
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-primary" onclick="addSelectedStocks()">
+            Add
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-
+</form>
 {% endblock %}
