@@ -39,7 +39,7 @@ def main():
             file_handler.write_yaml(config, config_filename)
         logger.info('Constituent collection complete')
     except Exception as e:
-        logger.debug(e)
+        logger.error(e)
         raise
 
 
