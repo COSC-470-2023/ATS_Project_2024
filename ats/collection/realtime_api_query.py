@@ -1,115 +1,89 @@
 import datetime
 import os
-import requests
 
-from ats import loguru_init
-from ats.globals import (DIR_CONFIG, DIR_OUTPUT, CONFIG_REALTIME, OUTPUT_REALTIME_COMMODITIES, OUTPUT_REALTIME_INDEX,
-                         OUTPUT_REALTIME_STOCKS)
-from ats.util import json_handler
-from ats.util import yaml_handler
+from ats import globals
+from ats.logger import Logger
+from ats.util import api_handler, data_handler, file_handler
 
-# Loguru init
-logger = loguru_init.initialize()
+logger = Logger.instance()
 
-
-def make_queries(parsed_api_url, api_key, query_list, api_fields, non_api_fields):
-    logger.info("Realtime Collection Query starting")
-    output = []
-    try:
-        # Iterate through each stock and make an API call
-        for query_itr in range(len(query_list)):
-            query_item = query_list[query_itr]
-            # Replace the URL parameters with our current API configs
-            query = parsed_api_url.replace("{QUERY_PARAMS}", query_item['symbol']).replace("{API_KEY}", api_key)
-            response = requests.get(query)
-            # convert the response to json and append to list
-            data = response.json()
-
-            output.append({})
-            output[-1] = remap_entries(data, non_api_fields, api_fields)
-    except Exception as e:
-        logger.error(e)
-    logger.info("Realtime Query complete")
-    return output
+# Constants
+COMMODITIES = 'commodities'
+INDEXES = 'index_composites'
+STOCKS = 'stocks'
+SYMBOL = 'symbol'
+TIMESTAMP = 'timestamp'
+REALTIME_DATE = '_realtime_date'
 
 
-def remap_entries(response_data, non_api_fields, api_fields):
-    logger.info("Realtime field remapping: Starting")
-    remapped_entry = {}
+@api_handler.query_builder
+def build_queries(query_manager: api_handler.QueryManager,
+                  config_data: list[dict]):
+    # TODO: write docstring
+    for entry in config_data:
+        query_manager.add(entry[SYMBOL])
 
-    for entry in response_data:
-        if non_api_fields != {}:  # There is a manually added field in the cfg.
-            logger.debug("Manually added field(s) detected: Mapping data")
-            for non_api_field in non_api_fields:
-                # Compare the manually added field to where it should get its data from
-                # in the normal fields
-                try:
-                    src = non_api_fields[non_api_field]['src']
-                    map_to = non_api_fields[non_api_field]['mapping']
-                    input_type = non_api_fields[non_api_field]['input_type']
-                    output_type = non_api_fields[non_api_field]['output_type']
-                    # Handler for "unix_time" conversion to date time
-                    # TODO add more cases later, for the first API this is all we need.
-                    if input_type == "_unix_time":
-                        if output_type == "_date_time":
-                            try:
-                                entry[map_to] = str(datetime.datetime.timestamp(entry[src]))
-                            except TypeError as e:
-                                logger.error(e)
-                                continue
-                except KeyError as e:
-                    logger.error(f"Key Error on {entry}:\n{e}")
-                    continue
-            logger.debug("Manual field mapping complete")
-        try:
-            remapped_entry = entry.copy()  # Cant iterate over a dict that is changing in size.
-            # Iterate over the fields and then rename them, by reinserting and deleting the old.
-            for field in api_fields:
-                if api_fields[field] is not None:
-                    remapped_entry[api_fields[field]] = remapped_entry[field]
-                    # API field has a mapping value, rename it.
-                    del remapped_entry[field]
-                else:
-                    # API field mapping was set to null, dump it as cfg doesn't care to keep.
-                    del remapped_entry[field]
-        except AttributeError as e:
-            logger.error(f"Attribute Error on {entry}:\n{e}")
-            continue  # The copy failed of the dict because it was probably an error message.
-    logger.info("Realtime field remapping: Complete")
-    return remapped_entry
+  
+def make_mapping() -> data_handler.Mapping:
+    # TODO: write docstring
+
+    @data_handler.mapping_callback
+    def realtime_date(kwargs: data_handler.Kwargs) -> str:
+        timestamp = kwargs[data_handler.ENTRY][TIMESTAMP]
+        date_time = datetime.datetime.fromtimestamp(timestamp)
+        return str(date_time)
+
+    mapping = data_handler.Mapping()
+    mapping.add(REALTIME_DATE, realtime_date)
+    return mapping
 
 
 def main():
     try:
-        realtime_config = yaml_handler.load_config(DIR_CONFIG + CONFIG_REALTIME)
-        stock_output = []
-        index_output = []
-        commodity_output = []
+        logger.info('Starting realtime collection')
+        realtime_config = file_handler.read_yaml(globals.FN_CFG_REALTIME)
 
-        # Iterate through each API in the list
-        api_url = realtime_config['url']
-        api_key = os.getenv('ATS_API_KEY')
-        api_fields = realtime_config['api_fields']
-        non_api_fields = realtime_config['non_api_fields']
-        stock_list = realtime_config['stocks']
-        index_list = realtime_config['index_composites']
-        commodity_list = realtime_config['commodities']
+        logger.info('Fetching raw data from API')
+        endpoint = realtime_config[globals.FIELD_CFG_URL]
+        api_key = os.getenv(globals.ENV_API_KEY)
+        fetcher = api_handler.Fetcher(endpoint, api_key, build_queries)
+        commodities = realtime_config[COMMODITIES]
+        indexes = realtime_config[INDEXES]
+        stocks = realtime_config[STOCKS]
+        raw_commodities_data = fetcher.fetch(commodities)
+        raw_indexes_data = fetcher.fetch(indexes)
+        raw_stocks_data = fetcher.fetch(stocks)
 
-        # Attempt to populate output
-        stock_output += make_queries(api_url, api_key, stock_list, api_fields, non_api_fields)
-        index_output += make_queries(api_url, api_key, index_list, api_fields, non_api_fields)
-        commodity_output += make_queries(api_url, api_key, commodity_list, api_fields, non_api_fields)
+        logger.info('Processing raw data')
+        api_fields = realtime_config[globals.FIELD_CFG_API]
+        non_api_fields = realtime_config[globals.FIELD_CFG_NON_API]
+        mapping = make_mapping()
 
-        # Write output files
-        json_handler.write_files(stock_output, DIR_OUTPUT, OUTPUT_REALTIME_STOCKS)
-        json_handler.write_files(index_output, DIR_OUTPUT, OUTPUT_REALTIME_INDEX)
-        json_handler.write_files(commodity_output, DIR_OUTPUT, OUTPUT_REALTIME_COMMODITIES)
+        commodities_data = data_handler.process_raw_data(raw_commodities_data,
+                                                         api_fields,
+                                                         non_api_fields,
+                                                         mapping)
+        indexes_data = data_handler.process_raw_data(raw_indexes_data,
+                                                     api_fields,
+                                                     non_api_fields,
+                                                     mapping)
+        stocks_data = data_handler.process_raw_data(raw_stocks_data,
+                                                    api_fields,
+                                                    non_api_fields,
+                                                    mapping)
+
+        logger.info('Writing processed data to output')
+        file_handler.write_json(commodities_data,
+                                globals.FN_OUT_REALTIME_COMMODITIES)
+        file_handler.write_json(indexes_data,
+                                globals.FN_OUT_REALTIME_INDEX)
+        file_handler.write_json(stocks_data,
+                                globals.FN_OUT_REALTIME_STOCKS)
+        logger.info('Realtime collection complete')
     except Exception as e:
         logger.error(e)
+        raise
 
-    logger.success("realtime_api_query.py ran successfully.")
 
-
-# Code to only be executed if ran as script
 if __name__ == "__main__":
     main()

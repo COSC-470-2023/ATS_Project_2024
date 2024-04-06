@@ -13,11 +13,8 @@ api_fields:
   pe: _realtime_pe
   previousClose: _realtime_prevClose
   price: _realtime_price
-  priceAvg200: null
-  priceAvg50: null
   sharesOutstanding: _realtime_sharesOutstanding
   symbol: _realtime_symbol
-  timestamp: null
   volume: _realtime_volume
   yearHigh: _realtime_yearHigh
   yearLow: _realtime_yearLow
@@ -44,13 +41,12 @@ index_composites:
 - name: FTSE 100
   symbol: ^FTSE
 non_api_fields:
-  date:
-    input_type: _unix_time
-    mapping: _realtime_date
-    output_type: _date_time
-    src: timestamp
-rate_limit_per_min: 300
+- _realtime_date
 stocks:
+- name: GE Vernova
+  symbol: GEV
+- name: Solventum
+  symbol: SOLV
 - name: Supermicro
   symbol: SMCI
 - name: Deckers Brands
@@ -241,8 +237,8 @@ stocks:
   symbol: ANET
 - name: Copart
   symbol: CPRT
-- name: Fleetcor
-  symbol: FLT
+- name: Corpay
+  symbol: CPAY
 - name: Broadridge Financial Solutions
   symbol: BR
 - name: Evergy
@@ -515,8 +511,6 @@ stocks:
   symbol: RSG
 - name: Wynn Resorts
   symbol: WYNN
-- name: Dentsply Sirona
-  symbol: XRAY
 - name: J.M. Smucker Company (The)
   symbol: SJM
 - name: WEC Energy Group
@@ -883,7 +877,7 @@ stocks:
   symbol: GWW
 - name: Masco
   symbol: MAS
-- name: Automated Data Processing
+- name: Automatic Data Processing
   symbol: ADP
 - name: FedEx
   symbol: FDX
@@ -895,8 +889,6 @@ stocks:
   symbol: WBA
 - name: Weyerhaeuser
   symbol: WY
-- name: VF Corporation
-  symbol: VFC
 - name: Textron
   symbol: TXT
 - name: Intel
@@ -993,7 +985,7 @@ stocks:
   symbol: F
 - name: General Dynamics
   symbol: GD
-- name: General Electric
+- name: GE Aerospace
   symbol: GE
 - name: General Mills
   symbol: GIS
@@ -1057,4 +1049,4 @@ stocks:
   symbol: XEL
 - name: ExxonMobil
   symbol: XOM
-url: https://financialmodelingprep.com/api/v3/quote/{QUERY_PARAMS}?apikey={API_KEY}
+url: https://financialmodelingprep.com/api/v3/quote/{SYMBOL}?apikey={API_KEY}

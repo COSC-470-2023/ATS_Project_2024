@@ -2,11 +2,13 @@ import traceback
 
 import sqlalchemy
 
-from ats import loguru_init
-from ats.globals import DIR_OUTPUT, OUTPUT_SYMBOL_CHANGE
-from ats.util import connect, json_handler
+from ats import globals
+from ats.logger import Logger
+from ats.util import file_handler, db_handler
+from ats.util.db_handler import ConnectionManager
 
-logger = loguru_init.initialize()
+connection_manager = db_handler.ConnectionManager.instance()
+logger = Logger.instance()
 
 
 def update_symbol(connection, symbol):
@@ -17,9 +19,9 @@ def update_symbol(connection, symbol):
         new_symbol = symbol["_change_newSymbol"]
 
         #  SQL query
-        company_update = sqlalchemy.text(f"UPDATE companies SET companyName = '{name}', symbol = '{new_symbol}' WHERE symbol = '{old_symbol}'")
+        company_update = sqlalchemy.text("UPDATE companies SET companyName = :_change_newName, symbol = :_change_newSymbol WHERE symbol = :_change_oldSymbol")
 
-        connection.execute(company_update)
+        connection.execute(company_update, parameters=symbol)
     except Exception as e:
         print(traceback.format_exc())
         logger.critical(f"Error in updating database: {e}")
@@ -27,14 +29,12 @@ def update_symbol(connection, symbol):
 
 def main():
     try:
-        # Establish a connection to server
-        with connect.connect() as conn:
-            symbol_change = json_handler.load_output(DIR_OUTPUT + OUTPUT_SYMBOL_CHANGE)
-            for symbol in symbol_change:
-                update_symbol(conn, symbol)
-            conn.commit()
+        with connection_manager.connect() as connection:
+            data = file_handler.read_json(globals.FN_OUT_SYMBOL_CHANGE)
+            for entry in data:
+                update_symbol(connection, entry)
+            connection.commit()
     except Exception as e:
-        print(traceback.format_exc())
         logger.critical(f"Error when connecting to remote database: {e}")
 
     logger.success("symbol_change_update.py ran successfully.")

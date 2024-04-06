@@ -53,15 +53,10 @@ jobs:
         with:
           python-version: 3.11
 
-      - name: Display Python version
-        run: python -c "import sys; print(sys.version)"  
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+      - name: Running setup script
+        run: ./setup
           
-      - name: Build system
+      - name: Build mysql database
         run: |
           sudo apt -y update
           sudo systemctl start mysql
@@ -70,9 +65,8 @@ jobs:
 
       - name: Pytest
         run: |
-          cd tests/ats/collection
-          pytest -v --cov=. --cov-report=term-missing .
-          cd ../database
-          pytest -v --cov=. --cov-report=term-missing .
-          cd ../util
-          pytest -v --cov=. --cov-report=term-missing .
+
+          source .venv/bin/activate
+          python -m pytest -v --cov=ats/collection --cov-report=term-missing tests/ats/collection
+          python -m pytest -v --cov=ats/database --cov-report=term-missing tests/ats/database
+          python -m pytest -v --cov=ats/util --cov-report=term-missing tests/ats/util

@@ -1,13 +1,13 @@
-import json
 import traceback
 
 import sqlalchemy
 
-from ats import loguru_init
-from ats.globals import DIR_OUTPUT, OUTPUT_HISTORICAL_COMMODITY
-from ats.util import connect, json_handler
+from ats import globals
+from ats.logger import Logger
+from ats.util import db_handler, file_handler
 
-logger = loguru_init.initialize()
+logger = Logger.instance()
+connection_manager = db_handler.ConnectionManager.instance()
 
 
 def check_keys(entry):
@@ -74,10 +74,10 @@ def get_commodity_id(entry, connection):
 
 def main():
     # Load json data
-    historical_data = json_handler.load_output(DIR_OUTPUT + OUTPUT_HISTORICAL_COMMODITY)
+    historical_data = file_handler.read_json(globals.FN_OUT_HISTORICAL_COMMODITY)
     try:
         # create with context manager
-        with connect.connect() as conn:
+        with connection_manager.connect() as conn:
             # begin transaction with context manager, implicit commit on exit or rollback on exception
             with conn.begin():
                 for entry in historical_data:
@@ -96,7 +96,7 @@ def main():
 
     except Exception as e:
         print(traceback.format_exc())
-        logger.critical(f"Error when connecting to remote database: {e}")
+        logger.error(f"Error when connecting to remote database: {e}")
 
     logger.success("historical_commodity_insert.py ran successfully.")
 

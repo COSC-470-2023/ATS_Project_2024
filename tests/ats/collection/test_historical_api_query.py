@@ -1,64 +1,35 @@
-import requests
-import time
-import unittest
-from unittest.mock import Mock
+import datetime
+from unittest.mock import MagicMock, call
 
 from ats.collection import historical_api_query
 
 
-class TestHistoricalApiQueryMethods(unittest.TestCase):
-    def test_make_queries(self):
-        test_url = ('https://www.test.com/api?key={API_KEY}'
-                    '&query={QUERY_PARAMS}&start={START_DATE}&end={END_DATE}')
-        test_key = 'key'
-        test_queries = [{
-            'symbol': 'AAPL', 
-            'start_date': '1976-04-01', 
-            'end_date': '2024-01-31'
-        }]
-        expected_query = ('https://www.test.com/api?key=key&query=AAPL'
-                          '&start=1976-04-01&end=2024-01-31')
-        
-        class MockResponse:
-            def json(self):
-                return {'historical': [{'test_field': True}]}
-        requests.get = Mock(return_value=MockResponse())
-        time.sleep = Mock()
-        
-        output = historical_api_query.make_queries(test_url, test_key, test_queries, {}, {})
-        requests.get.assert_called_with(expected_query)
-        self.assertTrue(output[0]['test_field'])
-    
-    def test_remap_entries(self):
-        test_response_data = {
-            'historical': [{
-                'test_field_entry': True, 'test_field_mapping': None, 
-                'test_field_empty': None
-            }], 
-            'test_field_response': True
-        }
-        test_query_item = {'name': True}
-        test_api_fields = {
-            'test_field_entry': 'test_field_entry_new', 
-            'test_field_response': 'test_field_response_new', 
-            'test_field_empty': None
-        }
-        test_non_api_fields = {
-            'test_field': {
-                'src': '_config_name', 'mapping': 'test_field_mapping', 
-                'input_type': '_string', 'output_type': '_string'
-            }
-        }
-        
-        output = historical_api_query.remap_entries(test_response_data, 
-                                                    test_query_item, 
-                                                    test_api_fields, 
-                                                    test_non_api_fields)
-        self.assertEqual(3, len(output))
-        self.assertTrue(output['test_field_mapping'])
-        self.assertTrue(output['test_field_entry_new'])
-        self.assertTrue(output['test_field_response_new'])
+def test_build_queries():
+    mock_query_manager = MagicMock()
+    config_data = [
+        {historical_api_query.SYMBOL: 'AAPL'},
+        {historical_api_query.SYMBOL: 'MSFT'}
+    ]
+    days = 100
+    start_date = datetime.date(1936, 8, 4)
+    end_date = datetime.date(1936, 11, 12)
+    historical_api_query.build_queries(mock_query_manager,
+                                       config_data,
+                                       days,
+                                       end_date)
+    calls = [
+        call.add('AAPL', str(start_date), str(end_date)),
+        call.add('MSFT', str(start_date), str(end_date))
+    ]
+    mock_query_manager.assert_has_calls(calls)
 
 
-if __name__ == '__main__':
-    unittest.main()
+def test_make_mapping():
+    name = 'AppleSoft Conglomerate'
+    config_data = [
+        {historical_api_query.SYMBOL: 'AAFT',
+         historical_api_query.NAME: name},
+    ]
+    mapping = historical_api_query.make_mapping(config_data)
+    entry = {historical_api_query.SYMBOL: 'AAFT'}
+    assert mapping.lookup(historical_api_query.HISTORICAL_NAME, entry) == name

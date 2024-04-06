@@ -1,121 +1,77 @@
 import datetime
-import json
 import os
-import requests
 
-from ats import loguru_init
-from ats.globals import DIR_CONFIG, DIR_OUTPUT, CONFIG_BONDS, OUTPUT_BONDS
-from ats.util import json_handler
-from ats.util import yaml_handler
+from ats import globals
+from ats.logger import Logger
+from ats.util import api_handler, data_handler, file_handler
 
-# Loguru init
-logger = loguru_init.initialize()
+logger = Logger.instance()
 
-def create_date_window(days_queried):
-    """
-    Takes the inputted number of days and returns a window of dates
-    segmented by 90-day intervals for iteration.
-    :param days_queried: Number of days to observe from current date
-    :return: datetime object containing a list of segmented dates
-    """
-    date_windows = []
-    logger.info("creating Bonds Date Windows")
-    try:
-        total_days = int(days_queried)
-        num_chunks = total_days // 90  # Give the number of 90-day chunks plus the remainder
-        rem = total_days % 90  # Calculate the remaining days that weren't in the 90-day chunks
-        end = datetime.date.today()
-        # For each 90-day chunk run the query
-        for chunk in range(num_chunks):
-            start = end - datetime.timedelta(days=90)
-            window = {start: end}
-            date_windows.append(window)
-            end = start - datetime.timedelta(days=1)
-        # Handle remainder (days_queried not divisible by 90)
-        if rem > 0:
-            start = end - datetime.timedelta(days=rem)
-            window = {start: end}
-            date_windows.append(window)
-    except Exception as e:
-        logger.error(e)
-    logger.info("Bonds Date Windows creation complete")
-    return date_windows
+# Constants
+BOND_NAME = '_bond_name'
+CHUNK = 90
+TREASURY = 'treasury'
+
+@api_handler.query_builder
+def build_queries(query_manager: api_handler.QueryManager,
+                  days: int,
+                  date: datetime.date):
+    # TODO: write docstring
+    chunks = range(days // CHUNK)  # 90-day chunks + remaining chunk
+    remainder = days % CHUNK  # Days in remaining chunk
+    end_date = date
+
+    for _ in chunks:
+        start_date = end_date - datetime.timedelta(days=CHUNK)
+        query_manager.add(str(start_date), str(end_date))
+        end_date = start_date - datetime.timedelta(days=1)
+    if remainder > 0:
+        start_date = end_date - datetime.timedelta(days=remainder)
+        query_manager.add(str(start_date), str(end_date))
 
 
-def make_queries(api_url, api_key, api_fields, treasuries, non_api_fields, days_queried):
-    bonds_data = []
-    logger.info("Bonds Query starting")
-    try:
-        windows = create_date_window(days_queried)
-        # For each date_window, execute query
-        for date_window in windows:
-            # Retrieve key value pair from date_window
-            start_date_key = list(date_window.keys())
-            end_date_value = list(date_window.values())
-            start_date = start_date_key[0]
-            end_date = end_date_value[0]
-            # Replace the URL parameters with our current API configs
-            query = (api_url.replace("{START_DATE}", str(start_date))
-                            .replace("{END_DATE}", str(end_date))
-                            .replace("{API_KEY}", api_key))
-            bonds_output = []
-            try:
-                response = requests.get(query)
-                # convert the response to json and append to list
-                bonds_output = json.loads(response.text)
-            except requests.RequestException as e:
-                logger.debug(f"api_error {e}")
+def make_mapping(treasury: str) -> data_handler.Mapping:
+    # TODO: write docstring
+    @data_handler.mapping_callback
+    def bond_name(kwargs: data_handler.Kwargs) -> str:
+        return treasury
 
-            for data in bonds_output:
-                # Remap the field names to the config, using the values from API fields,
-                # as the key, and the values of entry as the values of the new entry.
-                entry = dict((zip(api_fields.values(), list(data.values()))))
-
-                try:
-                    # Get name from the config
-                    # Compare the manually added field to where it should get its data from
-                    # in the normal fields
-                    src = non_api_fields['name']['src']
-                    map_to = non_api_fields['name']['mapping']
-                    input_type = non_api_fields['name']['input_type']
-                    output_type = non_api_fields['name']['output_type']
-                    # Handler for grabbing the name of treasury from config.
-                    # This also can handler conversion, so It's needed to not just do a static mapping in the future.
-                    if input_type == "_string" and output_type == "_string":
-                        if src == "_config_name":
-                            entry[map_to] = treasuries['name']
-                except KeyError as e:
-                    logger.error(f"Key Error on api {iter(entry)}:\n{e}")
-
-                # Append the modified entry to the output
-                bonds_data.append(entry)
-    except Exception as e:
-        logger.error(e)
-
-    logger.info("Bonds Query complete")
-    return bonds_data
+    mapping = data_handler.Mapping()
+    mapping.add(BOND_NAME, bond_name)
+    return mapping
 
 
 def main():
     try:
-        bond_config = yaml_handler.load_config(DIR_CONFIG + CONFIG_BONDS)
-        #  Load variables from the configuration
-        url = bond_config['url']
-        api_key = os.getenv('ATS_API_KEY')
-        api_fields = bond_config['api_fields']
-        non_api_fields = bond_config['non_api_fields']
-        days_queried = bond_config['days_queried']
-        treasuries = bond_config['treasuries']
+        logger.info('Starting bonds collection')
+        config = file_handler.read_yaml(globals.FN_CFG_BONDS)
 
-        logger.info("creating Bonds Output")
-        output = make_queries(url, api_key, api_fields, treasuries, non_api_fields, days_queried)
-        logger.info("Bonds Output created successfully")
+        logger.info('Fetching raw data from API')
+        endpoint = config[globals.FIELD_CFG_URL]
+        api_key = os.getenv(globals.ENV_API_KEY)
+        days = os.getenv(globals.ENV_DAYS_QUERIED)
+        days = int(days)
+        date = datetime.date.today()
+        fetcher = api_handler.Fetcher(endpoint, api_key, build_queries)
+        raw_data = fetcher.fetch(days, date)
 
-        logger.info("writing Bonds Query output file")
-        json_handler.write_files(output, DIR_OUTPUT, OUTPUT_BONDS)
-        logger.info("Bonds Query output file write complete")
+        logger.info('Processing raw data')
+        api_fields = config[globals.FIELD_CFG_API]
+        # TODO: support for multiple treasuries
+        non_api_fields = config[globals.FIELD_CFG_NON_API]
+        treasury = config[TREASURY]
+        mapping = make_mapping(treasury)
+        data = data_handler.process_raw_data(raw_data,
+                                             api_fields,
+                                             non_api_fields,
+                                             mapping)
+
+        logger.info('Writing processed data to output')
+        file_handler.write_json(data, globals.FN_OUT_BONDS)
+        logger.info('Bonds collection complete')
     except Exception as e:
-        logger.debug(e)
+        logger.error(e)
+        raise
 
 
 if __name__ == "__main__":

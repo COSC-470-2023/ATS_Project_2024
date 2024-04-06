@@ -1,92 +1,66 @@
 import datetime
 import os
-import requests
 
-from ats import loguru_init
-from ats.globals import DIR_CONFIG, DIR_OUTPUT, CONFIG_COMPANY_INFO, OUTPUT_COMPANY_INFO
-from ats.util import json_handler
-from ats.util import yaml_handler
+from ats import globals
+from ats.logger import Logger
+from ats.util import api_handler, data_handler, file_handler
 
-# Loguru init
-logger = loguru_init.initialize()
+logger = Logger.instance()
+
+# Constants
+COMPANY_DATE = '_company_date'
+STOCKS = 'stocks'
+SYMBOL = 'symbol'
 
 
-# TODO: refactor remapping logic into its own method (similar to realtime_api_query
-def make_queries(parsed_api_url, api_key, query_list, api_fields, non_api_fields):
-    logger.info("Company Info Collection Query starting")
-    output = []
-    try:
-        # Iterate through each stock and make an API call
-        for query_itr in range(len(query_list)):
-            query_item = query_list[query_itr]
+@api_handler.query_builder
+def build_queries(query_manager: api_handler.QueryManager,
+                  config_data: list[dict]):
+    # TODO: write docstring
+    for entry in config_data:
+        query_manager.add(entry[SYMBOL])
 
-            # Replace the URL parameters with our current API configs
-            query = parsed_api_url.replace("{QUERY_PARAMS}", query_item['symbol']).replace("{API_KEY}", api_key)
-            data = []
-            try:
-                response = requests.get(query)
-                # Convert the response to json and append to list
-                data = response.json()
-                remapped_entry = {}
-            except requests.RequestException as e:
-                logger.debug(f"api_error {e}")
-            for entry in data:
-                try:
-                    map_to = non_api_fields['mapping']
-                    input_type = non_api_fields['input_type']
-                    output_type = non_api_fields['output_type']
-                    # Handler for "unix_time" conversion to date time
-                    if input_type is None:
-                        if output_type == "_date_time":
-                            try:
-                                entry[map_to] = str(datetime.datetime.now())
-                            except TypeError as e:
-                                logger.error(f"Type Error on {entry}:\n{e}")
-                except KeyError as e:
-                    logger.error(f"Key Error on {entry}:\n{e}")
-                try:
-                    remapped_entry = entry.copy()  # Cant iterate over a dict that is changing in size.
-                    # Iterate over the fields and then rename them, by reinserting and deleting the old.
-                    for field in api_fields:
-                        if api_fields[field] is not None:
-                            remapped_entry[api_fields[field]] = remapped_entry[field]
-                            del remapped_entry[field]  # API field has a mapping value, rename it.
-                        else:
-                            del remapped_entry[field]  # API field mapping was set to null,
-                            # dump it as cfg doesn't care to keep.
-                except AttributeError as e:
-                    logger.error(f"Attribute Error on {entry}:\n{e}")
 
-            output.append({})
-            output[-1] = remapped_entry
-    except Exception as e:
-        logger.error(e)
+def make_mapping(date: datetime.date) -> data_handler.Mapping:
+    # TODO: write docstring
 
-    logger.info("Company Info Query complete")
-    return output
+    @data_handler.mapping_callback
+    def company_date(kwargs: data_handler.Kwargs) -> str:
+        return str(date)
+
+    mapping = data_handler.Mapping()
+    mapping.add(COMPANY_DATE, company_date)
+    return mapping
 
 
 def main():
     try:
-        company_config = yaml_handler.load_config(DIR_CONFIG + CONFIG_COMPANY_INFO)
-        # Load variables from the configuration files
-        url = company_config['url']
-        api_key = os.getenv('ATS_API_KEY')
-        fields = company_config['api_fields']
-        non_api_fields = company_config['non_api_fields']
-        company_list = company_config['stocks']
-        # Generate output
-        logger.info("creating Company Info output")
-        company_output = make_queries(url, api_key, company_list, fields, non_api_fields)
-        logger.info("Company Info output created successfully")
-        # Write file
-        logger.info("writing Company Info output file")
-        json_handler.write_files(company_output, DIR_OUTPUT, OUTPUT_COMPANY_INFO)
-        logger.info("Company Info output file write complete")
+        logger.info('Starting companies collection')
+        config = file_handler.read_yaml(globals.FN_CFG_COMPANIES)
+
+        logger.info('Fetching raw data from API')
+        endpoint = config[globals.FIELD_CFG_URL]
+        api_key = os.getenv(globals.ENV_API_KEY)
+        stocks = config[STOCKS]
+        fetcher = api_handler.Fetcher(endpoint, api_key, build_queries)
+        raw_data = fetcher.fetch(stocks)
+
+        logger.info('Processing raw data')
+        api_fields = config[globals.FIELD_CFG_API]
+        non_api_fields = config[globals.FIELD_CFG_NON_API]
+        date = datetime.datetime.now()
+        mapping = make_mapping(date)
+        data = data_handler.process_raw_data(raw_data,
+                                             api_fields,
+                                             non_api_fields,
+                                             mapping)
+
+        logger.info('Writing processed data to output')
+        file_handler.write_json(data, globals.FN_OUT_COMPANIES)
+        logger.info('Companies collection complete')
     except Exception as e:
         logger.error(e)
-
-    logger.success("company_info_api_query.py ran successfully.")
+        raise
 
 
 if __name__ == "__main__":
