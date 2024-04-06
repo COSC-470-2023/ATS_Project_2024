@@ -38,14 +38,14 @@ def main():
         logger.info('Starting companies collection')
         config = file_handler.read_yaml(globals.FN_CFG_COMPANIES)
 
-        logger.info('Fetching raw data from API')
+        logger.debug('Fetching raw data from API')
         endpoint = config[globals.FIELD_CFG_URL]
         api_key = os.getenv(globals.ENV_API_KEY)
         stocks = config[STOCKS]
         fetcher = api_handler.Fetcher(endpoint, api_key, build_queries)
         raw_data = fetcher.fetch(stocks)
 
-        logger.info('Processing raw data')
+        logger.debug('Processing raw data')
         api_fields = config[globals.FIELD_CFG_API]
         non_api_fields = config[globals.FIELD_CFG_NON_API]
         date = datetime.datetime.now()
@@ -55,9 +55,9 @@ def main():
                                              non_api_fields,
                                              mapping)
 
-        logger.info('Writing processed data to output')
+        logger.debug('Writing processed data to output')
         file_handler.write_json(data, globals.FN_OUT_COMPANIES)
-        logger.info('Companies collection complete')
+        logger.success('Companies collection complete')
     except Exception as e:
         logger.error(e)
         raise

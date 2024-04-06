@@ -10,6 +10,25 @@ logger = Logger.instance()
 connection_manager = db_handler.ConnectionManager.instance()
 
 
+def check_keys(entry):
+    logger.debug("Bond insertion: Checking Keys")
+    # keys expected to be committed
+    keys = [
+        "_bond_date",
+        "_bond_month1",
+        "_bond_month2",
+        "_bond_month3",
+        "_bond_month6",
+        "_bond_year1",
+        "_bond_year2",
+        "_bond_year3",
+        "_bond_year5",
+        "_bond_year7",
+        "_bond_year10",
+        "_bond_year20",
+        "_bond_year30",
+    ]
+
 def execute_insert(connection, entry, bond_id):
     # Declare and initialize variables
     date = entry["_bond_date"]

@@ -92,7 +92,7 @@ def main():
                                 globals.FN_OUT_HISTORICAL_INDEX)
         file_handler.write_json(stocks_data,
                                 globals.FN_OUT_HISTORICAL_STOCKS)
-        logger.info('Historical collection complete')
+        logger.success('Historical collection complete')
     except Exception as e:
         logger.error(e)
         raise
