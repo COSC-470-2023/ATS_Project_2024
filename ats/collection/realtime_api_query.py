@@ -43,7 +43,7 @@ def main():
         logger.info('Starting realtime collection')
         realtime_config = file_handler.read_yaml(globals.FN_CFG_REALTIME)
 
-        logger.info('Fetching raw data from API')
+        logger.debug('Fetching raw data from API')
         endpoint = realtime_config[globals.FIELD_CFG_URL]
         api_key = os.getenv(globals.ENV_API_KEY)
         fetcher = api_handler.Fetcher(endpoint, api_key, build_queries)
@@ -54,7 +54,7 @@ def main():
         raw_indexes_data = fetcher.fetch(indexes)
         raw_stocks_data = fetcher.fetch(stocks)
 
-        logger.info('Processing raw data')
+        logger.debug('Processing raw data')
         api_fields = realtime_config[globals.FIELD_CFG_API]
         non_api_fields = realtime_config[globals.FIELD_CFG_NON_API]
         mapping = make_mapping()
@@ -72,14 +72,14 @@ def main():
                                                     non_api_fields,
                                                     mapping)
 
-        logger.info('Writing processed data to output')
+        logger.debug('Writing processed data to output')
         file_handler.write_json(commodities_data,
                                 globals.FN_OUT_REALTIME_COMMODITIES)
         file_handler.write_json(indexes_data,
                                 globals.FN_OUT_REALTIME_INDEX)
         file_handler.write_json(stocks_data,
                                 globals.FN_OUT_REALTIME_STOCKS)
-        logger.info('Realtime collection complete')
+        logger.success('Realtime collection complete')
     except Exception as e:
         logger.error(e)
         raise

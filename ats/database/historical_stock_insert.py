@@ -13,46 +13,71 @@ connection_manager = db_handler.ConnectionManager.instance()
 def check_keys(entry):
     logger.debug("Historical stock insertion: Checking keys")
     # keys expected to be committed
-    keys = [    
-        '_historical_date',
-        '_historical_open',
-        '_historical_high',
-        '_historical_low',
-        '_historical_close',
-        '_historical_adjClose',
-        '_historical_volume',
-        '_historical_unadjustedVolume',
-        '_historical_change',
-        '_historical_changePercent',
-        '_historical_vwap',
-        '_historical_changeOverTime',
+    keys = [
+        "_historical_date",
+        "_historical_open",
+        "_historical_high",
+        "_historical_low",
+        "_historical_close",
+        "_historical_adjClose",
+        "_historical_volume",
+        "_historical_unadjustedVolume",
+        "_historical_change",
+        "_historical_changePercent",
+        "_historical_vwap",
+        "_historical_changeOverTime",
     ]
     # get key value, assign value to key. if key doesn't exist, assign value of None
     return {key: entry.get(key, None) for key in keys}
 
 
-def execute_insert(connection, entry, index_id):
-    logger.info(f"Inserting record for historical stock ID: {index_id}")
+def execute_insert(connection, entry, company_id):
+    logger.info(f"Inserting record for historical stock ID: {company_id}")
     # get key value, assign value to key. if key doesn't exist, assign value of None
     row = check_keys(entry)
     # append generated id
-    row["company_id"] = index_id
-    # parameterized query
-    query = sqlalchemy.text("INSERT INTO `historical_stock_values` VALUES (:company_id, :_historical_date, :_historical_open, :_historical_high, :_historical_low, :_historical_close, :_historical_adjClose, :_historical_volume, :_historical_unadjustedVolume, :_historical_change, :_historical_changePercent, :_historical_vwap, :_historical_changeOverTime)")
-    # Execute row insertion
-    connection.execute(query, row)
+    row["company_id"] = company_id
+
+    # check if record exists already
+    check_query = sqlalchemy.text(
+        "SELECT COUNT(*) FROM `historical_stock_values` WHERE company_id = :company_id AND date = :_historical_date"
+    )
+    result = connection.execute(check_query, row).scalar()
+
+    if result > 0:
+        logger.warning(
+            f"Record for company with ID: {company_id} and date: {row['_historical_date']} already exists. Skipping to next record."
+        )
+        return
+    try:
+        # parameterized query
+        query = sqlalchemy.text(
+            "INSERT INTO `historical_stock_values` VALUES (:company_id, :_historical_date, :_historical_open, :_historical_high, :_historical_low, :_historical_close, :_historical_adjClose, :_historical_volume, :_historical_unadjustedVolume, :_historical_change, :_historical_changePercent, :_historical_vwap, :_historical_changeOverTime)"
+        )
+        # Execute row insertion
+        connection.execute(query, row)
+    except sqlalchemy.exc.SQLAlchemyError as e:
+        logger.error(
+            f"Failed to insert record for stock {company_id} with date {entry['_realtime_date']}: {e}"
+        )
 
 
-# Used to get id associated with an index        
+# Used to get id associated with an index
 def get_company_id(entry, connection):
     logger.debug("Assigning historical stock ID")
     company_id = None
 
     try:
         # set query parameters
-        params = {"symbol": entry["_historical_symbol"], "name": entry["_historical_name"], "isListed": 1}
+        params = {
+            "_historical_symbol": entry["_historical_symbol"],
+            "_historical_name": entry["_historical_name"],
+            "isListed": 1,
+        }
 
-        id_query = sqlalchemy.text("SELECT id FROM `companies` WHERE symbol = :symbol")
+        id_query = sqlalchemy.text(
+            "SELECT id FROM `companies` WHERE symbol = :_historical_symbol"
+        )
         # check if company exists in companies table
         result = connection.execute(id_query, parameters=params)
 
@@ -61,7 +86,12 @@ def get_company_id(entry, connection):
         if row is None:
             logger.debug("ID not found, creating new row")
             # if index doesn't exist, create new row in indexes table - trigger generates new ID
-            connection.execute(sqlalchemy.text("INSERT INTO `companies` (`companyName`, `symbol`, `isListed`) VALUES (:name, :symbol, :isListed)"), parameters=params)
+            connection.execute(
+                sqlalchemy.text(
+                    "INSERT INTO `companies` (`companyName`, `symbol`, `isListed`) VALUES (:_historical_name, :_historical_symbol, :isListed)"
+                ),
+                parameters=params,
+            )
 
             # get id generated from trigger
             result = connection.execute(id_query, parameters=params)
@@ -78,6 +108,7 @@ def get_company_id(entry, connection):
 def main():
     # Load json data
     historical_data = file_handler.read_json(globals.FN_OUT_HISTORICAL_STOCKS)
+
     try:
         # create with context manager
         with connection_manager.connect() as conn:
@@ -96,10 +127,10 @@ def main():
                     else:
                         # entry is not a dictionary, skip it
                         continue
-           
+
     except Exception as e:
         print(traceback.format_exc())
-        logger.error(f"Error when connecting to remote database: {e}")
+        logger.critical(f"Error when connecting to remote database: {e}")
 
     logger.success("historical_stock_insert.py ran successfully.")
 
