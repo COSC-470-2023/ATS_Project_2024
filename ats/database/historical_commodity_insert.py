@@ -11,20 +11,21 @@ connection_manager = db_handler.ConnectionManager.instance()
 
 
 def check_keys(entry):
+    logger.debug("Historical commodity insertion: checking keys")
     # keys expected to be committed
-    keys = [    
-        '_historical_date',
-        '_historical_open',
-        '_historical_high',
-        '_historical_low',
-        '_historical_close',
-        '_historical_adjClose',
-        '_historical_volume',
-        '_historical_unadjustedVolume',
-        '_historical_change',
-        '_historical_changePercent',
-        '_historical_vwap',
-        '_historical_changeOverTime',
+    keys = [
+        "_historical_date",
+        "_historical_open",
+        "_historical_high",
+        "_historical_low",
+        "_historical_close",
+        "_historical_adjClose",
+        "_historical_volume",
+        "_historical_unadjustedVolume",
+        "_historical_change",
+        "_historical_changePercent",
+        "_historical_vwap",
+        "_historical_changeOverTime",
     ]
     # get key value, assign value to key. if key doesn't exist, assign value of None
     return {key: entry.get(key, None) for key in keys}
@@ -37,7 +38,9 @@ def execute_insert(connection, entry, commodity_id):
     # append generated id
     row["commodity_id"] = commodity_id
     # parameterized query
-    query = sqlalchemy.text("INSERT INTO `historical_commodity_values` VALUES (:commodity_id, :_historical_date, :_historical_open, :_historical_high, :_historical_low, :_historical_close, :_historical_adjClose, :_historical_volume, :_historical_unadjustedVolume, :_historical_change, :_historical_changePercent, :_historical_vwap, :_historical_changeOverTime)")
+    query = sqlalchemy.text(
+        "INSERT INTO `historical_commodity_values` VALUES (:commodity_id, :_historical_date, :_historical_open, :_historical_high, :_historical_low, :_historical_close, :_historical_adjClose, :_historical_volume, :_historical_unadjustedVolume, :_historical_change, :_historical_changePercent, :_historical_vwap, :_historical_changeOverTime)"
+    )
     # Execute row insertion
     connection.execute(query, row)
 
@@ -48,17 +51,27 @@ def get_commodity_id(entry, connection):
 
     try:
         # set query parameters
-        params = {"symbol": entry["_historical_symbol"], "name": entry["_historical_name"]}
+        params = {
+            "_historical_symbol": entry["_historical_symbol"],
+            "_historical_name": entry["_historical_name"],
+        }
 
-        id_query = sqlalchemy.text("SELECT id FROM `commodities` WHERE symbol = :symbol")
+        id_query = sqlalchemy.text(
+            "SELECT id FROM `commodities` WHERE symbol = :_historical_symbol"
+        )
         # check if commodity exists in commodities table
-        result = connection.execute(sqlalchemy.text("SELECT id FROM `commodities` WHERE symbol = :symbol"), parameters=params)
+        result = connection.execute(id_query, parameters=params)
 
         row = result.one_or_none()
 
         if row is None:
             # if commodity doesn't exist, create new row in commodities table - trigger generates new ID
-            connection.execute(sqlalchemy.text("INSERT INTO `commodities` (`commodityName`, `symbol`) VALUES (:name, :symbol)"), parameters=params)
+            connection.execute(
+                sqlalchemy.text(
+                    "INSERT INTO `commodities` (`commodityName`, `symbol`) VALUES (:_historical_name, :_historical_symbol)"
+                ),
+                parameters=params,
+            )
 
             # get id generated from trigger
             result = connection.execute(id_query, parameters=params)
@@ -92,11 +105,11 @@ def main():
                             continue
                     else:
                         # entry is not a dictionary, skip it
-                        continue 
+                        continue
 
     except Exception as e:
         print(traceback.format_exc())
-        logger.error(f"Error when connecting to remote database: {e}")
+        logger.critical(f"Error when connecting to remote database: {e}")
 
     logger.success("historical_commodity_insert.py ran successfully.")
 

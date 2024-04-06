@@ -42,12 +42,27 @@ def execute_insert(connection, entry, commodity_id):
     row = check_keys(entry)
     # append generated id
     row["commodity_id"] = commodity_id
-    # parameterized query
-    query = sqlalchemy.text(
+    # check if record exists already
+    check_query = sqlalchemy.text(
+        "SELECT COUNT(*) FROM `realtime_commodity_values` WHERE commodity_id = :commodity_id AND date = :_realtime_date"
+    )
+    result = connection.execute(check_query, row).scalar()
+    if result > 0:
+        logger.warning(
+            f"Record for commodity with ID: {commodity_id} and date: {row['_realtime_date']} already exists. Skipping to next record."
+        )
+        return
+    try:
+        # parameterized query
+        query = sqlalchemy.text(
             f"INSERT INTO `realtime_commodity_values` VALUES (:commodity_id, :_realtime_date, :_realtime_price, :_realtime_changePercent, :_realtime_change, :_realtime_dayLow, :_realtime_dayHigh, :_realtime_yearHigh, :_realtime_yearLow, :_realtime_mktCap, :_realtime_exchange, :_realtime_volume, :_realtime_volAvg, :_realtime_open, :_realtime_prevClose)"
         )
-    # execute row insertion
-    connection.execute(query, row)
+        # execute row insertion
+        connection.execute(query, row)
+    except sqlalchemy.exc.SQLAlchemyError as e:
+        logger.error(
+            f"Failed to insert record for commodity {commodity_id} with date {entry['_realtime_date']}: {e}"
+        )
 
 
 def get_commodity_id(entry, connection):
@@ -58,15 +73,22 @@ def get_commodity_id(entry, connection):
         # set query parameters
         params = {"symbol": entry["_realtime_symbol"], "name": entry["_realtime_name"]}
 
-        id_query = sqlalchemy.text("SELECT id FROM `commodities` WHERE symbol = :symbol")
-        # check if index exists in indexes table
+        id_query = sqlalchemy.text(
+            "SELECT id FROM `commodities` WHERE symbol = :symbol"
+        )
+        # check if commodity exists in commodities table
         result = connection.execute(id_query, parameters=params)
 
         row = result.one_or_none()
 
         if row is None:
             # if commodity doesn't exist, create new row in commodites table - trigger generates new ID
-            connection.execute(sqlalchemy.text("INSERT INTO `commodities`(`commodityName`, `symbol`) VALUES (:_realtime_name, :_realtime_symbol)"), parameters=params)
+            connection.execute(
+                sqlalchemy.text(
+                    "INSERT INTO `commodities`(`commodityName`, `symbol`) VALUES (:_realtime_name, :_realtime_symbol)"
+                ),
+                parameters=params,
+            )
             # get the generated ID
             result = connection.execute(id_query, parameters=params)
             commodity_id = result.one()[0]
@@ -91,7 +113,7 @@ def main():
                 for entry in realtime_data:
                     if isinstance(entry, dict):
                         commodity_id = get_commodity_id(entry, conn)
-                        try:    
+                        try:
                             # process realtime data
                             execute_insert(conn, entry, commodity_id)
                         except sqlalchemy.exc.SQLAlchemyError as e:
@@ -100,7 +122,7 @@ def main():
                             continue
                     else:
                         # entry is not a dictionary, skip it
-                        continue     
+                        continue
     except Exception as e:
         print(traceback.format_exc())
         logger.critical(f"Error when connecting to remote database: {e}")

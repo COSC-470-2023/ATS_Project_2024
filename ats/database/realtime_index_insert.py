@@ -39,12 +39,28 @@ def execute_insert(connection, entry, index_id):
     row = check_keys(entry)
     # append generated id
     row["index_id"] = index_id
-    # parameterized query
-    query = sqlalchemy.text(
-        f"INSERT INTO `realtime_index_values` VALUES (:index_id, :_realtime_date, :_realtime_price, :_realtime_changePercent, :_realtime_change, :_realtime_dayLow, :_realtime_dayHigh, :_realtime_yearHigh, :_realtime_yearLow, :_realtime_mktCap, :_realtime_exchange, :_realtime_volume, :_realtime_volAvg, :_realtime_open, :_realtime_prevClose)"
+
+    # check if record exists already
+    check_query = sqlalchemy.text(
+        "SELECT COUNT(*) FROM `realtime_index_values` WHERE index_id = :index_id AND date = :_realtime_date"
     )
-    # execute row insertion
-    connection.execute(query, row)
+    result = connection.execute(check_query, row).scalar()
+    if result > 0:
+        logger.warning(
+            f"Record for index with ID: {index_id} and date: {row['_realtime_date']} already exists. Skipping to next record."
+        )
+        return
+    try:
+        # parameterized query
+        query = sqlalchemy.text(
+            f"INSERT INTO `realtime_index_values` VALUES (:index_id, :_realtime_date, :_realtime_price, :_realtime_changePercent, :_realtime_change, :_realtime_dayLow, :_realtime_dayHigh, :_realtime_yearHigh, :_realtime_yearLow, :_realtime_mktCap, :_realtime_exchange, :_realtime_volume, :_realtime_volAvg, :_realtime_open, :_realtime_prevClose)"
+        )
+        # execute row insertion
+        connection.execute(query, row)
+    except sqlalchemy.exc.SQLAlchemyError as e:
+        logger.error(
+            f"Failed to insert record for index {index_id} with date {entry['_realtime_date']}: {e}"
+        )
 
 
 def get_index_id(entry, connection):
@@ -63,7 +79,12 @@ def get_index_id(entry, connection):
 
         if row is None:
             # if index doesn't exist, create new row in indexes table - trigger generates new ID
-            connection.execute(sqlalchemy.text("INSERT INTO `indexes` (`indexName`, `symbol`) VALUES (:name, :symbol)"), parameters=params)
+            connection.execute(
+                sqlalchemy.text(
+                    "INSERT INTO `indexes` (`indexName`, `symbol`) VALUES (:name, :symbol)"
+                ),
+                parameters=params,
+            )
 
             # get the generated ID
             result = connection.execute(id_query, parameters=params)
@@ -72,7 +93,9 @@ def get_index_id(entry, connection):
             # if the index exists, fetch the existing ID
             index_id = row[0]
     except Exception as e:
-        logger.error(f"Error occurred when assigning ID: {e}")
+        logger.error(
+            f"Error occurred when assigning ID for entry: {entry['_realtime_symbol']}, {entry['_realtime_name']}: {e}"
+        )
     return index_id
 
 
@@ -101,7 +124,7 @@ def main():
 
     except Exception as e:
         print(traceback.format_exc())
-        logger.critical(f"Error when connecting to remote database: {e}")
+        logger.critical(f"Critical Error when updating remote database. Exception: {e}")
 
     logger.success("realtime_index_insert.py ran successfully.")
 
