@@ -75,6 +75,7 @@ def execute_insert(connection, entry, company_id):
         "SELECT COUNT(*) FROM `company_statements` WHERE company_id = :company_id AND date = :_company_date"
     )
     result = connection.execute(check_query, row).scalar()
+
     if result > 0:
         logger.warning(
             f"Record for company with ID: {company_id} and date: {row['_company_date']} already exists. Skipping to next record."
@@ -108,7 +109,7 @@ def get_company_id(entry, conn):
     # check if company exists in companies table
     result = conn.execute(
         sqlalchemy.text("SELECT id FROM `companies` WHERE symbol = :symbol"),
-        parameters=params,
+        parameters=params
     )
     row = result.one_or_none()
 

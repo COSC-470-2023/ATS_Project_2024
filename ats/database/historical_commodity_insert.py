@@ -37,12 +37,29 @@ def execute_insert(connection, entry, commodity_id):
     row = check_keys(entry)
     # append generated id
     row["commodity_id"] = commodity_id
-    # parameterized query
-    query = sqlalchemy.text(
-        "INSERT INTO `historical_commodity_values` VALUES (:commodity_id, :_historical_date, :_historical_open, :_historical_high, :_historical_low, :_historical_close, :_historical_adjClose, :_historical_volume, :_historical_unadjustedVolume, :_historical_change, :_historical_changePercent, :_historical_vwap, :_historical_changeOverTime)"
+
+    # check if record exists already
+    check_query = sqlalchemy.text(
+        "SELECT COUNT(*) FROM `historical_commodity_values` WHERE commodity_id = :commodity_id AND date = :_historical_date"
     )
-    # Execute row insertion
-    connection.execute(query, row)
+    result = connection.execute(check_query, row).scalar()
+
+    if result > 0:
+        logger.warning(
+            f"Record for commodity with ID: {commodity_id} already exists. Skipping to next record."
+        )
+        return
+    try:
+        # parameterized query
+        query = sqlalchemy.text(
+            "INSERT INTO `historical_commodity_values` VALUES (:commodity_id, :_historical_date, :_historical_open, :_historical_high, :_historical_low, :_historical_close, :_historical_adjClose, :_historical_volume, :_historical_unadjustedVolume, :_historical_change, :_historical_changePercent, :_historical_vwap, :_historical_changeOverTime)"
+        )
+        # Execute row insertion
+        connection.execute(query, row)
+    except sqlalchemy.exc.SQLAlchemyError as e:
+        logger.error(
+            f"Failed to insert record for commodity {commodity_id} with date {entry['_historical_date']}: {e}"
+        )
 
 
 def get_commodity_id(entry, connection):

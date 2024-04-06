@@ -31,18 +31,35 @@ def check_keys(entry):
     return {key: entry.get(key, None) for key in keys}
 
 
-def execute_insert(connection, entry, index_id):
-    logger.info(f"Inserting record for historical stock ID: {index_id}")
+def execute_insert(connection, entry, company_id):
+    logger.info(f"Inserting record for historical stock ID: {company_id}")
     # get key value, assign value to key. if key doesn't exist, assign value of None
     row = check_keys(entry)
     # append generated id
-    row["company_id"] = index_id
-    # parameterized query
-    query = sqlalchemy.text(
-        "INSERT INTO `historical_stock_values` VALUES (:company_id, :_historical_date, :_historical_open, :_historical_high, :_historical_low, :_historical_close, :_historical_adjClose, :_historical_volume, :_historical_unadjustedVolume, :_historical_change, :_historical_changePercent, :_historical_vwap, :_historical_changeOverTime)"
+    row["company_id"] = company_id
+
+    # check if record exists already
+    check_query = sqlalchemy.text(
+        "SELECT COUNT(*) FROM `historical_stock_values` WHERE company_id = :company_id AND date = :_historical_date"
     )
-    # Execute row insertion
-    connection.execute(query, row)
+    result = connection.execute(check_query, row).scalar()
+
+    if result > 0:
+        logger.warning(
+            f"Record for company with ID: {company_id} and date: {row['_historical_date']} already exists. Skipping to next record."
+        )
+        return
+    try:
+        # parameterized query
+        query = sqlalchemy.text(
+            "INSERT INTO `historical_stock_values` VALUES (:company_id, :_historical_date, :_historical_open, :_historical_high, :_historical_low, :_historical_close, :_historical_adjClose, :_historical_volume, :_historical_unadjustedVolume, :_historical_change, :_historical_changePercent, :_historical_vwap, :_historical_changeOverTime)"
+        )
+        # Execute row insertion
+        connection.execute(query, row)
+    except sqlalchemy.exc.SQLAlchemyError as e:
+        logger.error(
+            f"Failed to insert record for stock {company_id} with date {entry['_realtime_date']}: {e}"
+        )
 
 
 # Used to get id associated with an index

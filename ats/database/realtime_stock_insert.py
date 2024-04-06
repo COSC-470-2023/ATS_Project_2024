@@ -75,7 +75,7 @@ def execute_insert(connection, entry, company_id):
         connection.execute(query, row)
     except sqlalchemy.exc.SQLAlchemyError as e:
         logger.error(
-            f"Failed to insert record for commodity {commodity_id} with date {entry['_realtime_date']}: {e}"
+            f"Failed to insert record for commodity {company_id} with date {entry['_realtime_date']}: {e}"
         )
 
 
@@ -122,11 +122,11 @@ def get_company_id(entry, conn):
 
 def main():
     # Load json data
-    realtime_data = json_handler.load_output(DIR_OUTPUT + OUTPUT_REALTIME_STOCKS)
+    realtime_data = file_handler.read_json(globals.FN_OUT_REALTIME_STOCKS)
 
     try:
         # create connection with context manager, connection closed on exit
-        with connect.connect() as conn:
+        with connection_manager.connect() as conn:
             # begin transaction with context manager, implicit commit on exit or rollback on exception
             with conn.begin():
                 for entry in realtime_data:
