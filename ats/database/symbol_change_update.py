@@ -4,10 +4,10 @@ import sqlalchemy
 
 from ats import globals
 from ats.logger import Logger
-from ats.util import file_handler
+from ats.util import file_handler, db_handler
 from ats.util.db_handler import ConnectionManager
 
-connection_manager = ConnectionManager.instance()
+connection_manager = db_handler.ConnectionManager.instance()
 logger = Logger.instance()
 
 
@@ -19,9 +19,9 @@ def update_symbol(connection, symbol):
         new_symbol = symbol["_change_newSymbol"]
 
         #  SQL query
-        company_update = sqlalchemy.text(f"UPDATE companies SET companyName = '{name}', symbol = '{new_symbol}' WHERE symbol = '{old_symbol}'")
+        company_update = sqlalchemy.text("UPDATE companies SET companyName = :_change_newName, symbol = :_change_newSymbol WHERE symbol = :_change_oldSymbol")
 
-        connection.execute(company_update)
+        connection.execute(company_update, parameters=symbol)
     except Exception as e:
         print(traceback.format_exc())
         logger.critical(f"Error in updating database: {e}")

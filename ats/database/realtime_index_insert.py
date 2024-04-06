@@ -7,6 +7,7 @@ from ats.logger import Logger
 from ats.util import db_handler, file_handler
 
 logger = Logger.instance()
+connection_manager = db_handler.ConnectionManager.instance()
 
 
 def check_keys(entry):
@@ -81,7 +82,7 @@ def main():
 
     try:
         # create connection with context manager, connection closed on exit
-        with db_handler.connect() as conn:
+        with connection_manager.connect() as conn:
             # begin transaction with context manager, implicit commit on exit or rollback on exception
             with conn.begin():
                 for entry in realtime_data:

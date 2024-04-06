@@ -7,6 +7,7 @@ from ats.logger import Logger
 from ats.util import db_handler, file_handler
 
 logger = Logger.instance()
+connection_manager = db_handler.ConnectionManager.instance()
 
 
 def check_keys(entry):
@@ -78,7 +79,7 @@ def main():
     historical_data = file_handler.read_json(globals.FN_OUT_HISTORICAL_INDEX)
     try:
         # create with context manager
-        with db_handler.connect() as conn:
+        with connection_manager.connect() as conn:
             # begin transaction with context manager, implicit commit on exit or rollback on exception
             with conn.begin():
                 for entry in historical_data:

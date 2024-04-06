@@ -7,6 +7,7 @@ from ats.logger import Logger
 from ats.util import db_handler, file_handler
 
 logger = Logger.instance()
+connection_manager = db_handler.ConnectionManager.instance()
 
 
 def execute_insert(connection, entry, bond_id):
@@ -37,7 +38,7 @@ def execute_insert(connection, entry, bond_id):
 def get_bond_id(entry, connection):
     # Declare and initialize variables
     name = entry["_bond_name"]
-    id_query = f"SELECT bond_id FROM `bonds` WHERE treasuryName = '{name}'"
+    id_query = f"SELECT id FROM `bonds` WHERE treasuryName = '{name}'"
 
     # Check if bond exists in bonds table
     result = connection.execute(sqlalchemy.text(id_query))
@@ -64,7 +65,7 @@ def main():
     bonds_data = file_handler.read_json(globals.FN_OUT_BONDS)
     try:
         # create with context manager, implicit commit on close
-        with db_handler.connect() as conn:
+        with connection_manager.connect() as conn:
             for entry in bonds_data:
                 if bool(entry):
                     bond_id = get_bond_id(entry, conn)

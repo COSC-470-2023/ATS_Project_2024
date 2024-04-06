@@ -7,6 +7,7 @@ from ats.logger import Logger
 from ats.util import db_handler, file_handler
 
 logger = Logger.instance()
+connection_manager = db_handler.ConnectionManager.instance()
 
 
 def check_keys(entry):
@@ -97,7 +98,7 @@ def main():
     data = file_handler.read_json(globals.FN_OUT_COMPANIES)
     try:
         # create with context manager, implicit commit on close
-        with db_handler.connect() as conn:
+        with connection_manager.connect() as conn:
             with conn.begin():
                 for entry in data:
                     if isinstance(entry, dict):
