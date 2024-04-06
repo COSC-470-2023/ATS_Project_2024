@@ -8,7 +8,3 @@ api_fields:
   name: _change_newName
   newSymbol: _change_newSymbol
   oldSymbol: _change_oldSymbol
-# Custom fields to add to output
-# Requires a mapping function in the script
-non_api_fields:
-  _change_oldName

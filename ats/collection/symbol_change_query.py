@@ -20,13 +20,8 @@ def main():
 
         logger.info('Processing raw data')
         api_fields = config[globals.FIELD_CFG_API]
-        # TODO: either drop or fix _change_oldName mapping
-        non_api_fields = config[globals.FIELD_CFG_NON_API]
-        mapping = {'_change_oldName', lambda _: ''}  # FIXME
         data = data_handler.process_raw_data(raw_data,
-                                             api_fields,
-                                             non_api_fields,
-                                             mapping)
+                                             api_fields)
 
         logger.info('Writing processed data to output')
         file_handler.write_json(data, globals.FN_OUT_SYMBOL_CHANGE)

@@ -20,7 +20,8 @@ class Mapping:
         self.mapping[field] = callback
 
     def lookup(self, field: str, *args):
-        return self.mapping[field](*args)
+        cb = self.mapping[field]
+        return cb(*args)
 
 
 def mapping_callback(cb: Callable[[Kwargs], ...]) -> MappingCallback:
