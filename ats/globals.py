@@ -1,6 +1,7 @@
 # Directories
 DIR_CFG = "config/"
 DIR_OUT = "output/"
+DIR_UI_OUPUT = "ui/output/"
 
 # Environment variables
 ENV_API_KEY = "ATS_API_KEY"

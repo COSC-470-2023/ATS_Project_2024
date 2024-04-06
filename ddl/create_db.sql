@@ -230,11 +230,12 @@ CREATE TABLE `historical_index_values` (
 
 -- User Tables --
 
-CREATE TABLE `authorized_users` (
+CREATE TABLE `users` (
   `id` BIGINT,
-  `username` VARCHAR(300),
-  `password` VARCHAR(300),
-  `firstName` VARCHAR(300),
-  `lastName` VARCHAR(300),
+  `username` VARCHAR(300) NOT NULL,
+  `password` VARCHAR(300) NOT NULL,
+  `firstName` VARCHAR(300) NOT NULL,
+  `lastName` VARCHAR(300) NOT NULL,
+  `isAdmin` BOOLEAN NOT NULL,
   PRIMARY KEY (`id`)
 );

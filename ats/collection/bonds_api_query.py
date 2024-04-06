@@ -12,7 +12,6 @@ BOND_NAME = '_bond_name'
 CHUNK = 90
 TREASURY = 'treasury'
 
-
 @api_handler.query_builder
 def build_queries(query_manager: api_handler.QueryManager,
                   days: int,

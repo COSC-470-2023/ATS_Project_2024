@@ -16,7 +16,6 @@ HISTORICAL_NAME = '_historical_name'
 NAME = 'name'
 SYMBOL = 'symbol'
 
-
 @api_handler.query_builder
 def build_queries(query_manager: api_handler.QueryManager,
                   config_data: list[dict],

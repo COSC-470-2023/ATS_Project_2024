@@ -1,0 +1,148 @@
+from flask import (
+    Blueprint,
+    render_template,
+    request,
+    flash,
+    jsonify
+)
+
+import requests
+import yaml
+from flask_login import login_required
+from .decorators import admin_required
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+configuration = Blueprint("configuration", __name__)
+
+# Default route
+@configuration.route("/", methods=["GET", "POST"])
+@admin_required
+def home():
+    return render_template("configuration.html")
+
+stock_config_file = "./config/realtime_config.yaml"
+
+# Route for populating the current config list
+@configuration.route("/get_config", methods=["GET"])
+@admin_required
+def get_config():
+    # Get the config file
+    with open(stock_config_file, 'r') as configfile:
+        config = yaml.safe_load(configfile)
+    
+    # Extracting both symbols and name from stocks
+    stock_info = [{'symbol': stock['symbol'], 'name': stock['name']} for stock in config.get('stocks',[])]
+    
+    return jsonify(stock_info)
+
+# Route for removing stock on the config
+@configuration.route("/remove_config", methods=["POST"])
+@admin_required
+def remove_config():
+    # Get the symbols of stocks to remove
+    symbols_to_remove = request.json.get('symbols', [])
+
+    # Load the config file
+    with open(stock_config_file, 'r') as configfile:
+        config = yaml.safe_load(configfile)
+
+    # Remove the stocks
+    if 'stocks' in config:
+        config['stocks'] = [stock for stock in config['stocks'] if stock['symbol'] not in symbols_to_remove]
+
+    # Save the modified config back to the file
+    with open(stock_config_file, 'w') as configfile:
+        yaml.dump(config, configfile)
+        
+    return jsonify({"message": "Stocks removed successfully"})
+
+# Function to fetch all the stock from the API
+def fetch_stock_list():
+    api_key = os.getenv("ATS_API_KEY")
+    if not api_key:
+        raise ValueError("ATS_API_KEY environment variable is not set.")
+
+    url = f"https://financialmodelingprep.com/api/v3/stock/list?apikey={api_key}"
+    response = requests.get(url)
+    
+    print("Response status code:", response.status_code)
+    
+    if response.status_code == 200:
+        data = response.json()
+        symbols_list = []
+
+        for stock in data:
+            symbol = stock.get('symbol')
+            name = stock.get('name')
+            symbols_list.append({'symbol': symbol, 'name': name})
+        
+        return symbols_list
+    else:
+        print("Failed to fetch stock list:", response.status_code)
+        return None
+
+# Route for comparing stocks from the config file and API
+@configuration.route("/compare_stocks", methods=["GET"])
+@admin_required
+def compare_stocks():
+    # Load the config file
+    with open(stock_config_file, 'r') as configfile:
+        config = yaml.safe_load(configfile)
+
+    # Fetch the list of stock from API
+    available_stocks = fetch_stock_list()
+
+    # Check if available_stocks is empty
+    if available_stocks is not None:
+        # Check if 'stocks' key exists in config
+        if 'stocks' in config:
+            # Extract symbols from config file
+            config_symbols = {stock['symbol'] for stock in config['stocks']}
+
+            # Extract symbols from API
+            api_symbols = {stock['symbol'] for stock in available_stocks}
+
+            # Find symbols not common in both config and API
+            not_common_symbols = list(api_symbols - config_symbols)
+
+            # Filter available_stocks to get common stocks
+            not_common_stocks = [{'symbol': stock['symbol'], 'name': stock['name']} for stock in available_stocks if stock['symbol'] in not_common_symbols]
+            
+            return jsonify({"not_common_stocks": not_common_stocks})
+        else:
+            return jsonify({"message": "No 'stocks' key found in config", "not_common_stocks": []})
+    else:
+        return jsonify({"message": "Failed to fetch available stocks", "not_common_stocks": []})
+
+# Route for adding new stocks to the config
+@configuration.route("/add_stocks", methods=["POST"])
+@admin_required
+def add_stocks():
+    # Load the config file
+    with open(stock_config_file, 'r') as configfile:
+        config = yaml.safe_load(configfile)
+
+    # Get the selected symbols and names from the request JSON
+    selected_stocks = request.json.get('selected_stocks', [])
+
+    # Check if selected stocks are provided
+    if selected_stocks:
+        # Ensure 'stocks' key exists in config
+        if 'stocks' not in config:
+            config['stocks'] = []
+
+        # Add the selected stocks to the config
+        for stock in selected_stocks:
+            if stock not in [stock['symbol'] for stock in config['stocks']]:
+                config['stocks'].insert(0, {'symbol': stock['symbol'], 'name': stock['name']})
+
+        # Save the modified config back to the file
+        with open(stock_config_file, 'w') as configfile:
+            yaml.dump(config, configfile)
+
+        return jsonify({"message": "Selected stocks added successfully", "selected_stocks": selected_stocks})
+    else:
+        return jsonify({"message": "No stocks selected to add", "selected_stocks": []})

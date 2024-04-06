@@ -1,3 +1,4 @@
+import os
 from flask import (
     Blueprint,
     render_template,
@@ -7,130 +8,199 @@ from flask import (
     send_file,
     jsonify,
     session,
+    flash,
 )
-from flask_login import login_required
+from flask_login import login_required, current_user
 from sqlalchemy import inspect
+from datetime import datetime
 import csv
+
+from ats.globals import DIR_UI_OUPUT
+from . import db
 
 # import models
 from .models import *
 
 data_export = Blueprint("data_export", __name__)
 
-# TODO: CHANGE THE IMPORT FROM WITH OPEN TO ALANS VERSION OF IMPORT
-
 # Maps string representation of tabels so that they can be used from the form
-entity_map = {
+entity_table_map = {
     "Companies": Companies,
     "Commodities": Commodities,
     "Indexes": Indexes,
     "Bonds": Bonds,
+    "company-info": Companies,
+}
+
+# Mapping prefix combined with table name to Models
+value_table_map = {
+    "CompanyStatements": CompanyStatements,
+    "realtimeStockValues": RealtimeStockValues,
+    "historicalStockValues": HistoricalStockValues,
+    "realtimeIndexValues": RealtimeIndexValues,
+    "historicalIndexValues": HistoricalIndexValues,
+    "realtimeCommodityValues": RealtimeCommodityValues,
+    "historicalCommodityValues": HistoricalCommodityValues,
+    "BondValues": BondValues,
+}
+
+# Map to handle different cases based on entity type
+id_table_map = {
+    "Companies": ("company_id", "StockValues"),
+    "company-info": ("company_id", "CompanyStatements"),
+    "Bonds": ("bond_id", "BondValues"),
+    "Indexes": ("index_id", "IndexValues"),
+    "Commodities": ("commodity_id", "CommodityValues"),
 }
 
 
-@data_export.route("", methods=["GET"])
+# Default route (Hit when page first loads)
+@data_export.route("/", methods=["GET", "POST"])
 @login_required
-def load_stocks():
-    if request.method == "GET":
-        entity = request.args.get("dataValue")
+def home():
+    return render_template("data_export.html", user=current_user)
 
-        # Retrieve query params to pass to front-end
-        realtime_disabled = request.args.get("realtimeDisabled", "false") == "true"
-        historical_disabled = request.args.get("historicalDisabled", "false") == "true"
 
-        if entity == "company-info" or entity == None:
-            checklist_items = Companies.query.all()
-        else:
-            checklist_items = entity_map[entity].query.all()
+# Route for populating the data list base on form state
+@data_export.route("/get-data-list", methods=["POST"])
+@login_required
+def get_data_list():
+    selected_entity = request.form["selected_entity"]
+    table = entity_table_map[selected_entity]
 
-        return render_template(
-            "data_export.html",
-            entity=entity,
-            items=checklist_items,
-            realtime_disabled=realtime_disabled,
-            historical_disabled=historical_disabled,
-        )
+    # Serialize items from query to be passed as json
+    items = [item.serialize() for item in table.query.all()]
+    return jsonify({"items": items})
+
+
+# Route for populating the field list based on form state
+@data_export.route("/get-field-list", methods=["POST"])
+@login_required
+def get_field_list():
+    selected_entity = request.form["selected_entity"]
+    table_prefix = request.form["selected_data_type"]
+    table_suffix = id_table_map[selected_entity][1]
+
+    # Bonds and company-info have no 'realtime' or 'historical' prefix
+    if selected_entity == "Bonds" or selected_entity == "company-info":
+        table_name = table_suffix
+    else:
+        table_name = table_prefix + table_suffix
+
+    # Determine tables base on mapped keys
+    lookup_table = entity_table_map[selected_entity]
+    values_table = value_table_map[table_name]
+
+    # Get table fields
+    lookup_fields = lookup_table.__table__.columns.keys()
+    value_fields = values_table.__table__.columns.keys()
+
+    return jsonify({"lookup_fields": lookup_fields, "value_fields": value_fields})
 
 
 @data_export.route("/export-data", methods=["GET", "POST"])
 @login_required
 def export_data():
-    if request.method == "POST":
-        selected = request.form.getlist("data-item")
-        table_prefix = request.form.get("data-type")
-        entity = request.form.get("select-data")
-        data_table_name = ""
-        id_specifier = ""
-
-        # Dynamic query for getting all entities tracked in database (stocks, bonds, index, commodities)
-        # Logic for dynamic table names (Will need to revist later for a better solution)
-        if entity == "Companies" or entity == "None":
-            id_specifier = "company_id"
-            data_table_name = "StockValues"
-            entity_query = Companies.query.filter(Companies.symbol.in_(selected))
-        elif entity == "company-info":
-            table_prefix = ""
-            id_specifier = "company_id"
-            data_table_name = "CompanyStatements"
-            entity_query = Companies.query.filter(Companies.symbol.in_(selected))
-        elif entity == "Bonds":
-            table_prefix = ""
-            id_specifier = "bond_id"
-            data_table_name = "BondValues"
-            entity_query = entity_map[entity].query.filter(
-                entity_map[entity].treasuryName.in_(selected)
-            )
-        elif entity == "Indexes":
-            id_specifier = "index_id"
-            data_table_name = "IndexValues"
-            entity_query = entity_map[entity].query.filter(
-                entity_map[entity].symbol.in_(selected)
-            )
-        elif entity == "Commodities":
-            id_specifier = "commodity_id"
-            data_table_name = "CommodityValues"
-            entity_query = entity_map[entity].query.filter(
-                entity_map[entity].symbol.in_(selected)
+    try:
+        if request.method == "POST":
+            # Collect form data
+            selected_data = request.form.getlist("data-item")
+            selected_lookup_fields = request.form.getlist("lookup-field-item")
+            selected_value_fields = request.form.getlist("value-field-item")
+            all_selected_fields = selected_lookup_fields + selected_value_fields
+            entity_type = request.form.get("select-data")
+            table_prefix = (
+                ""
+                if entity_type == "Bonds" or entity_type == "company-info"
+                else request.form.get("data-type")
             )
 
-        ids = []
-        # grabbing ids for all queried rows
-        for entity in entity_query:
-            ids.append(entity.id)
+            date_range = request.form.get("daterange")
+            start_date, end_date = date_range.split(" - ")
 
-        print(data_table_name)
+            # Convert dates to datetime objects
+            start_date = datetime.strptime(start_date, "%Y-%m-%d")
+            end_date = datetime.strptime(end_date, "%Y-%m-%d")
 
-        table = table_prefix + data_table_name
+            # Assign mapped values
+            value_table_suffix = id_table_map[entity_type][1]
+            value_table = value_table_map.get(table_prefix + value_table_suffix)
+            lookup_table = entity_table_map[entity_type]
 
-        # table mapping instead of if hell, had to rewrite to work with getting the column headers
-        table_mapping = {
-            "CompanyStatements": CompanyStatements,
-            "realtimeStockValues": RealtimeStockValues,
-            "historicalStockValues": HistoricalStockValues,
-            "realtimeIndexValues": RealtimeIndexValues,
-            "historicalIndexValues": HistoricalIndexValues,
-            "realtimeCommodityValues": RealtimeCommodityValues,
-            "historicalCommodityValues": HistoricalCommodityValues,
-            "BondValues": BondValues,
-        }
+            # Quries database based on form selections
+            query = build_query(
+                entity_type,
+                lookup_table,
+                value_table,
+                selected_data,
+                selected_lookup_fields,
+                selected_value_fields,
+                start_date,
+                end_date,
+            )
 
-        # dynamic query that selects the current table and queries it with the company ids
-        query = table_mapping[table].query.filter(
-            getattr(table_mapping[table], id_specifier).in_(ids)
+            # Build file path
+            output_file_name = entity_type + "-data.csv"
+            output_file_path = os.path.join(DIR_UI_OUPUT, output_file_name)
+            # Create ouput dir if it doesn't exist
+            os.makedirs(os.path.dirname(DIR_UI_OUPUT), exist_ok=True)
+
+            with open(output_file_path, "w", newline="") as csvfile:
+                csvwriter = csv.writer(csvfile, delimiter=",")
+                # add first row as columns headers
+                csvwriter.writerow(all_selected_fields)
+                # write query rows to file
+                for row in query:
+                    csvwriter.writerow(row)
+
+            return send_file(
+                "../" + output_file_path,
+                mimetype="text/csv",
+                as_attachment=True,
+            )
+
+    except Exception as e:
+        flash(
+            "An error occured while exporting your data. Please check the system logs, or contact the system administrator.",
+            "error",
         )
 
-        # sqlalch->inspect to retrieve all columns headers (yes .c as columns seems shady as hell, but it seems to work ¯\_(ツ)_/¯)
-        columnNames = [column.name for column in inspect(table_mapping[table]).c]
+    return redirect(request.referrer or url_for("data_export.home"))
 
-        with open("user_interface\output\data.csv", "w", newline="") as csvfile:
-            csvwriter = csv.writer(csvfile, delimiter=",")
-            csvwriter.writerow(columnNames)  # adds first row as columns headers
-            for row in query:  # writing the data from the query
-                csvwriter.writerow([getattr(row, column) for column in columnNames])
-                # gets the columns from the query and writes each cell one at a time based on the columns
 
-        return send_file(
-            "output\data.csv",
-            mimetype="text/csv",
-            as_attachment=True,
+# Funciton that builds query based on the provided tables, table entities, fields, and date range
+def build_query(
+    entity_type,
+    lookup_table,
+    value_table,
+    selected_data,
+    lookup_fields,
+    value_fields,
+    start_date,
+    end_date,
+):
+    if entity_type == "Bonds":
+        query = (
+            db.session.query(lookup_table, value_table)
+            .join(value_table)
+            .filter(lookup_table.treasuryName.in_(selected_data))
+            .filter(value_table.date >= start_date, value_table.date <= end_date)
+            .with_entities(
+                *[getattr(lookup_table, column) for column in lookup_fields]
+                + [getattr(value_table, column) for column in value_fields]
+            )
+            .all()
         )
+    else:
+        query = (
+            db.session.query(lookup_table, value_table)
+            .join(value_table)
+            .filter(lookup_table.symbol.in_(selected_data))
+            .filter(value_table.date >= start_date, value_table.date <= end_date)
+            .with_entities(
+                *[getattr(lookup_table, column) for column in lookup_fields]
+                + [getattr(value_table, column) for column in value_fields]
+            )
+            .all()
+        )
+    return query

@@ -1,7 +1,10 @@
 on:
   push:
     branches: 
-      - feature/refactoring
+      - develop
+  pull_request:
+    branches:
+      - develop
 
 jobs:
   format:
@@ -62,8 +65,8 @@ jobs:
 
       - name: Pytest
         run: |
-          source .venv/bin/activate
-          python -m pytest -v --cov=tests/ats/collection --cov-report=term-missing tests/ats/collection
-          python -m pytest -v --cov=tests/ats/database --cov-report=term-missing tests/ats/database
-          python -m pytest -v --cov=tests/ats/util --cov-report=term-missing tests/ats/util
 
+          source .venv/bin/activate
+          python -m pytest -v --cov=ats/collection --cov-report=term-missing tests/ats/collection
+          python -m pytest -v --cov=ats/database --cov-report=term-missing tests/ats/database
+          python -m pytest -v --cov=ats/util --cov-report=term-missing tests/ats/util

@@ -23,7 +23,7 @@ def build_queries(query_manager: api_handler.QueryManager,
     for entry in config_data:
         query_manager.add(entry[SYMBOL])
 
-
+  
 def make_mapping() -> data_handler.Mapping:
     # TODO: write docstring
 
