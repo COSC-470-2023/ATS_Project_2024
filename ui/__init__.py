@@ -29,31 +29,31 @@ def create_app():
     app.secret_key = "secret_key"  # TODO: MUST change this key to something better and store elsewhere
 
     # Create app context
-    app.app_context().push()
-    db.init_app(app)
+    with app.app_context():
+        db.init_app(app)
 
-    # Import blueprints
-    from .auth import auth
-    from .configuration import configuration
-    from .data_export import data_export
-    from .job_scheduling import job_scheduling
-    from .configuration import configuration
+        # Import blueprints
+        from .auth import auth
+        from .configuration import configuration
+        from .data_export import data_export
+        from .job_scheduling import job_scheduling
+        from .configuration import configuration
 
-    app.register_blueprint(auth, url_prefix="/")
-    app.register_blueprint(configuration, url_prefix="/configuration")
-    app.register_blueprint(data_export, url_prefix="/data-export")
-    app.register_blueprint(job_scheduling, url_prefix="/job-scheduling")
+        app.register_blueprint(auth, url_prefix="/")
+        app.register_blueprint(configuration, url_prefix="/configuration")
+        app.register_blueprint(data_export, url_prefix="/data-export")
+        app.register_blueprint(job_scheduling, url_prefix="/job-scheduling")
 
-    from .models import User
+        from .models import User
 
-    # Setup login manager
-    login_manager = LoginManager()
-    login_manager.login_view = "auth.login"
-    login_manager.init_app(app)
+        # Setup login manager
+        login_manager = LoginManager()
+        login_manager.login_view = "auth.login"
+        login_manager.init_app(app)
 
-    # User loader callback. User by Flask-Login for authentaction handling
-    @login_manager.user_loader
-    def load_user(id):
-        return User.query.get(int(id))
+        # User loader callback. User by Flask-Login for authentaction handling
+        @login_manager.user_loader
+        def load_user(id):
+            return User.query.get(int(id))
 
-    return app
+        return app

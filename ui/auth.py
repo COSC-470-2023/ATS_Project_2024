@@ -92,7 +92,7 @@ def create_user():
                 flash("User created succussfully!", "success")
             except Exception as e:
                 flash(
-                    "An error occured while attempting to create the account, please try again."
+                    "An error occured while attempting to create the account, please try again.", "error"
                 )
 
     return render_template("create_user.html")
