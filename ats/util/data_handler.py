@@ -73,6 +73,9 @@ def process_entry(raw_entry: dict,
             processed_entry[new_field] = raw_entry[field_name]
         elif raw_entry_sub:
             processed_entry[new_field] = raw_entry_sub[field_name]
+        else:
+            logger.error(f"Error when processing entry {raw_entry}")
+            raise Exception
 
     if non_api_fields and mapping:
         for field_name in non_api_fields:
