@@ -118,7 +118,7 @@ def main():
                             execute_insert(conn, entry, commodity_id)
                         except sqlalchemy.exc.SQLAlchemyError as e:
                             # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
-                            print(f"Error: {e}")
+                            logger.error(f"SQLAlchemy Exception when processing realtime data: {e}")
                             continue
                     else:
                         # entry is not a dictionary, skip it

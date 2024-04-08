@@ -63,7 +63,7 @@ def execute_insert(connection, entry, company_id):
     result = connection.execute(check_query, row).scalar()
     if result > 0:
         logger.warning(
-            f"Record for commodity with ID: {company_id} and date: {row['_realtime_date']} already exists. Skipping to next record."
+            f"Record for company with ID: {company_id} and date: {row['_realtime_date']} already exists. Skipping to next record."
         )
         return
     try:
@@ -75,7 +75,7 @@ def execute_insert(connection, entry, company_id):
         connection.execute(query, row)
     except sqlalchemy.exc.SQLAlchemyError as e:
         logger.error(
-            f"Failed to insert record for commodity {company_id} with date {entry['_realtime_date']}: {e}"
+            f"Failed to insert record for company {company_id} with date {entry['_realtime_date']}: {e}"
         )
 
 

@@ -148,8 +148,8 @@ def main():
                             # process company data
                             execute_insert(conn, entry, company_id)
                         except sqlalchemy.exc.SQLAlchemyError as e:
-                            # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
-                            print(f"Database Insertion Error: {e}")
+                            # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent
+                            # rollbacks
                             logger.error(f"Database Insertion Error: {e}")
                             continue
                     else:
