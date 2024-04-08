@@ -1,3 +1,4 @@
+import datetime
 import os
 
 from ats import globals
@@ -5,6 +6,18 @@ from ats.logger import Logger
 from ats.util import api_handler, data_handler, file_handler
 
 logger = Logger.instance()
+
+
+def prune_old_entries(raw_data: list[dict],
+                      days: int,
+                      date: datetime.datetime) -> list[dict]:
+    pruned_data = []
+    constraint_date = date - datetime.timedelta(days=days)
+    for entry in raw_data:
+        entry_date = datetime.datetime.strptime(entry['date'], '%Y-%m-%d')
+        if entry_date >= constraint_date:
+            pruned_data.append(entry)
+    return pruned_data
 
 
 def main():
@@ -18,9 +31,14 @@ def main():
         fetcher = api_handler.Fetcher(endpoint, api_key)
         raw_data = fetcher.fetch()
 
+        days = os.getenv(globals.ENV_DAYS_QUERIED)
+        days = int(days)
+        date = datetime.datetime.today()
+        pruned_data = prune_old_entries(raw_data, days, date)
+
         logger.debug('Processing raw data')
         api_fields = config[globals.FIELD_CFG_API]
-        data = data_handler.process_raw_data(raw_data,
+        data = data_handler.process_raw_data(pruned_data,
                                              api_fields)
 
         logger.debug('Writing processed data to output')
@@ -29,6 +47,7 @@ def main():
     except Exception as e:
         logger.error(e)
         raise
+
 
 if __name__ == "__main__":
     main()

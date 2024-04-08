@@ -16,6 +16,7 @@ HISTORICAL_NAME = '_historical_name'
 NAME = 'name'
 SYMBOL = 'symbol'
 
+
 @api_handler.query_builder
 def build_queries(query_manager: api_handler.QueryManager,
                   config_data: list[dict],
@@ -36,8 +37,11 @@ def make_mapping(config_data: list[dict]) -> data_handler.Mapping:
 
     @data_handler.mapping_callback
     def historical_name(kwargs: data_handler.Kwargs) -> str:
-        symbol = kwargs[data_handler.ENTRY][SYMBOL]
-        return symbol_name_mapping[symbol]
+        if SYMBOL in kwargs[data_handler.ENTRY]:
+            symbol = kwargs[data_handler.ENTRY][SYMBOL]
+            return symbol_name_mapping[symbol]
+        else:
+            return data_handler.KEY_NOT_FOUND
 
     mapping = data_handler.Mapping()
     mapping.add(HISTORICAL_NAME, historical_name)
