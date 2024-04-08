@@ -1,7 +1,7 @@
 # Directories
 DIR_CFG = "config/"
 DIR_OUT = "output/"
-DIR_UI_OUPUT = "ui/output/"
+DIR_UI_OUTPUT = "ui/output/"
 
 # Environment variables
 ENV_API_KEY = "ATS_API_KEY"
@@ -26,6 +26,7 @@ FN_OUT_COMPANIES = "company_info_output.json"
 FN_OUT_HISTORICAL_COMMODITY = "historical_commodity_output.json"
 FN_OUT_HISTORICAL_INDEX = "historical_index_output.json"
 FN_OUT_HISTORICAL_STOCKS = "historical_stocks_output.json"
+FN_OUT_LOG_FILE = "log_file.log"
 FN_OUT_REALTIME_COMMODITIES = "realtime_commodity_output.json"
 FN_OUT_REALTIME_INDEX = "realtime_index_output.json"
 FN_OUT_REALTIME_STOCKS = "realtime_stocks_output.json"

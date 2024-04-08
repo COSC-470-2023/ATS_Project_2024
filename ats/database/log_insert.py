@@ -54,6 +54,7 @@ def main():
     log_files = [
         os.path.join(DIR_OUT, FN_OUT_LOG_FILE),
     ]
+    logger.info(f"Inserting logs from {log_files} ")
 
     try:
         with connection_manager.connect() as conn:
