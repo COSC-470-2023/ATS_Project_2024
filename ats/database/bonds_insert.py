@@ -59,6 +59,8 @@ def execute_insert(connection, entry, bond_id):
 
 
 def get_bond_id(entry, connection):
+    logger.debug("Assigning bond ID")
+    bond_id = None
     # Declare and initialize variables
     name = entry["_bond_name"]
     id_query = f"SELECT id FROM `bonds` WHERE treasuryName = '{name}'"
@@ -81,7 +83,7 @@ def get_bond_id(entry, connection):
             # if the bond exists, fetch the existing ID
             bond_id = row[0]
     except Exception as e:
-        logger.error(f"Getting ID failed: {e}")
+        logger.error(f"Error occurred when assigning ID: {e}")
     return bond_id
 
 
@@ -99,7 +101,7 @@ def main():
                         execute_insert(conn, entry, bond_id)
                     except sqlalchemy.exc.SQLAlchemyError as e:
                         # log sqlalchemy error, then continue to prevent silent rollbacks
-                        logger.error(f"Error: {e}")
+                        logger.error(f"SQLAlchemy Exception: {e}")
                 else:
                     continue
             # Commit changes to database (otherwise it rolls back)

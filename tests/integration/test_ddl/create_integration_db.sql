@@ -78,7 +78,6 @@ CREATE TABLE `integration_companies` (
   `id` BIGINT,
   `companyName` VARCHAR(300) NOT NULL,
   `symbol` VARCHAR(10) NOT NULL,
-  `isListed` boolean,
   PRIMARY KEY (`id`)
 );
 

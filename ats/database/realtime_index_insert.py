@@ -116,7 +116,7 @@ def main():
                             execute_insert(conn, entry, index_id)
                         except sqlalchemy.exc.SQLAlchemyError as e:
                             # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
-                            logger.error(f"Error: {e}")
+                            logger.error(f"SQLAlchemy Exception: {e}")
                             continue
                     else:
                         # entry is not a dictionary, skip it
@@ -124,7 +124,7 @@ def main():
 
     except Exception as e:
         print(traceback.format_exc())
-        logger.critical(f"Critical Error when updating remote database. Exception: {e}")
+        logger.critical(f"Error when updating remote database. Exception: {e}")
 
     logger.success("realtime_index_insert.py ran successfully.")
 
