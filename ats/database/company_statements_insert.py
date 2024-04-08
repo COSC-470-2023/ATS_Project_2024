@@ -111,7 +111,7 @@ def get_company_id(entry, conn):
         # check if company exists in companies table
         result = conn.execute(
             sqlalchemy.text("SELECT id FROM `companies` WHERE symbol = :symbol"),
-            parameters=params
+            parameters=params,
         )
         row = result.one_or_none()
 
