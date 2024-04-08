@@ -6,6 +6,7 @@ logger = Logger.instance()
 
 # Constants
 ENTRY = 'entry'
+KEY_NOT_FOUND = 'key not found'
 
 Entry: TypeAlias = dict
 Kwargs: TypeAlias = dict[str, Entry]
@@ -71,11 +72,19 @@ def process_entry(raw_entry: dict,
         new_field = api_fields[field_name]
         if field_name in raw_entry:
             processed_entry[new_field] = raw_entry[field_name]
-        elif raw_entry_sub:
+        elif raw_entry_sub and field_name in raw_entry_sub:
             processed_entry[new_field] = raw_entry_sub[field_name]
+        else:
+            logger.warning("Key(s) missing in entry, skipping")
+            continue
 
     if non_api_fields and mapping:
         for field_name in non_api_fields:
-            processed_entry[field_name] = mapping.lookup(field_name, raw_entry)
+            value = mapping.lookup(field_name, raw_entry)
+            if value != KEY_NOT_FOUND:
+                processed_entry[field_name] = value
+            else:
+                logger.warning("Key(s) missing in entry, skipping")
+                continue
 
     return processed_entry

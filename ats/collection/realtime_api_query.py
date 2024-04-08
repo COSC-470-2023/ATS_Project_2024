@@ -29,9 +29,12 @@ def make_mapping() -> data_handler.Mapping:
 
     @data_handler.mapping_callback
     def realtime_date(kwargs: data_handler.Kwargs) -> str:
-        timestamp = kwargs[data_handler.ENTRY][TIMESTAMP]
-        date_time = datetime.datetime.fromtimestamp(timestamp)
-        return str(date_time)
+        if TIMESTAMP in kwargs[data_handler.ENTRY]:
+            timestamp = kwargs[data_handler.ENTRY][TIMESTAMP]
+            date_time = datetime.datetime.fromtimestamp(timestamp)
+            return str(date_time)
+        else:
+            return data_handler.KEY_NOT_FOUND
 
     mapping = data_handler.Mapping()
     mapping.add(REALTIME_DATE, realtime_date)
