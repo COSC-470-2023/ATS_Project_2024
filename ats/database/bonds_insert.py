@@ -49,13 +49,13 @@ def execute_insert(connection, entry, bond_id):
             f"Record for bond with ID: {bond_id} and date: {row['_bond_date']} already exists. Skipping to next record."
         )
         return
-
+    print(row["bond_id"])
     # Execute row insertion
     connection.execute(
         sqlalchemy.text(
-            f"INSERT INTO `bond_values` VALUES (:bond_id, :_bond_date, :_bond_month1, :_bond_month2, :_bond_month3, "
-            f":_bond_month6, :_bond_year1, :_bond_year2, :_bond_year3, :_bond_year5, :_bond_year7, :_bond_year10, "
-            f":_bond_year20, :_bond_year30)"
+            """INSERT INTO `bond_values` VALUES (:bond_id, :_bond_date, :_bond_month1, :_bond_month2, :_bond_month3, 
+            :_bond_month6, :_bond_year1, :_bond_year2, :_bond_year3, :_bond_year5, :_bond_year7, :_bond_year10, 
+            :_bond_year20, :_bond_year30)"""
         )
     )
 
