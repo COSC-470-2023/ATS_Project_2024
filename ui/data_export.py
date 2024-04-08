@@ -15,7 +15,7 @@ from sqlalchemy import inspect
 from datetime import datetime
 import csv
 
-from ats.globals import DIR_UI_OUPUT
+from ats.globals import DIR_UI_OUTPUT
 from . import db
 
 # import models
@@ -141,9 +141,9 @@ def export_data():
 
             # Build file path
             output_file_name = entity_type + "-data.csv"
-            output_file_path = os.path.join(DIR_UI_OUPUT, output_file_name)
+            output_file_path = os.path.join(DIR_UI_OUTPUT, output_file_name)
             # Create ouput dir if it doesn't exist
-            os.makedirs(os.path.dirname(DIR_UI_OUPUT), exist_ok=True)
+            os.makedirs(os.path.dirname(DIR_UI_OUTPUT), exist_ok=True)
 
             with open(output_file_path, "w", newline="") as csvfile:
                 csvwriter = csv.writer(csvfile, delimiter=",")

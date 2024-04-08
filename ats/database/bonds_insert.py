@@ -50,13 +50,12 @@ def execute_insert(connection, entry, bond_id):
         )
         return
     # Execute row insertion
-    connection.execute(
-        sqlalchemy.text(
-            """INSERT INTO `bond_values` VALUES (:bond_id, :_bond_date, :_bond_month1, :_bond_month2, :_bond_month3, 
-            :_bond_month6, :_bond_year1, :_bond_year2, :_bond_year3, :_bond_year5, :_bond_year7, :_bond_year10, 
-            :_bond_year20, :_bond_year30)"""
-        )
+    insert_query = sqlalchemy.text(
+            "INSERT INTO `bond_values` VALUES (:bond_id, :_bond_date, :_bond_month1, :_bond_month2, :_bond_month3, "
+            + ":_bond_month6, :_bond_year1, :_bond_year2, :_bond_year3, :_bond_year5, :_bond_year7, :_bond_year10, "
+            + ":_bond_year20, :_bond_year30)"
     )
+    connection.execute(insert_query, row)
 
 
 def get_bond_id(entry, connection):

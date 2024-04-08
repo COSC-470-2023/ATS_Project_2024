@@ -1,14 +1,18 @@
 import datetime
+
 import sqlalchemy
 from sqlalchemy import create_engine, text
+
 import os
 
-from ats.globals import DIR_DATABASE, DIR_DATA_COLLECTION, LOG_FILE
-from ats.util import connect
-from ats import loguru_init
+from ats.globals import DIR_OUT, FN_OUT_LOG_FILE
+from ats.util import db_handler
+from ats.logger import Logger
 
 # loguru initialization
-logger = loguru_init.initialize()
+logger = Logger.instance()
+# db connection initialization
+connection_manager = db_handler.ConnectionManager.instance()
 
 # sql query
 insert_query = text(
@@ -37,7 +41,6 @@ def parse_log(line):
     date, timezone = parts[0].strip().rsplit(" ", 1)
     level = parts[1].strip()
     message = parts[2].strip()
-    # print(f'date: {date} timezone: {timezone} level: {level} message: {message}')
     return {
         "date": date,
         "timezone": timezone,
@@ -47,23 +50,15 @@ def parse_log(line):
 
 
 def main():
-    # Setup database connection using sqlalchemy
-    sql_port = 3306
-    uri = f"mysql+pymysql://{db_params['user']}:{db_params['pass']}@{db_params['host']}:{sql_port}/{db_params['database']}"
-    engine = sqlalchemy.create_engine(uri)
-
     # Log paths from both collection and database directories
     log_files = [
-        os.path.join(DIR_DATABASE, LOG_FILE),
-        os.path.join(DIR_DATA_COLLECTION, LOG_FILE),
+        os.path.join(DIR_OUT, FN_OUT_LOG_FILE),
     ]
 
-    # connect, no need to close manually
-    connection = engine.connect()
-
     try:
-        with connection as conn:
-            with connection.begin():
+        with connection_manager.connect() as conn:
+            # begin transaction with context manager, implicit commit on exit or rollback on exception
+            with conn.begin():
                 for path in log_files:
                     if os.path.exists(path):
                         # Load log file from LOG_FILE
@@ -73,7 +68,8 @@ def main():
                                 if log_entry:
                                     conn.execute(
                                         insert_query, log_entry
-                                    )  # parameters=log_entry[line]
+                                    )
+        logger.success("Logs Insertion completed successfully")
     except Exception as e:
         logger.critical(f"Error when connecting to remote database: {e}")
 
