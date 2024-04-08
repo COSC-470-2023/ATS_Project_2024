@@ -72,7 +72,6 @@ def get_company_id(entry, connection):
         params = {
             "_historical_symbol": entry["_historical_symbol"],
             "_historical_name": entry["_historical_name"],
-            "isListed": 1,
         }
 
         id_query = sqlalchemy.text(
@@ -88,7 +87,7 @@ def get_company_id(entry, connection):
             # if index doesn't exist, create new row in indexes table - trigger generates new ID
             connection.execute(
                 sqlalchemy.text(
-                    "INSERT INTO `companies` (`companyName`, `symbol`, `isListed`) VALUES (:_historical_name, :_historical_symbol, :isListed)"
+                    "INSERT INTO `companies` (`companyName`, `symbol`) VALUES (:_historical_name, :_historical_symbol)"
                 ),
                 parameters=params,
             )
@@ -122,7 +121,7 @@ def main():
                             execute_insert(conn, entry, company_id)
                         except sqlalchemy.exc.SQLAlchemyError as e:
                             # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
-                            logger.error(f"Error: {e}")
+                            logger.error(f"SQLAlchemy Exception: {e}")
                             continue
                     else:
                         # entry is not a dictionary, skip it
@@ -130,7 +129,7 @@ def main():
 
     except Exception as e:
         print(traceback.format_exc())
-        logger.critical(f"Error when connecting to remote database: {e}")
+        logger.critical(f"Error when updating remote database. Exception: {e}")
 
     logger.success("historical_stock_insert.py ran successfully.")
 

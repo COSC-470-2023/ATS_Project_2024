@@ -72,7 +72,7 @@ def main():
                                     )
         logger.success("Logs Insertion completed successfully")
     except Exception as e:
-        logger.critical(f"Error when connecting to remote database: {e}")
+        logger.critical(f"Error when updating remote database. Exception: {e}")
 
 
 if __name__ == "__main__":

@@ -84,7 +84,6 @@ CREATE TABLE `companies` (
   `id` BIGINT,
   `companyName` VARCHAR(300),
   `symbol` VARCHAR(10) NOT NULL,
-  `isListed` boolean,
   PRIMARY KEY (`id`)
 );
 CREATE INDEX company_symbol_idx ON companies (symbol);

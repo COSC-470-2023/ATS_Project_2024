@@ -87,7 +87,6 @@ def get_company_id(entry, conn):
         params = {
             "symbol": entry["_realtime_symbol"],
             "name": entry["_realtime_name"],
-            "isListed": 1,
         }
         # check if company exists in companies table
         result = conn.execute(
@@ -100,7 +99,7 @@ def get_company_id(entry, conn):
             # if company doesn't exist, create new row in companies table - trigger generates new ID
             conn.execute(
                 sqlalchemy.text(
-                    "INSERT INTO `companies` (`companyName`, `symbol`, `isListed`) VALUES (:name, :symbol, :isListed)"
+                    "INSERT INTO `companies` (`companyName`, `symbol`) VALUES (:name, :symbol)"
                 ),
                 parameters=params,
             )
@@ -137,7 +136,7 @@ def main():
                             execute_insert(conn, entry, company_id)
                         except sqlalchemy.exc.SQLAlchemyError as e:
                             # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
-                            logger.error(f"Error: {e}")
+                            logger.error(f"SQLAlchemy Exception: {e}")
                             continue
                     else:
                         # entry is not a dictionary, skip it
@@ -145,7 +144,7 @@ def main():
 
     except Exception as e:
         print(traceback.format_exc())
-        logger.critical(f"Error when connecting to remote database: {e}")
+        logger.critical(f"Critical error when updating remote database. Exception: {e}")
 
     logger.success("realtime_stock_insert.py ran successfully.")
 
