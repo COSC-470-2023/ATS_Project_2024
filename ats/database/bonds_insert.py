@@ -49,7 +49,6 @@ def execute_insert(connection, entry, bond_id):
             f"Record for bond with ID: {bond_id} and date: {row['_bond_date']} already exists. Skipping to next record."
         )
         return
-    print(row["bond_id"])
     # Execute row insertion
     connection.execute(
         sqlalchemy.text(

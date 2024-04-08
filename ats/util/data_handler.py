@@ -48,7 +48,6 @@ def process_raw_data(raw_data: list[dict],
                               mapping,
                               raw_entry_sub)
         data.append(entry)
-
     for raw_entry in raw_data:
         if entry_key:
             for res in raw_entry[entry_key]:
@@ -71,11 +70,11 @@ def process_entry(raw_entry: dict,
         new_field = api_fields[field_name]
         if field_name in raw_entry:
             processed_entry[new_field] = raw_entry[field_name]
-        elif raw_entry_sub:
+        elif raw_entry_sub and field_name in raw_entry_sub:
             processed_entry[new_field] = raw_entry_sub[field_name]
         else:
-            logger.error(f"Error when processing entry {raw_entry}")
-            raise Exception
+            logger.warning(f"Error when processing entry: {raw_entry}. Skipping to next entry.")
+            continue
 
     if non_api_fields and mapping:
         for field_name in non_api_fields:

@@ -150,7 +150,6 @@ def main():
                         except sqlalchemy.exc.SQLAlchemyError as e:
                             # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent
                             # rollbacks
-                            print(f"Database Insertion Error: {e}")
                             logger.error(f"Database Insertion Error: {e}")
                             continue
                     else:
