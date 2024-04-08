@@ -30,7 +30,7 @@ def update_symbol(connection, symbol):
         old_symbol = symbol["_change_oldSymbol"]
         new_symbol = symbol["_change_newSymbol"]
 
-        #  SQL query
+        # SQL query
         company_update = sqlalchemy.text("UPDATE companies SET companyName = :_change_newName, symbol = :_change_newSymbol WHERE symbol = :_change_oldSymbol")
 
         connection.execute(company_update, parameters=symbol)
