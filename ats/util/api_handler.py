@@ -59,8 +59,14 @@ class Fetcher:
                 json = response.json()
                 if isinstance(json, list):
                     for entry in json:
+                        if 'Error Message' in entry:
+                            logger.error(f"api_error {json}")
+                            raise Exception
                         raw_data.append(entry)
                 else:
+                    if 'Error Message' in json:
+                        logger.error(f"api_error {json}")
+                        raise Exception
                     raw_data.append(json)
         except requests.RequestException as e:
             logger.debug(f"api_error {e}")
