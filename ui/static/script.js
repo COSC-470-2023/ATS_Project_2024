@@ -310,10 +310,14 @@ function repeatSelectorOnChange() {
 // --------------------------- DOWNLOAD DATA PAGE ---------------------------------------------------
 
 function datepicker() {
+  // Set end date to tomorrow, to handle ensure all date collected on the current day can be downloaded
+  let today = new Date();
+  today.setDate(today.getDate() + 1)
+  
   $(function () {
     $('input[name="daterange"]').daterangepicker({
       startDate: new Date(new Date().getFullYear() - 3, 0, 1),
-      endDate: new Date(),
+      endDate: today,
       minDate: new Date(new Date().getFullYear() - 3, 0, 1),
       opens: "center",
       locale: {
