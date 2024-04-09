@@ -245,6 +245,6 @@ CREATE TABLE `system_logs` (
   PRIMARY KEY,
   `date` DATETIME NOT NULL,
   `timezone` VARCHAR(50),
-  `level` VARCHAR(10)
+  `level` VARCHAR(10),
   `message` VARCHAR(400)
 );
