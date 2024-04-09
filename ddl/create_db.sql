@@ -238,3 +238,13 @@ CREATE TABLE `users` (
   `isAdmin` BOOLEAN NOT NULL,
   PRIMARY KEY (`id`)
 );
+
+-- System Logs Table --
+CREATE TABLE `system_logs` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT
+  PRIMARY KEY,
+  `date` DATETIME NOT NULL,
+  `timezone` VARCHAR(50),
+  `level` VARCHAR(10)
+  `message` VARCHAR(400)
+);
