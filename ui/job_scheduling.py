@@ -22,7 +22,7 @@ def load_page():
     cron = CronTab(user=True)  # Use user=True to manage the current user's crontab
     for job in listOfJobs:
         cronjob = next(cron.find_comment(job["name"]), None)
-        if cronjob == None: #if the job doesn't exist currently then use defaults
+        if cronjob is None: #if the job doesn't exist currently then use defaults
             cronjob = cron.new(command=job["command"], comment=job["name"])
             cronjob.setall(job["default"])
             cron.write()
@@ -55,7 +55,7 @@ def change_schedule():
     job_name = request.form["inputJobType"]
     time = request.form[
         "time"
-    ]  # change this to many variables and combined them into a a single cron format variable.
+    ]  # change this to many variables and combined them into a single cron format variable.
     day_of_week = request.form.getlist("dayOfWeek")
     day_of_month = request.form.getlist("dayOfMonth")
     repeat_method = request.form["RepeatMethod"]
@@ -75,7 +75,7 @@ def change_schedule():
 
     hour, minute = (
         time.split(":") if time else ("*", "0")
-    )  # if time isnt selected then set it to * in hour and 0 min it will run every hour be careful
+    )  # if time isn't selected then set it to * in hour and 0 min it will run every hour be careful
 
     cron_time_input = f"{minute} {hour} {day_of_month} * {day_of_week}"
 
@@ -86,10 +86,10 @@ def change_schedule():
     cronjob.setall(cron_time_input)
     cron.write()
 
-    #get the current cron jobs and rerender the template with the updated values.
+    # get the current cron jobs and rerender the template with the updated values.
     for job in listOfJobs:
         cronjob = next(cron.find_comment(job["name"]), None)
-        if cronjob == None: #if the job doesn't exist currently then use defaults
+        if cronjob is None: #if the job doesn't exist currently then use defaults
             cronjob = cron.new(command=job["command"], comment=job["name"])
             cronjob.setall(job["default"])
             cron.write()
@@ -116,40 +116,67 @@ def change_schedule():
 
 #change the commands with the full paths when you have everything setup
 listOfJobs = [
-        {
-            "name": "SymbolChanges",
-            "hour": None,
-            "minute": None,
-            "day": None,
-            "month": None,
-            "default": "0 10 * * 1,2,3,4,5",
-            "command": "ATS_Project_2024/scripts/symbol_change_scheduling.sh >> ~/ATSLogs/cron_log.txt 2>&1",
-        },
-        {
-            "name": "RealtimeData",
-            "hour": None,
-            "minute": None,
-            "day": None,
-            "month": None,
-            "default": "0 16 * * 1,2,3,4,5",
-            "command": "ATS_Project_2024/scripts/realtime_scheduling.sh >> ~/ATSLogs/cron_log.txt 2>&1",
-        },
-        {
-            "name": "Bonds",
-            "hour": None,
-            "minute": None,
-            "day": None,
-            "month": None,
-            "default": "0 0 * * 6",
-            "command": "ATS_Project_2024/scripts/bond_scheduling.sh >> ~/ATSLogs/cron_log.txt 2>&1",
-        },
-        {
-            "name": "CompanyStatements",
-            "hour": None,
-            "minute": None,
-            "day": None,
-            "month": None,
-            "default": "0 0 * * 0",
-            "command": "ATS_Project_2024/scripts/company_statement_scheduling.sh >> ~/ATSLogs/cron_log.txt 2>&1",
-        },
-    ]
+    {
+        "name": "SymbolChanges",
+        "hour": None,
+        "minute": None,
+        "day": None,
+        "month": None,
+        "default": "0 10 * * 1,2,3,4,5",
+        "command": "cd /home/admin/Projects/ATS_Project_2024/ && scripts/symbol_change_scheduling.sh",
+    },
+    {
+        "name": "ConstituentUpdate",
+        "hour": None,
+        "minute": None,
+        "day": None,
+        "month": None,
+        "default": "30 10 * * 1,2,3,4,5",
+        "command": "cd /home/admin/Projects/ATS_Project_2024/ && scripts/constituent_scheduling.sh",
+    },
+    {
+        "name": "HistoricalData",
+        "hour": None,
+        "minute": None,
+        "day": None,
+        "month": None,
+        "default": "0 12 * * 1,2,3,4,5",
+        "command": "cd /home/admin/Projects/ATS_Project_2024/ && scripts/historical_scheduling.sh",
+    },
+    {
+        "name": "RealtimeData",
+        "hour": None,
+        "minute": None,
+        "day": None,
+        "month": None,
+        "default": "0 16 * * 1,2,3,4,5",
+        "command": "cd /home/admin/Projects/ATS_Project_2024/ && scripts/realtime_scheduling.sh",
+    },
+    {
+        "name": "CompanyStatements",
+        "hour": None,
+        "minute": None,
+        "day": None,
+        "month": None,
+        "default": "0 0 * * 0",
+        "command": "cd /home/admin/Projects/ATS_Project_2024/ && scripts/company_statement_scheduling.sh",
+    },
+    {
+        "name": "Bonds",
+        "hour": None,
+        "minute": None,
+        "day": None,
+        "month": None,
+        "default": "0 0 * * 6",
+        "command": "cd /home/admin/Projects/ATS_Project_2024/ && scripts/bonds_scheduling.sh",
+    },
+    {
+        "name": "DataDeletion",
+        "hour": None,
+        "minute": None,
+        "day": None,
+        "month": None,
+        "default": "0 12 * * 0",
+        "command": "cd /home/admin/Projects/ATS_Project_2024/ && scripts/data_deletion_scheduling.sh",
+    },
+]
