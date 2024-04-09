@@ -27,12 +27,12 @@ def main():
         api_fields = constituent_config[globals.FIELD_CFG_API]
         data = data_handler.process_raw_data(raw_data, api_fields)
 
-        logger.debug('Writing processed data to output')
         config_filenames = [
             globals.FN_CFG_COMPANIES,
             globals.FN_CFG_REALTIME,
             globals.FN_CFG_HISTORICAL
         ]
+        logger.debug(f'Writing processed data to config files: {config_filenames}')
         for config_filename in config_filenames:
             config = file_handler.read_yaml(config_filename)
             config[STOCKS] = data

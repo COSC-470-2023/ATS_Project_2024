@@ -62,20 +62,26 @@ def main():
         non_api_fields = realtime_config[globals.FIELD_CFG_NON_API]
         mapping = make_mapping()
 
+        logger.debug('Processing commodities')
         commodities_data = data_handler.process_raw_data(raw_commodities_data,
                                                          api_fields,
                                                          non_api_fields,
                                                          mapping)
+
+        logger.debug('Processing indexes')
         indexes_data = data_handler.process_raw_data(raw_indexes_data,
                                                      api_fields,
                                                      non_api_fields,
                                                      mapping)
+
+        logger.debug('Processing stocks')
         stocks_data = data_handler.process_raw_data(raw_stocks_data,
                                                     api_fields,
                                                     non_api_fields,
                                                     mapping)
 
-        logger.debug('Writing processed data to output')
+        logger.debug(f'Writing processed data to files: {globals.FN_OUT_REALTIME_COMMODITIES} '
+                     f'{globals.FN_OUT_REALTIME_INDEX} {globals.FN_OUT_REALTIME_STOCKS}')
         file_handler.write_json(commodities_data,
                                 globals.FN_OUT_REALTIME_COMMODITIES)
         file_handler.write_json(indexes_data,

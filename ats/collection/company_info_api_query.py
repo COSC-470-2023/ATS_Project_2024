@@ -23,7 +23,6 @@ def build_queries(query_manager: api_handler.QueryManager,
 
 def make_mapping(date: datetime.date) -> data_handler.Mapping:
     # TODO: write docstring
-
     @data_handler.mapping_callback
     def company_date(kwargs: data_handler.Kwargs) -> str:
         return str(date)
@@ -55,7 +54,7 @@ def main():
                                              non_api_fields,
                                              mapping)
 
-        logger.debug('Writing processed data to output')
+        logger.debug(f'Writing processed data to output file {globals.FN_OUT_COMPANIES}')
         file_handler.write_json(data, globals.FN_OUT_COMPANIES)
         logger.success('Companies collection complete')
     except Exception as e:

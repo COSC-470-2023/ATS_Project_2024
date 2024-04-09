@@ -63,6 +63,7 @@ def main():
         days = os.getenv(globals.ENV_DAYS_QUERIED)
         days = int(days)
         date = datetime.date.today()
+        logger.debug(f'Creating historical query for {days} days.')
         raw_commodities_data = fetcher.fetch(commodities, days, date)
         raw_indexes_data = fetcher.fetch(indexes, days, date)
         raw_stocks_data = fetcher.fetch(stocks, days, date)
@@ -73,23 +74,30 @@ def main():
         commodities_mapping = make_mapping(commodities)
         indexes_mapping = make_mapping(indexes)
         stocks_mapping = make_mapping(stocks)
+
+        logger.debug('Processing commodities')
         commodities_data = data_handler.process_raw_data(raw_commodities_data,
                                                          api_fields,
                                                          non_api_fields,
                                                          commodities_mapping,
                                                          HISTORICAL)
+
+        logger.debug('Processing indexes')
         indexes_data = data_handler.process_raw_data(raw_indexes_data,
                                                      api_fields,
                                                      non_api_fields,
                                                      indexes_mapping,
                                                      HISTORICAL)
+
+        logger.debug('Processing stocks')
         stocks_data = data_handler.process_raw_data(raw_stocks_data,
                                                     api_fields,
                                                     non_api_fields,
                                                     stocks_mapping,
                                                     HISTORICAL)
 
-        logger.info('Writing processed data to output')
+        logger.debug(f'Writing processed data to files: {globals.FN_OUT_HISTORICAL_COMMODITY} '
+                     f'{globals.FN_OUT_HISTORICAL_INDEX} {globals.FN_OUT_HISTORICAL_STOCKS}')
         file_handler.write_json(commodities_data,
                                 globals.FN_OUT_HISTORICAL_COMMODITY)
         file_handler.write_json(indexes_data,

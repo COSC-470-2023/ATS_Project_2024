@@ -1042,6 +1042,5 @@ stocks:
 - name: Xcel Energy
   symbol: XEL
 - name: ExxonMobil
-
   symbol: XOM
 url: https://financialmodelingprep.com/api/v3/historical-price-full/{SYMBOL}?apikey={API_KEY}&from={START_DATE}&to={END_DATE}

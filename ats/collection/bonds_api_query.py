@@ -18,7 +18,6 @@ def build_queries(query_manager: api_handler.QueryManager,
                   days: int,
                   date: datetime.date):
     # TODO: write docstring
-    logger.debug("Creating Bond date windows.")
     chunks = range(days // CHUNK)  # 90-day chunks + remaining chunk
     remainder = days % CHUNK  # Days in remaining chunk
     end_date = date
@@ -56,6 +55,7 @@ def main():
         days = int(days)
         date = datetime.date.today()
         fetcher = api_handler.Fetcher(endpoint, api_key, build_queries)
+        logger.debug(f'Creating Bond date windows for {days} days.')
         raw_data = fetcher.fetch(days, date)
 
         logger.debug('Processing raw data')
@@ -69,7 +69,7 @@ def main():
                                              non_api_fields,
                                              mapping)
 
-        logger.debug('Writing processed data to output')
+        logger.debug(f'Writing processed data to output file {globals.FN_OUT_BONDS}')
         file_handler.write_json(data, globals.FN_OUT_BONDS)
         logger.success('Bonds collection complete')
     except Exception as e:
