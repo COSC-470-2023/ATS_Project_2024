@@ -196,7 +196,8 @@ a.sidebar-link:hover {
 
 .config-list ul {
   height: 200px;
-  overflow: scroll;
+  margin-bottom: 0;
+  overflow-y: scroll;
 }
 
 .modal-body {
