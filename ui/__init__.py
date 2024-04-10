@@ -4,6 +4,7 @@ from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 
 class Base(DeclarativeBase):
@@ -22,6 +23,9 @@ database = os.getenv("ATS_DBMS_DATABASE")
 
 def create_app():
     app = Flask(__name__)
+    # force HTTPS
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1)
+
     app.config["SQLALCHEMY_DATABASE_URI"] = (
         f"mysql+pymysql://{username}:{password}@{hostname}/{database}"
     )
