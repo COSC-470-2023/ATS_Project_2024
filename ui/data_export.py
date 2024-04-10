@@ -131,7 +131,7 @@ def export_data():
             # Check for data and field selection, if no selection, flash error message and return
             if not selected_data or not all_selected_fields:
                 flash(
-                    f"You must select at least one {entity_name} and least one field before exporting.",
+                    f"You must select at least one {entity_name} and at least one field before exporting.",
                     "error",
                 )
                 return redirect(request.referrer or url_for("data_export.home"))

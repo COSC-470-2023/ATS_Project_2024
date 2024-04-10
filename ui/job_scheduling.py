@@ -60,8 +60,6 @@ def change_schedule():
     day_of_month = request.form.getlist("dayOfMonth")
     repeat_method = request.form["RepeatMethod"]
 
-    print(repeat_method)
-
     if repeat_method == "DOM":
         day_of_month = ",".join(day_of_month) if day_of_month else "*"
         # this spits out a comma separated list of values if multiple days are selected
