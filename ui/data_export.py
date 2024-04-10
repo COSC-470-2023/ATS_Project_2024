@@ -108,7 +108,6 @@ def export_data():
             selected_lookup_fields = request.form.getlist("lookup-field-item")
             selected_value_fields = request.form.getlist("value-field-item")
             all_selected_fields = selected_lookup_fields + selected_value_fields
-            print(selected_lookup_fields, selected_value_fields)
             entity_type = request.form.get("select-data")
             entity_name = id_table_map[entity_type][2]
             table_prefix = (
