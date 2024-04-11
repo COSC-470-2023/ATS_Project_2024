@@ -3,6 +3,7 @@
 
 # IDE project config
 .idea/
+.vscode
 
 # Script execution output
 output/
