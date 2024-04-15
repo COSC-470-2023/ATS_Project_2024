@@ -53,12 +53,11 @@ def load_page():
 @admin_required
 def change_schedule():
     job_name = request.form["inputJobType"]
-    time = request.form[
-        "time"
-    ]  # change this to many variables and combined them into a single cron format variable.
+    time = request.form["time"]
     day_of_week = request.form.getlist("dayOfWeek")
     day_of_month = request.form.getlist("dayOfMonth")
     repeat_method = request.form["RepeatMethod"]
+    defaultCustomRadio = request.form['sched-option']
 
     if repeat_method == "DOM":
         day_of_month = ",".join(day_of_month) if day_of_month else "*"
@@ -81,7 +80,17 @@ def change_schedule():
     # Update actual cron jobs
     cron = CronTab(user=True)  # Use user=True to manage the current user's crontab
     cronjob = next(cron.find_comment(job_name), None)
-    cronjob.setall(cron_time_input)
+    if defaultCustomRadio == 'default':
+        #finds the cron job that's being selected from the front end and matching it with the back end job
+        job = next((job for job in listOfJobs if job["name"] == job_name), None)
+        #        variable         list below   list jbo name  front end job name
+        if job:
+            cronjob.setall(job["default"])
+        else:
+            print("Job not found in listOfJobs")
+    elif defaultCustomRadio == 'custom':
+        cronjob.setall(cron_time_input)
+
     cron.write()
 
     # get the current cron jobs and rerender the template with the updated values.
