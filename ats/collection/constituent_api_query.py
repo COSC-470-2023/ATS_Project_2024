@@ -12,6 +12,12 @@ STOCKS = 'stocks'
 
 
 def main():
+    """
+    Queries the API for the most current list of companies on the specified constituent.
+    Reads in all data collection configuration files, then updates them with the current company list.
+    :Success: Updates YAML files.
+    :Failure: Raise exception and log error.
+    """
     try:
         logger.info('Starting constituent collection')
         constituent_config = file_handler.read_yaml(globals.FN_CFG_CONSTITUENT)
@@ -39,7 +45,7 @@ def main():
             file_handler.write_yaml(config, config_filename)
         logger.success('Constituent collection complete')
     except Exception as e:
-        logger.error(e)
+        logger.error(f"Error when gathering constituent values: {e}")
         raise
 
 
