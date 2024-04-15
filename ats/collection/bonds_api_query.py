@@ -17,6 +17,14 @@ TREASURY = 'treasury'
 def build_queries(query_manager: api_handler.QueryManager,
                   days: int,
                   date: datetime.date):
+    """
+    Takes the inputted number of days from the ATS_DAYS_QUERIED environment variable,
+    and builds an api query using date windows. Date windows are segmented by
+    90-day intervals, which is the maximum range for FMP bonds query.
+    :param query_manager: class used to build the api url and regex
+    :param days: total number of days being queried
+    :param date: current date
+    """
     # TODO: write docstring
     logger.debug("Creating Bond date windows.")
     chunks = range(days // CHUNK)  # 90-day chunks + remaining chunk
@@ -34,6 +42,11 @@ def build_queries(query_manager: api_handler.QueryManager,
 
 
 def make_mapping(treasury: str) -> data_handler.Mapping:
+    """
+    Maps the specified treasury to the dataset.
+    :param treasury: Financial treasury for which bonds to gather from
+    :return mapping: Field from the configuration to map this value to in output
+    """
     # TODO: write docstring
     @data_handler.mapping_callback
     def bond_name(kwargs: data_handler.Kwargs) -> str:
