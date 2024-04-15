@@ -16,12 +16,21 @@ SYMBOL = 'symbol'
 @api_handler.query_builder
 def build_queries(query_manager: api_handler.QueryManager,
                   config_data: list[dict]):
+    """
+    Parse through company configuration file, make queries for each entry.
+    :param query_manager: api_handler utility class. Builds API query URI.
+    :param config_data: Configuration file input.
+    """
     # TODO: write docstring
     for entry in config_data:
         query_manager.add(entry[SYMBOL])
 
 
 def make_mapping(date: datetime.date) -> data_handler.Mapping:
+    """
+    :param date: current date
+    :return: mapping of date to company_date
+    """
     # TODO: write docstring
 
     @data_handler.mapping_callback
