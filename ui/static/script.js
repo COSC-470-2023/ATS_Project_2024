@@ -281,16 +281,41 @@ function inputJobSelectorOnChange() {
   updateValues();
 }
 
-//when the default button is checked again it resets the input fields
+//sets the logic for the default custom radioboxes
 function defaultButtonReset(){
-  document.getElementById("default-checkbox").addEventListener("change", function(){
-    if (this.checked){
-      inputJobSelectorOnChange();
-    }
-  });
-  ;
+  //for some reason If the input fields are not pulled into a variable like this it doesn't work on my machine...
+  //also swapping to using const now as requested.
+  const defaultCheckbox = document.getElementById("default-checkbox");
+  const customCheckbox = document.getElementById("sched-checkbox");
+  const timeInput = document.getElementById('timeInput');
+  const repeatMethodInput = document.getElementById('repeatMethodInput');
+  const repeatContainerInput = document.getElementById('repeatContainer');
   
+  //Update visibility based on default/custom radiobutton
+  function toggleInputVisibility() {
+    if (defaultCheckbox.checked) {
+      timeInput.style.display = 'none';
+      repeatMethodInput.style.display = 'none';
+      repeatContainerInput.style.display = 'none';
+
+      //When the default button is checked again it resets the input fields
+      inputJobSelectorOnChange();
+
+    } else if (customCheckbox.checked) {
+      repeatMethodInput.style.display = 'block';
+      timeInput.style.display = 'block';
+      repeatContainerInput.style.display = 'block';
+    }
+  }
+
+  //Add event listener for default and custom. Must have custom or swapping options wont display blocks
+  defaultCheckbox.addEventListener("change", toggleInputVisibility);
+  customCheckbox.addEventListener("change", toggleInputVisibility);
+
+  //Set initial visibility state when page loads
+  toggleInputVisibility();
 }
+
 
 function repeatSelectorOnChange() {
   const repeatSelectors = document.getElementById("JobSchedulingForm").RepeatMethod; //dont worry about it...
