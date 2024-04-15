@@ -15,6 +15,8 @@ def main():
     """
     Queries the API for the most current list of companies on the specified constituent.
     Reads in all data collection configuration files, then updates them with the current company list.
+    This function sets up logging, reads configuration, fetches and processes data based on
+    parameters in index_config.yaml.
     :Success: Updates YAML files.
     :Failure: Raise exception and log error.
     """

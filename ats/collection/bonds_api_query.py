@@ -25,7 +25,6 @@ def build_queries(query_manager: api_handler.QueryManager,
     :param days: total number of days being queried
     :param date: current date
     """
-    # TODO: write docstring
     logger.debug("Creating Bond date windows.")
     chunks = range(days // CHUNK)  # 90-day chunks + remaining chunk
     remainder = days % CHUNK  # Days in remaining chunk
@@ -47,7 +46,6 @@ def make_mapping(treasury: str) -> data_handler.Mapping:
     :param treasury: Financial treasury for which bonds to gather from
     :return mapping: Field from the configuration to map this value to in output
     """
-    # TODO: write docstring
     @data_handler.mapping_callback
     def bond_name(kwargs: data_handler.Kwargs) -> str:
         return treasury
@@ -58,6 +56,11 @@ def make_mapping(treasury: str) -> data_handler.Mapping:
 
 
 def main():
+    """
+    Executes data collection for bond data, processes the raw data,
+    and stores the results in JSON format. This function sets up logging, reads configuration,
+    fetches and processes data based on parameters in bonds_config.yaml.
+    """
     try:
         logger.info('Starting bonds collection')
         config = file_handler.read_yaml(globals.FN_CFG_BONDS)
@@ -73,7 +76,7 @@ def main():
 
         logger.debug('Processing raw data')
         api_fields = config[globals.FIELD_CFG_API]
-        # TODO: support for multiple treasuries
+
         non_api_fields = config[globals.FIELD_CFG_NON_API]
         treasury = config[TREASURY]
         mapping = make_mapping(treasury)
@@ -86,7 +89,7 @@ def main():
         file_handler.write_json(data, globals.FN_OUT_BONDS)
         logger.success('Bonds collection complete')
     except Exception as e:
-        logger.error(e)
+        logger.error(f"Error occurred when gathering bonds data: {e}")
         raise
 
 
