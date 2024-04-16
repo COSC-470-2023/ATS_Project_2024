@@ -12,6 +12,12 @@ logger = Logger.instance()
 
 
 def prune_old_data(connection, data):
+    """
+
+    :param connection: Connection to the database
+    :param data: JSON output received from API
+    :return: Pruned JSON output to ignore symbols that aren't in use
+    """
     pruned_data = []
     query = sqlalchemy.text("SELECT symbol FROM companies")
     result = connection.execute(query)
@@ -24,6 +30,12 @@ def prune_old_data(connection, data):
 
 
 def update_symbol(connection, symbol):
+    """
+    Connects to the database and updates symbol accordingly
+    :param connection: Connection to the database
+    :param symbol: A symbol retrieved from JSON output
+    :return:
+    """
     logger.debug(f"Updating symbol: {symbol}")
     try:
         # Variable Declarations
@@ -42,6 +54,7 @@ def update_symbol(connection, symbol):
 
 def main():
     try:
+        # Create connection with context manager, connection closed on commit
         with connection_manager.connect() as connection:
             data = file_handler.read_json(globals.FN_OUT_SYMBOL_CHANGE)
             pruned_data = prune_old_data(connection, data)
