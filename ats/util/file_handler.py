@@ -11,6 +11,12 @@ logger = Logger.instance()
 
 
 def read_json(filename: str) -> list[dict]:
+    """
+    Reads a JSON file and returns it as a list of dictionaries.
+    :param filename: Name of the file to be read.
+    :return: List of dictionaries containing the data from the JSON file.
+    :raises SystemExit: Exits if the file cannot be read or if the JSON decoding fails.
+    """
     path = globals.DIR_OUT + filename
     try:
         with open(path, 'r') as file:
@@ -25,6 +31,12 @@ def read_json(filename: str) -> list[dict]:
 
 
 def read_yaml(filename: str) -> dict:
+    """
+    Reads a YAML file and returns it as a dictionary.
+    :param filename: Name of the file to be read.
+    :return: Dictionary containing the data from the YAML file.
+    :raises SystemExit: Exits if the file cannot be read or if there is a YAML parsing error.
+    """
     path = globals.DIR_CFG + filename
     try:
         with open(path, 'r') as file:
@@ -39,6 +51,11 @@ def read_yaml(filename: str) -> dict:
 
 
 def write_json(data: list[dict], filename: str):
+    """
+    Writes a list of dictionaries to a JSON file.
+    :param data: The data to write.
+    :param filename: The name of the target file.
+    """
     if not os.path.exists(os.path.dirname(globals.DIR_OUT)):
         try:
             os.makedirs(os.path.dirname(globals.DIR_OUT))
@@ -51,6 +68,11 @@ def write_json(data: list[dict], filename: str):
 
 
 def write_yaml(data: dict, filename: str):
+    """
+    Writes a list of dictionaries to a YAML file.
+    :param data: The data to write.
+    :param filename: The name of the target file.
+    """
     if not os.path.exists(os.path.dirname(globals.DIR_CFG)):
         try:
             os.makedirs(os.path.dirname(globals.DIR_CFG))
