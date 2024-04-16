@@ -74,7 +74,7 @@ def execute_insert(connection, entry, commodity_id):
 
 def get_commodity_id(entry, connection):
     """
-    Queries the database to see if commodity already has ID, if no ID is found for said commodity,
+    Queries the database to see if commodity already has an ID, if no ID is found for said commodity,
     the trigger will generate one. If an ID is found, return said ID.
     :param entry: A key/value pair
     :param connection: Connection to the database

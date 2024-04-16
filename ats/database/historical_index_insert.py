@@ -75,7 +75,7 @@ def execute_insert(connection, entry, index_id):
 # Used to get id associated with an index
 def get_index_id(entry, connection):
     """
-        Queries the database to see if index already has ID, if no ID is found for said index,
+        Queries the database to see if index already has an ID, if no ID is found for said index,
         the trigger will generate one. If an ID is found, return said ID.
         :param entry: A key/value pair
         :param connection: Connection to the database

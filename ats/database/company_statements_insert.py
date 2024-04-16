@@ -110,7 +110,7 @@ def execute_insert(connection, entry, company_id):
 
 def get_company_id(entry, conn):
     """
-    Queries the database to see if company already has ID, if no ID is found for said company,
+    Queries the database to see if company already has an ID, if no ID is found for said company,
     the trigger will generate one. If an ID is found, return said ID.
     :param entry: A key/value pair
     :param conn: Connection to the database

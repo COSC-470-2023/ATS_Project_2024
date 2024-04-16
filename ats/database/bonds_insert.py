@@ -71,7 +71,7 @@ def execute_insert(connection, entry, bond_id):
 
 def get_bond_id(entry, connection):
     """
-    Queries the database to see if bond already has ID, if no ID is found for said bond, the trigger will generate one.
+    Queries the database to see if bond already has an ID, if no ID is found for said bond, the trigger will generate one.
     If ID is found, return said ID.
     :param entry: A key/value pair
     :param connection: Connection to the database
