@@ -261,6 +261,7 @@ a.sidebar-link:hover {
   background-color: #fff;
   border-radius: 5px;
   padding: 5px;
+  overflow: auto;
 }
 
 /* Download Data Page */
@@ -410,7 +411,6 @@ tbody tr td {
 #repeatContainer.showMonthRepeator #monthRepeator.card-body {
   display: block;
 }
-
 
 @media (max-width: 950px) {
   /* Date Range - Download Data */
