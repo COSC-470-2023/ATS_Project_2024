@@ -12,7 +12,7 @@ connection_manager = db_handler.ConnectionManager.instance()
 
 def check_keys(entry):
     """
-    Checks keys, assigns value to None if key is not found
+    Checks keys, assigns value to None if key is not found/has no value
     :param entry: A key/value pair from the JSON output
     :return: Key/value pairs, if key/value is not detected(i.e. not provided by API), key will be assigned value None
     """
@@ -85,6 +85,7 @@ def execute_insert(connection, entry, company_id):
     )
     result = connection.execute(check_query, row).scalar()
 
+    # If record exists, provide warning message and ignore insertion
     if result > 0:
         logger.warning(
             f"Record for company with ID: {company_id} and date: {row['_company_date']} already exists. Skipping to next record."

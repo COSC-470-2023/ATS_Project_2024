@@ -11,8 +11,13 @@ connection_manager = db_handler.ConnectionManager.instance()
 
 
 def check_keys(entry):
+    """
+    Checks keys, assigns value to None if key is not found/has no value
+    :param entry: A key/value pair from the JSON output
+    :return: Key/value pairs, if key/value is not detected(i.e. not provided by API), key will be assigned value None
+    """
     logger.debug("Historical index insertion: Checking keys")
-    # keys expected to be committed
+    # List of expected keys
     keys = [
         "_historical_date",
         "_historical_open",
@@ -27,30 +32,35 @@ def check_keys(entry):
         "_historical_vwap",
         "_historical_changeOverTime",
     ]
-    # get key value, assign value to key. if key doesn't exist, assign value of None
     return {key: entry.get(key, None) for key in keys}
 
 
 def execute_insert(connection, entry, index_id):
+    """
+        Connects to database and executes MySQL insertion.
+        :param connection: Connection to the database
+        :param entry: A key/value pair
+        :param index_id: A generated primary key for database
+        """
     logger.info(f"Inserting record for index ID: {index_id}")
-    # get key value, assign value to key. if key doesn't exist, assign value of None
     row = check_keys(entry)
-    # append generated id
+    # Append generated id
     row["index_id"] = index_id
 
-    # check if record exists already
+    # Check if record exists already
     check_query = sqlalchemy.text(
         "SELECT COUNT(*) FROM `historical_index_values` WHERE index_id = :index_id AND date = :_historical_date"
     )
     result = connection.execute(check_query, row).scalar()
 
+    # If record exists, provide warning message and ignore insertion
     if result > 0:
         logger.warning(
             f"Record for company with ID: {index_id} already exists. Skipping to next record."
         )
         return
     try:
-        # parameterized query
+        # Parameterized query
         query = sqlalchemy.text(
             "INSERT INTO `historical_index_values` VALUES (:index_id, :_historical_date, :_historical_open, :_historical_high, :_historical_low, :_historical_close, :_historical_adjClose, :_historical_volume, :_historical_unadjustedVolume, :_historical_change, :_historical_changePercent, :_historical_vwap, :_historical_changeOverTime)"
         )
@@ -64,6 +74,12 @@ def execute_insert(connection, entry, index_id):
 
 # Used to get id associated with an index
 def get_index_id(entry, connection):
+    """
+        Queries the database to see if index already has ID, if no ID is found for said index,
+        the trigger will generate one. If an ID is found, return said ID.
+        :param entry: A key/value pair
+        :param connection: Connection to the database
+        """
     logger.debug("Assigning historical index ID")
     index_id = None
 
@@ -104,7 +120,7 @@ def get_index_id(entry, connection):
 
 
 def main():
-    # Load json data
+    # Loads the historical index output file, creates a database connection and executes insertion
     historical_data = file_handler.read_json(globals.FN_OUT_HISTORICAL_INDEX)
     try:
         # create with context manager

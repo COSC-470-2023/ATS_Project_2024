@@ -12,7 +12,7 @@ connection_manager = db_handler.ConnectionManager.instance()
 
 def check_keys(entry):
     """
-    Checks keys, assigns value to None if key is not found
+    Checks keys, assigns value to None if key is not found/has no value
     :param entry: A key/value pair from the JSON output
     :return: Key/value pairs, if key/value is not detected(i.e. not provided by API), key will be assigned value None
     """
