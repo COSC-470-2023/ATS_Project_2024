@@ -13,8 +13,8 @@ connection_manager = db_handler.ConnectionManager.instance()
 def check_keys(entry):
     """
     Checks keys, assigns value to None if key is not found
-    :param entry: A key value pair from the JSON output
-    :return: Key value pairs, if key/value is not detected(i.e. not provided by API), key will be assigned value None
+    :param entry: A key/value pair from the JSON output
+    :return: Key/value pairs, if key/value is not detected(i.e. not provided by API), key will be assigned value None
     """
     logger.debug("Bond insertion: Checking keys")
     # List of expected keys
@@ -40,7 +40,7 @@ def execute_insert(connection, entry, bond_id):
     """
     Connects to database and executes MySQL insertion.
     :param connection: Connection to the database
-    :param entry: A JSON key/value pair
+    :param entry: A key/value pair
     :param bond_id: A generated primary key for database
     """
     logger.info(f"Inserting record for bond ID: {bond_id}")
@@ -73,7 +73,7 @@ def get_bond_id(entry, connection):
     """
     Queries the database to see if bond already has ID, if no ID is found for said bond, the trigger will generate one.
     If ID is found, return said ID.
-    :param entry: A JSON key/value pair
+    :param entry: A key/value pair
     :param connection: Connection to the database
     """
     # Declare and initialize variables
@@ -104,7 +104,7 @@ def get_bond_id(entry, connection):
 
 def main():
     """
-    Loads the bonds output file, creates a database connection and validates the data before insertion
+    Loads the bonds output file, creates a database connection and executes insertion
     """
     # Load output
     bonds_data = file_handler.read_json(globals.FN_OUT_BONDS)
