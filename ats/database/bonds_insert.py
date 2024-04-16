@@ -11,8 +11,13 @@ connection_manager = db_handler.ConnectionManager.instance()
 
 
 def check_keys(entry):
+    """
+    Checks keys, assigns value to None if key is not found
+    :param entry: A key value pair from the JSON output
+    :return: Key value pairs, if key/value is not detected(i.e. not provided by API), key will be assigned value None
+    """
     logger.debug("Bond insertion: Checking keys")
-    # keys expected to be committed
+    # List of expected keys
     keys = [
         "_bond_date",
         "_bond_month1",
@@ -28,22 +33,27 @@ def check_keys(entry):
         "_bond_year20",
         "_bond_year30",
     ]
-    # get key value, assign value to key. if key doesn't exist, assign value of None
     return {key: entry.get(key, None) for key in keys}
 
 
 def execute_insert(connection, entry, bond_id):
+    """
+    Connects to database and executes MySQL insertion.
+    :param connection: Connection to the database
+    :param entry: A JSON key/value pair
+    :param bond_id: A generated primary key for database
+    """
     logger.info(f"Inserting record for bond ID: {bond_id}")
-    # check for any missing keys and assign values of None
     row = check_keys(entry)
-    # append generated id
+    # Append generated id
     row["bond_id"] = bond_id
 
-    # check if record exists already
+    # Check if record exists already
     check_query = sqlalchemy.text(
         "SELECT COUNT(*) FROM `bond_values` WHERE bond_id = :bond_id AND date = :_bond_date"
     )
     result = connection.execute(check_query, row).scalar()
+    # If record exists, provide warning message and ignore insertion
     if result > 0:
         logger.warning(
             f"Record for bond with ID: {bond_id} and date: {row['_bond_date']} already exists. Skipping to next record."
@@ -60,6 +70,12 @@ def execute_insert(connection, entry, bond_id):
 
 
 def get_bond_id(entry, connection):
+    """
+    Queries the database to see if bond already has ID, if no ID is found for said bond, the trigger will generate one.
+    If ID is found, return said ID.
+    :param entry: A JSON key/value pair
+    :param connection: Connection to the database
+    """
     # Declare and initialize variables
     name = entry["_bond_name"]
     id_query = f"SELECT id FROM `bonds` WHERE treasuryName = '{name}'"
@@ -69,17 +85,17 @@ def get_bond_id(entry, connection):
     row = result.one_or_none()
     try:
         if row is None:
-            # if bond doesn't exist, create new row in bonds table - trigger generates new ID
+            # If bond doesn't exist, create new row in bonds table - trigger generates new ID
             connection.execute(
                 sqlalchemy.text(
                     f"INSERT INTO `bonds`(`treasuryName`) VALUES ('{name}')"
                 )
             )
-            # get the generated ID
+            # Get the generated ID
             result = connection.execute(sqlalchemy.text(id_query))
             bond_id = result.one()[0]
         else:
-            # if the bond exists, fetch the existing ID
+            # If the bond exists, fetch the existing ID
             bond_id = row[0]
     except Exception as e:
         logger.error(f"Getting ID failed: {e}")
@@ -87,19 +103,22 @@ def get_bond_id(entry, connection):
 
 
 def main():
-    # load output
+    """
+    Loads the bonds output file, creates a database connection and validates the data before insertion
+    """
+    # Load output
     bonds_data = file_handler.read_json(globals.FN_OUT_BONDS)
     try:
-        # create with context manager, implicit commit on close
+        # Create with context manager, implicit commit on close
         with connection_manager.connect() as conn:
             for entry in bonds_data:
                 if bool(entry):
                     bond_id = get_bond_id(entry, conn)
                     try:
-                        # process bond data
+                        # Process bond data
                         execute_insert(conn, entry, bond_id)
                     except sqlalchemy.exc.SQLAlchemyError as e:
-                        # log sqlalchemy error, then continue to prevent silent rollbacks
+                        # Log sqlalchemy error, then continue to prevent silent rollbacks
                         logger.error(f"Error: {e}")
                 else:
                     continue
@@ -112,6 +131,6 @@ def main():
     logger.success("bonds_insert ran successfully.")
 
 
-# protected entrypoint
+# Protected entrypoint
 if __name__ == "__main__":
     main()
