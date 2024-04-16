@@ -21,29 +21,33 @@ job_scheduling = Blueprint("job_scheduling", __name__)
 def load_page():
     cron = CronTab(user=True)  # Use user=True to manage the current user's crontab
     for job in listOfJobs:
-        cronjob = next(cron.find_comment(job["name"]), None)
-        if cronjob is None: #if the job doesn't exist currently then use defaults
-            cronjob = cron.new(command=job["command"], comment=job["name"])
-            cronjob.setall(job["default"])
-            cron.write()
-        hour = str(cronjob.hour)
-        minute = str(cronjob.minute)
-        day = str(cronjob.dow)
-        month = str(cronjob.dom)
-        if hour != "*":
-            job["hour"] = int(hour)
+        try:
+            cronjob = next(cron.find_comment(job["name"]), None)
+            if cronjob is None: #if the job doesn't exist currently then use defaults
+                cronjob = cron.new(command=job["command"], comment=job["name"])
+                cronjob.setall(job["default"])
+                cron.write()
+            hour = str(cronjob.hour)
+            minute = str(cronjob.minute)
+            day = str(cronjob.dow)
+            month = str(cronjob.dom)
+            if hour != "*":
+                job["hour"] = int(hour)
 
-        if minute != "*":
-            job["minute"] = int(minute)
+            if minute != "*":
+                job["minute"] = int(minute)
 
-        if day != "*":
-            job["day"] = list(
-                map(int, day.split(","))
-            )  # make all the multiple days selected into a list of
+            if day != "*":
+                job["day"] = list(
+                    map(int, day.split(","))
+                )  # make all the multiple days selected into a list of
 
-        if month != "*":
-            # month.split(',') commented out for when the day of the month becomes a multiselect
-            job["month"] = list(map(int, month.split(",")))
+            if month != "*":
+                # month.split(',') commented out for when the day of the month becomes a multiselect
+                job["month"] = list(map(int, month.split(",")))
+        except Exception as e:
+            flash('Error fetching current cron jobs', 'error')
+            return render_template("job_scheduling.html", jobschedule=json.dumps(listOfJobs))
 
     return render_template("job_scheduling.html", jobschedule=json.dumps(listOfJobs))
 
@@ -76,47 +80,57 @@ def change_schedule():
 
     cron_time_input = f"{minute} {hour} {day_of_month} * {day_of_week}"
 
-    # crontab docs https://pypi.org/project/python-crontab/
-    # Update actual cron jobs
-    cron = CronTab(user=True)  # Use user=True to manage the current user's crontab
-    cronjob = next(cron.find_comment(job_name), None)
-    if defaultCustomRadio == 'default':
-        #finds the cron job that's being selected from the front end and matching it with the back end job
-        job = next((job for job in listOfJobs if job["name"] == job_name), None)
-        #        variable         list below   list jbo name  front end job name
-        if job:
-            cronjob.setall(job["default"])
-        else:
-            print("Job not found in listOfJobs")
-    elif defaultCustomRadio == 'custom':
-        cronjob.setall(cron_time_input)
 
-    cron.write()
+    try:
+        # crontab docs https://pypi.org/project/python-crontab/
+        # Update actual cron jobs
+        cron = CronTab(user=True)  # Use user=True to manage the current user's crontab
+        cronjob = next(cron.find_comment(job_name), None)
+        if defaultCustomRadio == 'default':
+            #finds the cron job that's being selected from the front end and matching it with the back end job
+            job = next((job for job in listOfJobs if job["name"] == job_name), None)
+            #        variable         list below   list jbo name  front end job name
+            if job:
+                cronjob.setall(job["default"])
+            else:
+                print("Job not found in listOfJobs")
+        elif defaultCustomRadio == 'custom':
+            cronjob.setall(cron_time_input)
+
+        cron.write()
+        flash('Successfully updated cron jobs', 'success')
+    except Exception as e:
+        flash('Failed to update cron jobs', 'error')
 
     # get the current cron jobs and rerender the template with the updated values.
     for job in listOfJobs:
-        cronjob = next(cron.find_comment(job["name"]), None)
-        if cronjob is None: #if the job doesn't exist currently then use defaults
-            cronjob = cron.new(command=job["command"], comment=job["name"])
-            cronjob.setall(job["default"])
-            cron.write()
-        hour = str(cronjob.hour)
-        minute = str(cronjob.minute)
-        day = str(cronjob.dow)
-        month = str(cronjob.dom)
-        if hour != "*":
-            job["hour"] = int(hour)
+        try:
+            cronjob = next(cron.find_comment(job["name"]), None)
+            if cronjob is None: #if the job doesn't exist currently then use defaults
+                cronjob = cron.new(command=job["command"], comment=job["name"])
+                cronjob.setall(job["default"])
+                cron.write()
+            hour = str(cronjob.hour)
+            minute = str(cronjob.minute)
+            day = str(cronjob.dow)
+            month = str(cronjob.dom)
+            if hour != "*":
+                job["hour"] = int(hour)
 
-        if minute != "*":
-            job["minute"] = int(minute)
+            if minute != "*":
+                job["minute"] = int(minute)
 
-        if day != "*":
-            job["day"] = list(
-                map(int, day.split(","))
-            )  # make all the multiple days selected into a list of
+            if day != "*":
+                job["day"] = list(
+                    map(int, day.split(","))
+                )  # make all the multiple days selected into a list of
 
-        if month != "*":
-            job["month"] = list(map(int, month.split(",")))
+            if month != "*":
+                job["month"] = list(map(int, month.split(",")))
+
+        except Exception as e:
+            flash('Error fetching current cron jobs', 'error')
+            return render_template("job_scheduling.html", jobschedule=json.dumps(listOfJobs))
 
     return render_template("job_scheduling.html", jobschedule=json.dumps(listOfJobs))
 
