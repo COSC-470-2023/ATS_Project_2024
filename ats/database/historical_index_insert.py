@@ -84,7 +84,7 @@ def get_index_id(entry, connection):
     index_id = None
 
     try:
-        # set query parameters
+        # Set query parameters
         params = {
             "_historical_symbol": entry["_historical_symbol"],
             "_historical_name": entry["_historical_name"],
@@ -93,13 +93,13 @@ def get_index_id(entry, connection):
         id_query = sqlalchemy.text(
             "SELECT id FROM `indexes` WHERE symbol = :_historical_symbol"
         )
-        # check if index exists in indexes table
+        # Check if index exists in indexes table
         result = connection.execute(id_query, parameters=params)
 
         row = result.one_or_none()
 
         if row is None:
-            # if index doesn't exist, create new row in indexes table - trigger generates new ID
+            # If index doesn't exist, create new row in indexes table - trigger generates new ID
             connection.execute(
                 sqlalchemy.text(
                     "INSERT INTO `indexes` (`indexName`, `symbol`) VALUES (:_historical_name, :_historical_symbol)"
@@ -107,11 +107,11 @@ def get_index_id(entry, connection):
                 parameters=params,
             )
 
-            # get id generated from trigger
+            # Get id generated from trigger
             result = connection.execute(id_query, parameters=params)
             index_id = result.one()[0]
         else:
-            # if the index exists, fetch the existing ID
+            # If the index exists, fetch the existing ID
             index_id = row[0]
     except Exception as e:
         logger.error(f"Error occurred when assigning ID: {e}")
@@ -123,9 +123,9 @@ def main():
     # Loads the historical index output file, creates a database connection and executes insertion
     historical_data = file_handler.read_json(globals.FN_OUT_HISTORICAL_INDEX)
     try:
-        # create with context manager
+        # Create with context manager
         with connection_manager.connect() as conn:
-            # begin transaction with context manager, implicit commit on exit or rollback on exception
+            # Begin transaction with context manager, implicit commit on exit or rollback on exception
             with conn.begin():
                 for entry in historical_data:
                     if isinstance(entry, dict):
@@ -134,7 +134,7 @@ def main():
                             # Execute row insertion
                             execute_insert(conn, entry, index_id)
                         except sqlalchemy.exc.SQLAlchemyError as e:
-                            # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
+                            # Catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
                             logger.error(f"Error: {e}")
                             continue
                     else:

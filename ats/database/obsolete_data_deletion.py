@@ -8,6 +8,7 @@ from ats.util import db_handler
 logger = Logger.instance()
 connection_manager = db_handler.ConnectionManager.instance()
 
+# List of tables that need to have obsolete data deleted from
 deletion_list = [
     'bond_values',
     'company_statements',
@@ -21,6 +22,11 @@ deletion_list = [
 
 
 def data_deletion(table, conn):
+    """
+    Deletes records from the database that are older than 3 years
+    :param table: Name of database table, taken from list above
+    :param conn: Connection to the database
+    """
     logger.debug(f"Deleting records from: {table}")
     # Delete entries that is stored longer than 3 years
     conn.execute(sqlalchemy.text(f"DELETE FROM {table} WHERE date < DATE_SUB(CURDATE(), INTERVAL 3 YEAR)"))
@@ -28,7 +34,7 @@ def data_deletion(table, conn):
 
 def main():
     try:
-        # create with context manager, conn is created only for this script, commit the conn will not affect others
+        # Create with context manager
         with connection_manager.connect() as conn:
             logger.info("Executing obsolete data deletion")
             # Iterate through all the tables in the database and fetch the table name for delete operation
@@ -44,6 +50,6 @@ def main():
     logger.success("obsolete_data_deletion ran successfully.")
 
 
-# protected entrypoint
+# Protected entrypoint
 if __name__ == "__main__":
     main()
