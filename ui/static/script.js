@@ -142,8 +142,15 @@ function displayAvailableStocks() {
 
 // Function to add selected stocks in the config file
 function addSelectedStocks() {
+  var maxSelected = 10; 
   var selectedStocks = [];
   var checkboxes = document.querySelectorAll('#availableStockList input[type="checkbox"]:checked');
+
+  if (checkboxes.length > maxSelected) {
+    alert('You can only select a maximum of ' + maxSelected + ' stocks at a time.');
+    return;
+  }
+
   checkboxes.forEach(checkbox => {
     var symbol = checkbox.value;
     var name = checkbox.nextSibling.textContent.trim().split(' - ')[1]; // Extract name from text
@@ -169,9 +176,11 @@ function addSelectedStocks() {
   .then(data => {
     console.log('Selected stocks added successfully:', data);
     getStocks('config');
+
   })
   .catch(error => console.error('Error adding selected stocks:', error));
 }
+
 
 // --------------------------- JOB SCHEDULING PAGE ---------------------------------------------------
 
