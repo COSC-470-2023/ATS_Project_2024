@@ -103,10 +103,7 @@ def get_bond_id(entry, connection):
 
 
 def main():
-    """
-    Loads the bonds output file, creates a database connection and executes insertion
-    """
-    # Load output
+    # Loads the bonds output file, creates a database connection and executes insertion
     bonds_data = file_handler.read_json(globals.FN_OUT_BONDS)
     try:
         # Create with context manager, implicit commit on close

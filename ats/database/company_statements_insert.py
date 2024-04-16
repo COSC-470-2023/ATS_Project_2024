@@ -58,10 +58,9 @@ def execute_insert(connection, entry, company_id):
     Connects to database and executes MySQL insertion.
     :param connection: Connection to the database
     :param entry: A key/value pair
-    :param company_id:
+    :param company_id: A generated primary key for database
     """
     logger.info(f"Inserting record for company ID: {company_id}")
-    # Check for any missing keys and assign values of None
     row = check_keys(entry)
 
     # If the key exists and value wasn't changed to None
@@ -150,10 +149,7 @@ def get_company_id(entry, conn):
 
 
 def main():
-    """
-    Loads the company output file, creates a database connection and executes insertion
-    """
-    # Load json data
+    # Loads the company output file, creates a database connection and executes insertion
     company_data = file_handler.read_json(globals.FN_OUT_COMPANIES)
     try:
         # Create with context manager, implicit commit on close
