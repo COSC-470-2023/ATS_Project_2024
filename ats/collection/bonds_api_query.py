@@ -60,7 +60,6 @@ def main():
 
         logger.debug('Processing raw data')
         api_fields = config[globals.FIELD_CFG_API]
-        # TODO: support for multiple treasuries
         non_api_fields = config[globals.FIELD_CFG_NON_API]
         treasury = config[TREASURY]
         mapping = make_mapping(treasury)
