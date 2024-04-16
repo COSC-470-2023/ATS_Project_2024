@@ -136,7 +136,7 @@ def main():
                             # Execute row insertion
                             execute_insert(conn, entry, company_id)
                         except sqlalchemy.exc.SQLAlchemyError as e:
-                            # Catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
+                            # Log sqlalchemy error, then continue to prevent silent rollbacks
                             logger.error(f"Error: {e}")
                             continue
                     else:

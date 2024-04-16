@@ -124,7 +124,7 @@ def main():
     try:
         # Create with context manager, implicit commit on close
         with connection_manager.connect() as conn:
-            # begin transaction with context manager, implicit commit on exit or rollback on exception
+            # Begin transaction with context manager, implicit commit on exit or rollback on exception
             with conn.begin():
                 for entry in historical_data:
                     if isinstance(entry, dict):
@@ -137,7 +137,7 @@ def main():
                             logger.error(f"Error: {e}")
                             continue
                     else:
-                        # entry is not a dictionary, skip it
+                        # Entry is not a dictionary, skip it
                         continue
 
     except Exception as e:

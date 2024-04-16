@@ -12,7 +12,7 @@ connection_manager = db_handler.ConnectionManager.instance()
 
 def check_keys(entry):
     logger.debug("Realtime commodity insertion: Checking keys")
-    # list of keys expected to be committed
+    # List of expected keys
     keys = [
         "_realtime_symbol",
         "_realtime_name",
@@ -32,15 +32,21 @@ def check_keys(entry):
         "_realtime_date",
     ]
 
-    # get key value, assign value to key. if key doesn't exist, assign value of None
+    # Get key value, assign value to key. if key doesn't exist, assign value of None
     return {key: entry.get(key, None) for key in keys}
 
 
 def execute_insert(connection, entry, commodity_id):
+    """
+        Connects to database and executes MySQL insertion.
+        :param connection: Connection to the database
+        :param entry: A key/value pair
+        :param commodity_id: A generated primary key for database
+        """
     logger.info(f"Inserting record for commodity ID: {commodity_id}")
-    # check for any missing keys and assign values of None
+    # Check for any missing keys and assign values of None
     row = check_keys(entry)
-    # append generated id
+    # Append generated id
     row["commodity_id"] = commodity_id
     # check if record exists already
     check_query = sqlalchemy.text(
@@ -53,11 +59,11 @@ def execute_insert(connection, entry, commodity_id):
         )
         return
     try:
-        # parameterized query
+        # Parameterized query
         query = sqlalchemy.text(
             f"INSERT INTO `realtime_commodity_values` VALUES (:commodity_id, :_realtime_date, :_realtime_price, :_realtime_changePercent, :_realtime_change, :_realtime_dayLow, :_realtime_dayHigh, :_realtime_yearHigh, :_realtime_yearLow, :_realtime_mktCap, :_realtime_exchange, :_realtime_volume, :_realtime_volAvg, :_realtime_open, :_realtime_prevClose)"
         )
-        # execute row insertion
+        # Execute row insertion
         connection.execute(query, row)
     except sqlalchemy.exc.SQLAlchemyError as e:
         logger.error(
@@ -66,34 +72,40 @@ def execute_insert(connection, entry, commodity_id):
 
 
 def get_commodity_id(entry, connection):
+    """
+        Queries the database to see if commodity already has an ID, if no ID is found for said commodity,
+        the trigger will generate one. If an ID is found, return said ID.
+        :param entry: A key/value pair
+        :param connection: Connection to the database
+        """
     logger.debug("Assigning realtime commodity ID")
     commodity_id = None
 
     try:
-        # set query parameters
+        # Set query parameters
         params = {"symbol": entry["_realtime_symbol"], "name": entry["_realtime_name"]}
 
         id_query = sqlalchemy.text(
             "SELECT id FROM `commodities` WHERE symbol = :symbol"
         )
-        # check if commodity exists in commodities table
+        # Check if commodity exists in commodities table
         result = connection.execute(id_query, parameters=params)
 
         row = result.one_or_none()
 
         if row is None:
-            # if commodity doesn't exist, create new row in commodites table - trigger generates new ID
+            # If commodity doesn't exist, create new row in commodites table - trigger generates new ID
             connection.execute(
                 sqlalchemy.text(
                     "INSERT INTO `commodities`(`commodityName`, `symbol`) VALUES (:_realtime_name, :_realtime_symbol)"
                 ),
                 parameters=params,
             )
-            # get the generated ID
+            # Get the generated ID
             result = connection.execute(id_query, parameters=params)
             commodity_id = result.one()[0]
         else:
-            # if the commodities exists, fetch the existing ID
+            # If the commodities exists, fetch the existing ID
             commodity_id = row[0]
     except Exception as e:
         logger.error(f"Error occurred when assigning ID: {e}")
@@ -106,22 +118,22 @@ def main():
     realtime_data = file_handler.read_json(globals.FN_OUT_REALTIME_COMMODITIES)
 
     try:
-        # create connection with context manager, connection closed on exit
+        # Create connection with context manager, connection closed on exit
         with connection_manager.connect() as conn:
-            # begin transaction with context manager, implicit commit on exit or rollback on exception
+            # Begin transaction with context manager, implicit commit on exit or rollback on exception
             with conn.begin():
                 for entry in realtime_data:
                     if isinstance(entry, dict):
                         commodity_id = get_commodity_id(entry, conn)
                         try:
-                            # process realtime data
+                            # Process realtime data
                             execute_insert(conn, entry, commodity_id)
                         except sqlalchemy.exc.SQLAlchemyError as e:
                             # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
                             logger.error(f"SQLAlchemy Exception when processing realtime data: {e}")
                             continue
                     else:
-                        # entry is not a dictionary, skip it
+                        # Entry is not a dictionary, skip it
                         continue
     except Exception as e:
         print(traceback.format_exc())
@@ -130,6 +142,6 @@ def main():
     logger.success("realtime_commodity_insert ran successfully.")
 
 
-# protected entrypoint
+# Protected entrypoint
 if __name__ == "__main__":
     main()

@@ -134,11 +134,11 @@ def main():
                             # Execute row insertion
                             execute_insert(conn, entry, index_id)
                         except sqlalchemy.exc.SQLAlchemyError as e:
-                            # Catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
+                            # Log sqlalchemy error, then continue to prevent silent rollbacks
                             logger.error(f"Error: {e}")
                             continue
                     else:
-                        # entry is not a dictionary, skip it
+                        # Entry is not a dictionary, skip it
                         continue
 
     except Exception as e:
@@ -148,6 +148,6 @@ def main():
     logger.success("historical_index_insert.py ran successfully.")
 
 
-# protected entrypoint
+# Protected entrypoint
 if __name__ == "__main__":
     main()
