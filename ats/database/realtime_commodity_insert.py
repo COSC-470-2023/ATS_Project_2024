@@ -130,14 +130,14 @@ def main():
                             execute_insert(conn, entry, commodity_id)
                         except sqlalchemy.exc.SQLAlchemyError as e:
                             # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
-                            logger.error(f"SQLAlchemy Exception when processing realtime data: {e}")
+                            logger.error(f"SQLAlchemy Exception: {e}")
                             continue
                     else:
                         # Entry is not a dictionary, skip it
                         continue
     except Exception as e:
         print(traceback.format_exc())
-        logger.critical(f"Error when connecting to remote database: {e}")
+        logger.critical(f"Error when updating remote database. Exception: {e}")
 
     logger.success("realtime_commodity_insert ran successfully.")
 

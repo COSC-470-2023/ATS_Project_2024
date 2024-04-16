@@ -135,7 +135,7 @@ def main():
                             execute_insert(conn, entry, index_id)
                         except sqlalchemy.exc.SQLAlchemyError as e:
                             # Log sqlalchemy error, then continue to prevent silent rollbacks
-                            logger.error(f"Error: {e}")
+                            logger.error(f"SQLAlchemy Exception: {e}")
                             continue
                     else:
                         # Entry is not a dictionary, skip it
@@ -143,7 +143,7 @@ def main():
 
     except Exception as e:
         print(traceback.format_exc())
-        logger.critical(f"Error when connecting to remote database: {e}")
+        logger.critical(f"Error when updating remote database. Exception: {e}")
 
     logger.success("historical_index_insert.py ran successfully.")
 

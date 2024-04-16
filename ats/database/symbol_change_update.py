@@ -24,6 +24,7 @@ def prune_old_data(connection, data):
 
 
 def update_symbol(connection, symbol):
+    logger.debug(f"Updating symbol: {symbol}")
     try:
         # Variable Declarations
         name = symbol["_change_newName"]
@@ -36,7 +37,7 @@ def update_symbol(connection, symbol):
         connection.execute(company_update, parameters=symbol)
     except Exception as e:
         print(traceback.format_exc())
-        logger.critical(f"Error in updating database: {e}")
+        logger.critical(f"Error when updating companies table. Exception: {e}")
 
 
 def main():
@@ -48,7 +49,7 @@ def main():
                 update_symbol(connection, entry)
             connection.commit()
     except Exception as e:
-        logger.critical(f"Error when connecting to remote database: {e}")
+        logger.critical(f"Error when updating remote database. Exception: {e}")
 
     logger.success("symbol_change_update.py ran successfully.")
 

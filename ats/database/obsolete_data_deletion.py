@@ -46,7 +46,7 @@ def main():
                     
     except Exception as e:
         print(traceback.format_exc())
-        logger.critical(f"Error when connecting to remote database: {e}")
+        logger.critical(f"Error when deleting from remote database. Exception: {e}")
     logger.success("obsolete_data_deletion ran successfully.")
 
 

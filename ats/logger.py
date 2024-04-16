@@ -2,8 +2,9 @@ import sys
 
 import loguru
 
+from ats.globals import FN_OUT_LOG_FILE, DIR_OUT
+
 # Constants
-FN_LOGFILE = 'log_file.log'
 LOG_FORMAT = ('<green>{time:YYYY-MM-DD HH:mm:ss.SSS zz}</green> | '
               '<level>{level: <8}</level> | '
               '<yellow>Line {line: >4} ({file}):</yellow> '
@@ -53,8 +54,8 @@ class Logger:
                         colorize=True,
                         backtrace=True,
                         diagnose=True)
-        # File-based logging
-        self.logger.add(FN_LOGFILE,
+        # TODO: add retention parameter when client has specified length
+        self.logger.add(DIR_OUT + FN_OUT_LOG_FILE,
                         rotation=LOG_ROTATION,
                         level=LOG_LEVEL,
                         format=LOG_FORMAT,

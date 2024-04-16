@@ -87,7 +87,6 @@ def get_stock_id(entry, connection):
         params = {
             "_historical_symbol": entry["_historical_symbol"],
             "_historical_name": entry["_historical_name"],
-            "isListed": 1,
         }
 
         id_query = sqlalchemy.text(
@@ -103,7 +102,7 @@ def get_stock_id(entry, connection):
             # If index doesn't exist, create new row in indexes table - trigger generates new ID
             connection.execute(
                 sqlalchemy.text(
-                    "INSERT INTO `companies` (`companyName`, `symbol`, `isListed`) VALUES (:_historical_name, :_historical_symbol, :isListed)"
+                    "INSERT INTO `companies` (`companyName`, `symbol`) VALUES (:_historical_name, :_historical_symbol)"
                 ),
                 parameters=params,
             )
@@ -145,7 +144,7 @@ def main():
 
     except Exception as e:
         print(traceback.format_exc())
-        logger.critical(f"Error when connecting to remote database: {e}")
+        logger.critical(f"Error when updating remote database. Exception: {e}")
 
     logger.success("historical_stock_insert.py ran successfully.")
 

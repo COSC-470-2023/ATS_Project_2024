@@ -21,7 +21,6 @@ def build_queries(query_manager: api_handler.QueryManager,
     :param query_manager: api_handler utility class. Builds API query URI.
     :param config_data: Configuration file input.
     """
-    # TODO: write docstring
     for entry in config_data:
         query_manager.add(entry[SYMBOL])
 
@@ -67,7 +66,7 @@ def main():
                                              non_api_fields,
                                              mapping)
 
-        logger.debug('Writing processed data to output')
+        logger.debug(f'Writing processed data to output file {globals.FN_OUT_COMPANIES}')
         file_handler.write_json(data, globals.FN_OUT_COMPANIES)
         logger.success('Companies collection complete')
     except Exception as e:

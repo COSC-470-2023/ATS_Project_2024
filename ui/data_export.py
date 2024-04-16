@@ -15,7 +15,7 @@ from sqlalchemy import inspect
 from datetime import datetime
 import csv
 
-from ats.globals import DIR_UI_OUPUT
+from ats.globals import DIR_UI_OUTPUT
 from . import db
 
 # import models
@@ -46,11 +46,11 @@ value_table_map = {
 
 # Map to handle different cases based on entity type
 id_table_map = {
-    "Companies": ("company_id", "StockValues"),
-    "company-info": ("company_id", "CompanyStatements"),
-    "Bonds": ("bond_id", "BondValues"),
-    "Indexes": ("index_id", "IndexValues"),
-    "Commodities": ("commodity_id", "CommodityValues"),
+    "Companies": ("company_id", "StockValues", "Stock"),
+    "company-info": ("company_id", "CompanyStatements", "Stock"),
+    "Bonds": ("bond_id", "BondValues", "Bond"),
+    "Indexes": ("index_id", "IndexValues", "Index"),
+    "Commodities": ("commodity_id", "CommodityValues", "Commodity"),
 }
 
 
@@ -109,6 +109,7 @@ def export_data():
             selected_value_fields = request.form.getlist("value-field-item")
             all_selected_fields = selected_lookup_fields + selected_value_fields
             entity_type = request.form.get("select-data")
+            entity_name = id_table_map[entity_type][2]
             table_prefix = (
                 ""
                 if entity_type == "Bonds" or entity_type == "company-info"
@@ -127,6 +128,14 @@ def export_data():
             value_table = value_table_map.get(table_prefix + value_table_suffix)
             lookup_table = entity_table_map[entity_type]
 
+            # Check for data and field selection, if no selection, flash error message and return
+            if not selected_data or not all_selected_fields:
+                flash(
+                    f"You must select at least one {entity_name} and at least one field before exporting.",
+                    "error",
+                )
+                return redirect(request.referrer or url_for("data_export.home"))
+
             # Quries database based on form selections
             query = build_query(
                 entity_type,
@@ -141,9 +150,9 @@ def export_data():
 
             # Build file path
             output_file_name = entity_type + "-data.csv"
-            output_file_path = os.path.join(DIR_UI_OUPUT, output_file_name)
+            output_file_path = os.path.join(DIR_UI_OUTPUT, output_file_name)
             # Create ouput dir if it doesn't exist
-            os.makedirs(os.path.dirname(DIR_UI_OUPUT), exist_ok=True)
+            os.makedirs(os.path.dirname(DIR_UI_OUTPUT), exist_ok=True)
 
             with open(output_file_path, "w", newline="") as csvfile:
                 csvwriter = csv.writer(csvfile, delimiter=",")

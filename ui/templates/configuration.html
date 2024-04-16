@@ -58,61 +58,16 @@ Choose to add or remove configuration files {% endblock %} {% block content %}
                 <p>Current Config:</p>
                 <div class="card config-list">
                   <ul id="config-const-list">
-                    <li></li>
+                    <li id="const-item"> </li>
                   </ul>
                 </div>
                 <div class="row mt-3">
                   <div class="col content-btn">
-                    <button type="button" class="btn btn-secondary" id="removeConstituent" data-toggle="modal"
-                      data-target="#remove-modal" data-info="Remove Constituent"
-                      onclick="dynamicModal(this.dataset.info, 'remove-modal')">
+                    <button type="button" class="btn btn-secondary">
                       Remove Constituent
                     </button>
-                    <button type="button" class="btn btn-secondary" id="addConstituent" data-toggle="modal"
-                      data-target="#add-modal" data-info="Add Constituent"
-                      onclick="dynamicModal(this.dataset.info, 'add-modal')">
+                    <button type="button" class="btn btn-secondary">
                       Add Constituent
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Second Row -->
-    <div class="row-md pt-3">
-      <h1 class="main-title">Change Data Sources</h1>
-      <p class="main-description">Choose to add or remove data financial source</p>
-    </div>
-    <!-- Third Row -->
-    <div class="row justify-content-between">
-      <div class="col-md-12">
-        <div class="card content-card">
-          <div class="card-body">
-            <!-- Your content here -->
-            <div class="row justify-content-between">
-              <div class="col-md-6">
-                <!-- First column content -->
-                <h4>Data Sources</h4>
-                <p>Current Config:</p>
-                <div class="card config-list">
-                  <ul id="config-data-list">
-                    <li></li>
-                  </ul>
-                </div>
-                <div class="row mt-3">
-                  <div class="col content-btn">
-                    <button type="button" class="btn btn-secondary" id="removeSource" data-toggle="modal"
-                      data-target="#remove-modal" data-info="Remove Source"
-                      onclick="dynamicModal(this.dataset.info, 'remove-modal')">
-                      Remove Source
-                    </button>
-                    <button type="button" class="btn btn-secondary" id="addSource" data-toggle="modal"
-                      data-target="#add-modal" data-info="Add Source"
-                      onclick="dynamicModal(this.dataset.info, 'add-modal')">
-                      Add Source
                     </button>
                   </div>
                 </div>
@@ -144,7 +99,7 @@ Choose to add or remove configuration files {% endblock %} {% block content %}
           <button type="button" class="btn btn-secondary" data-dismiss="modal">
             Close
           </button>
-          <button type="button" class="btn btn-primary" onclick="removeStocks()">
+          <button type="button" class="btn btn-primary" onclick="removeStocks()" data-dismiss="modal">
             Remove
           </button>
         </div>
@@ -176,7 +131,7 @@ Choose to add or remove configuration files {% endblock %} {% block content %}
           <button type="button" class="btn btn-secondary" data-dismiss="modal">
             Close
           </button>
-          <button type="button" class="btn btn-primary" onclick="addSelectedStocks()">
+          <button type="button" class="btn btn-primary" onclick="addSelectedStocks()" data-dismiss="modal">
             Add
           </button>
         </div>

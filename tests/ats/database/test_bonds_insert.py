@@ -36,7 +36,7 @@ def test_execute_insert(mock_sqlalchemy):
     bonds_insert.execute_insert(mock_connection, entry, 42)
     assert mock_sqlalchemy.text.call_count == 3
     assert mock_connection.execute.call_count == 3
-    mock_connection.execute.assert_called_with('test query')
+    mock_connection.execute.assert_called_with('test query', modified_entry)
 
 
 @patch('ats.database.bonds_insert.sqlalchemy')

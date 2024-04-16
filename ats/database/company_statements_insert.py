@@ -110,42 +110,46 @@ def execute_insert(connection, entry, company_id):
 
 def get_company_id(entry, conn):
     """
-    Queries the database to see if company already has an ID, if no ID is found for said company,
-    the trigger will generate one. If an ID is found, return said ID.
-    :param entry: A key/value pair
-    :param conn: Connection to the database
-    """
-    # Parameters for queries
-    params = {
-        "symbol": entry["_company_symbol"],
-        "name": entry["_company_name"],
-        "isListed": 1,
-    }
-    # Check if company exists in companies table
-    result = conn.execute(
-        sqlalchemy.text("SELECT id FROM `companies` WHERE symbol = :symbol"),
-        parameters=params
-    )
-    row = result.one_or_none()
-
-    if row is None:
-        # If company doesn't exist, create new row in companies table - trigger generates new ID
-        conn.execute(
-            sqlalchemy.text(
-                "INSERT INTO `companies` (`companyName`, `symbol`, `isListed`) VALUES (:name, :symbol, :isListed)"
-            ),
-            parameters=params,
-        )
-
-        # Get the generated ID
+        Queries the database to see if company already has an ID, if no ID is found for said company,
+        the trigger will generate one. If an ID is found, return said ID.
+        :param entry: A key/value pair
+        :param conn: Connection to the database
+        """
+    logger.debug("Assigning company ID")
+    company_id = None
+    try:
+        # Parameters for queries
+        params = {
+            "symbol": entry["_company_symbol"],
+            "name": entry["_company_name"],
+        }
+        # Check if company exists in companies table
         result = conn.execute(
             sqlalchemy.text("SELECT id FROM `companies` WHERE symbol = :symbol"),
             parameters=params,
         )
-        company_id = result.one()[0]
-    else:
-        # If the company exists, fetch the existing ID
-        company_id = row[0]
+        row = result.one_or_none()
+
+        if row is None:
+            # If company doesn't exist, create new row in companies table - trigger generates new ID
+            conn.execute(
+                sqlalchemy.text(
+                    "INSERT INTO `companies` (`companyName`, `symbol`) VALUES (:name, :symbol)"
+                ),
+                parameters=params,
+            )
+
+            # Get the generated ID
+            result = conn.execute(
+                sqlalchemy.text("SELECT id FROM `companies` WHERE symbol = :symbol"),
+                parameters=params,
+            )
+            company_id = result.one()[0]
+        else:
+            # If the company exists, fetch the existing ID
+            company_id = row[0]
+    except Exception as e:
+        logger.error(f"Error occurred when assigning ID: {e}")
     return company_id
 
 
@@ -164,7 +168,7 @@ def main():
                             execute_insert(conn, entry, company_id)
                         except sqlalchemy.exc.SQLAlchemyError as e:
                             # Log sqlalchemy error, then continue to prevent silent rollbacks
-                            logger.error(f"Database Insertion Error: {e}")
+                            logger.error(f"SQLAlchemy Exception: {e}")
                             continue
                     else:
                         # Entry is not a dictionary, skip it
@@ -172,7 +176,7 @@ def main():
 
     except Exception as e:
         print(traceback.format_exc())
-        logger.critical(f"Error when connecting to remote database: {e}")
+        logger.critical(f"Error when updating remote database. Exception: {e}")
 
     logger.success("company_statements_insertion ran successfully.")
 

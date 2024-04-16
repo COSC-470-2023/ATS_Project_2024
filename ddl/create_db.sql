@@ -82,9 +82,8 @@ CREATE TABLE `historical_commodity_values` (
 
 CREATE TABLE `companies` (
   `id` BIGINT,
-  `companyName` VARCHAR(300) NOT NULL,
+  `companyName` VARCHAR(300),
   `symbol` VARCHAR(10) NOT NULL,
-  `isListed` boolean,
   PRIMARY KEY (`id`)
 );
 CREATE INDEX company_symbol_idx ON companies (symbol);
@@ -92,7 +91,7 @@ CREATE INDEX company_symbol_idx ON companies (symbol);
 CREATE TABLE `company_changelogs` (
   `company_id` BIGINT,
   `date` DATETIME,
-  `companyName` VARCHAR(300) NOT NULL,
+  `companyName` VARCHAR(300),
   `newCompanyName` VARCHAR(300),
   `nameChanged` BOOLEAN,
   `symbol` VARCHAR(10) NOT NULL,
@@ -184,7 +183,7 @@ CREATE TABLE `historical_stock_values` (
 
 CREATE TABLE `indexes` (
   `id` BIGINT,
-  `indexName` VARCHAR(300) NOT NULL,
+  `indexName` VARCHAR(300),
   `symbol` VARCHAR(10) NOT NULL,
   PRIMARY KEY (`id`)
 );
@@ -231,11 +230,21 @@ CREATE TABLE `historical_index_values` (
 -- User Tables --
 
 CREATE TABLE `users` (
-  `id` BIGINT,
+  `id` BIGINT AUTO_INCREMENT,
   `username` VARCHAR(300) NOT NULL,
   `password` VARCHAR(300) NOT NULL,
   `firstName` VARCHAR(300) NOT NULL,
   `lastName` VARCHAR(300) NOT NULL,
   `isAdmin` BOOLEAN NOT NULL,
   PRIMARY KEY (`id`)
+);
+
+-- System Logs Table --
+CREATE TABLE `system_logs` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT
+  PRIMARY KEY,
+  `date` DATETIME NOT NULL,
+  `timezone` VARCHAR(50),
+  `level` VARCHAR(10),
+  `message` VARCHAR(400)
 );

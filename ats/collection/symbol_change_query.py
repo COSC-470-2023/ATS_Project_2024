@@ -53,7 +53,7 @@ def main():
         data = data_handler.process_raw_data(pruned_data,
                                              api_fields)
 
-        logger.debug('Writing processed data to output')
+        logger.debug(f'Writing processed data to output file: {globals.FN_OUT_SYMBOL_CHANGE}')
         file_handler.write_json(data, globals.FN_OUT_SYMBOL_CHANGE)
         logger.success('Symbol change collection complete')
     except Exception as e:

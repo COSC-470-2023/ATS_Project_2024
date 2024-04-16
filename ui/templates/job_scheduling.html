@@ -32,7 +32,7 @@
     <div class="container">
         <!-- Current Scheduling Row -->
         <h5> Current Scheduling: </h5>
-        <div class="row justify-content-between content-card">
+        <div class="row justify-content-between content-card mb-3">
             <div class="col-md-3">
                 <!-- Current Job Type Column -->
                 <div class="card-body">
@@ -41,8 +41,11 @@
                         <select class="form-control" id="jobType" name="jobType">
                             <option value="SymbolChanges">Symbol Changes</option>
                             <option value="RealtimeData">Realtime Data</option>
+                            <option value="HistoricalData">Historical Data</option>
                             <option value="Bonds">Bonds</option>
                             <option value="CompanyStatements">Company Statements</option>
+                            <option value="ConstituentUpdate">Constituent Update</option>
+                            <option value="DataDeletion">Data Deletion</option>
                         </select>
                     </div>
                 </div>
@@ -83,7 +86,7 @@
                         <div class="col-md-6">
                             <!-- Default Column -->
                             <label class="sched-settings">
-                                <input type="radio" name="sched-option" id="default-checkbox" checked />
+                                <input type="radio" name="sched-option" id="default-checkbox" value="default" checked />
                                 <h5> Default </h5>
                                 <br /> Recommended. The default job scheduling of the service
                             </label>
@@ -91,7 +94,7 @@
                         <div class="col-md-6">
                             <!-- Custom column -->
                             <label class="sched-settings">
-                                <input type="radio" name="sched-option" id="sched-checkbox" />
+                                <input type="radio" name="sched-option" id="sched-checkbox" value="custom"/>
                                 <h5> Custom </h5>
                                 <br /> Best suited for use of specific time and dates for the service
                             </label>
@@ -111,13 +114,16 @@
                         <select class="form-control" id="inputJobType" name="inputJobType">
                             <option value="SymbolChanges">Symbol Changes</option>
                             <option value="RealtimeData">Realtime Data</option>
+                            <option value="HistoricalData">Historical Data</option>
                             <option value="Bonds">Bonds</option>
                             <option value="CompanyStatements">Company Statements</option>
+                            <option value="ConstituentUpdate">Constituent Update</option>
+                            <option value="DataDeletion">Data Deletion</option>
                         </select>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3" id="timeInput">
                 <!-- Change Time Column -->
                 <div class="card-body">
                     <div class="form-group">
@@ -126,7 +132,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3" id="repeatMethodInput">
                 <div class="card-body">
                     <div class="form-group">
                         <input type="radio" id="DOWbutton" name="RepeatMethod" value="DOW" data-show="showWeekRepeator" data-hide="showMonthRepeator" checked />

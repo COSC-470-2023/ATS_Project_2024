@@ -24,6 +24,8 @@ def home():
     return render_template("configuration.html")
 
 stock_config_file = "./config/realtime_config.yaml"
+api_stock_file = "./config/api_stock.yaml"
+constituents = "./config/index_config.yaml"
 
 # Route for populating the current config list
 @configuration.route("/get_config", methods=["GET"])
@@ -60,29 +62,33 @@ def remove_config():
     return jsonify({"message": "Stocks removed successfully"})
 
 # Function to fetch all the stock from the API
-def fetch_stock_list():
-    api_key = os.getenv("ATS_API_KEY")
-    if not api_key:
-        raise ValueError("ATS_API_KEY environment variable is not set.")
+# def fetch_stock_list():
+#     api_key = os.getenv("ATS_API_KEY")
+#     if not api_key:
+#         raise ValueError("ATS_API_KEY environment variable is not set.")
 
-    url = f"https://financialmodelingprep.com/api/v3/stock/list?apikey={api_key}"
-    response = requests.get(url)
+#     url = f"https://financialmodelingprep.com/api/v3/stock/list?apikey={api_key}"
+#     response = requests.get(url)
     
-    print("Response status code:", response.status_code)
+#     print("Response status code:", response.status_code)
     
-    if response.status_code == 200:
-        data = response.json()
-        symbols_list = []
+#     if response.status_code == 200:
+#         data = response.json()
+#         symbols_list = []
 
-        for stock in data:
-            symbol = stock.get('symbol')
-            name = stock.get('name')
-            symbols_list.append({'symbol': symbol, 'name': name})
+#         stocks_list = [{'symbol': stock['symbol'], 'name': stock['name']} for stock in data]
         
-        return symbols_list
-    else:
-        print("Failed to fetch stock list:", response.status_code)
-        return None
+#         yaml_data = {'stocks': stocks_list}
+        
+#         with open(api_stock_file, 'w') as yaml_file:
+#             yaml.dump(yaml_data, yaml_file)
+        
+#         print("YAML file successfully created.")
+        
+#         return symbols_list
+#     else:
+#         print("Failed to fetch stock list:", response.status_code)
+#         return None
 
 # Route for comparing stocks from the config file and API
 @configuration.route("/compare_stocks", methods=["GET"])
@@ -93,8 +99,14 @@ def compare_stocks():
         config = yaml.safe_load(configfile)
 
     # Fetch the list of stock from API
-    available_stocks = fetch_stock_list()
-
+    # available_stocks = fetch_stock_list()
+    
+    # Load the api_stock.yaml
+    with open(api_stock_file, 'r') as configfile:
+        api_stocks = yaml.safe_load(configfile)
+        
+    available_stocks = [{'symbol': stock['symbol'], 'name': stock['name']} for stock in api_stocks.get('stocks',[])]
+    
     # Check if available_stocks is empty
     if available_stocks is not None:
         # Check if 'stocks' key exists in config
