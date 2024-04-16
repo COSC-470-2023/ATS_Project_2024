@@ -37,11 +37,11 @@ def check_keys(entry):
 
 def execute_insert(connection, entry, index_id):
     """
-        Connects to database and executes MySQL insertion.
-        :param connection: Connection to the database
-        :param entry: A key/value pair
-        :param index_id: A generated primary key for database
-        """
+    Connects to database and executes MySQL insertion.
+    :param connection: Connection to the database
+    :param entry: A key/value pair
+    :param index_id: A generated primary key for database
+    """
     logger.info(f"Inserting record for index ID: {index_id}")
     row = check_keys(entry)
     # Append generated id
@@ -72,14 +72,13 @@ def execute_insert(connection, entry, index_id):
         )
 
 
-# Used to get id associated with an index
 def get_index_id(entry, connection):
     """
-        Queries the database to see if index already has an ID, if no ID is found for said index,
-        the trigger will generate one. If an ID is found, return said ID.
-        :param entry: A key/value pair
-        :param connection: Connection to the database
-        """
+    Queries the database to see if index already has an ID, if no ID is found for said index,
+    the trigger will generate one. If an ID is found, return said ID.
+    :param entry: A key/value pair
+    :param connection: Connection to the database
+    """
     logger.debug("Assigning historical index ID")
     index_id = None
 

@@ -38,11 +38,11 @@ def check_keys(entry):
 
 def execute_insert(connection, entry, commodity_id):
     """
-        Connects to database and executes MySQL insertion.
-        :param connection: Connection to the database
-        :param entry: A key/value pair
-        :param commodity_id: A generated primary key for database
-        """
+    Connects to database and executes MySQL insertion.
+    :param connection: Connection to the database
+    :param entry: A key/value pair
+    :param commodity_id: A generated primary key for database
+    """
     logger.info(f"Inserting record for commodity ID: {commodity_id}")
     # Check for any missing keys and assign values of None
     row = check_keys(entry)
@@ -73,11 +73,11 @@ def execute_insert(connection, entry, commodity_id):
 
 def get_commodity_id(entry, connection):
     """
-        Queries the database to see if commodity already has an ID, if no ID is found for said commodity,
-        the trigger will generate one. If an ID is found, return said ID.
-        :param entry: A key/value pair
-        :param connection: Connection to the database
-        """
+    Queries the database to see if commodity already has an ID, if no ID is found for said commodity,
+    the trigger will generate one. If an ID is found, return said ID.
+    :param entry: A key/value pair
+    :param connection: Connection to the database
+    """
     logger.debug("Assigning realtime commodity ID")
     commodity_id = None
 
@@ -105,7 +105,7 @@ def get_commodity_id(entry, connection):
             result = connection.execute(id_query, parameters=params)
             commodity_id = result.one()[0]
         else:
-            # If the commodities exists, fetch the existing ID
+            # If the commodities exist, fetch the existing ID
             commodity_id = row[0]
     except Exception as e:
         logger.error(f"Error occurred when assigning ID: {e}")
@@ -114,7 +114,7 @@ def get_commodity_id(entry, connection):
 
 
 def main():
-    # Load json data
+    # Loads the realtime commodity output file, creates a database connection and executes insertion
     realtime_data = file_handler.read_json(globals.FN_OUT_REALTIME_COMMODITIES)
 
     try:
@@ -129,7 +129,7 @@ def main():
                             # Process realtime data
                             execute_insert(conn, entry, commodity_id)
                         except sqlalchemy.exc.SQLAlchemyError as e:
-                            # catch base SQLAlchemy exception, print SQL error info, then continue to prevent silent rollbacks
+                            # Log sqlalchemy error, then continue to prevent silent rollbacks
                             logger.error(f"SQLAlchemy Exception: {e}")
                             continue
                     else:

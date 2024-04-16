@@ -12,10 +12,10 @@ connection_manager = db_handler.ConnectionManager.instance()
 
 def check_keys(entry):
     """
-        Checks keys, assigns value to None if key is not found/has no value
-        :param entry: A key/value pair from the JSON output
-        :return: Key/value pairs, if key/value is not detected(i.e. not provided by API), key will be assigned value None
-        """
+    Checks keys, assigns value to None if key is not found/has no value
+    :param entry: A key/value pair from the JSON output
+    :return: Key/value pairs, if key/value is not detected(i.e. not provided by API), key will be assigned value None
+    """
     logger.debug("Historical stock insertion: Checking keys")
     # List of expected keys
     keys = [
@@ -37,11 +37,11 @@ def check_keys(entry):
 
 def execute_insert(connection, entry, company_id):
     """
-            Connects to database and executes MySQL insertion.
-            :param connection: Connection to the database
-            :param entry: A key/value pair
-            :param company_id: A generated primary key for database
-            """
+    Connects to database and executes MySQL insertion.
+    :param connection: Connection to the database
+    :param entry: A key/value pair
+    :param company_id: A generated primary key for database
+    """
     logger.info(f"Inserting record for historical stock ID: {company_id}")
     row = check_keys(entry)
     # Append generated id
@@ -53,6 +53,7 @@ def execute_insert(connection, entry, company_id):
     )
     result = connection.execute(check_query, row).scalar()
 
+    # If record exists, provide warning message and ignore insertion
     if result > 0:
         logger.warning(
             f"Record for company with ID: {company_id} and date: {row['_historical_date']} already exists. Skipping to next record."
@@ -74,11 +75,11 @@ def execute_insert(connection, entry, company_id):
 # Used to get id associated with an index
 def get_stock_id(entry, connection):
     """
-            Queries the database to see if stock already has an ID, if no ID is found for said index,
-            the trigger will generate one. If an ID is found, return said ID.
-            :param entry: A key/value pair
-            :param connection: Connection to the database
-            """
+    Queries the database to see if stock already has an ID, if no ID is found for said index,
+    the trigger will generate one. If an ID is found, return said ID.
+    :param entry: A key/value pair
+    :param connection: Connection to the database
+    """
     logger.debug("Assigning historical stock ID")
     company_id = None
 
