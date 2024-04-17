@@ -21,12 +21,17 @@ auth = Blueprint("auth", __name__)
 
 @auth.route("/")
 def home():
+    # Redirects to the login page.
     return redirect(url_for("auth.login"))
 
 
-# Route for handling login authentication
 @auth.route("/login", methods=["GET", "POST"])
 def login():
+    """
+    Handles user login, input validation, user authentication.
+    GET: Renders the login page.
+    POST: Validates input and authenticates user.
+    """
     if request.method == "POST":
         username = request.form.get("username").strip()
         password = request.form.get("password").strip()
@@ -69,18 +74,22 @@ def login():
     return render_template("login.html")
 
 
-# Route for logout functionality
 @auth.route("/logout")
 @login_required
 def logout():
+    # Logout current user and redirect to login page
     logout_user()
     return redirect(url_for("auth.login"))
 
 
-# Route for creating new users based on form data
 @auth.route("/create-user", methods=["GET", "POST"])
 @admin_required
 def create_user():
+    """
+    Route for creating new users based on form data.
+    GET: Renders the user creation page.
+    POST: Validates input, creates a new user if validation is successful.
+    """
     if request.method == "POST":
         first_name = request.form.get("first-name").strip()
         last_name = request.form.get("last-name").strip()
@@ -149,10 +158,10 @@ def create_user():
     return render_template("create_user.html")
 
 
-# TODO: Implement if there is time
 @auth.route("/change-password", methods=["POST"])
 @login_required
 def change_password():
+    # Placeholder. Implement in future
     if request.method == "POST":
         pass
 
@@ -168,6 +177,14 @@ def change_password():
 
 
 def is_valid_input(input, regex, min_length, max_length):
+    """
+    Validates the input based on a regex pattern and length constraints.
+    :param input: The string to validate.
+    :param regex: The regex to compare to input.
+    :param min_length: Minimum input length.
+    :param max_length: Maximum input length.
+    :return: True if the input is valid, False otherwise.
+    """
     return (
         bool(re.match(regex, input))
         and len(input) <= max_length
