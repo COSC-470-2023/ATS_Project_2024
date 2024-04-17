@@ -58,13 +58,20 @@ id_table_map = {
 @data_export.route("/", methods=["GET", "POST"])
 @login_required
 def home():
+    """
+    Renders the data export homepage.
+    :return: html template
+    """
     return render_template("data_export.html", user=current_user)
 
 
-# Route for populating the data list base on form state
 @data_export.route("/get-data-list", methods=["POST"])
 @login_required
 def get_data_list():
+    """
+    Route for populating the data list base on form state.
+    :return: a list of data items based on the selected entity from the form.
+    """
     selected_entity = request.form["selected_entity"]
     table = entity_table_map[selected_entity]
 
@@ -73,10 +80,13 @@ def get_data_list():
     return jsonify({"items": items})
 
 
-# Route for populating the field list based on form state
 @data_export.route("/get-field-list", methods=["POST"])
 @login_required
 def get_field_list():
+    """
+    Route for populating the field list based on form state.
+    :return: fields for selected data types based on the entity chosen in the form.
+    """
     selected_entity = request.form["selected_entity"]
     table_prefix = request.form["selected_data_type"]
     table_suffix = id_table_map[selected_entity][1]
@@ -101,6 +111,9 @@ def get_field_list():
 @data_export.route("/export-data", methods=["GET", "POST"])
 @login_required
 def export_data():
+    """
+    Handles the export of data based on user selections, creating a CSV file and returning it to the user.
+    """
     try:
         if request.method == "POST":
             # Collect form data
@@ -177,7 +190,6 @@ def export_data():
     return redirect(request.referrer or url_for("data_export.home"))
 
 
-# Funciton that builds query based on the provided tables, table entities, fields, and date range
 def build_query(
     entity_type,
     lookup_table,
@@ -188,6 +200,18 @@ def build_query(
     start_date,
     end_date,
 ):
+    """
+    Function that builds query based on the provided tables, table entities, fields, and date range
+    :param entity_type: type of entity. Ex. 'Bonds', 'Companies' etc.
+    :param lookup_table: table model used for retrieving lookup fields.
+    :param value_table: table model used for retrieving value fields related to the entry.
+    :param selected_data: List of identifiers selected by the user to filter the query.
+    :param lookup_fields: List of lookup table column names to include in the query results.
+    :param value_fields: List of value table column names to include in the query results.
+    :param start_date: Start date for filtering
+    :param end_date: End date for filtering
+    :return: A list of results based on above params.
+    """
     if entity_type == "Bonds":
         query = (
             db.session.query(lookup_table, value_table)
