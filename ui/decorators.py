@@ -5,6 +5,12 @@ from flask_login import current_user
 
 # Decorator for admin verificaiton
 def admin_required(f):
+    """
+    Decorator to enforce admin-only access for routes. Redirects non-admins and unauthenticated users.
+    Users not logged in are redirected to the login page. Logged-in non-admins are sent back with an error message.
+    :param f: The function to decorate.
+    :return: Decorated function with access control.
+    """
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated:
