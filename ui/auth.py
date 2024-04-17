@@ -9,11 +9,11 @@ from .decorators import admin_required
 MIN_USERNAME_LENGTH = 5
 MIN_PASSWORD_LENGTH = 8
 MIN_INPUT_LENGTH = 1
-MAX_INPUT_LENGTH = 20
+MAX_INPUT_LENGTH = 30
 
 UNAME_REGEX = "^[a-zA-Z0-9_-]+$"
 NAME_REGEX = "^[a-zA-Z]+$"
-PASSWORD_REGEX = "^[a-zA-Z0-9_!@#$%^&*()-+=|{}[\]<>?]+$"
+PASSWORD_REGEX = r"^[^\s'\"]*$"
 
 # Create authorization Blueprint
 auth = Blueprint("auth", __name__)
