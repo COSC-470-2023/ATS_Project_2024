@@ -13,12 +13,17 @@ job_scheduling = Blueprint("job_scheduling", __name__)
 
 # It should be noted that The code does not update the job commands ever once they are set.
 # Because we should never have to update the commands themselves unless manually and only once.
-# It does set the default cron job command to the default upon first load where no cron jobs are found.
+# It does set the default cron job command to the defaults, listed at the bottom...
+# ... of the file, upon first load where no cron jobs are found.
 
 
 @job_scheduling.route("/", methods=["GET"])
 @admin_required
 def load_page():
+    """
+    Renders the Job scheduling page with data taken from the servers crontab.
+    :return: html template and a json list of current cronjobs.
+    """
     cron = CronTab(user=True)  # Use user=True to manage the current user's crontab
     for job in listOfJobs:
         try:
@@ -56,6 +61,11 @@ def load_page():
 @job_scheduling.route("/", methods=["POST"])
 @admin_required
 def change_schedule():
+    """
+    Route taken when the job scheduling page form is submitted(posted).
+    Renders the page with updated cronjobs after a form submission is requested.
+    :return: html template with the updated json list of current cronjobs after requested change.
+    """
     job_name = request.form["inputJobType"]
     time = request.form["time"]
     day_of_week = request.form.getlist("dayOfWeek")
