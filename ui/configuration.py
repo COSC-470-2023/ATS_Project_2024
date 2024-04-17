@@ -32,7 +32,7 @@ config_list = [realtime_config_path, historical_config_path, company_config_path
 @admin_required
 def get_config():
     # Get the config file
-    with open(FN_CFG_REALTIME, "r") as configfile:
+    with open(realtime_config_path, "r") as configfile:
         config = yaml.safe_load(configfile)
 
     # Extracting both symbols and name from stocks
