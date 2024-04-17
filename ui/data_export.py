@@ -70,7 +70,7 @@ def home():
 def get_data_list():
     """
     Route for populating the data list base on form state.
-    :return: a list of data items based on the selected entity from the form.
+    :return: a list of items based on the selected entity from the form.
     """
     selected_entity = request.form["selected_entity"]
     table = entity_table_map[selected_entity]

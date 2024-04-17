@@ -166,21 +166,11 @@ def change_password():
         pass
 
 
-"""
-*Description of Method*
-:param input: Input value retrieved from a form.
-:param regex: Regular expression used for input restricion.
-:param min_length: Minimum input length
-:param max_length: Maximum input length
-:return: True if input is valid, False otherwise
-"""
-
-
 def is_valid_input(input, regex, min_length, max_length):
     """
     Validates the input based on a regex pattern and length constraints.
-    :param input: The string to validate.
-    :param regex: The regex to compare to input.
+    :param input: Input value retrieved from a form.
+    :param regex: Regular expression used for input restriction.
     :param min_length: Minimum input length.
     :param max_length: Maximum input length.
     :return: True if the input is valid, False otherwise.
