@@ -31,6 +31,10 @@ config_list = [realtime_config_path, historical_config_path, company_config_path
 @configuration.route("/get_config", methods=["GET"])
 @admin_required
 def get_config():
+    """
+    Retrieves and returns the current stock configuration in JSON format.
+    **Future: Rework to use util classes**
+    """
     # Get the config file
     with open(realtime_config_path, "r") as configfile:
         config = yaml.safe_load(configfile)
@@ -48,8 +52,11 @@ def get_config():
 @configuration.route("/remove_config", methods=["POST"])
 @admin_required
 def remove_config():
-    # Get the symbols of stocks to remove
-    symbols_to_remove = request.json.get("symbols", [])
+    """
+    Removes specified stocks from the configuration based on input symbols and updates the config file.
+    **Future: Rework to use util classes**
+    """
+    symbols_to_remove = request.json.get('symbols', [])
 
     for file in config_list:
         # Load the config file
@@ -101,10 +108,13 @@ def remove_config():
 #         return None
 
 
-# Route for comparing stocks from the config file and API
 @configuration.route("/compare_stocks", methods=["GET"])
 @admin_required
 def compare_stocks():
+    """
+    Compares stocks listed in the configuration file with those from the API.
+    Returns stocks not common between the local config and API data.
+    """
     # Load the config file
     with open(realtime_config_path, "r") as configfile:
         config = yaml.safe_load(configfile)
@@ -152,10 +162,16 @@ def compare_stocks():
         )
 
 
-# Route for adding new stocks to the config
+
 @configuration.route("/add_stocks", methods=["POST"])
 @admin_required
 def add_stocks():
+    """
+    Adds new stocks to the configuration. Loads the config file, gets the selected symbols and names, and adds them to the config
+    """
+    with open(stock_config_file, 'r') as configfile:
+        config = yaml.safe_load(configfile)
+
     # Get the selected symbols and names from the request JSON
     selected_stocks = request.json.get("selected_stocks", [])
 

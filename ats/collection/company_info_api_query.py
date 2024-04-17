@@ -16,13 +16,20 @@ SYMBOL = 'symbol'
 @api_handler.query_builder
 def build_queries(query_manager: api_handler.QueryManager,
                   config_data: list[dict]):
-    # TODO: write docstring
+    """
+    Parse through company configuration file, make queries for each entry.
+    :param query_manager: api_handler utility class. Builds API query URI.
+    :param config_data: Configuration file input.
+    """
     for entry in config_data:
         query_manager.add(entry[SYMBOL])
 
 
 def make_mapping(date: datetime.date) -> data_handler.Mapping:
-    # TODO: write docstring
+    """
+    :param date: current date
+    :return: mapping of date to company_date
+    """
     @data_handler.mapping_callback
     def company_date(kwargs: data_handler.Kwargs) -> str:
         return str(date)
@@ -33,6 +40,11 @@ def make_mapping(date: datetime.date) -> data_handler.Mapping:
 
 
 def main():
+    """
+    Executes data collection for company statement data, processes the raw data,
+    and stores the results in JSON format. This function sets up logging, reads configuration,
+    fetches and processes data based on parameters in company_info_config.yaml.
+    """
     try:
         logger.info('Starting companies collection')
         config = file_handler.read_yaml(globals.FN_CFG_COMPANIES)
@@ -58,7 +70,7 @@ def main():
         file_handler.write_json(data, globals.FN_OUT_COMPANIES)
         logger.success('Companies collection complete')
     except Exception as e:
-        logger.error(e)
+        logger.error(f"Error occurred when gathering company information: {e}")
         raise
 
 

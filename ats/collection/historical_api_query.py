@@ -22,7 +22,13 @@ def build_queries(query_manager: api_handler.QueryManager,
                   config_data: list[dict],
                   days: int,
                   date: datetime.date):
-    # TODO: write docstring
+    """
+    Builds queries for fetching historical data based on provided symbols over a specified time period.
+    :param query_manager: Utility class. Builds API query URI.
+    :param config_data: List of dictionaries containing the SYMBOL and NAME of entities.
+    :param days: Number of days in the past to collect data for, from today. (Default: 1095)
+    :param date: Current date. Used to specify date ranges.
+    """
     start_date = date - datetime.timedelta(days=days)
     end_date = date
     for entry in config_data:
@@ -30,13 +36,19 @@ def build_queries(query_manager: api_handler.QueryManager,
 
 
 def make_mapping(config_data: list[dict]) -> data_handler.Mapping:
-    # TODO: write docstring
+    """
+    Creates a mapping from API data fields to internal non-api-fields using the config data.
+
+    :param config_data: List of dictionaries containing the SYMBOL and NAME for mapping.
+    :return: A Mapping object.
+    """
     symbol_name_mapping = {}
     for entry in config_data:
         symbol_name_mapping[entry[SYMBOL]] = entry[NAME]
 
     @data_handler.mapping_callback
     def historical_name(kwargs: data_handler.Kwargs) -> str:
+        # Fetches historical name based on symbol if present, else returns a not found key.
         if SYMBOL in kwargs[data_handler.ENTRY]:
             symbol = kwargs[data_handler.ENTRY][SYMBOL]
             return symbol_name_mapping[symbol]
@@ -49,6 +61,11 @@ def make_mapping(config_data: list[dict]) -> data_handler.Mapping:
 
 
 def main():
+    """
+    Executes data collection for historical stock, commodity, and index data, processes the raw data,
+    and stores the results in JSON format. This function sets up logging, reads configuration,
+    fetches and processes data based on parameters in historical_config.yaml.
+    """
     try:
         logger.info('Starting historical collection')
         historical_config = file_handler.read_yaml(globals.FN_CFG_HISTORICAL)

@@ -19,16 +19,28 @@ REALTIME_DATE = '_realtime_date'
 @api_handler.query_builder
 def build_queries(query_manager: api_handler.QueryManager,
                   config_data: list[dict]):
-    # TODO: write docstring
+    """
+    Builds queries for fetching realtime data based on provided symbols for the current market day. Will return no data
+    on non market days.
+    :param query_manager: The query manager object to which queries will be added.
+    :param config_data: A list of dictionaries, each containing the symbol for a particular commodity, index, or stock.
+    """
     for entry in config_data:
         query_manager.add(entry[SYMBOL])
 
   
 def make_mapping() -> data_handler.Mapping:
-    # TODO: write docstring
-
+    """
+    Creates a mapping for converting raw API data timestamps into human-readable dates.
+    :return: A mapping object configured to transform timestamp data into datetime strings.
+    """
     @data_handler.mapping_callback
     def realtime_date(kwargs: data_handler.Kwargs) -> str:
+        """
+        Converts a timestamp from the raw data into a datetime string.
+        :param kwargs: Contextual keyword arguments containing the entry data.
+        :return: The converted datetime string if timestamp is found, otherwise returns 'KEY_NOT_FOUND'.
+        """
         if TIMESTAMP in kwargs[data_handler.ENTRY]:
             timestamp = kwargs[data_handler.ENTRY][TIMESTAMP]
             date_time = datetime.datetime.fromtimestamp(timestamp)
@@ -42,6 +54,11 @@ def make_mapping() -> data_handler.Mapping:
 
 
 def main():
+    """
+    Executes data collection for realtime stock, commodity, and index data, processes the raw data,
+    and stores the results in JSON format. This function sets up logging, reads configuration,
+    fetches and processes data based on parameters in realtime_config.yaml.
+    """
     try:
         logger.info('Starting realtime collection')
         realtime_config = file_handler.read_yaml(globals.FN_CFG_REALTIME)

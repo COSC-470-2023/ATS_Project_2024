@@ -58,7 +58,7 @@ def main():
 
     try:
         with connection_manager.connect() as conn:
-            # begin transaction with context manager, implicit commit on exit or rollback on exception
+            # Begin transaction with context manager, implicit commit on exit or rollback on exception
             with conn.begin():
                 for path in log_files:
                     if os.path.exists(path):

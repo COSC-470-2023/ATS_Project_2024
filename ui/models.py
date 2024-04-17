@@ -4,6 +4,22 @@ from . import db
 
 db.Model.metadata.reflect(db.engine)
 
+"""
+Defines ORM models for various database tables using SQLAlchemy and Flask-Login's UserMixin.
+
+This module reflects the existing database schema into SQLAlchemy ORM models, allowing for easy
+interaction with the database tables. Each model class is derived from a base model which includes
+a method for serializing its attributes into a dictionary. This setup allows JSON conversion in a Flask application.
+
+Classes:
+- BaseModel: An abstract base class to provide serialization.
+- User: records from the 'users' table.
+- Bonds, BondValues: records from 'bonds' and 'bond_values' tables.
+- Commodities, RealtimeCommodityValues, HistoricalCommodityValues: records from 'commodities' table.
+- Companies, CompanyStatements, RealtimeStockValues, HistoricalStockValues: records from tables related to 'companies'.
+- Indexes, RealtimeIndexValues, HistoricalIndexValues: records from 'indexes' tables.
+"""
+
 
 class BaseModel(db.Model):
 
@@ -15,14 +31,14 @@ class BaseModel(db.Model):
         }
 
 
-## User Table ##
+# User Table #
 
 
 class User(BaseModel, UserMixin):
     __table__ = db.Model.metadata.tables["users"]
 
 
-## Bonds Tables ##
+# Bonds Tables #
 
 
 class Bonds(BaseModel):
@@ -33,7 +49,7 @@ class BondValues(BaseModel):
     __table__ = db.Model.metadata.tables["bond_values"]
 
 
-## Commodity Tables ##
+# Commodity Tables #
 
 
 class Commodities(BaseModel):
@@ -48,7 +64,7 @@ class HistoricalCommodityValues(BaseModel):
     __table__ = db.Model.metadata.tables["historical_commodity_values"]
 
 
-## Company/Stock Tables ##
+# Company/Stock Tables #
 
 
 class Companies(BaseModel):
@@ -81,7 +97,7 @@ class HistoricalStockValues(BaseModel):
     company = relationship("Companies", back_populates="historical_stock_values")
 
 
-## Index Tables ##
+# Index Tables #
 
 
 class Indexes(BaseModel):
