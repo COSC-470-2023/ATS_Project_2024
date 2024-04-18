@@ -44,7 +44,7 @@ def execute_insert(connection, entry, index_id):
     :param entry: A key/value pair
     :param index_id: A generated primary key for database
     """
-    logger.info(f"Inserting record for index ID: {index_id}")
+    logger.debug(f"Inserting record for index ID: {index_id}")
     row = check_keys(entry)
     # Append generated id
     row["index_id"] = index_id

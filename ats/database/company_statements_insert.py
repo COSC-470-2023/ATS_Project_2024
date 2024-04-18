@@ -60,7 +60,7 @@ def execute_insert(connection, entry, company_id):
     :param entry: A key/value pair
     :param company_id: A generated primary key for database
     """
-    logger.info(f"Inserting record for company ID: {company_id}")
+    logger.debug(f"Inserting record for company ID: {company_id}")
     row = check_keys(entry)
 
     # If the key exists and value wasn't changed to None

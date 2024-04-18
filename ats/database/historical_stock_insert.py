@@ -42,7 +42,7 @@ def execute_insert(connection, entry, company_id):
     :param entry: A key/value pair
     :param company_id: A generated primary key for database
     """
-    logger.info(f"Inserting record for historical stock ID: {company_id}")
+    logger.debug(f"Inserting record for historical stock ID: {company_id}")
     row = check_keys(entry)
     # Append generated id
     row["company_id"] = company_id

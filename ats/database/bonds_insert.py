@@ -43,7 +43,7 @@ def execute_insert(connection, entry, bond_id):
     :param entry: A key/value pair
     :param bond_id: A generated primary key for database
     """
-    logger.info(f"Inserting record for bond ID: {bond_id}")
+    logger.debug(f"Inserting record for bond ID: {bond_id}")
     row = check_keys(entry)
     # Append generated id
     row["bond_id"] = bond_id

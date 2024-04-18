@@ -49,7 +49,7 @@ def execute_insert(connection, entry, company_id):
     :param entry: A key/value pair
     :param company_id: A generated primary key for database
     """
-    logger.info(f"Inserting record for stock ID: {company_id}")
+    logger.debug(f"Inserting record for stock ID: {company_id}")
     row = check_keys(entry)
 
     # Check if earningsAnnouncement is not None, convert to a datetime object and format for mysql datetime
