@@ -1,0 +1,623 @@
+stocks:
+- name: Perth Mint Gold
+  symbol: PMGOLD.AX
+- name: Jain Irrigation Systems Limited
+  symbol: JISLJALEQS.NS
+- name: Hercules Hoists Limited
+  symbol: HERCULES.NS
+- name: Bharat Heavy Electricals Limited
+  symbol: BHEL.NS
+- name: Hindustan Petroleum Corporation Limited
+  symbol: HINDPETRO.NS
+- name: Torrent Power Limited
+  symbol: TORNTPOWER.NS
+- name: Delta Corp Limited
+  symbol: DELTACORP.NS
+- name: Arrow Greentech Limited
+  symbol: ARROWGREEN.NS
+- name: Senco Gold Limited
+  symbol: SENCO.NS
+- name: eClerx Services Limited
+  symbol: ECLERX.NS
+- name: RattanIndia Power Limited
+  symbol: RTNPOWER.NS
+- name: Voltas Limited
+  symbol: VOLTAS.NS
+- name: Steel Authority of India Limited
+  symbol: SAIL.NS
+- name: Arvind Fashions Limited
+  symbol: ARVINDFASN.NS
+- name: DLF Limited
+  symbol: DLF.NS
+- name: Shriram Finance Limited
+  symbol: SHRIRAMFIN.NS
+- name: Dr. Reddy's Laboratories Limited
+  symbol: DRREDDY.NS
+- name: Vinati Organics Limited
+  symbol: VINATIORGA.NS
+- name: KRBL Limited
+  symbol: KRBL.NS
+- name: Marksans Pharma Limited
+  symbol: MARKSANS.NS
+- name: Dhani Services Limited
+  symbol: DHANI.NS
+- name: State Bank of India
+  symbol: SBIN.NS
+- name: InterGlobe Aviation Limited
+  symbol: INDIGO.NS
+- name: Canara Bank
+  symbol: CANBK.NS
+- name: Gujarat Mineral Development Corporation Limited
+  symbol: GMDCLTD.NS
+- name: FSN E-Commerce Ventures Limited
+  symbol: NYKAA.NS
+- name: BCL Industries Limited
+  symbol: BCLIND.NS
+- name: Cyient Limited
+  symbol: CYIENT.NS
+- name: BSE Limited
+  symbol: BSE.NS
+- name: Borosil Renewables Limited
+  symbol: BORORENEW.NS
+- name: Carysil Limited
+  symbol: CARYSIL.NS
+- name: Tata Motors Limited
+  symbol: TATAMOTORS.NS
+- name: Redington (India) Limited
+  symbol: REDINGTON.NS
+- name: NRB Bearings Limited
+  symbol: NRBBEARING.NS
+- name: ICICI Lombard General Insurance Company Limited
+  symbol: ICICIGI.NS
+- name: TVS Motor Company Limited
+  symbol: TVSMOTOR.NS
+- name: JSW Steel Limited
+  symbol: JSWSTEEL.NS
+- name: The Karnataka Bank Limited
+  symbol: KTKBANK.NS
+- name: Eicher Motors Limited
+  symbol: EICHERMOT.NS
+- name: Bharat Dynamics Limited
+  symbol: BDL.NS
+- name: Motherson Sumi Wiring India Limited
+  symbol: MSUMI.NS
+- name: Larsen & Toubro Limited
+  symbol: LT.NS
+- name: Emami Limited
+  symbol: EMAMILTD.NS
+- name: LT Foods Limited
+  symbol: LTFOODS.NS
+- name: Manorama Industries Limited
+  symbol: MANORAMA.NS
+- name: Elecon Engineering Company Limited
+  symbol: ELECON.NS
+- name: Dolat Algotech Limited
+  symbol: DOLATALGO.NS
+- name: HDFC Bank Limited
+  symbol: HDFCBANK.NS
+- name: Metropolis Healthcare Limited
+  symbol: METROPOLIS.NS
+- name: NMDC Limited
+  symbol: NMDC.NS
+- name: Sun Pharma Advanced Research Company Limited
+  symbol: SPARC.NS
+- name: Vedanta Limited
+  symbol: VEDL.NS
+- name: Siyaram Silk Mills Limited
+  symbol: SIYSIL.NS
+- name: SRF Limited
+  symbol: SRF.NS
+- name: Entertainment Network (India) Limited
+  symbol: ENIL.NS
+- name: City Union Bank Limited
+  symbol: CUB.NS
+- name: JTL Industries Limited
+  symbol: JTLIND.NS
+- name: Bank of India Limited
+  symbol: BANKINDIA.NS
+- name: Mahindra Lifespace Developers Limited
+  symbol: MAHLIFE.NS
+- name: Goldiam International Limited
+  symbol: GOLDIAM.NS
+- name: Latent View Analytics Limited
+  symbol: LATENTVIEW.NS
+- name: Sky Gold Limited
+  symbol: SKYGOLD.NS
+- name: Kritika Wires Limited
+  symbol: KRITIKA.NS
+- name: Zydus Lifesciences Limited
+  symbol: ZYDUSLIFE.NS
+- name: GTL Infrastructure Limited
+  symbol: GTLINFRA.NS
+- name: Choice International Limited
+  symbol: CHOICEIN.NS
+- name: Ujjivan Small Finance Bank Limited
+  symbol: UJJIVANSFB.NS
+- name: PNB Gilts Ltd.
+  symbol: PNBGILTS.NS
+- name: Craftsman Automation Limited
+  symbol: CRAFTSMAN.NS
+- name: Websol Energy System Limited
+  symbol: WEBELSOLAR.NS
+- name: Restaurant Brands Asia Limited
+  symbol: RBA.NS
+- name: W.S. Industries (India) Limited
+  symbol: WSI.NS
+- name: Godawari Power & Ispat Limited
+  symbol: GPIL.NS
+- name: Neogen Chemicals Limited
+  symbol: NEOGEN.NS
+- name: Akzo Nobel India Limited
+  symbol: AKZOINDIA.NS
+- name: Alkyl Amines Chemicals Limited
+  symbol: ALKYLAMINE.NS
+- name: NLC India Limited
+  symbol: NLCINDIA.NS
+- name: Mahindra & Mahindra Limited
+  symbol: M&M.NS
+- name: Indo Tech Transformers Limited
+  symbol: INDOTECH.NS
+- name: KPIT Technologies Limited
+  symbol: KPITTECH.NS
+- name: Tata Motors Limited
+  symbol: TATAMTRDVR.NS
+- name: Medico Remedies Limited
+  symbol: MEDICO.NS
+- name: PB Fintech Limited
+  symbol: POLICYBZR.NS
+- name: Birlasoft Limited
+  symbol: BSOFT.NS
+- name: DCB Bank Limited
+  symbol: DCBBANK.NS
+- name: Tata Chemicals Limited
+  symbol: TATACHEM.NS
+- name: GVK Power & Infrastructure Limited
+  symbol: GVKPIL.NS
+- name: Asahi India Glass Limited
+  symbol: ASAHIINDIA.NS
+- name: Colgate-Palmolive (India) Limited
+  symbol: COLPAL.NS
+- name: Titagarh Rail Systems Limited
+  symbol: TITAGARH.NS
+- name: Reliance Power Limited
+  symbol: RPOWER.NS
+- name: CreditAccess Grameen Limited
+  symbol: CREDITACC.NS
+- name: Bosch Limited
+  symbol: BOSCHLTD.NS
+- name: SEPC Limited
+  symbol: SEPC.NS
+- name: PNC Infratech Limited
+  symbol: PNCINFRA.NS
+- name: Reliance Industries Limited
+  symbol: RELIANCE.NS
+- name: Emkay Global Financial Services Limited
+  symbol: EMKAY.NS
+- name: IDFC Limited
+  symbol: IDFC.NS
+- name: Renaissance Global Limited
+  symbol: RGL.NS
+- name: Tata Steel Limited
+  symbol: TATASTEEL.NS
+- name: Bharti Airtel Limited
+  symbol: BHARTIARTL.NS
+- name: Sumitomo Chemical India Limited
+  symbol: SUMICHEM.NS
+- name: Sequent Scientific Limited
+  symbol: SEQUENT.NS
+- name: SMS Pharmaceuticals Limited
+  symbol: SMSPHARMA.NS
+- name: NIP IND ETF MIDCAP 150
+  symbol: MID150BEES.NS
+- name: Indiabulls Real Estate Limited
+  symbol: IBREALEST.NS
+- name: Gujarat Fluorochemicals Limited
+  symbol: FLUOROCHEM.NS
+- name: NATCO Pharma Limited
+  symbol: NATCOPHARM.NS
+- name: Inox Green Energy Services Limited
+  symbol: INOXGREEN.NS
+- name: CE Info Systems Ltd.
+  symbol: MAPMYINDIA.NS
+- name: Life Insurance Corporation of India
+  symbol: LICI.NS
+- name: TV18 Broadcast Limited
+  symbol: TV18BRDCST.NS
+- name: HEG Limited
+  symbol: HEG.NS
+- name: Mazagon Dock Shipbuilders Limited
+  symbol: MAZDOCK.NS
+- name: IIFL Securities Limited
+  symbol: IIFLSEC.NS
+- name: National Aluminium Company Limited
+  symbol: NATIONALUM.NS
+- name: Rain Industries Limited
+  symbol: RAIN.NS
+- name: Aster DM Healthcare Limited
+  symbol: ASTERDM.NS
+- name: Greenpanel Industries Limited
+  symbol: GREENPANEL.NS
+- name: Timken India Limited
+  symbol: TIMKEN.NS
+- name: Everest Kanto Cylinder Limited
+  symbol: EKC.NS
+- name: UltraTech Cement Limited
+  symbol: ULTRACEMCO.NS
+- name: Adani Ports and Special Economic Zone Limited
+  symbol: ADANIPORTS.NS
+- name: Chalet Hotels Limited
+  symbol: CHALET.NS
+- name: Antony Waste Handling Cell Limited
+  symbol: AWHCL.NS
+- name: Adani Green Energy Limited
+  symbol: ADANIGREEN.NS
+- name: The Tata Power Company Limited
+  symbol: TATAPOWER.NS
+- name: Zomato Limited
+  symbol: ZOMATO.NS
+- name: One97 Communications Limited
+  symbol: PAYTM.NS
+- name: Transformers and Rectifiers (India) Limited
+  symbol: TRIL.NS
+- name: Exide Industries Limited
+  symbol: EXIDEIND.NS
+- name: Tata Consultancy Services Limited
+  symbol: TCS.NS
+- name: Mphasis Limited
+  symbol: MPHASIS.NS
+- name: Navin Fluorine International Limited
+  symbol: NAVINFLUOR.NS
+- name: Fortis Healthcare Limited
+  symbol: FORTIS.NS
+- name: Black Box Limited
+  symbol: BBOX.NS
+- name: Bandhan Bank Limited
+  symbol: BANDHANBNK.NS
+- name: Dish TV India Limited
+  symbol: DISHTV.NS
+- name: Sun Pharmaceutical Industries Limited
+  symbol: SUNPHARMA.NS
+- name: GMR Infrastructure Limited
+  symbol: GMRINFRA.NS
+- name: REC Limited
+  symbol: RECLTD.NS
+- name: V-Guard Industries Limited
+  symbol: VGUARD.NS
+- name: Goa Carbon Limited
+  symbol: GOACARBON.NS
+- name: Tanla Platforms Limited
+  symbol: TANLA.NS
+- name: Maruti Suzuki India Limited
+  symbol: MARUTI.NS
+- name: MRO-TEK Realty Limited
+  symbol: MRO-TEK.NS
+- name: Avanti Feeds Limited
+  symbol: AVANTIFEED.NS
+- name: PI Industries Limited
+  symbol: PIIND.NS
+- name: Oil and Natural Gas Corporation Limited
+  symbol: ONGC.NS
+- name: Suratwwala Business Group Limited
+  symbol: SBGLP.NS
+- name: Uravi T and Wedge Lamps Limited
+  symbol: URAVI.NS
+- name: Sona BLW Precision Forgings Limited
+  symbol: SONACOMS.NS
+- name: ICICI Bank Limited
+  symbol: ICICIBANK.NS
+- name: Sindhu Trade Links Limited
+  symbol: SINDHUTRAD.NS
+- name: One Point One Solutions Limited
+  symbol: ONEPOINT.NS
+- name: Dixon Technologies (India) Limited
+  symbol: DIXON.NS
+- name: Talbros Automotive Components Limited
+  symbol: TALBROAUTO.NS
+- name: Adani Total Gas Limited
+  symbol: ATGL.NS
+- name: Indian Bank
+  symbol: INDIANB.NS
+- name: Tejas Networks Limited
+  symbol: TEJASNET.NS
+- name: Nila Spaces Limited
+  symbol: NILASPACES.NS
+- name: CPSE ETF
+  symbol: CPSEETF.NS
+- name: United Spirits Limited
+  symbol: MCDOWELL-N.NS
+- name: Mold-Tek Packaging Limited
+  symbol: MOLDTKPAC.NS
+- name: IIFL Finance Limited
+  symbol: IIFL.NS
+- name: Tech Mahindra Limited
+  symbol: TECHM.NS
+- name: Infosys Limited
+  symbol: INFY.NS
+- name: 360 One Wam Limited
+  symbol: 360ONE.NS
+- name: Polycab India Limited
+  symbol: POLYCAB.NS
+- name: Vedant Fashions Limited
+  symbol: MANYAVAR.NS
+- name: Zee Media Corporation Limited
+  symbol: ZEEMEDIA.NS
+- name: Indian Oil Corporation Limited
+  symbol: IOC.NS
+- name: Shivam Autotech Limited
+  symbol: SHIVAMAUTO.NS
+- name: Shyam Metalics and Energy Limited
+  symbol: SHYAMMETL.NS
+- name: Chennai Petroleum Corporation Limited
+  symbol: CHENNPETRO.NS
+- name: Adani Wilmar Limited
+  symbol: AWL.NS
+- name: Blue Star Limited
+  symbol: BLUESTARCO.NS
+- name: HCL Technologies Limited
+  symbol: HCLTECH.NS
+- name: Lupin Limited
+  symbol: LUPIN.NS
+- name: Anand Rathi Wealth Limited
+  symbol: ANANDRATHI.NS
+- name: FCS Software Solutions Limited
+  symbol: FCSSOFT.NS
+- name: Gujarat State Petronet Limited
+  symbol: GSPL.NS
+- name: Ganesh Housing Corporation Limited
+  symbol: GANESHHOUC.NS
+- name: Shalimar Paints Limited
+  symbol: SHALPAINTS.NS
+- name: Ujjivan Financial Services Limited
+  symbol: UJJIVAN.NS
+- name: Sah Polymers Limited
+  symbol: SAH.NS
+- name: Godrej Properties Limited
+  symbol: GODREJPROP.NS
+- name: Nippon India ETF Gold BeES
+  symbol: GOLDBEES.NS
+- name: Power Finance Corporation Limited
+  symbol: PFC.NS
+- name: Vodafone Idea Limited
+  symbol: IDEA.NS
+- name: GAIL (India) Limited
+  symbol: GAIL.NS
+- name: Hindustan Zinc Limited
+  symbol: HINDZINC.NS
+- name: Sagar Cements Limited
+  symbol: SAGCEM.NS
+- name: Apollo Hospitals Enterprise Limited
+  symbol: APOLLOHOSP.NS
+- name: Bank of Baroda
+  symbol: BANKBARODA.NS
+- name: Metro Brands Limited
+  symbol: METROBRAND.NS
+- name: MSTC Limited
+  symbol: MSTCLTD.NS
+- name: Sobha Limited
+  symbol: SOBHA.NS
+- name: Hubtown Limited
+  symbol: HUBTOWN.NS
+- name: Balmer Lawrie & Co. Ltd.
+  symbol: BALMLAWRIE.NS
+- name: Hariom Pipe Industries Limited
+  symbol: HARIOMPIPE.NS
+- name: UPL Limited
+  symbol: UPL.NS
+- name: Birla Corporation Limited
+  symbol: BIRLACORPN.NS
+- name: Piramal Enterprises Limited
+  symbol: PEL.NS
+- name: Petronet LNG Limited
+  symbol: PETRONET.NS
+- name: CG Power and Industrial Solutions Limited
+  symbol: CGPOWER.NS
+- name: Bata India Limited
+  symbol: BATAINDIA.NS
+- name: Apollo Tyres Limited
+  symbol: APOLLOTYRE.NS
+- name: Cholamandalam Investment and Finance Company Limited
+  symbol: CHOLAFIN.NS
+- name: Saksoft Limited
+  symbol: SAKSOFT.NS
+- name: Nuvoco Vistas Corporation Limited
+  symbol: NUVOCO.NS
+- name: Ramkrishna Forgings Limited
+  symbol: RKFORGE.NS
+- name: DCM Nouvelle Limited
+  symbol: DCMNVL.NS
+- name: Suprajit Engineering Limited
+  symbol: SUPRAJIT.NS
+- name: PCBL Limited
+  symbol: PCBL.NS
+- name: Aaron Industries Limited
+  symbol: AARON.NS
+- name: APL Apollo Tubes Limited
+  symbol: APLAPOLLO.NS
+- name: Debock Industries Limited
+  symbol: DIL.NS
+- name: eMudhra Limited
+  symbol: EMUDHRA.NS
+- name: K.C.P. Sugar and Industries Corporation Limited
+  symbol: KCPSUGIND.NS
+- name: PVP Ventures Limited
+  symbol: PVP.NS
+- name: GMR Power And Urban Infra Limited
+  symbol: GMRP&UI.NS
+- name: Adani Enterprises Limited
+  symbol: ADANIENT.NS
+- name: Atul Auto Limited
+  symbol: ATULAUTO.NS
+- name: Cerebra Integrated Technologies Limited
+  symbol: CEREBRAINT.NS
+- name: Birla Cable Limited
+  symbol: BIRLACABLE.NS
+- name: Hardwyn India Limited
+  symbol: HARDWYN.NS
+- name: Escorts Kubota Limited
+  symbol: ESCORTS.NS
+- name: Titan Company Limited
+  symbol: TITAN.NS
+- name: Welspun Enterprises Limited
+  symbol: WELENT.NS
+- name: Century Textiles and Industries Limited
+  symbol: CENTURYTEX.NS
+- name: Indian Railway Catering & Tourism Corporation Limited
+  symbol: IRCTC.NS
+- name: POWERGRID Infra. INVITs
+  symbol: PGINVIT-IV.NS
+- name: IDFC First Bank Limited
+  symbol: IDFCFIRSTB.NS
+- name: Oswal Agro Mills Limited
+  symbol: OSWALAGRO.NS
+- name: Safari Industries (India) Limited
+  symbol: SAFARI.NS
+- name: Syncom Formulations (India) Limited
+  symbol: SYNCOMF.NS
+- name: Angel One Limited
+  symbol: ANGELONE.NS
+- name: Yes Bank Limited
+  symbol: YESBANK.NS
+- name: United Breweries Limited
+  symbol: UBL.NS
+- name: The Jammu and Kashmir Bank Limited
+  symbol: J&KBANK.NS
+- name: Prism Johnson Limited
+  symbol: PRSMJOHNSN.NS
+- name: Kolte-Patil Developers Limited
+  symbol: KOLTEPATIL.NS
+- name: Hero MotoCorp Limited
+  symbol: HEROMOTOCO.NS
+- name: Asian Paints Limited
+  symbol: ASIANPAINT.NS
+- name: Shree Renuka Sugars Limited
+  symbol: RENUKA.NS
+- name: Paras Defence and Space Technologies Limited
+  symbol: PARAS.NS
+- name: Chambal Fertilisers and Chemicals Limited
+  symbol: CHAMBLFERT.NS
+- name: Suzlon Energy Limited
+  symbol: SUZLON.NS
+- name: Jindal Saw Limited
+  symbol: JINDALSAW.NS
+- name: Godrej Consumer Products Limited
+  symbol: GODREJCP.NS
+- name: Ashok Leyland Limited
+  symbol: ASHOKLEY.NS
+- name: Oberoi Realty Limited
+  symbol: OBEROIRLTY.NS
+- name: Nava Limited
+  symbol: NAVA.NS
+- name: Coromandel International Limited
+  symbol: COROMANDEL.NS
+- name: Jai Corp Limited
+  symbol: JAICORPLTD.NS
+- name: The Bombay Dyeing and Manufacturing Company Limited
+  symbol: BOMDYEING.NS
+- name: Bajaj Auto Limited
+  symbol: BAJAJ-AUTO.NS
+- name: Indoco Remedies Limited
+  symbol: INDOCO.NS
+- name: GRM Overseas Limited
+  symbol: GRMOVER.NS
+- name: Bharat Petroleum Corporation Limited
+  symbol: BPCL.NS
+- name: Steel Strips Wheels Limited
+  symbol: SSWL.NS
+- name: Madras Fertilizers Limited
+  symbol: MADRASFERT.NS
+- name: Aurobindo Pharma Limited
+  symbol: AUROPHARMA.NS
+- name: Goldstone Technologies Limited
+  symbol: GOLDTECH.NS
+- name: TruCap Finance Limited
+  symbol: TRU.NS
+- name: Vinny Overseas Limited
+  symbol: VINNY.NS
+- name: TVS Electronics Limited
+  symbol: TVSELECT.NS
+- name: Sun TV Network Limited
+  symbol: SUNTV.NS
+- name: Aditya Birla Fashion and Retail Limited
+  symbol: ABFRL.NS
+- name: Macrotech Developers Limited
+  symbol: LODHA.NS
+- name: Eveready Industries India Limited
+  symbol: EVEREADY.NS
+- name: EMBASSY OFFICE PAR
+  symbol: EMBASSY-RR.NS
+- name: KPI Green Energy Limited
+  symbol: KPIGREEN.NS
+- name: Granules India Limited
+  symbol: GRANULES.NS
+- name: Dredging Corporation of India Limited
+  symbol: DREDGECORP.NS
+- name: Dreamfolks Services Limited
+  symbol: DREAMFOLKS.NS
+- name: Alembic Limited
+  symbol: ALEMBICLTD.NS
+- name: Panacea Biotec Limited
+  symbol: PANACEABIO.NS
+- name: Hindalco Industries Limited
+  symbol: HINDALCO.NS
+- name: TeamLease Services Limited
+  symbol: TEAMLEASE.NS
+- name: Nazara Technologies Limited
+  symbol: NAZARA.NS
+- name: Bajaj Finserv Ltd.
+  symbol: BAJAJFINSV.NS
+- name: Bajaj Hindusthan Sugar Limited
+  symbol: BAJAJHIND.NS
+- name: UCO Bank
+  symbol: UCOBANK.NS
+- name: Godrej Industries Limited
+  symbol: GODREJIND.NS
+- name: Berger Paints India Limited
+  symbol: BERGEPAINT.NS
+- name: Cochin Shipyard Limited
+  symbol: COCHINSHIP.NS
+- name: Vidhi Specialty Food Ingredients Limited
+  symbol: VIDHIING.NS
+- name: Laxmi Organic Industries Limited
+  symbol: LXCHEM.NS
+- name: Praj Industries Limited
+  symbol: PRAJIND.NS
+- name: Castrol India Limited
+  symbol: CASTROLIND.NS
+- name: Electronics Mart India Limited
+  symbol: EMIL.NS
+- name: Samvardhana Motherson International Limited
+  symbol: MOTHERSON.NS
+- name: Apollo Micro Systems Limited
+  symbol: APOLLO.NS
+- name: MTAR Technologies Limited
+  symbol: MTARTECH.NS
+- name: Salzer Electronics Limited
+  symbol: SALZERELEC.NS
+- name: Reliance Communications Limited
+  symbol: RCOM.NS
+- name: Vimta Labs Limited
+  symbol: VIMTALABS.NS
+- name: Kalyan Jewellers India Limited
+  symbol: KALYANKJIL.NS
+- name: Hindustan Aeronautics Limited
+  symbol: HAL.NS
+- name: Metalyst Forgings Limited
+  symbol: METALFORGE.NS
+- name: Lemon Tree Hotels Limited
+  symbol: LEMONTREE.NS
+- name: Bharat Forge Limited
+  symbol: BHARATFORG.NS
+- name: Force Motors Limited
+  symbol: FORCEMOT.NS
+- name: Computer Age Management Services Limited
+  symbol: CAMS.NS
+- name: CESC Limited
+  symbol: CESC.NS
+- name: Indraprastha Gas Limited
+  symbol: IGL.NS
+- name: Bhansali Engineering Polymers Limited
+  symbol: BEPL.NS
+- name: Indian Overseas Bank
+  symbol: IOB.NS
+- name: Sterling and Wilson Renewable Energy Limited
+  symbol: SWSOLAR.NS

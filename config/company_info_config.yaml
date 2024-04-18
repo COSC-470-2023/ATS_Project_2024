@@ -1,0 +1,1042 @@
+api_fields:
+  address: _company_address
+  beta: _company_beta
+  ceo: _company_ceo
+  changes: _company_changes
+  cik: _company_cik
+  city: _company_city
+  companyName: _company_name
+  country: _company_country
+  currency: _company_currency
+  cusip: _company_cusip
+  dcf: _company_dcf
+  dcfDiff: _company_dcfDiff
+  exchange: _company_exchangeFullName
+  exchangeShortName: _company_exchange
+  fullTimeEmployees: _company_fullTimeEmployees
+  industry: _company_industry
+  ipoDate: _company_ipoDate
+  isActivelyTrading: _company_isActivelyTrading
+  isAdr: _company_isAdr
+  isEtf: _company_isEtf
+  isFund: _company_isFund
+  isin: _company_isin
+  lastDiv: _company_lastDiv
+  mktCap: _company_mktCap
+  phone: _company_phone
+  price: _company_price
+  sector: _company_sector
+  state: _company_state
+  symbol: _company_symbol
+  volAvg: _company_volAvg
+  zip: _company_zip
+non_api_fields:
+- _company_date
+stocks:
+- name: GE Vernova
+  symbol: GEV
+- name: Solventum
+  symbol: SOLV
+- name: Supermicro
+  symbol: SMCI
+- name: Deckers Brands
+  symbol: DECK
+- name: Builders FirstSource
+  symbol: BLDR
+- name: Jabil
+  symbol: JBL
+- name: Uber
+  symbol: UBER
+- name: Hubbell Incorporated
+  symbol: HUBB
+- name: Lululemon Athletica
+  symbol: LULU
+- name: Veralto
+  symbol: VLTO
+- name: Airbnb
+  symbol: ABNB
+- name: Blackstone
+  symbol: BX
+- name: Kenvue
+  symbol: KVUE
+- name: Palo Alto Networks
+  symbol: PANW
+- name: Axon Enterprise
+  symbol: AXON
+- name: Fair Isaac
+  symbol: FICO
+- name: Bunge Global SA
+  symbol: BG
+- name: Insulet
+  symbol: PODD
+- name: GE HealthCare
+  symbol: GEHC
+- name: Steel Dynamics
+  symbol: STLD
+- name: First Solar
+  symbol: FSLR
+- name: Arch Capital Group
+  symbol: ACGL
+- name: Targa Resources
+  symbol: TRGP
+- name: EQT
+  symbol: EQT
+- name: PG&E Corporation
+  symbol: PCG
+- name: CoStar Group
+  symbol: CSGP
+- name: Invitation Homes
+  symbol: INVH
+- name: Keurig Dr Pepper
+  symbol: KDP
+- name: ON Semiconductor
+  symbol: 'ON'
+- name: Vici Properties
+  symbol: VICI
+- name: Warner Bros. Discovery
+  symbol: WBD
+- name: Camden Property Trust
+  symbol: CPT
+- name: Molina Healthcare
+  symbol: MOH
+- name: Nordson Corporation
+  symbol: NDSN
+- name: Constellation Energy
+  symbol: CEG
+- name: FactSet
+  symbol: FDS
+- name: EPAM Systems
+  symbol: EPAM
+- name: Brown & Brown
+  symbol: BRO
+- name: Dayforce
+  symbol: DAY
+- name: Match Group
+  symbol: MTCH
+- name: Bio-Techne
+  symbol: TECH
+- name: Moderna
+  symbol: MRNA
+- name: Charles River Laboratories
+  symbol: CRL
+- name: PTC
+  symbol: PTC
+- name: Caesars Entertainment
+  symbol: CZR
+- name: Generac
+  symbol: GNRC
+- name: NXP Semiconductors
+  symbol: NXPI
+- name: Monolithic Power Systems
+  symbol: MPWR
+- name: Trimble Inc.
+  symbol: TRMB
+- name: Enphase
+  symbol: ENPH
+- name: Tesla, Inc.
+  symbol: TSLA
+- name: Pool Corporation
+  symbol: POOL
+- name: Catalent
+  symbol: CTLT
+- name: Etsy
+  symbol: ETSY
+- name: Teradyne
+  symbol: TER
+- name: Bio-Rad
+  symbol: BIO
+- name: Teledyne Technologies
+  symbol: TDY
+- name: Tyler Technologies
+  symbol: TYL
+- name: West Pharmaceutical Services
+  symbol: WST
+- name: Domino's
+  symbol: DPZ
+- name: Dexcom
+  symbol: DXCM
+- name: Carrier Global
+  symbol: CARR
+- name: Otis Worldwide
+  symbol: OTIS
+- name: Ingersoll Rand
+  symbol: IR
+- name: Paycom
+  symbol: PAYC
+- name: Live Nation Entertainment
+  symbol: LYV
+- name: Steris
+  symbol: STE
+- name: Zebra Technologies
+  symbol: ZBRA
+- name: Old Dominion
+  symbol: ODFL
+- name: Berkley
+  symbol: WRB
+- name: ServiceNow
+  symbol: NOW
+- name: Las Vegas Sands
+  symbol: LVS
+- name: NVR, Inc.
+  symbol: NVR
+- name: CDW
+  symbol: CDW
+- name: IDEX Corporation
+  symbol: IEX
+- name: Leidos
+  symbol: LDOS
+- name: T. Rowe Price
+  symbol: TROW
+- name: T-Mobile US
+  symbol: TMUS
+- name: MarketAxess
+  symbol: MKTX
+- name: Amcor
+  symbol: AMCR
+- name: Corteva
+  symbol: CTVA
+- name: DuPont
+  symbol: DD
+- name: Dow Inc.
+  symbol: DOW
+- name: Fox Corporation (Class B)
+  symbol: FOX
+- name: Fox Corporation (Class A)
+  symbol: FOXA
+- name: Wabtec
+  symbol: WAB
+- name: Atmos Energy
+  symbol: ATO
+- name: Teleflex
+  symbol: TFX
+- name: Celanese
+  symbol: CE
+- name: Diamondback Energy
+  symbol: FANG
+- name: Lamb Weston
+  symbol: LW
+- name: Jack Henry & Associates
+  symbol: JKHY
+- name: Keysight
+  symbol: KEYS
+- name: Fortinet
+  symbol: FTNT
+- name: Rollins, Inc.
+  symbol: ROL
+- name: Arista Networks
+  symbol: ANET
+- name: Copart
+  symbol: CPRT
+- name: Corpay
+  symbol: CPAY
+- name: Broadridge Financial Solutions
+  symbol: BR
+- name: Evergy
+  symbol: EVRG
+- name: MSCI
+  symbol: MSCI
+- name: Take-Two Interactive
+  symbol: TTWO
+- name: Huntington Ingalls Industries
+  symbol: HII
+- name: Norwegian Cruise Line Holdings
+  symbol: NCLH
+- name: Cadence Design Systems
+  symbol: CDNS
+- name: SBA Communications
+  symbol: SBAC
+- name: IQVIA
+  symbol: IQV
+- name: A. O. Smith
+  symbol: AOS
+- name: MGM Resorts
+  symbol: MGM
+- name: Packaging Corporation of America
+  symbol: PKG
+- name: ResMed
+  symbol: RMD
+- name: Baker Hughes
+  symbol: BKR
+- name: Align Technology
+  symbol: ALGN
+- name: Ansys
+  symbol: ANSS
+- name: Everest Re
+  symbol: EG
+- name: Hilton Worldwide
+  symbol: HLT
+- name: Gartner
+  symbol: IT
+- name: Advanced Micro Devices
+  symbol: AMD
+- name: Alexandria Real Estate Equities
+  symbol: ARE
+- name: Raymond James
+  symbol: RJF
+- name: Sempra Energy
+  symbol: SRE
+- name: Synopsys
+  symbol: SNPS
+- name: Regency Centers
+  symbol: REG
+- name: Cboe Global Markets
+  symbol: CBOE
+- name: Incyte
+  symbol: INCY
+- name: Idexx Laboratories
+  symbol: IDXX
+- name: Mid-America Apartment Communities
+  symbol: MAA
+- name: Dominion Energy
+  symbol: D
+- name: Howmet Aerospace
+  symbol: HWM
+- name: CooperCompanies
+  symbol: COO
+- name: Charter Communications
+  symbol: CHTR
+- name: Mettler Toledo
+  symbol: MTD
+- name: Albemarle Corporation
+  symbol: ALB
+- name: Fortive
+  symbol: FTV
+- name: Alliant Energy
+  symbol: LNT
+- name: TransDigm Group
+  symbol: TDG
+- name: Arthur J. Gallagher & Co.
+  symbol: AJG
+- name: LKQ Corporation
+  symbol: LKQ
+- name: Digital Realty
+  symbol: DLR
+- name: Global Payments
+  symbol: GPN
+- name: Ulta Beauty
+  symbol: ULTA
+- name: Centene Corporation
+  symbol: CNC
+- name: Hologic
+  symbol: HOLX
+- name: UDR, Inc.
+  symbol: UDR
+- name: American Water Works
+  symbol: AWK
+- name: Federal Realty
+  symbol: FRT
+- name: Citizens Financial Group
+  symbol: CFG
+- name: Extra Space Storage
+  symbol: EXR
+- name: Willis Towers Watson
+  symbol: WTW
+- name: Church & Dwight
+  symbol: CHD
+- name: Illumina
+  symbol: ILMN
+- name: Synchrony Financial
+  symbol: SYF
+- name: Hewlett Packard Enterprise
+  symbol: HPE
+- name: Verisk
+  symbol: VRSK
+- name: News Corp (Class B)
+  symbol: NWS
+- name: United Airlines Holdings
+  symbol: UAL
+- name: PayPal
+  symbol: PYPL
+- name: Kraft Heinz
+  symbol: KHC
+- name: J.B. Hunt
+  symbol: JBHT
+- name: WestRock
+  symbol: WRK
+- name: Qorvo
+  symbol: QRVO
+- name: Realty Income
+  symbol: O
+- name: American Airlines Group
+  symbol: AAL
+- name: Equinix
+  symbol: EQIX
+- name: Henry Schein
+  symbol: HSIC
+- name: Skyworks Solutions
+  symbol: SWKS
+- name: HCA Healthcare
+  symbol: HCA
+- name: Royal Caribbean Group
+  symbol: RCL
+- name: Universal Health Services
+  symbol: UHS
+- name: United Rentals
+  symbol: URI
+- name: Martin Marietta Materials
+  symbol: MLM
+- name: Broadcom Inc.
+  symbol: AVGO
+- name: Alphabet Inc. (Class A)
+  symbol: GOOGL
+- name: Essex Property Trust
+  symbol: ESS
+- name: Tractor Supply
+  symbol: TSCO
+- name: Meta Platforms
+  symbol: META
+- name: Mohawk Industries
+  symbol: MHK
+- name: Allegion
+  symbol: ALLE
+- name: Ametek
+  symbol: AME
+- name: Vertex Pharmaceuticals
+  symbol: VRTX
+- name: Delta Air Lines
+  symbol: DAL
+- name: News Corp (Class A)
+  symbol: NWSA
+- name: Zoetis
+  symbol: ZTS
+- name: General Motors
+  symbol: GM
+- name: Regeneron
+  symbol: REGN
+- name: AbbVie
+  symbol: ABBV
+- name: Aptiv
+  symbol: APTV
+- name: Garmin
+  symbol: GRMN
+- name: Humana
+  symbol: HUM
+- name: Dollar General
+  symbol: DG
+- name: Mondelez International
+  symbol: MDLZ
+- name: Pentair
+  symbol: PNR
+- name: LyondellBasell
+  symbol: LYB
+- name: Seagate Technology
+  symbol: STX
+- name: Lam Research
+  symbol: LRCX
+- name: Monster Beverage
+  symbol: MNST
+- name: Kinder Morgan
+  symbol: KMI
+- name: Phillips 66
+  symbol: PSX
+- name: Crown Castle
+  symbol: CCI
+- name: BorgWarner
+  symbol: BWA
+- name: Dollar Tree
+  symbol: DLTR
+- name: Xylem Inc.
+  symbol: XYL
+- name: TE Connectivity
+  symbol: TEL
+- name: Mosaic Company (The)
+  symbol: MOS
+- name: Accenture
+  symbol: ACN
+- name: Freeport-McMoRan
+  symbol: FCX
+- name: Marathon Petroleum
+  symbol: MPC
+- name: Chipotle Mexican Grill
+  symbol: CMG
+- name: BlackRock
+  symbol: BLK
+- name: Edwards Lifesciences
+  symbol: EW
+- name: F5, Inc.
+  symbol: FFIV
+- name: Netflix
+  symbol: NFLX
+- name: Trane Technologies
+  symbol: TT
+- name: Johnson Controls
+  symbol: JCI
+- name: Chubb Limited
+  symbol: CB
+- name: CarMax
+  symbol: KMX
+- name: ONEOK
+  symbol: OKE
+- name: Berkshire Hathaway
+  symbol: BRK-B
+- name: NRG Energy
+  symbol: NRG
+- name: Roper Technologies
+  symbol: ROP
+- name: Ross Stores
+  symbol: ROST
+- name: Visa Inc.
+  symbol: V
+- name: Booking Holdings
+  symbol: BKNG
+- name: FMC Corporation
+  symbol: FMC
+- name: Eversource
+  symbol: ES
+- name: Quanta Services
+  symbol: PWR
+- name: Western Digital
+  symbol: WDC
+- name: O'Reilly Auto Parts
+  symbol: ORLY
+- name: Hormel Foods
+  symbol: HRL
+- name: Ventas
+  symbol: VTR
+- name: Welltower
+  symbol: WELL
+- name: Iron Mountain
+  symbol: IRM
+- name: Republic Services
+  symbol: RSG
+- name: Wynn Resorts
+  symbol: WYNN
+- name: J.M. Smucker Company (The)
+  symbol: SJM
+- name: WEC Energy Group
+  symbol: WEC
+- name: Nasdaq, Inc.
+  symbol: NDAQ
+- name: Amphenol
+  symbol: APH
+- name: Pioneer Natural Resources
+  symbol: PXD
+- name: L3Harris
+  symbol: LHX
+- name: Salesforce
+  symbol: CRM
+- name: Fastenal
+  symbol: FAST
+- name: CF Industries
+  symbol: CF
+- name: Invesco
+  symbol: IVZ
+- name: DaVita Inc.
+  symbol: DVA
+- name: Mastercard
+  symbol: MA
+- name: Coterra
+  symbol: CTRA
+- name: Intuitive Surgical
+  symbol: ISRG
+- name: Healthpeak
+  symbol: DOC
+- name: Philip Morris International
+  symbol: PM
+- name: American Tower
+  symbol: AMT
+- name: Jacobs Solutions
+  symbol: J
+- name: Expeditors International
+  symbol: EXPD
+- name: Expedia Group
+  symbol: EXPE
+- name: Intercontinental Exchange
+  symbol: ICE
+- name: Microchip Technology
+  symbol: MCHP
+- name: Akamai
+  symbol: AKAM
+- name: Discover Financial
+  symbol: DFS
+- name: Assurant
+  symbol: AIZ
+- name: Host Hotels & Resorts
+  symbol: HST
+- name: CH Robinson
+  symbol: CHRW
+- name: Ralph Lauren Corporation
+  symbol: RL
+- name: AvalonBay Communities
+  symbol: AVB
+- name: Cognizant
+  symbol: CTSH
+- name: CBRE Group
+  symbol: CBRE
+- name: Fidelity National Information Services
+  symbol: FIS
+- name: CME Group
+  symbol: CME
+- name: Juniper Networks
+  symbol: JNPR
+- name: Kimco Realty
+  symbol: KIM
+- name: Boston Properties
+  symbol: BXP
+- name: Alphabet Inc. (Class C)
+  symbol: GOOG
+- name: Verisign
+  symbol: VRSN
+- name: "Est\xE9e Lauder Companies (The)"
+  symbol: EL
+- name: Amazon
+  symbol: AMZN
+- name: Lennar
+  symbol: LEN
+- name: Ameriprise Financial
+  symbol: AMP
+- name: Public Storage
+  symbol: PSA
+- name: Tyson Foods
+  symbol: TSN
+- name: Constellation Brands
+  symbol: STZ
+- name: DR Horton
+  symbol: DHI
+- name: LabCorp
+  symbol: LH
+- name: Tapestry, Inc.
+  symbol: TPR
+- name: Thermo Fisher Scientific
+  symbol: TMO
+- name: Gilead Sciences
+  symbol: GILD
+- name: Viatris
+  symbol: VTRS
+- name: M&T Bank
+  symbol: MTB
+- name: Biogen
+  symbol: BIIB
+- name: Prologis
+  symbol: PLD
+- name: Gen Digital
+  symbol: GEN
+- name: McCormick & Company
+  symbol: MKC
+- name: State Street Corporation
+  symbol: STT
+- name: Valero Energy
+  symbol: VLO
+- name: Quest Diagnostics
+  symbol: DGX
+- name: Comcast
+  symbol: CMCSA
+- name: Travelers Companies (The)
+  symbol: TRV
+- name: Elevance Health
+  symbol: ELV
+- name: Electronic Arts
+  symbol: EA
+- name: eBay
+  symbol: EBAY
+- name: Goldman Sachs
+  symbol: GS
+- name: Principal Financial Group
+  symbol: PFG
+- name: Prudential Financial
+  symbol: PRU
+- name: United Parcel Service
+  symbol: UPS
+- name: Simon Property Group
+  symbol: SPG
+- name: Waters Corporation
+  symbol: WAT
+- name: Equity Residential
+  symbol: EQR
+- name: Nvidia
+  symbol: NVDA
+- name: PPL Corporation
+  symbol: PPL
+- name: Cencora
+  symbol: COR
+- name: Zimmer Biomet
+  symbol: ZBH
+- name: Fiserv
+  symbol: FI
+- name: Texas Instruments
+  symbol: TXN
+- name: Cintas
+  symbol: CTAS
+- name: Stryker Corporation
+  symbol: SYK
+- name: MetLife
+  symbol: MET
+- name: Intuit
+  symbol: INTU
+- name: Robert Half
+  symbol: RHI
+- name: EOG Resources
+  symbol: EOG
+- name: NiSource
+  symbol: NI
+- name: Devon Energy
+  symbol: DVN
+- name: Starbucks
+  symbol: SBUX
+- name: Agilent Technologies
+  symbol: A
+- name: Rockwell Automation
+  symbol: ROK
+- name: U.S. Bank
+  symbol: USB
+- name: Analog Devices
+  symbol: ADI
+- name: Pinnacle West
+  symbol: PNW
+- name: Qualcomm
+  symbol: QCOM
+- name: Vulcan Materials Company
+  symbol: VMC
+- name: Best Buy
+  symbol: BBY
+- name: NetApp
+  symbol: NTAP
+- name: Aflac
+  symbol: AFL
+- name: McKesson
+  symbol: MCK
+- name: Carnival
+  symbol: CCL
+- name: Danaher Corporation
+  symbol: DHR
+- name: AES Corporation
+  symbol: AES
+- name: Paychex
+  symbol: PAYX
+- name: Waste Management
+  symbol: WM
+- name: Regions Financial Corporation
+  symbol: RF
+- name: Capital One
+  symbol: COF
+- name: Moody's Corporation
+  symbol: MCO
+- name: Marriott International
+  symbol: MAR
+- name: Franklin Templeton
+  symbol: BEN
+- name: Northern Trust
+  symbol: NTRS
+- name: Omnicom Group
+  symbol: OMC
+- name: Cincinnati Financial
+  symbol: CINF
+- name: Truist
+  symbol: TFC
+- name: FirstEnergy
+  symbol: FE
+- name: Yum! Brands
+  symbol: YUM
+- name: KLA Corporation
+  symbol: KLAC
+- name: Huntington Bancshares
+  symbol: HBAN
+- name: Progressive Corporation
+  symbol: PGR
+- name: APA Corporation
+  symbol: APA
+- name: Equifax
+  symbol: EFX
+- name: Charles Schwab Corporation
+  symbol: SCHW
+- name: Cardinal Health
+  symbol: CAH
+- name: Adobe Inc.
+  symbol: ADBE
+- name: AutoZone
+  symbol: AZO
+- name: Aon
+  symbol: AON
+- name: Fifth Third Bank
+  symbol: FITB
+- name: Comerica
+  symbol: CMA
+- name: Allstate
+  symbol: ALL
+- name: Darden Restaurants
+  symbol: DRI
+- name: Loews Corporation
+  symbol: L
+- name: Bank of New York Mellon
+  symbol: BK
+- name: Applied Materials
+  symbol: AMAT
+- name: Corning Inc.
+  symbol: GLW
+- name: Boston Scientific
+  symbol: BSX
+- name: Paramount Global
+  symbol: PARA
+- name: Micron Technology
+  symbol: MU
+- name: Southwest Airlines
+  symbol: LUV
+- name: UnitedHealth Group
+  symbol: UNH
+- name: Microsoft
+  symbol: MSFT
+- name: KeyCorp
+  symbol: KEY
+- name: Eastman Chemical Company
+  symbol: EMN
+- name: Cisco
+  symbol: CSCO
+- name: Costco
+  symbol: COST
+- name: Morgan Stanley
+  symbol: MS
+- name: Interpublic Group of Companies (The)
+  symbol: IPG
+- name: Linde plc
+  symbol: LIN
+- name: Amgen
+  symbol: AMGN
+- name: Ameren
+  symbol: AEE
+- name: Autodesk
+  symbol: ADSK
+- name: Kellanova
+  symbol: K
+- name: Oracle Corporation
+  symbol: ORCL
+- name: Globe Life
+  symbol: GL
+- name: Ecolab
+  symbol: ECL
+- name: Nike, Inc.
+  symbol: NKE
+- name: Citigroup
+  symbol: C
+- name: PNC Financial Services
+  symbol: PNC
+- name: Home Depot (The)
+  symbol: HD
+- name: Avery Dennison
+  symbol: AVY
+- name: Marsh McLennan
+  symbol: MMC
+- name: Sysco
+  symbol: SYY
+- name: Medtronic
+  symbol: MDT
+- name: Illinois Tool Works
+  symbol: ITW
+- name: Parker Hannifin
+  symbol: PH
+- name: Dover Corporation
+  symbol: DOV
+- name: TJX Companies
+  symbol: TJX
+- name: CenterPoint Energy
+  symbol: CNP
+- name: Revvity
+  symbol: RVTY
+- name: Air Products and Chemicals
+  symbol: APD
+- name: Nucor
+  symbol: NUE
+- name: Ball Corporation
+  symbol: BALL
+- name: Hasbro
+  symbol: HAS
+- name: Hess Corporation
+  symbol: HES
+- name: PulteGroup
+  symbol: PHM
+- name: Lowe's
+  symbol: LOW
+- name: AT&T
+  symbol: T
+- name: Verizon
+  symbol: VZ
+- name: Bath & Body Works, Inc.
+  symbol: BBWI
+- name: Conagra Brands
+  symbol: CAG
+- name: Apple Inc.
+  symbol: AAPL
+- name: "Brown\u2013Forman"
+  symbol: BF-B
+- name: Snap-on
+  symbol: SNA
+- name: Stanley Black & Decker
+  symbol: SWK
+- name: Walmart
+  symbol: WMT
+- name: W. W. Grainger
+  symbol: GWW
+- name: Masco
+  symbol: MAS
+- name: Automatic Data Processing
+  symbol: ADP
+- name: FedEx
+  symbol: FDX
+- name: Paccar
+  symbol: PCAR
+- name: American International Group
+  symbol: AIG
+- name: Walgreens Boots Alliance
+  symbol: WBA
+- name: Weyerhaeuser
+  symbol: WY
+- name: Textron
+  symbol: TXT
+- name: Intel
+  symbol: INTC
+- name: Target Corporation
+  symbol: TGT
+- name: American Express
+  symbol: AXP
+- name: Bank of America
+  symbol: BAC
+- name: Cigna
+  symbol: CI
+- name: Walt Disney
+  symbol: DIS
+- name: Duke Energy
+  symbol: DUK
+- name: NextEra Energy
+  symbol: NEE
+- name: Molson Coors Beverage Company
+  symbol: TAP
+- name: Wells Fargo
+  symbol: WFC
+- name: International Flavors & Fragrances
+  symbol: IFF
+- name: JPMorgan Chase
+  symbol: JPM
+- name: Williams Companies
+  symbol: WMB
+- name: HP Inc.
+  symbol: HPQ
+- name: Genuine Parts Company
+  symbol: GPC
+- name: Johnson & Johnson
+  symbol: JNJ
+- name: Baxter International
+  symbol: BAX
+- name: Becton Dickinson
+  symbol: BDX
+- name: Eli Lilly and Company
+  symbol: LLY
+- name: McDonald's
+  symbol: MCD
+- name: Newmont
+  symbol: NEM
+- name: Clorox
+  symbol: CLX
+- name: Cummins
+  symbol: CMI
+- name: Emerson Electric
+  symbol: EMR
+- name: Sherwin-Williams
+  symbol: SHW
+- name: Abbott
+  symbol: ABT
+- name: Archer-Daniels-Midland
+  symbol: ADM
+- name: American Electric Power
+  symbol: AEP
+- name: Boeing
+  symbol: BA
+- name: Bristol Myers Squibb
+  symbol: BMY
+- name: Caterpillar Inc.
+  symbol: CAT
+- name: Colgate-Palmolive
+  symbol: CL
+- name: CMS Energy
+  symbol: CMS
+- name: ConocoPhillips
+  symbol: COP
+- name: Campbell Soup Company
+  symbol: CPB
+- name: CSX
+  symbol: CSX
+- name: CVS Health
+  symbol: CVS
+- name: Chevron Corporation
+  symbol: CVX
+- name: John Deere
+  symbol: DE
+- name: DTE Energy
+  symbol: DTE
+- name: Consolidated Edison
+  symbol: ED
+- name: Edison International
+  symbol: EIX
+- name: Eaton Corporation
+  symbol: ETN
+- name: Entergy
+  symbol: ETR
+- name: Exelon
+  symbol: EXC
+- name: Ford Motor Company
+  symbol: F
+- name: General Dynamics
+  symbol: GD
+- name: GE Aerospace
+  symbol: GE
+- name: General Mills
+  symbol: GIS
+- name: Halliburton
+  symbol: HAL
+- name: Hartford (The)
+  symbol: HIG
+- name: Honeywell
+  symbol: HON
+- name: Hershey's
+  symbol: HSY
+- name: IBM
+  symbol: IBM
+- name: International Paper
+  symbol: IP
+- name: Kimberly-Clark
+  symbol: KMB
+- name: Coca-Cola Company (The)
+  symbol: KO
+- name: Kroger
+  symbol: KR
+- name: Lockheed Martin
+  symbol: LMT
+- name: 3M
+  symbol: MMM
+- name: Altria
+  symbol: MO
+- name: Merck & Co.
+  symbol: MRK
+- name: Marathon Oil
+  symbol: MRO
+- name: Motorola Solutions
+  symbol: MSI
+- name: Northrop Grumman
+  symbol: NOC
+- name: Norfolk Southern Railway
+  symbol: NSC
+- name: Occidental Petroleum
+  symbol: OXY
+- name: Public Service Enterprise Group
+  symbol: PEG
+- name: PepsiCo
+  symbol: PEP
+- name: Pfizer
+  symbol: PFE
+- name: Procter & Gamble
+  symbol: PG
+- name: PPG Industries
+  symbol: PPG
+- name: RTX Corporation
+  symbol: RTX
+- name: Schlumberger
+  symbol: SLB
+- name: Southern Company
+  symbol: SO
+- name: S&P Global
+  symbol: SPGI
+- name: Union Pacific Corporation
+  symbol: UNP
+- name: Xcel Energy
+  symbol: XEL
+- name: ExxonMobil
+  symbol: XOM
+url: https://financialmodelingprep.com/api/v3/profile/{SYMBOL}?apikey={API_KEY}

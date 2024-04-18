@@ -1,0 +1,72 @@
+on:
+  push:
+    branches: 
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  format:
+    name: Formatting code
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4.0.0
+        with:
+          python-version: "3.10"
+
+      - name: Install black
+        run: python -m pip install black
+
+      - name: Run black in ats/collection
+        run: |
+          python -m black ats/collection
+          python -m black ats/database
+  lint:
+    name: Linting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4.0.0
+        with:
+          python-version: "3.10"
+
+      - name: Install flake8
+        run: python -m pip install flake8
+
+      - name: Run flake8
+        run: |
+          python -m flake8 --max-line-length 160 --verbose --exit-zero ats/collection
+          python -m flake8 --max-line-length 160 --verbose --exit-zero ats/database
+          #exit-zero because otherwise it will fail every time.
+ 
+  build:
+    runs-on: ubuntu-latest
+    #ubuntu latest on actions has mysql automatically installed
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
+
+      - name: Running setup script
+        run: ./setup
+          
+      - name: Build mysql database
+        run: |
+          sudo apt -y update
+          sudo systemctl start mysql
+          sudo mysql -uroot -proot < ddl/create_db.sql
+          sudo mysql -uroot -proot -e "use ats_db;" < ddl/create_triggers.sql
+
+      - name: Pytest
+        run: |
+
+          source .venv/bin/activate
+          python -m pytest -v --cov=ats/collection --cov-report=term-missing tests/ats/collection
+          python -m pytest -v --cov=ats/database --cov-report=term-missing tests/ats/database
+          python -m pytest -v --cov=ats/util --cov-report=term-missing tests/ats/util

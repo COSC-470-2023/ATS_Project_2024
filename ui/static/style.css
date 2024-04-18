@@ -1,0 +1,430 @@
+::after,
+::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+li {
+  list-style: none;
+}
+
+h1 {
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+body {
+  background-color: #fff;
+}
+
+/*index.html*/
+
+#login-form {
+  width: 100%;
+  padding: 30px;
+  max-width: 400px;
+}
+
+#login-form h1 {
+  font-size: 70px;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.form-control {
+  background-color: #fff;
+}
+
+.login-btn {
+  width: 50%;
+}
+
+.login-message-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+/* Create Users Page */
+
+#create-user-form {
+  width: 100%;
+  max-width: 500px;
+}
+
+.create-user-container {
+  padding: 0;
+}
+
+#user-select {
+  border-color: #cfd4d9;
+  border-radius: .25rem;
+  height: calc(1.5em + .75rem + 2px);
+  width: 100%;
+}
+
+/* Navigation bar */
+
+.wrapper {
+  display: flex;
+}
+
+#sidebar {
+  width: 260px;
+  min-width: 260px;
+  z-index: 1000;
+  transition: all 0.25s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  background-color: #d9d9d9;
+
+}
+
+#sidebar.expand {
+  width: 70px;
+  min-width: 70px;
+}
+
+#toggle-btn {
+  background-color: transparent;
+  cursor: pointer;
+  border: 0;
+  padding: 1rem 1.5rem;
+}
+
+.sidebar-logo {
+  margin: auto 0;
+}
+
+.sidebar-logo a {
+  color: #000;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+#sidebar.expand .sidebar-logo,
+#sidebar.expand a.sidebar-link span {
+  display: none;
+}
+
+.sidebar-nav {
+  padding: 2rem 0;
+  flex: 1 1 auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+a.sidebar-link {
+  padding: 0.625rem 1.625rem;
+  color: #000;
+  display: block;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  border-left: 3px solid transparent;
+}
+
+.sidebar-link i {
+  font-size: 1.1rem;
+  margin-right: 0.75rem;
+}
+
+a.sidebar-link:hover {
+  background-color: rgb(255, 255, 255, 0.5);
+  border-left: 3px solid #fff;
+}
+
+.sidebar-item {
+  position: relative;
+}
+
+#sidebar:not(.expand) .sidebar-item:hover {
+  display: block;
+  max-height: 15em;
+  width: 100%;
+  opacity: 1;
+}
+
+.sidebar-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+
+
+/* Base Container */
+
+.main {
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  transition: all 0.35s ease-in-out;
+  background-color: #fff;
+  padding: 1.68rem 1rem;
+}
+
+.main-title {
+  margin-top: 0.8rem;
+}
+
+#content #messages{
+  max-width: 100%;
+  width: 80%;
+}
+
+.content-card {
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  border: none;
+  box-shadow: none;
+}
+
+/* Change Configuration Page - configuration.html*/
+
+.config-list ul {
+  height: 200px;
+  overflow-y: scroll;
+  margin: 0;
+}
+
+.modal-body {
+  height: 200px;
+  border: none;
+  overflow: scroll;
+}
+
+.modal-body li{
+  margin-bottom: 5px;
+}
+
+.modal-body input{
+  margin-right: 5px;
+}
+
+#searchInputRemove {
+  background-color: #f7f7f7;
+  color:#000;
+  margin: 20px;
+}
+
+#searchInputAdd {
+  background-color: #f7f7f7;
+  color:#000;
+  margin: 20px;
+}
+
+.content-btn {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.content-btn .btn {
+  margin-left: 5px;
+}
+
+#loadingIndicator {
+  display: none;
+  text-align: center;
+}
+
+/* Job Scheduling Page */
+
+.sched-settings {
+  display: block;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.sched-settings input,h5 {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.sched-box {
+  height: 100%;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 5px;
+  overflow: auto;
+}
+
+/* Download Data Page */
+
+.export-content {
+  width: 100%;
+}
+
+#export-data-list {
+  width: 100%;
+  height: 225px;
+  overflow: hidden;
+  margin-bottom: 15px;
+  padding-left: 1rem;
+  background-color: #ffffff;
+  border-radius: 10px;
+  overflow-y: scroll;
+}
+
+#export-data-list ul {
+  width: 100%;
+  margin: 0; 
+}
+
+#export-data-list label {
+  margin-left: 1rem;
+}
+
+.input-daterange input {
+  padding: 10px 15px !important;
+  border: 1px solid #cfd8dc !important;
+  border-radius: 4px !important;
+  box-sizing: border-box;
+  background-color: #fff !important;
+  color: #000 !important;
+  font-size: 16px !important;
+  letter-spacing: 1px;
+  position: relative;
+  width: 250px;
+}
+
+.input-daterange input:focus {
+  -moz-box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  border: 1px solid #ffa000 !important;
+  outline-width: 0;
+}
+
+.daterangepicker {
+  background-color: #fff;
+  border-radius: 0 !important;
+  align-content: center !important;
+  padding: 0 !important;
+}
+
+/*Weekday Heading*/
+thead tr:nth-child(2) {
+  color: #bdbdbd !important;
+}
+
+tbody tr td {
+  padding: 5px 7px !important;
+}
+
+.month {
+  font-size: 16px !important;
+  padding-bottom: 10px !important;
+  padding-top: 10px !important;
+}
+
+.start-date,
+.end-date {
+  border-radius: 0px !important;
+}
+
+.available:hover {
+  border-radius: 0px !important;
+}
+
+.off {
+  color: #eeeeee !important;
+}
+
+.off:hover {
+  background-color: #eeeeee !important;
+  color: #fff !important;
+}
+
+.drp-buttons {
+  display: none !important;
+}
+
+/* Media query for mobile devices */
+
+@media (max-width: 767px) {
+  /* Sidebar */
+  #sidebar {
+      width: 70px;
+      min-width: 70px;
+  }
+
+  #sidebar.expand {
+      width: 260px;
+      min-width: 260px;
+  }
+
+  .sidebar-logo {
+    margin: 10px 15px 0px;
+  }
+
+  #sidebar:not(.expand) #toggle-btn,
+  #sidebar:not(.expand) a.sidebar-link span {
+    display: none;
+  }
+
+  /* Change Configuration Page */
+  .content-btn {
+    display: block;
+    justify-content: center;
+    margin: 10px;
+  }
+
+  .content-btn .btn {
+    width: 100%;
+    margin-left: 0px;
+    margin-top: 10px;
+  }
+
+  .card-title {
+    padding-top: 10px;
+  }
+
+  #data-selectAll-Btn {
+    margin-bottom: 20px;
+  }
+}
+
+#repeatContainer .card-body {
+  display: none;
+}
+
+#repeatContainer.showWeekRepeator #weekRepeator.card-body {
+  display: block;
+}
+
+#repeatContainer.showMonthRepeator #monthRepeator.card-body {
+  display: block;
+}
+
+@media (max-width: 950px) {
+  /* Date Range - Download Data */
+  .input-daterange input {
+    padding: 10px 15px !important;
+    border: 1px solid #cfd8dc !important;
+    border-radius: 4px !important;
+    box-sizing: border-box;
+    background-color: #fff !important;
+    color: #000 !important;
+    font-size: 16px !important;
+    letter-spacing: 1px;
+    position: relative;
+    width: 150px;
+  }
+}
+

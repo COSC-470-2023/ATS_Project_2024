@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/fontawesome.min.css"
+    integrity="sha384-BY+fdrpOd3gfeRvTSMT+VUZmA728cfF9Z2G42xpaRkUGu2i3DyzpTURDo5A6CaLK" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+    integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous" />
+  <link rel="stylesheet" href="../static/style.css" />
+  <title>{% block title %}Home{% endblock %}</title>
+</head>
+
+<body>
+  <!-- Side Navigation bar -->
+  <div class="wrapper">
+    <aside id="sidebar">
+      <ul class="sidebar-nav">
+        <li class="d-flex">
+          <button id="toggle-btn" type="button">
+            <i class="fa fa-bars" aria-hidden="true"></i>
+          </button>
+          <div class="sidebar-logo">
+            <a href="#"> ATS </a>
+          </div>
+        </li>
+        <li class="sidebar-item">
+          <a href="/configuration" class="sidebar-link">
+            <i class="fa fa-cogs" aria-hidden="true"></i>
+            <span> Change Configuration </span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="/job-scheduling" class="sidebar-link">
+            <i class="fa fa-calendar" aria-hidden="true"></i>
+            <span> Job Scheduling </span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="/data-export" class="sidebar-link">
+            <i class="fa fa-download" aria-hidden="true"></i>
+            <span> Export Data </span>
+          </a>
+        </li>
+      </ul>
+      <div class="sidebar-footer">
+        <a href="/create-user" class="sidebar-link">
+          <i class="fa fa-user-plus" aria-hidden="true"></i>
+          <span> Create Users </span>
+        </a>
+        <a href="/logout" class="sidebar-link">
+          <i class="fa fa-arrow-right" aria-hidden="true"></i>
+          <span> Logout </span>
+        </a>
+      </div>
+    </aside>
+    <!-- Main Content -->
+    <div class="main container">
+      <div class="container">
+        <div class="row-md" id="messages">
+          {% block messages %} {% endblock %}
+        </div>
+        <div class="row-md">
+          <h1 class="main-title">
+            {% block mainTitle %} Page Tile {% endblock %}
+          </h1>
+          <p class="main-description">
+            {% block mainDescription %} Page Description {% endblock %}
+          </p>
+        </div>
+        <div class="row-md" id="content">
+          {% block content %} {% endblock %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- jQuery, Popper.js, Bootstrap JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+  <!-- Datepicker -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+  <!-- Optional JavaScript -->
+  <script type="text/javascript" src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>

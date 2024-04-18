@@ -1,0 +1,142 @@
+{% extends "base.html" %} {% block title %} Change Configuration {% endblock %}
+{% block messages %} {% with messages =
+get_flashed_messages(with_categories=true) %} {% if messages %} {% for category,
+message in messages %} {% if category == 'error' %}
+<div class="alert alert-danger alter-dismissable fade show" role="alert">
+  {{ message }}
+  <button type="button" class="close" data-dismiss="alert">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% else %}
+<div class="alert alert-success alter-dismissable fade show" role="alert">
+  {{ message }}
+  <button type="button" class="close" data-dismiss="alert">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %} {% endfor %} {% endif %} {% endwith %} {% endblock %} {% block
+mainTitle %} Change Configuration {% endblock %} {% block mainDescription %}
+Choose to add or remove configuration files {% endblock %} {% block content %}
+
+<form action="/configuration/configuration" method="POST">
+  <div class="container p-0">
+    <!-- First Row -->
+    <div class="row">
+      <div class="col">
+        <div class="card content-card p-0 mb-3">
+          <div class="card-body">
+            <!-- Your content here -->
+            <div class="row justify-content-between">
+              <div class="col-md-6">
+                <!-- First column content -->
+                <h4>Stocks</h4>
+                <p>Current Config:</p>
+                <div class="card config-list">
+                  <ul id="config-stock-list">
+                    <li id="stock-item"> </li>
+                  </ul>
+                </div>
+                <div class="row mt-3">
+                  <div class="col content-btn">
+                    <button type="button" class="btn btn-secondary" id="removeStock" data-toggle="modal"
+                      data-target="#remove-modal" data-info="Remove Stock"
+                      onclick="dynamicModal(this.dataset.info, 'remove-modal'); getStocks('modal');">
+                      Remove Stock
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="addStock" data-toggle="modal"
+                      data-target="#add-modal" data-info="Add Stock"
+                      onclick="dynamicModal(this.dataset.info, 'add-modal'); displayAvailableStocks();">
+                      Add Stock
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <!-- Second column content -->
+                <h4>Constituents</h4>
+                <p>Current Config:</p>
+                <div class="card config-list">
+                  <ul id="config-const-list">
+                    <li id="const-item"> </li>
+                  </ul>
+                </div>
+                <div class="row mt-3">
+                  <div class="col content-btn">
+                    <button type="button" class="btn btn-secondary">
+                      Remove Constituent
+                    </button>
+                    <button type="button" class="btn btn-secondary">
+                      Add Constituent
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Remove Modal -->
+  <div class="modal fade" id="remove-modal" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5>Remove</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+        </div>
+        <input type="text" id="searchInputRemove" onkeyup="searchList('remove')" placeholder="Search...">
+        <div class="modal-body p-3">
+          <ul id="stockList">
+
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-primary" onclick="removeStocks()" data-dismiss="modal">
+            Remove
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Modal -->
+  <div class="modal fade" id="add-modal" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5>Add</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+        </div>
+        <input type="text" id="searchInputAdd" onkeyup="searchList('add')" placeholder="Search...">
+        <div class="modal-body p-3">
+          <!-- Loading indicator -->
+          <div id="loadingIndicator">
+            <p>Loading...</p>
+          </div>
+          <ul id="availableStockList">
+
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-primary" onclick="addSelectedStocks()" data-dismiss="modal">
+            Add
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}

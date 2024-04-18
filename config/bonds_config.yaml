@@ -1,0 +1,25 @@
+---
+# URL endpoint for query
+url: https://financialmodelingprep.com/api/v4/treasury?apikey={API_KEY}&from={START_DATE}&to={END_DATE}
+# Data fields to transform and add to output
+# input_field_name: output_field_name
+api_fields:
+  date: _bond_date
+  month1: _bond_month1
+  month2: _bond_month2
+  month3: _bond_month3
+  month6: _bond_month6
+  year1: _bond_year1
+  year2: _bond_year2
+  year3: _bond_year3
+  year5: _bond_year5
+  year7: _bond_year7
+  year10: _bond_year10
+  year20: _bond_year20
+  year30: _bond_year30
+# Custom fields to be added to output
+# Requires a mapping function in the script
+non_api_fields:
+  - _bond_name
+# Name of the treasury being queried
+treasury: US Treasury

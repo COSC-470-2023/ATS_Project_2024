@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% block title %} Job Scheduling {% endblock %}
+
+{% block mainTitle %} Job Scheduling {% endblock %}
+{% block mainDescription %} Choose the days you would like the service to be active {% endblock %}
+
+{% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+{% if category == 'error' %}
+<div class="alert alert-danger alter-dismissable fade show" role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% else %}
+<div class="alert alert-success alter-dismissable fade show" role="alert">
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<form action="/job-scheduling" method="POST" id="JobSchedulingForm">
+    <script id="currentSchedule" type="application/json">{{ jobschedule|safe }}</script>
+    <div class="container">
+        <!-- Current Scheduling Row -->
+        <h5> Current Scheduling: </h5>
+        <div class="row justify-content-between content-card mb-3">
+            <div class="col-md-3">
+                <!-- Current Job Type Column -->
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="jobType">Select Job Type:</label>
+                        <select class="form-control" id="jobType" name="jobType">
+                            <option value="SymbolChanges">Symbol Changes</option>
+                            <option value="RealtimeData">Realtime Data</option>
+                            <option value="HistoricalData">Historical Data</option>
+                            <option value="Bonds">Bonds</option>
+                            <option value="CompanyStatements">Company Statements</option>
+                            <option value="ConstituentUpdate">Constituent Update</option>
+                            <option value="DataDeletion">Data Deletion</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <!-- Current Time Column -->
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Time (HH:MM):</label>
+                        <label class="sched-box" id="currentTime"> &nbsp; </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <!-- Current Day of the Week -->
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Day of the Week:</label>
+                        <label class="sched-box" id="currentDOW"> &nbsp; </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <!-- Current Day of the Month -->
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Day of the Month:</label>
+                        <label class="sched-box" id="currentDOM"> &nbsp; </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Settings (Default/Custom) Row -->
+        <div class="row justify-content-between content-card mb-3">
+            <div class="card content-card p-0 w-100">
+                <div class="card-body">
+                    <div class="row justify-content-between">
+                        <div class="col-md-6">
+                            <!-- Default Column -->
+                            <label class="sched-settings">
+                                <input type="radio" name="sched-option" id="default-checkbox" value="default" checked />
+                                <h5> Default </h5>
+                                <br /> Recommended. The default job scheduling of the service
+                            </label>
+                        </div>
+                        <div class="col-md-6">
+                            <!-- Custom column -->
+                            <label class="sched-settings">
+                                <input type="radio" name="sched-option" id="sched-checkbox" value="custom"/>
+                                <h5> Custom </h5>
+                                <br /> Create custom scheduling for the service
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Change Scheduling Row -->
+        <h5> Change Scheduling: </h5>
+        <div class="row justify-content-between content-card">
+            <div class="col-md-3">
+                <!-- Change Job Type Column -->
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="inputJobType">Select Job Type:</label>
+                        <select class="form-control" id="inputJobType" name="inputJobType">
+                            <option value="SymbolChanges">Symbol Changes</option>
+                            <option value="RealtimeData">Realtime Data</option>
+                            <option value="HistoricalData">Historical Data</option>
+                            <option value="Bonds">Bonds</option>
+                            <option value="CompanyStatements">Company Statements</option>
+                            <option value="ConstituentUpdate">Constituent Update</option>
+                            <option value="DataDeletion">Data Deletion</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3" id="timeInput">
+                <!-- Change Time Column -->
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="time">Time (HH:MM):</label>
+                        <input type="time" class="form-control" id="time" name="time"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3" id="repeatMethodInput">
+                <div class="card-body">
+                    <div class="form-group">
+                        <input type="radio" id="DOWbutton" name="RepeatMethod" value="DOW" data-show="showWeekRepeator" data-hide="showMonthRepeator" checked />
+                        <label for="DOWbutton">Days of the week</label><br>
+                        <input type="radio" id="DOMbutton" name="RepeatMethod" value="DOM" data-show="showMonthRepeator" data-hide="showWeekRepeator" />
+                        <label for="DOMbutton">Days of the month</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 showWeekRepeator" id="repeatContainer">
+                <!-- Change Day of the Week -->
+                <div class="card-body" id="weekRepeator">
+                    <div class="form-group">
+                        <label for="dayOfWeek">Day of the Week:</label>
+                        <select class="form-control" id="dayOfWeek" name="dayOfWeek" multiple>
+                            <option value=0>Sunday</option>
+                            <option value=1>Monday</option>
+                            <option value=2>Tuesday</option>
+                            <option value=3>Wednesday</option>
+                            <option value=4>Thursday</option>
+                            <option value=5>Friday</option>
+                            <option value=6>Saturday</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Change Day of the Month -->
+                <div class="card-body" id="monthRepeator">
+                    <div class="form-group">
+                        <label for="dayOfMonth">Day of the Month:</label>
+                        <select class="form-control" id="dayOfMonth" name="dayOfMonth" multiple>
+                            {% for day in range(1, 32) %}
+                            <option value="{{ day }}">{{ day }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Form submission buttons -->
+        <div class="row mt-2">
+            <div class="col d-flex justify-content-end">
+                <button type="button" class="btn btn-secondary"> Cancel </button>
+                <button type="submit" class="btn btn-secondary ml-2"> Apply Changes </button>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,11 @@
+#!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
+
+python3 -m venv .venv
+source .venv/bin/activate
+pip3 install -U pip
+pip3 install -r requirements.txt
+deactivate
+
+exit 0

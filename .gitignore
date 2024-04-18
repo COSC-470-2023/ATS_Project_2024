@@ -1,18 +1,23 @@
-# Project Files
-.idea*
+# Environment variables
+.env
 
-# Output Files
-data_collection/output
+# IDE project config
+.idea/
+.vscode
 
-# Credential File
-database\processing\credentials.py
+# Script execution output
+output/
+ui/output/
 
-# pycache
+# Cache
 *.pyc
 __pycache__/
 
-# Environments
-.env
-.venv
-env/
-venv/
+# Virtual environment
+.venv/
+
+# Logs
+*.log
+
+# Test coverage file
+.coverage

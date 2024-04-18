@@ -1,0 +1,148 @@
+{% extends "base.html" %} {% block title %} Export Data {% endblock %} {% block
+messages %} {% with messages = get_flashed_messages(with_categories=true) %} {%
+if messages %} {% for category, message in messages %} {% if category == 'error'
+%}
+<div class="alert alert-danger alter-dismissable fade show" role="alert">
+  {{ message }}
+  <button type="button" class="close" data-dismiss="alert">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% else %}
+<div class="alert alert-success alter-dismissable fade show" role="alert">
+  {{ message }}
+  <button type="button" class="close" data-dismiss="alert">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %} {% endfor %} {% endif %} {% endwith %} {% endblock %}{% block
+mainTitle %} Export Data {% endblock %} {% block mainDescription %} Choose the
+data you want to export {% endblock %} {% block content %}
+<form class="export-content" action="/data-export/export-data" method="POST">
+  <select
+    class="form-select dropdown p-1 mb-3"
+    id="select-data"
+    name="select-data"
+    onchange="onDataChange()"
+  >
+    <option name="entity" value="Companies">Stocks</option>
+    <option name="entity" value="Indexes">Indexes</option>
+    <option name="entity" value="Bonds">Bonds</option>
+    <option name="entity" value="Commodities">Commodities</option>
+    <option name="entity" value="company-info">Company Info</option>
+  </select>
+  <div class="container p-0">
+    <div class="row">
+      <div class="col">
+        <div class="card content-card p-0 mb-3">
+          <div class="card-body">
+            <div class="row justify-content-between">
+              <div class="col-md-7">
+                <!-- Data List (Stocks, Indexes, Bonds, etc...) -->
+                <h6 class="card-title">Select Data:</h6>
+                <div id="export-data-list">
+                  <ul class="list-unstyled" id="data-list"></ul>
+                </div>
+                <div class="row justify-content-center">
+                  <button
+                    type="button"
+                    class="btn btn-secondary selectAll"
+                    id="data-selectAll-Btn"
+                    onclick="selectAllData(this)"
+                  >
+                    Select All
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <!-- Field List -->
+                <h6 class="card-title">Select Fields:</h6>
+                <div id="export-data-list">
+                  <ul class="list-unstyled" id="lookup-field-list"></ul>
+                  <ul class="list-unstyled" id="value-field-list"></ul>
+                </div>
+                <div class="row justify-content-center">
+                  <button
+                    type="button"
+                    class="btn btn-secondary selectAll"
+                    id="field-selectAll-Btn"
+                    onclick="selectAllData(this)"
+                  >
+                    Select All
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-between">
+      <!-- Data Type Selector -->
+      <div class="col-md-6">
+        <div class="card content-card mb-3">
+          <div class="card-body">
+            <div class="row pl-3">
+              <h6 class="card-title">Data Type:</h6>
+              <ul id="data-type-list">
+                <li>
+                  <input
+                    type="radio"
+                    id="realtime-data"
+                    name="data-type"
+                    value="realtime"
+                    checked
+                  />
+                  <label for="realtime-data">Realtime Data</label>
+                </li>
+                <li>
+                  <input
+                    type="radio"
+                    id="historical-data"
+                    name="data-type"
+                    value="historical"
+                  />
+                  <label for="historical-data">Historical Data</label>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Date Selector -->
+      <div class="col-md-6">
+        <div class="card content-card mb-3">
+          <div class="card-body">
+            <div class="row pl-3">
+              <h6>Date Range:</h6>
+              <div class="input-group input-daterange">
+                <input type="text" name="daterange" value="" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Form submission buttons -->
+    <div class="row">
+      <div class="col d-flex justify-content-end">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          id="reset-all-btn"
+          onclick="resetAll()"
+        >
+          Reset All
+        </button>
+        <button
+          type="submit"
+          class="btn btn-secondary ml-2"
+          id="export-file-btn"
+        >
+          Export File
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}

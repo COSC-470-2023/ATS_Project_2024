@@ -1,0 +1,10 @@
+---
+# URL endpoint for query
+url: https://financialmodelingprep.com/api/v3/{CONSTITUENT}?apikey={API_KEY}
+# Constituent to include in query
+constituent: sp500_constituent
+# Data fields to transform and add to output
+# input_field_name: output_field_name
+api_fields:
+  name: name
+  symbol: symbol
