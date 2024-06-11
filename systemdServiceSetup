@@ -14,7 +14,7 @@ User=$USER
 Group=$(id -gn)
 WorkingDirectory=$PROJ_DIR
 Environment="PATH=$PROJ_DIR/.venv/bin"
-ExecStart=$PROJ_DIR/.venv/bin/gunicorn --workers 3 --bind 0.0.0:8000 -m 007 wsgi
+ExecStart=$PROJ_DIR/.venv/bin/gunicorn --workers 3 --bind 0.0.0.0:8000 -m 007 wsgi
 
 [Install]
 WantedBy=multi-user.target
