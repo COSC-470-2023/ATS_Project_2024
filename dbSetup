@@ -1,0 +1,13 @@
+#!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
+
+PROJ_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+USERNAME=admin
+PASSWORD=password
+HASHED_PASS=$($PROJ_DIR/.venv/bin/python3 -c "from werkzeug.security import generate_password_hash; print(generate_password_hash('$PASSWORD'))")
+
+echo $HASHED_PASS
+sudo mysql < $PROJ_DIR/ddl/create_db.sql
+sudo mysql < $PROJ_DIR/ddl/create_triggers.sql
+sudo mysql ats_db -e "INSERT INTO users VALUES('1','$USERNAME','$HASHED_PASS','$USERNAME','',1)"

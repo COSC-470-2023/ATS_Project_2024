@@ -8,6 +8,8 @@ import json
 from flask_login import login_required
 from crontab import CronTab
 from .decorators import admin_required
+from os.path import dirname, realpath
+
 
 job_scheduling = Blueprint("job_scheduling", __name__)
 
@@ -146,6 +148,7 @@ def change_schedule():
 
 
 #change the commands with the full paths when you have everything setup
+proj_dir = dirname(dirname(realpath(__file__)))
 listOfJobs = [
     {
         "name": "SymbolChanges",
@@ -154,7 +157,7 @@ listOfJobs = [
         "day": None,
         "month": None,
         "default": "0 10 * * 1,2,3,4,5",
-        "command": "cd /home/admin/Projects/ATS_Project_2024/ && scripts/symbol_change_scheduling.sh",
+        "command": f"cd {proj_dir}/ && scripts/symbol_change_scheduling.sh",
     },
     {
         "name": "ConstituentUpdate",
@@ -163,7 +166,7 @@ listOfJobs = [
         "day": None,
         "month": None,
         "default": "30 10 * * 1,2,3,4,5",
-        "command": "cd /home/admin/Projects/ATS_Project_2024/ && scripts/constituent_scheduling.sh",
+        "command": f"cd {proj_dir}/ && scripts/constituent_scheduling.sh",
     },
     {
         "name": "HistoricalData",
@@ -172,7 +175,7 @@ listOfJobs = [
         "day": None,
         "month": None,
         "default": "0 12 * * 1,2,3,4,5",
-        "command": "cd /home/admin/Projects/ATS_Project_2024/ && scripts/historical_scheduling.sh",
+        "command": f"cd {proj_dir}/ && scripts/historical_scheduling.sh",
     },
     {
         "name": "RealtimeData",
@@ -181,7 +184,7 @@ listOfJobs = [
         "day": None,
         "month": None,
         "default": "0 16 * * 1,2,3,4,5",
-        "command": "cd /home/admin/Projects/ATS_Project_2024/ && scripts/realtime_scheduling.sh",
+        "command": f"cd {proj_dir}/ && scripts/realtime_scheduling.sh",
     },
     {
         "name": "CompanyStatements",
@@ -190,7 +193,7 @@ listOfJobs = [
         "day": None,
         "month": None,
         "default": "0 0 * * 0",
-        "command": "cd /home/admin/Projects/ATS_Project_2024/ && scripts/company_statement_scheduling.sh",
+        "command": f"cd {proj_dir}/ && scripts/company_statement_scheduling.sh",
     },
     {
         "name": "Bonds",
@@ -199,7 +202,7 @@ listOfJobs = [
         "day": None,
         "month": None,
         "default": "0 0 * * 6",
-        "command": "cd /home/admin/Projects/ATS_Project_2024/ && scripts/bonds_scheduling.sh",
+        "command": f"cd {proj_dir}/ && scripts/bonds_scheduling.sh",
     },
     {
         "name": "DataDeletion",
@@ -208,6 +211,6 @@ listOfJobs = [
         "day": None,
         "month": None,
         "default": "0 12 * * 0",
-        "command": "cd /home/admin/Projects/ATS_Project_2024/ && scripts/data_deletion_scheduling.sh",
+        "command": f"cd {proj_dir}/ && scripts/data_deletion_scheduling.sh",
     },
 ]

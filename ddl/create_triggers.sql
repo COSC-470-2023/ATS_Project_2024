@@ -10,6 +10,8 @@ ID Generation Triggers
 Handle the creation of unique identifiers for market entities
 */
 
+USE ats_db;
+
 -- Companies Trigger
 DELIMITER $$
 CREATE TRIGGER companies_id_gen_trg

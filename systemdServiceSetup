@@ -1,0 +1,26 @@
+#!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
+
+PROJ_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+cat << EOF > /etc/systemd/system/ats.service
+[Unit]
+Description=Gunicorn instance to serve ats ui
+After=network.target
+
+[Service]
+User=$USER
+Group=$(id -gn)
+WorkingDirectory=$PROJ_DIR
+Environment="PATH=$PROJ_DIR/.venv/bin"
+ExecStart=$PROJ_DIR/.venv/bin/gunicorn --workers 3 --bind 0.0.0.0:8000 -m 007 wsgi
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl daemon-reload
+
+systemctl enable ats.service
+systemctl start ats.service

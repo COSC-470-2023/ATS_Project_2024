@@ -1,0 +1,15 @@
+#!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
+
+PROJ_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+cd $PROJ_DIR
+bash -c "scripts/symbol_change_scheduling.sh \
+&& echo 'Finished symbol' && scripts/company_statement_scheduling.sh \
+&& echo 'Finished company statement' && scripts/constituent_scheduling.sh \
+&& echo 'Finished bonds' && scripts/bonds_scheduling.sh \
+&& echo 'Finished realtime' && scripts/realtime_scheduling.sh \
+&& echo 'Finished historical' && scripts/historical_scheduling.sh \
+&& echo 'Finished logs' && scripts/logs_scheduling.sh \
+&& echo 'Finished deletion' && scripts/data_deletion_scheduling.sh"
